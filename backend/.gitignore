@@ -1,0 +1,46 @@
+# Entorno virtual
+venv/
+.env
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+*.db
+
+# Docker y compilaciones
+__pycache__/
+*.sqlite3
+*.db
+*.egg-info/
+dist/
+build/
+docker-compose.override.yml
+
+# Archivos sensibles
+firebase.json
+
+# Pytest cache
+.pytest_cache/
+
+# Bytecode compilado
+*.pyc
+# Archivos de configuración
+# Firebase credentials
+firebase_credentials.json
+# Firebase credentials for the backend
+firebase_credentials_backend.json
+*.json

@@ -1,0 +1,729 @@
+openapi: 3.0.3
+info:
+  title: Spartan Market - User Profiles API
+  description: API para gestión de perfiles de usuario, avatares, privacidad e historial de compras
+  version: 1.0.0
+  contact:
+    name: Spartan Market Team
+    email: support@spartanmarket.com
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.spartanmarket.com
+    description: Production server
+
+security:
+  - FirebaseAuth: []
+
+paths:
+  # ========================================
+  # PERFIL DE USUARIO
+  # ========================================
+  
+  /api/v1/users/profile/complete:
+    post:
+      tags:
+        - User Profile
+      summary: Completar perfil de usuario
+      description: Crear o completar el perfil del usuario después del registro
+      security:
+        - FirebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteProfileRequest'
+            examples:
+              basic_profile:
+                summary: Perfil básico
+                value:
+                  name: "Juan Pérez"
+                  age: 25
+                  gender: "Masculino"
+                  location: "Colombia"
+                  alias: "juanperez"
+                  phrase: "¡Hola mundo!"
+                  about_me: "Desarrollador apasionado por la tecnología"
+                  interests: "Programación, música, viajes"
+      responses:
+        '200':
+          description: Perfil creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: No autorizado
+        '409':
+          description: Alias ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/users/profile/me:
+    get:
+      tags:
+        - User Profile
+      summary: Obtener perfil propio
+      description: Obtener el perfil completo del usuario autenticado
+      security:
+        - FirebaseAuth: []
+      responses:
+        '200':
+          description: Perfil obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '401':
+          description: No autorizado
+        '404':
+          description: Perfil no encontrado
+
+    put:
+      tags:
+        - User Profile
+      summary: Actualizar perfil propio
+      description: Actualizar campos permitidos del perfil del usuario
+      security:
+        - FirebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Perfil actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '400':
+          description: Datos inválidos
+        '401':
+          description: No autorizado
+        '409':
+          description: Alias ya existe
+
+  /api/v1/users/profile/{alias}:
+    get:
+      tags:
+        - User Profile
+      summary: Obtener perfil público por alias
+      description: Obtener perfil público de un usuario por su alias
+      parameters:
+        - name: alias
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Alias único del usuario
+        - name: viewer
+          in: query
+          schema:
+            type: string
+            enum: [public, admin]
+          description: Tipo de visor (público o admin)
+      responses:
+        '200':
+          description: Perfil público obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicProfileResponse'
+        '404':
+          description: Usuario no encontrado
+
+  # ========================================
+  # AVATAR
+  # ========================================
+
+  /api/v1/users/profile/avatar:
+    post:
+      tags:
+        - Avatar
+      summary: Subir o seleccionar avatar
+      description: Subir imagen de avatar o seleccionar ícono prediseñado
+      security:
+        - FirebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar_type:
+                  type: string
+                  enum: [icon, uploaded]
+                  description: Tipo de avatar (ícono o imagen subida)
+                icon_name:
+                  type: string
+                  description: Nombre del ícono (si avatar_type es icon)
+                image:
+                  type: string
+                  format: binary
+                  description: Imagen de avatar (si avatar_type es uploaded)
+      responses:
+        '200':
+          description: Avatar actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvatarResponse'
+        '400':
+          description: Datos inválidos
+        '401':
+          description: No autorizado
+        '413':
+          description: Archivo demasiado grande
+
+  /api/v1/users/profile/avatar/options:
+    get:
+      tags:
+        - Avatar
+      summary: Obtener opciones de avatar
+      description: Obtener lista de íconos prediseñados disponibles
+      responses:
+        '200':
+          description: Opciones obtenidas exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvatarOptionsResponse'
+
+  # ========================================
+  # PRIVACIDAD
+  # ========================================
+
+  /api/v1/users/profile/privacy:
+    get:
+      tags:
+        - Privacy
+      summary: Obtener configuración de privacidad
+      description: Obtener configuración de privacidad del usuario
+      security:
+        - FirebaseAuth: []
+      responses:
+        '200':
+          description: Configuración obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacySettingsResponse'
+        '401':
+          description: No autorizado
+
+    put:
+      tags:
+        - Privacy
+      summary: Actualizar configuración de privacidad
+      description: Actualizar configuración de privacidad de campos del perfil
+      security:
+        - FirebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePrivacyRequest'
+      responses:
+        '200':
+          description: Configuración actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivacySettingsResponse'
+        '400':
+          description: Datos inválidos
+        '401':
+          description: No autorizado
+
+  # ========================================
+  # CRÉDITOS
+  # ========================================
+
+  /api/v1/users/credits/me:
+    get:
+      tags:
+        - Credits
+      summary: Obtener créditos del usuario
+      description: Obtener cantidad de créditos disponibles del usuario
+      security:
+        - FirebaseAuth: []
+      responses:
+        '200':
+          description: Créditos obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditsResponse'
+        '401':
+          description: No autorizado
+
+  /api/v1/users/credits/buy:
+    post:
+      tags:
+        - Credits
+      summary: Comprar créditos
+      description: Iniciar proceso de compra de créditos con MercadoPago
+      security:
+        - FirebaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyCreditsRequest'
+      responses:
+        '200':
+          description: Compra iniciada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MercadoPagoPreferenceResponse'
+        '400':
+          description: Datos inválidos
+        '401':
+          description: No autorizado
+
+  # ========================================
+  # HISTORIAL DE COMPRAS
+  # ========================================
+
+  /api/v1/users/purchases/me:
+    get:
+      tags:
+        - Purchases
+      summary: Obtener historial de compras
+      description: Obtener historial de compras del usuario
+      security:
+        - FirebaseAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Número de página
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 10
+          description: Elementos por página
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, approved, rejected, cancelled]
+          description: Filtrar por estado
+      responses:
+        '200':
+          description: Historial obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchasesResponse'
+        '401':
+          description: No autorizado
+
+components:
+  securitySchemes:
+    FirebaseAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token de autenticación de Firebase
+
+  schemas:
+    # ========================================
+    # REQUEST SCHEMAS
+    # ========================================
+
+    CompleteProfileRequest:
+      type: object
+      required:
+        - name
+        - age
+        - gender
+        - location
+        - alias
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: Nombre completo del usuario
+        age:
+          type: integer
+          minimum: 13
+          maximum: 120
+          description: Edad del usuario
+        gender:
+          type: string
+          enum: [Masculino, Femenino, Otro]
+          description: Género del usuario
+        location:
+          type: string
+          enum: [Colombia, España, Otro]
+          description: Ubicación del usuario
+        alias:
+          type: string
+          minLength: 3
+          maxLength: 30
+          pattern: '^[a-zA-Z0-9_-]+$'
+          description: Alias único del usuario
+        phrase:
+          type: string
+          maxLength: 200
+          description: Frase o lema personal (opcional)
+        about_me:
+          type: string
+          maxLength: 1000
+          description: Descripción personal (opcional)
+        interests:
+          type: string
+          maxLength: 500
+          description: Intereses y objetivos (opcional)
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        age:
+          type: integer
+          minimum: 13
+          maximum: 120
+        gender:
+          type: string
+          enum: [Masculino, Femenino, Otro]
+        location:
+          type: string
+          enum: [Colombia, España, Otro]
+        alias:
+          type: string
+          minLength: 3
+          maxLength: 30
+          pattern: '^[a-zA-Z0-9_-]+$'
+        phrase:
+          type: string
+          maxLength: 200
+        about_me:
+          type: string
+          maxLength: 1000
+        interests:
+          type: string
+          maxLength: 500
+
+    BuyCreditsRequest:
+      type: object
+      required:
+        - amount
+      properties:
+        amount:
+          type: integer
+          minimum: 1
+          maximum: 10000
+          description: Cantidad de créditos a comprar
+
+    UpdatePrivacyRequest:
+      type: object
+      properties:
+        name_public:
+          type: boolean
+          description: Si el nombre es público
+        age_public:
+          type: boolean
+          description: Si la edad es pública
+        gender_public:
+          type: boolean
+          description: Si el género es público
+        location_public:
+          type: boolean
+          description: Si la ubicación es pública
+        phrase_public:
+          type: boolean
+          description: Si la frase es pública
+        about_me_public:
+          type: boolean
+          description: Si "sobre mí" es público
+        interests_public:
+          type: boolean
+          description: Si los intereses son públicos
+
+    # ========================================
+    # RESPONSE SCHEMAS
+    # ========================================
+
+    UserProfileResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID del perfil
+        uid:
+          type: string
+          description: Firebase UID del usuario
+        name:
+          type: string
+          description: Nombre del usuario
+        email:
+          type: string
+          format: email
+          description: Email del usuario
+        age:
+          type: integer
+          description: Edad del usuario
+        gender:
+          type: string
+          enum: [Masculino, Femenino, Otro]
+          description: Género del usuario
+        location:
+          type: string
+          enum: [Colombia, España, Otro]
+          description: Ubicación del usuario
+        alias:
+          type: string
+          description: Alias único del usuario
+        phrase:
+          type: string
+          nullable: true
+          description: Frase personal
+        about_me:
+          type: string
+          nullable: true
+          description: Descripción personal
+        interests:
+          type: string
+          nullable: true
+          description: Intereses y objetivos
+        avatar_url:
+          type: string
+          nullable: true
+          description: URL del avatar
+        avatar_type:
+          type: string
+          enum: [icon, uploaded]
+          description: Tipo de avatar
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha de creación
+        updated_at:
+          type: string
+          format: date-time
+          description: Fecha de última actualización
+
+    PublicProfileResponse:
+      type: object
+      properties:
+        alias:
+          type: string
+          description: Alias del usuario
+        name:
+          type: string
+          nullable: true
+          description: Nombre (si es público)
+        age:
+          type: integer
+          nullable: true
+          description: Edad (si es pública)
+        gender:
+          type: string
+          enum: [Masculino, Femenino, Otro]
+          nullable: true
+          description: Género (si es público)
+        location:
+          type: string
+          enum: [Colombia, España, Otro]
+          nullable: true
+          description: Ubicación (si es pública)
+        phrase:
+          type: string
+          nullable: true
+          description: Frase (si es pública)
+        about_me:
+          type: string
+          nullable: true
+          description: Descripción (si es pública)
+        interests:
+          type: string
+          nullable: true
+          description: Intereses (si son públicos)
+        avatar_url:
+          type: string
+          nullable: true
+          description: URL del avatar
+        avatar_type:
+          type: string
+          enum: [icon, uploaded]
+          description: Tipo de avatar
+
+    AvatarResponse:
+      type: object
+      properties:
+        avatar_url:
+          type: string
+          description: URL del avatar actualizado
+        avatar_type:
+          type: string
+          enum: [icon, uploaded]
+          description: Tipo de avatar
+        message:
+          type: string
+          description: Mensaje de confirmación
+
+    AvatarOptionsResponse:
+      type: object
+      properties:
+        icons:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Nombre del ícono
+              display_name:
+                type: string
+                description: Nombre para mostrar
+              url:
+                type: string
+                description: URL del ícono
+              category:
+                type: string
+                description: Categoría del ícono
+
+    PrivacySettingsResponse:
+      type: object
+      properties:
+        name_public:
+          type: boolean
+          description: Si el nombre es público
+        age_public:
+          type: boolean
+          description: Si la edad es pública
+        gender_public:
+          type: boolean
+          description: Si el género es público
+        location_public:
+          type: boolean
+          description: Si la ubicación es pública
+        phrase_public:
+          type: boolean
+          description: Si la frase es pública
+        about_me_public:
+          type: boolean
+          description: Si "sobre mí" es público
+        interests_public:
+          type: boolean
+          description: Si los intereses son públicos
+
+    CreditsResponse:
+      type: object
+      properties:
+        credits:
+          type: integer
+          description: Cantidad de créditos disponibles
+        total_earned:
+          type: integer
+          description: Total de créditos ganados
+        total_spent:
+          type: integer
+          description: Total de créditos gastados
+
+    MercadoPagoPreferenceResponse:
+      type: object
+      properties:
+        preference_id:
+          type: string
+          description: ID de la preferencia de MercadoPago
+        init_point:
+          type: string
+          description: URL de pago de MercadoPago
+        sandbox_init_point:
+          type: string
+          description: URL de pago en modo sandbox
+
+    PurchasesResponse:
+      type: object
+      properties:
+        purchases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Purchase'
+        total:
+          type: integer
+          description: Total de compras
+        page:
+          type: integer
+          description: Página actual
+        limit:
+          type: integer
+          description: Elementos por página
+        pages:
+          type: integer
+          description: Total de páginas
+
+    Purchase:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID de la compra
+        purchase_type:
+          type: string
+          enum: [credits, product]
+          description: Tipo de compra
+        amount:
+          type: number
+          description: Monto de la compra
+        currency:
+          type: string
+          description: Moneda de la compra
+        status:
+          type: string
+          enum: [pending, approved, rejected, cancelled]
+          description: Estado de la compra
+        payment_method:
+          type: string
+          description: Método de pago
+        mercadopago_payment_id:
+          type: string
+          nullable: true
+          description: ID de pago de MercadoPago
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha de la compra
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Tipo de error
+        message:
+          type: string
+          description: Mensaje de error
+        details:
+          type: object
+          description: Detalles adicionales del error 

@@ -1,0 +1,65 @@
+# =============================================================================
+# PROMETHEUS CONFIGURATION - SPARTAN MARKET API
+# =============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # =============================================================================
+  # SPARTAN MARKET API METRICS
+  # =============================================================================
+  - job_name: 'spartan-market-api'
+    static_configs:
+      - targets: ['api:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # =============================================================================
+  # POSTGRES DATABASE METRICS
+  # =============================================================================
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['db:5432']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # =============================================================================
+  # REDIS CACHE METRICS
+  # =============================================================================
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # =============================================================================
+  # NGINX METRICS (SI ESTÁ CONFIGURADO)
+  # =============================================================================
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: '/nginx_status'
+
+# =============================================================================
+# ALERTING RULES
+# =============================================================================
+rule_files:
+  - "alerts.yml"
+
+# =============================================================================
+# ALERTMANAGER CONFIGURATION
+# =============================================================================
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093 
