@@ -8,8 +8,15 @@ logger = logging.getLogger(__name__)
 # Configuración de base de datos
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
-    "postgresql+asyncpg://postgres:password@localhost/spartan_market"
+    "postgresql+asyncpg://spartan_user:spartan_password@localhost/spartan_market"
 )
+
+def get_db_url():
+    """Obtener URL de base de datos para Alembic"""
+    return os.getenv(
+        "DATABASE_URL", 
+        "postgresql://spartan_user:spartan_password@localhost:5432/spartan_market"
+    )
 
 # Crear engine asíncrono
 engine = create_async_engine(
