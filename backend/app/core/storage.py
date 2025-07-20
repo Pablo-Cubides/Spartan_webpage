@@ -1,113 +1,136 @@
 import os
 import uuid
-import aiofiles
+import boto3
 from typing import Optional, Tuple
 from fastapi import UploadFile, HTTPException
 import logging
 from pathlib import Path
+from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
-class FileStorage:
-    """Sistema de almacenamiento de archivos"""
+# Configuración de Cloudflare R2
+R2_ENDPOINT_URL = os.getenv("R2_ENDPOINT_URL")
+R2_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+R2_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+R2_BUCKET_NAME = os.getenv("R2_BUCKET_NAME", "spartan-avatars")
+
+# Cliente R2
+r2_client = boto3.client(
+    's3',
+    endpoint_url=R2_ENDPOINT_URL,
+    aws_access_key_id=R2_ACCESS_KEY_ID,
+    aws_secret_access_key=R2_SECRET_ACCESS_KEY,
+    region_name='auto'  # R2 usa 'auto' como región
+)
+
+class R2Storage:
+    """Sistema de almacenamiento usando Cloudflare R2"""
     
-    def __init__(self, upload_dir: str = "uploads"):
-        self.upload_dir = Path(upload_dir)
-        self.avatar_dir = self.upload_dir / "avatars"
-        self.ensure_directories()
+    def __init__(self, bucket_name: str = R2_BUCKET_NAME):
+        self.bucket_name = bucket_name
+        self.client = r2_client
     
-    def ensure_directories(self):
-        """Crear directorios necesarios"""
-        try:
-            self.upload_dir.mkdir(exist_ok=True)
-            self.avatar_dir.mkdir(exist_ok=True)
-            logger.info(f"Storage directories created: {self.upload_dir}")
-        except Exception as e:
-            logger.error(f"Error creating storage directories: {str(e)}")
-            raise
-    
-    async def save_avatar(self, file: UploadFile, user_id: str) -> Tuple[str, str]:
+    async def generate_presigned_upload_url(self, user_id: str, file_extension: str) -> Tuple[str, str]:
         """
-        Guardar avatar de usuario
+        Generar URL firmada para subir avatar
         
         Args:
-            file: Archivo subido
             user_id: ID del usuario
+            file_extension: Extensión del archivo
         
         Returns:
-            Tuple[str, str]: (filename, file_path)
+            Tuple[str, str]: (presigned_url, object_key)
         """
         try:
-            # Validar archivo
-            if not file.filename:
-                raise HTTPException(status_code=400, detail="Nombre de archivo requerido")
+            # Generar nombre único para el archivo
+            object_key = f"avatars/avatar_{user_id}_{uuid.uuid4()}{file_extension}"
             
-            # Generar nombre único
-            file_extension = Path(file.filename).suffix
-            filename = f"avatar_{user_id}_{uuid.uuid4()}{file_extension}"
-            file_path = self.avatar_dir / filename
+            # Generar URL firmada para PUT (subida)
+            presigned_url = self.client.generate_presigned_url(
+                'put_object',
+                Params={
+                    'Bucket': self.bucket_name,
+                    'Key': object_key,
+                    'ContentType': self._get_content_type(file_extension)
+                },
+                ExpiresIn=3600  # 1 hora
+            )
             
-            # Guardar archivo
-            async with aiofiles.open(file_path, 'wb') as f:
-                content = await file.read()
-                await f.write(content)
-            
-            logger.info(f"Avatar saved: {filename} for user {user_id}")
-            return filename, str(file_path)
+            logger.info(f"Generated presigned upload URL for user {user_id}: {object_key}")
+            return presigned_url, object_key
             
         except Exception as e:
-            logger.error(f"Error saving avatar for user {user_id}: {str(e)}")
-            raise HTTPException(status_code=500, detail="Error al guardar avatar")
+            logger.error(f"Error generating presigned upload URL for user {user_id}: {str(e)}")
+            raise HTTPException(status_code=500, detail="Error generando URL de subida")
     
-    async def delete_avatar(self, filename: str) -> bool:
+    async def generate_presigned_download_url(self, avatar_id: str) -> str:
         """
-        Eliminar avatar
+        Generar URL firmada para descargar avatar
         
         Args:
-            filename: Nombre del archivo
+            avatar_id: ID del avatar
+        
+        Returns:
+            str: URL firmada para descarga
+        """
+        try:
+            object_key = f"avatars/{avatar_id}"
+            
+            # Verificar que el archivo existe
+            try:
+                self.client.head_object(Bucket=self.bucket_name, Key=object_key)
+            except ClientError as e:
+                if e.response['Error']['Code'] == '404':
+                    raise HTTPException(status_code=404, detail="Avatar no encontrado")
+                raise
+            
+            # Generar URL firmada para GET (descarga)
+            presigned_url = self.client.generate_presigned_url(
+                'get_object',
+                Params={
+                    'Bucket': self.bucket_name,
+                    'Key': object_key
+                },
+                ExpiresIn=3600  # 1 hora
+            )
+            
+            logger.info(f"Generated presigned download URL for avatar {avatar_id}")
+            return presigned_url
+            
+        except Exception as e:
+            logger.error(f"Error generating presigned download URL for avatar {avatar_id}: {str(e)}")
+            raise HTTPException(status_code=500, detail="Error generando URL de descarga")
+    
+    async def delete_avatar(self, avatar_id: str) -> bool:
+        """
+        Eliminar avatar de R2
+        
+        Args:
+            avatar_id: ID del avatar
         
         Returns:
             bool: True si se eliminó correctamente
         """
         try:
-            file_path = self.avatar_dir / filename
-            if file_path.exists():
-                file_path.unlink()
-                logger.info(f"Avatar deleted: {filename}")
-                return True
-            return False
+            object_key = f"avatars/{avatar_id}"
+            self.client.delete_object(Bucket=self.bucket_name, Key=object_key)
+            logger.info(f"Avatar deleted from R2: {avatar_id}")
+            return True
         except Exception as e:
-            logger.error(f"Error deleting avatar {filename}: {str(e)}")
+            logger.error(f"Error deleting avatar {avatar_id} from R2: {str(e)}")
             return False
     
-    def get_avatar_url(self, filename: str) -> str:
-        """
-        Obtener URL del avatar
-        
-        Args:
-            filename: Nombre del archivo
-        
-        Returns:
-            str: URL del avatar
-        """
-        return f"/uploads/avatars/{filename}"
-    
-    async def cleanup_old_avatars(self, user_id: str, keep_filename: str):
-        """
-        Limpiar avatares antiguos del usuario
-        
-        Args:
-            user_id: ID del usuario
-            keep_filename: Nombre del archivo a mantener
-        """
-        try:
-            for file_path in self.avatar_dir.iterdir():
-                if file_path.is_file() and f"avatar_{user_id}_" in file_path.name:
-                    if file_path.name != keep_filename:
-                        file_path.unlink()
-                        logger.info(f"Cleaned up old avatar: {file_path.name}")
-        except Exception as e:
-            logger.error(f"Error cleaning up old avatars for user {user_id}: {str(e)}")
+    def _get_content_type(self, file_extension: str) -> str:
+        """Obtener content type basado en la extensión del archivo"""
+        content_types = {
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.png': 'image/png',
+            '.gif': 'image/gif',
+            '.webp': 'image/webp'
+        }
+        return content_types.get(file_extension.lower(), 'application/octet-stream')
 
-# Instancia global del storage
-file_storage = FileStorage() 
+# Instancia global del storage R2
+r2_storage = R2Storage() 

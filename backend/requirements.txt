@@ -38,6 +38,8 @@ mercadopago==2.3.0
 redis==5.0.1
 aiofiles==23.2.1
 google-cloud-storage==3.2.0
+boto3==1.34.0
+botocore==1.34.0
 
 # =============================================================================
 # HTTP & NETWORKING
