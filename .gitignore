@@ -1,0 +1,113 @@
+# =============================================================================
+# ENVIRONMENT & SECRETS - CRITICAL
+# =============================================================================
+.env
+.env.local
+.env.*.local
+.env.production.local
+.env.development.local
+.env.test.local
+.env.staging.local
+
+# Archivos de credenciales
+*credentials*.json
+*credentials*.json.json
+firebase*.json
+firebase*.json.json
+*secret*.json
+*token*.json
+*.pem
+*.key
+
+# =============================================================================
+# NODE / FRONTEND
+# =============================================================================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.pnp
+frontend/.pnp.js
+frontend/.vercel
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Frontend logs
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/.vercel
+frontend/.vercel/*
+
+# =============================================================================
+# PYTHON / BACKEND (if kept for reference)
+# =============================================================================
+backend_legacy/venv/
+backend_legacy/.venv/
+backend_legacy/__pycache__/
+backend_legacy/*.py[cod]
+backend_legacy/*.pyo
+backend_legacy/*.egg-info/
+backend_legacy/.pytest_cache/
+backend_legacy/.coverage
+backend_legacy/*.db
+backend_legacy/*.sqlite
+backend_legacy/logs/
+backend_legacy/uploads/
+
+# =============================================================================
+# IDE
+# =============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+.project
+.pydevproject
+.settings/
+*.iml
+
+# =============================================================================
+# OS
+# =============================================================================
+Thumbs.db
+.DS_Store
+*.tmp
+*.bak
+
+# =============================================================================
+# TESTING
+# =============================================================================
+.coverage/
+coverage/
+htmlcov/
+.tox/
+.hypothesis/
+
+# =============================================================================
+# BUILD & DIST
+# =============================================================================
+build/
+dist/
+*.egg-info/
+
+# =============================================================================
+# UPLOADS & CACHE
+# =============================================================================
+uploads/
+cache/
+.cache/
+temp/
+tmp/
+
+# =============================================================================
+# GIT
+# =============================================================================
+.git/
+.gitkeep
