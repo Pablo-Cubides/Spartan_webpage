@@ -47,8 +47,8 @@ git filter-branch --force --tree-filter 'python -c "
 import glob, os
 for f in glob.glob(\"**/*.md\", recursive=True):
     content = open(f).read()
-    content = content.replace(\"AIzaSyAAnsvCs6sPVCoevo-KLSF4jK-w3EdRX9w\", \"[REVOKED]\")
-    content = content.replace(\"AIzaSyDHufKWVTLLNjUV59sewODi9pidvoVvKfc\", \"[REVOKED]\")
+    content = content.replace(\"[EXPOSED_KEY_1]\", \"[REVOKED]\")
+    content = content.replace(\"[EXPOSED_KEY_2]\", \"[REVOKED]\")
     open(f, \"w\").write(content)
 "' -- --all
 ```
@@ -79,14 +79,14 @@ a6e5705 - Add comprehensive Security Incident Report
 ```
 
 ### API Key Search Results
-- ✅ `AIzaSyAAnsvCs6sPVCoevo-KLSF4jK-w3EdRX9w` - NOT FOUND in active files
-- ✅ `AIzaSyDHufKWVTLLNjUV59sewODi9pidvoVvKfc` - NOT FOUND in active files
+- ✅ `[EXPOSED_KEY_1]` - NOT FOUND in active files (REVOKED)
+- ✅ `[EXPOSED_KEY_2]` - NOT FOUND in active files (REVOKED)
 - ✅ Firebase credentials - NOT FOUND in active files
 - ✅ Cloudinary credentials - NOT FOUND in active files
 
 ### Git History Verification
 ```
-Command: git log -S "AIzaSyAAnsvCs6sPVCoevo-KLSF4jK-w3EdRX9w"
+Command: git log -S "[EXPOSED_KEY_PATTERN]"
 Result: Only ancient commits without SECURITY_UPDATE_LOG.md file
 Meaning: Strings exist in deleted/modified content, NOT current files
 ```
@@ -103,8 +103,8 @@ Meaning: Current branch is completely clean of real API keys
 ## 🔐 Credential Management
 
 ### Old Credentials (All Revoked)
-- Firebase Key 1: `AIzaSyAAnsvCs6sPVCoevo-KLSF4jK-w3EdRX9w` ✅ REVOKED
-- Firebase Key 2: `AIzaSyDHufKWVTLLNjUV59sewODi9pidvoVvKfc` ✅ REVOKED  
+- Firebase Key 1: [REVOKED - No longer valid] ✅ REVOKED
+- Firebase Key 2: [REVOKED - No longer valid] ✅ REVOKED  
 - Cloudinary URL: Old pattern ✅ ROTATED
 
 ### New Credentials (Secure)
