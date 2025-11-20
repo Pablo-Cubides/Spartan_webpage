@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  uid        String   @unique
+  email      String   @unique
+  name       String?
+  alias      String?  @unique
+  avatar_id  String?
+  role       String   @default("user")
+  credits    Int      @default(0)
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime?
+  purchases  Purchase[]
+}
+
+model CreditPackage {
+  id         Int      @id @default(autoincrement())
+  name       String
+  credits    Int
+  price      Float
+  is_active  Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime?
+  purchases  Purchase[]
+}
+
+model Purchase {
+  id               Int      @id @default(autoincrement())
+  user             User     @relation(fields: [user_id], references: [id])
+  user_id          Int
+  package          CreditPackage @relation(fields: [package_id], references: [id])
+  package_id       Int
+  amount_paid      Float
+  credits_received Int
+  payment_method   String?
+  payment_id       String?
+  status           String   @default("pending")
+  created_at       DateTime @default(now())
+  completed_at     DateTime?
+}

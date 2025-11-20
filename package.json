@@ -1,4 +1,12 @@
 {
+  "name": "spartan-edge-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "install:frontend": "npm --prefix frontend install",
+    "install:all": "npm --prefix frontend install"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.7",
     "autoprefixer": "^10.4.21"
