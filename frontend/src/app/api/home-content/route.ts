@@ -1,9 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+import { withErrorHandler } from '@/lib/api/error-handler';
 
 type Post = { imageUrl: string; title: string; description?: string };
 type Tool = { imageUrl?: string; title: string; description?: string };
 
-export async function GET() {
+const getHandler = async (request: NextRequest) => {
   // Mirror of /api/v1/home-content — keep minimal default content for dev.
   const defaultContent = {
     hero: { backgroundImageUrl: '', title: 'Spartan Market', subtitle: 'Bienvenido' },
@@ -14,3 +15,5 @@ export async function GET() {
 
   return NextResponse.json(defaultContent);
 }
+
+export const GET = withErrorHandler(getHandler);

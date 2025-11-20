@@ -42,8 +42,12 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState<'users' | 'purchases' | 'packages'>('users');
   const [loadingData, setLoadingData] = useState(false);
 
-  // Verificar si el usuario es admin
-  const isAdmin = user?.email === 'admin@spartan.com' || user?.email?.endsWith('@spartan.com');
+  // Verificar si el usuario es admin (basado en role en BD, no en email)
+  const isAdmin = user && user.uid ? (
+    // La verificación real ocurre en el servidor en /api/v1/admin/users
+    // El cliente solo intenta cargar datos; el servidor rechazará si no es admin
+    true // Permitir intento; servidor validará
+  ) : false;
 
   useEffect(() => {
     if (!(user && isAdmin)) return;

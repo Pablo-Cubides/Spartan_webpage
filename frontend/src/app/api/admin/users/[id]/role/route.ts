@@ -1,33 +1,37 @@
 
-import { NextResponse } from 'next/server';
+
+import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/server/prisma';
 import { verifyAdmin } from '@/lib/server/auth';
+import { UpdateUserRoleSchema } from '@/lib/validation/schemas';
+import { AuthorizationError, ValidationError, handleError, parseJsonBody } from '@/lib/api/error-handler';
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const admin = await verifyAdmin(request);
-  if (!admin) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
-    const { id } = await params;
-    const body = await request.json();
-    const { role } = body;
-
-    if (!['user', 'admin', 'moderator'].includes(role)) {
-      return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
+    const admin = await verifyAdmin(request);
+    if (!admin) {
+      throw new AuthorizationError('Admin access required');
     }
 
+    const { id } = await params;
+    const userId = parseInt(id);
+    
+    if (isNaN(userId)) {
+      throw new ValidationError('Invalid user ID', { userId: 'Must be a valid number' });
+    }
+
+    const body = await parseJsonBody<Record<string, unknown>>(request, UpdateUserRoleSchema);
+
     const updatedUser = await prisma.user.update({
-      where: { id: parseInt(id) },
-      data: { role },
+      where: { id: userId },
+      data: { role: body.role as string },
     });
 
     return NextResponse.json(updatedUser);
-  } catch {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  } catch (error) {
+    return handleError(error, request);
   }
 }

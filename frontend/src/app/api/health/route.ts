@@ -1,5 +1,8 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
+import { withErrorHandler } from '@/lib/api/error-handler'
 
-export async function GET() {
+const getHandler = async (request: NextRequest) => {
   return NextResponse.json({ status: 'ok', service: 'spartan-frontend-api' })
 }
+
+export const GET = withErrorHandler(getHandler)

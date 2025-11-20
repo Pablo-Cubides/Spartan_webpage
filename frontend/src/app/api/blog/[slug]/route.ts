@@ -1,11 +1,13 @@
 
-import { NextResponse } from "next/server";
+
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/server/prisma";
+import { NotFoundError, handleError } from "@/lib/api/error-handler";
 
-export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-
+export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params;
+
     const post = await prisma.blogPost.findUnique({
       where: { slug },
       include: {
@@ -16,19 +18,18 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     });
 
     if (!post) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      throw new NotFoundError('Blog post');
     }
 
     // Check if published
     const isPublished = post.is_published && post.published_at && new Date(post.published_at) <= new Date();
 
     if (!isPublished) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      throw new NotFoundError('Blog post');
     }
 
     return NextResponse.json(post);
   } catch (error) {
-    console.error("Error fetching public post:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleError(error, request);
   }
 }

@@ -1,83 +1,91 @@
 
-import { NextResponse } from "next/server";
+
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/server/prisma";
 import { verifyAdmin } from "@/lib/server/auth";
+import { UpdateBlogPostSchema } from "@/lib/validation/schemas";
+import { AuthorizationError, NotFoundError, ValidationError, parseJsonBody, handleError } from "@/lib/api/error-handler";
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const user = await verifyAdmin(request);
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { id } = await params;
-  const postId = parseInt(id);
-
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const user = await verifyAdmin(request);
+    if (!user) {
+      throw new AuthorizationError("Admin access required");
+    }
+
+    const { id } = await params;
+    const postId = parseInt(id);
+
+    if (isNaN(postId)) {
+      throw new ValidationError('Invalid post ID', { id: 'Must be a valid number' });
+    }
+
     const post = await prisma.blogPost.findUnique({
       where: { id: postId },
     });
 
     if (!post) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+      throw new NotFoundError("Blog post");
     }
 
     return NextResponse.json(post);
   } catch (error) {
-    console.error("Error fetching post:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleError(error, request);
   }
 }
 
-export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const user = await verifyAdmin(request);
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { id } = await params;
-  const postId = parseInt(id);
-
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const body = await request.json();
-    const { title, slug, content, excerpt, cover_image, is_published, published_at } = body;
+    const user = await verifyAdmin(request);
+    if (!user) {
+      throw new AuthorizationError("Admin access required");
+    }
+
+    const { id } = await params;
+    const postId = parseInt(id);
+
+    if (isNaN(postId)) {
+      throw new ValidationError('Invalid post ID', { id: 'Must be a valid number' });
+    }
+
+    const body = await parseJsonBody<Record<string, unknown>>(request, UpdateBlogPostSchema);
 
     const post = await prisma.blogPost.update({
       where: { id: postId },
-      data: {
-        title,
-        slug,
-        content,
-        excerpt,
-        cover_image,
-        is_published,
-        published_at: published_at ? new Date(published_at) : null,
-      },
+      data: Object.entries(body).reduce((acc, [key, value]) => {
+        if (value !== undefined) {
+          acc[key as keyof typeof acc] = value;
+        }
+        return acc;
+      }, {} as Record<string, unknown>),
     });
 
     return NextResponse.json(post);
   } catch (error) {
-    console.error("Error updating post:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleError(error, request);
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const user = await verifyAdmin(request);
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { id } = await params;
-  const postId = parseInt(id);
-
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const user = await verifyAdmin(request);
+    if (!user) {
+      throw new AuthorizationError("Admin access required");
+    }
+
+    const { id } = await params;
+    const postId = parseInt(id);
+
+    if (isNaN(postId)) {
+      throw new ValidationError('Invalid post ID', { id: 'Must be a valid number' });
+    }
+
     await prisma.blogPost.delete({
       where: { id: postId },
     });
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error deleting post:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return handleError(error, request);
   }
 }

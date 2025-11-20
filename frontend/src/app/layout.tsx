@@ -3,6 +3,12 @@ import './globals.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { Inter, Noto_Sans } from 'next/font/google';
+import { assertEnvironment } from '@/lib/config/validate-env';
+
+// Validate environment at build/startup time
+if (process.env.NODE_ENV === 'production') {
+  assertEnvironment();
+}
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-noto-sans' });

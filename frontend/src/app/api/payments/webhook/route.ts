@@ -1,9 +1,77 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/server/prisma'
 import sendTemplateEmail from '@/lib/server/email'
+import crypto from 'crypto'
+
+/**
+ * Verify MercadoPago webhook signature
+ * MercadoPago sends X-Signature and X-Request-Id headers
+ * We verify by reconstructing the hash with our secret
+ */
+function verifyMercadopagoSignature(
+  body: string,
+  xSignature: string | null,
+  requestId: string | null,
+  secret: string
+): boolean {
+  if (!xSignature || !requestId) {
+    console.warn('Missing MercadoPago signature headers');
+    return false;
+  }
+
+  // Extract the timestamp and hash from X-Signature
+  // Format: "ts=TIMESTAMP,v1=HASH"
+  const parts = xSignature.split(',');
+  let timestamp = '';
+  let providedHash = '';
+
+  for (const part of parts) {
+    if (part.startsWith('ts=')) {
+      timestamp = part.substring(3);
+    } else if (part.startsWith('v1=')) {
+      providedHash = part.substring(3);
+    }
+  }
+
+  if (!timestamp || !providedHash) {
+    console.warn('Invalid X-Signature format');
+    return false;
+  }
+
+  // Reconstruct the hash: SHA256(id,timestamp,secret)
+  const data = `${requestId}${timestamp}${secret}`;
+  const hash = crypto.createHash('sha256').update(data).digest('hex');
+
+  // Compare hashes (constant-time comparison to prevent timing attacks)
+  return crypto.timingSafeEqual(
+    Buffer.from(hash),
+    Buffer.from(providedHash)
+  );
+}
 
 export async function POST(request: Request) {
   try {
+    // Verify webhook signature
+    const xSignature = request.headers.get('x-signature');
+    const xRequestId = request.headers.get('x-request-id');
+    const mpWebhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+
+    // Note: If webhook secret is not configured, we'll proceed with fallback validation
+    // (fetching from MercadoPago API). In production, always configure the secret.
+    if (mpWebhookSecret && (xSignature || xRequestId)) {
+      const isValid = verifyMercadopagoSignature(
+        await request.clone().text(),
+        xSignature,
+        xRequestId,
+        mpWebhookSecret
+      );
+
+      if (!isValid) {
+        console.warn('Invalid MercadoPago webhook signature');
+        return NextResponse.json({ error: 'invalid_signature' }, { status: 403 });
+      }
+    }
+
     const body = await request.json()
 
     // MercadoPago webhook: validate by fetching payment resource using access token

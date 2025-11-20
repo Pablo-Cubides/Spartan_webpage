@@ -1,63 +1,60 @@
 
-import { NextResponse } from 'next/server';
+
+import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/server/prisma';
 import { verifyAdmin } from '@/lib/server/auth';
+import { withErrorHandler, AuthorizationError } from '@/lib/api/error-handler';
 
-export async function GET(request: Request) {
+const getHandler = async (request: NextRequest) => {
   const admin = await verifyAdmin(request);
   if (!admin) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    throw new AuthorizationError('Admin access required');
   }
 
-  try {
-    const settings = await prisma.appSetting.findMany();
-    const settingsMap: Record<string, string | number | boolean> = {};
-    
-    settings.forEach(s => {
-      // Try to parse JSON values, otherwise keep as string
-      try {
-        settingsMap[s.key] = JSON.parse(s.value);
-      } catch {
-        settingsMap[s.key] = s.value;
-      }
-    });
+  const settings = await prisma.appSetting.findMany();
+  const settingsMap: Record<string, string | number | boolean> = {};
+  
+  settings.forEach(s => {
+    // Try to parse JSON values, otherwise keep as string
+    try {
+      settingsMap[s.key] = JSON.parse(s.value);
+    } catch {
+      settingsMap[s.key] = s.value;
+    }
+  });
 
-    // Default values if not set
-    const defaults = {
-      creditCostAnalysis: 1,
-      creditCostGeneration: 1,
-      appEnabled: true,
-      maintenanceMode: false,
-    };
+  // Default values if not set
+  const defaults = {
+    creditCostAnalysis: 1,
+    creditCostGeneration: 1,
+    appEnabled: true,
+    maintenanceMode: false,
+  };
 
-    return NextResponse.json({ ...defaults, ...settingsMap });
-  } catch {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
+  return NextResponse.json({ ...defaults, ...settingsMap });
 }
 
-export async function POST(request: Request) {
+const postHandler = async (request: NextRequest) => {
   const admin = await verifyAdmin(request);
   if (!admin) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    throw new AuthorizationError('Admin access required');
   }
 
-  try {
-    const body = await request.json();
-    
-    // Update each setting
-    const updates = Object.entries(body).map(([key, value]) => {
-      return prisma.appSetting.upsert({
-        where: { key },
-        update: { value: JSON.stringify(value) },
-        create: { key, value: JSON.stringify(value) },
-      });
+  const body = await request.json();
+  
+  // Update each setting
+  const updates = Object.entries(body).map(([key, value]) => {
+    return prisma.appSetting.upsert({
+      where: { key },
+      update: { value: JSON.stringify(value) },
+      create: { key, value: JSON.stringify(value) },
     });
+  });
 
-    await prisma.$transaction(updates);
+  await prisma.$transaction(updates);
 
-    return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
+  return NextResponse.json({ success: true });
 }
+
+export const GET = withErrorHandler(getHandler);
+export const POST = withErrorHandler(postHandler);

@@ -1,67 +1,89 @@
 
-import { NextResponse } from "next/server";
+
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/server/prisma";
 import { verifyAdmin } from "@/lib/server/auth";
+import { CreateBlogPostSchema } from "@/lib/validation/schemas";
+import { withErrorHandler, AuthorizationError, ConflictError, ValidationError, parseJsonBody } from "@/lib/api/error-handler";
 
-export async function GET(request: Request) {
+const getHandler = async (request: NextRequest) => {
   const user = await verifyAdmin(request);
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    throw new AuthorizationError("Admin access required");
   }
 
-  try {
-    const posts = await prisma.blogPost.findMany({
-      orderBy: { created_at: "desc" },
-      include: {
-        author: {
-          select: { name: true, email: true },
-        },
-      },
-    });
-    return NextResponse.json(posts);
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  // Extract pagination params from query string
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
+
+  // Validate pagination params
+  if (isNaN(page) || page < 1) {
+    throw new ValidationError('Invalid page parameter', { page: 'Must be >= 1' });
   }
+  if (isNaN(limit) || limit < 1 || limit > 100) {
+    throw new ValidationError('Invalid limit parameter', { limit: 'Must be between 1 and 100' });
+  }
+
+  const skip = (page - 1) * limit;
+
+  // Get total count
+  const total = await prisma.blogPost.count();
+
+  // Get paginated posts
+  const posts = await prisma.blogPost.findMany({
+    skip,
+    take: limit,
+    orderBy: { created_at: "desc" },
+    include: {
+      author: {
+        select: { name: true, email: true },
+      },
+    },
+  });
+
+  return NextResponse.json({
+    posts,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+      hasNextPage: page < Math.ceil(total / limit),
+      hasPrevPage: page > 1,
+    },
+  });
 }
 
-export async function POST(request: Request) {
+const postHandler = async (request: NextRequest) => {
   const user = await verifyAdmin(request);
   if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    throw new AuthorizationError("Admin access required");
   }
 
-  try {
-    const body = await request.json();
-    const { title, slug, content, excerpt, cover_image, is_published, published_at } = body;
+  const body = await parseJsonBody<Record<string, unknown>>(request, CreateBlogPostSchema);
+  const { title, slug, content, excerpt, cover_image, is_published } = body;
 
-    // Validate required fields
-    if (!title || !slug || !content) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
-
-    // Check if slug exists
-    const existing = await prisma.blogPost.findUnique({ where: { slug } });
-    if (existing) {
-      return NextResponse.json({ error: "Slug already exists" }, { status: 400 });
-    }
-
-    const post = await prisma.blogPost.create({
-      data: {
-        title,
-        slug,
-        content,
-        excerpt,
-        cover_image,
-        is_published: is_published || false,
-        published_at: published_at ? new Date(published_at) : null,
-        author_id: user.id,
-      },
-    });
-
-    return NextResponse.json(post);
-  } catch (error) {
-    console.error("Error creating post:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  // Check if slug exists
+  const existing = await prisma.blogPost.findUnique({ where: { slug: slug as string } });
+  if (existing) {
+    throw new ConflictError("Slug already exists");
   }
+
+  const post = await prisma.blogPost.create({
+    data: {
+      title: title as string,
+      slug: slug as string,
+      content: content as string,
+      excerpt: excerpt as string | undefined,
+      cover_image: cover_image as string | undefined,
+      is_published: (is_published as boolean) || false,
+      author_id: user.id,
+    },
+  });
+
+  return NextResponse.json(post);
 }
+
+export const GET = withErrorHandler(getHandler)
+export const POST = withErrorHandler(postHandler)
