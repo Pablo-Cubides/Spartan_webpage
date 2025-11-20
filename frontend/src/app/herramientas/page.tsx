@@ -18,7 +18,7 @@ const HERRAMIENTAS = [
     estado: 'proximamente',
   },
   {
-    id: 'personal-shopper',
+    id: 'asesor-estilo',
     titulo: 'Tu Asesor de Estilo Personal',
     descripcion: 'Recibe recomendaciones de estilo adaptadas a tus preferencias y tipo de cuerpo. Crea un guardarropa que refleje tu personalidad y te haga sentir seguro en cualquier situación.',
     imagen: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCF3dij4jWToqfPhbNaGRBCKsokVt-ZPF6mJjCafp2tOSRSN2zuEWXNNMNt7xO_ElnDlc_eTqsMejtr9QGAuFdpSQf1LvV78c6URVzLEx0bi1gU2MZv2HvZCC_CRlj8DdzedP20RI12Gb8sDWjD-F4N5O6m4B-i0VtDz-BydV_ExT4iUhbzDnQpTlQT67tVLL-c8Itk8UDT__LLbo4K_q230JFTClVK0Em3d-qHQHT7uR-a9A7NU3o7C4xhyCdZlALZN1zmBWnQfunr',

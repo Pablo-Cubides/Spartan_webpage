@@ -1,8 +1,8 @@
 import { APP_CONFIG } from './config/app.config';
 import { CreditError } from './errors';
 import { appendLog } from './ai/logger';
-import { consumeCredits as globalConsume, hasSufficientCredits as globalCheck } from '@/lib/server/credits';
-import { prisma } from '@/lib/server/prisma';
+import { consumeCredits as globalConsume, hasSufficientCredits as globalCheck } from '../server/credits';
+import { prisma } from '../server/prisma';
 
 /**
  * CREDIT SYSTEM - Integrated with Spartan Platform

@@ -14,7 +14,11 @@
     "prisma:studio": "prisma studio",
     "type-check": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,md}\""
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,md}\"",
+    "test": "npx tsx tests/run-all.ts",
+    "test:payments": "npx tsx tests/payments/flow.test.ts",
+    "test:users": "npx tsx tests/users/signup-bonus.test.ts",
+    "test:asesor-estilo": "npx tsx tests/asesor-estilo/config.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.436.0",

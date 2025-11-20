@@ -1,19 +1,52 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  cover_image: string;
+  published_at: string;
+  author: {
+    name: string;
+  };
+}
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("/api/blog");
+        if (res.ok) {
+          const data = await res.json();
+          setPosts(data);
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implementar búsqueda
+    // Implementar búsqueda local o remota
     console.log("Buscando:", searchTerm);
   };
 
-  const handleReadMore = (articleId: string) => {
-    // Implementar navegación al artículo
-    console.log("Leer artículo:", articleId);
-  };
+  const filteredPosts = posts.filter(post => 
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div
@@ -80,142 +113,48 @@ export default function BlogPage() {
 
             {/* Destacados */}
             <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-              Artículos Destacados
+              Artículos Recientes
             </h2>
 
             {/* Artículos */}
-            <div className="p-4">
-              <div className="flex items-stretch justify-between gap-4 rounded-xl">
-                <div className="flex flex-[2_2_0px] flex-col gap-4">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-base font-bold leading-tight text-white">
-                      El Camino del Guerrero: Disciplina y Resiliencia
-                    </p>
-                    <p className="text-[#a2aab3] text-sm font-normal leading-normal">
-                      Descubre cómo la disciplina y la resiliencia son fundamentales para alcanzar tus metas y superar los desafíos de la vida.
-                    </p>
+            <div className="p-4 space-y-4">
+              {loading ? (
+                <p className="text-white text-center">Cargando artículos...</p>
+              ) : filteredPosts.length === 0 ? (
+                <p className="text-gray-400 text-center">No se encontraron artículos.</p>
+              ) : (
+                filteredPosts.map((post) => (
+                  <div key={post.id} className="flex items-stretch justify-between gap-4 rounded-xl">
+                    <div className="flex flex-[2_2_0px] flex-col gap-4">
+                      <div className="flex flex-col gap-1">
+                        <p className="text-base font-bold leading-tight text-white">
+                          {post.title}
+                        </p>
+                        <p className="text-[#a2aab3] text-sm font-normal leading-normal line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                      </div>
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#2c3035] text-white text-sm font-medium leading-normal w-fit hover:bg-[#3c4045] transition-colors"
+                      >
+                        <span className="truncate">Leer más</span>
+                      </Link>
+                    </div>
+                    <div
+                      className="flex-1 w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl"
+                      style={{
+                        backgroundImage: `url("${post.cover_image || 'https://via.placeholder.com/300'}")`,
+                      }}
+                    ></div>
                   </div>
-                  <button
-                    onClick={() => handleReadMore("guerrero-disciplina")}
-                    className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#2c3035] text-white text-sm font-medium leading-normal w-fit hover:bg-[#3c4045] transition-colors"
-                  >
-                    <span className="truncate">Leer más</span>
-                  </button>
-                </div>
-                <div
-                  className="flex-1 w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl"
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBHiUzgHITOlQUdFps-GVS9-ehgO87aOb8dBkid5D_0hGE4jW2W4Bi6OTAL4nwcbxvdIgdsCneyE58PoO8nvifKICNyZ6WTUAXlNp3CHGD22ODcZLzXpiFPHHevaSrX_gl1lNKS4n4jOTxR3vuvjw9DkpSNfBf5y6X7fjUVKAQLtg3aUePOr31BdwEHl1EDsT_DkP-JrMedkCT3UspMGyszNVj46_L_4PlzhzYtwjldqPOvKhydxvi5DLLxfWhYpxEAoaCOOYmWU_F-")',
-                  }}
-                ></div>
-              </div>
-            </div>
-            <div className="p-4">
-              <div className="flex items-stretch justify-between gap-4 rounded-xl">
-                <div className="flex flex-[2_2_0px] flex-col gap-4">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-base font-bold leading-tight text-white">
-                      Forjando el Carácter: Superando Obstáculos
-                    </p>
-                    <p className="text-[#a2aab3] text-sm font-normal leading-normal">
-                      Aprende a convertir los obstáculos en oportunidades de crecimiento y a forjar un carácter inquebrantable.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleReadMore("forjando-caracter")}
-                    className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#2c3035] text-white text-sm font-medium leading-normal w-fit hover:bg-[#3c4045] transition-colors"
-                  >
-                    <span className="truncate">Leer más</span>
-                  </button>
-                </div>
-                <div
-                  className="flex-1 w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl"
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAhqk-TrdshTj9S3zOIiV0fyLrq2vRs6pRUr4yCR5z7ZTrlKsW5Mu7GQbc_lh7RFqEs_oEVtP0AkZUvMo7akYUsH_aKOGNjJXNT-xXi9dGhqmYn_Zzxh6m3X2xVuVqpagMO3zi-6OWZpjypdFF4xXnWtnnkGFeRsFwxsBRrxEIiOHuedqYzDAJRiKf0ZDnY9YErLFquyh1PuOYR4SRxqYkJgMWnjEf_FM-DLev29Ddu_p19Pzv1OhNJPSoADhBSLlQSkg4ZGfmGZ1Is")',
-                  }}
-                ></div>
-              </div>
-            </div>
-            <div className="p-4">
-              <div className="flex items-stretch justify-between gap-4 rounded-xl">
-                <div className="flex flex-[2_2_0px] flex-col gap-4">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-base font-bold leading-tight text-white">
-                      Mente de Acero: Estrategias para el Éxito
-                    </p>
-                    <p className="text-[#a2aab3] text-sm font-normal leading-normal">
-                      Domina tu mente y desarrolla estrategias efectivas para alcanzar el éxito en todas las áreas de tu vida.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleReadMore("mente-acero")}
-                    className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#2c3035] text-white text-sm font-medium leading-normal w-fit hover:bg-[#3c4045] transition-colors"
-                  >
-                    <span className="truncate">Leer más</span>
-                  </button>
-                </div>
-                <div
-                  className="flex-1 w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl"
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDCWU79MgsUe-mzMoHnDkCuGLpbTmh_0rk6g6VhwYk8UjNTFiij3Z5RKCkDhH6_K7V8wzOLL6Rtdtv4O1lwlKPBQNe00lhi6SP34UtkQlIMES_cNLnlMslmjUtRF4iWxgxy7bnMummHhsdS1SFqDWBxWGTRUxMr0I0n-wDMpvyrDojGeqGb9Vmo3Qdd3hSjjc7gEZKzqu0T8FSPN456BrrJU0uJ8eVJxJ_cperpBI9pIbs7KwYHoNfsbFH_MHTbRktdAooI4cMcbrum")',
-                  }}
-                ></div>
-              </div>
-            </div>
-            <div className="p-4">
-              <div className="flex items-stretch justify-between gap-4 rounded-xl">
-                <div className="flex flex-[2_2_0px] flex-col gap-4">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-base font-bold leading-tight text-white">
-                      El Legado del Líder: Inspirando a Otros
-                    </p>
-                    <p className="text-[#a2aab3] text-sm font-normal leading-normal">
-                      Inspírate en los grandes líderes y aprende a motivar e influir positivamente en los demás.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleReadMore("legado-lider")}
-                    className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#2c3035] text-white text-sm font-medium leading-normal w-fit hover:bg-[#3c4045] transition-colors"
-                  >
-                    <span className="truncate">Leer más</span>
-                  </button>
-                </div>
-                <div
-                  className="flex-1 w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl"
-                  style={{
-                    backgroundImage:
-                      'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBNeMcHKVXroWyIHBSXUU1dQDgVDCGcgdx7KImZiE4HOq0baynFEeqrXpPfEmNOLYbjHPaC0dES-eUafU0ezVgvsms51XHb7ijwNAgF4LjvFFKBawifUh8ooBdRTBudZa6raHIRiVVBuyBtF34gibWOzeeGazfAFqf1OuzxLPEMM0IF6u1V-t38M-BszdVOCuZfUIL04GSG-AzHb1bam3NiCuhUEEjSZEb_o1iERQizIZ85l3d2WRh776CKOD7D21GcNJ8NgGm1U87C")',
-                  }}
-                ></div>
-              </div>
+                ))
+              )}
             </div>
 
             {/* Pagination */}
             <div className="flex items-center justify-center p-4">
-              <button className="flex items-center justify-center size-10 hover:bg-[#2c3035] rounded-full transition-colors">
-                {/* Caret Left */}
-                <div className="text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
-                  </svg>
-                </div>
-              </button>
-              <button className="text-sm font-bold leading-normal tracking-[0.015em] flex size-10 items-center justify-center text-white rounded-full bg-[#2c3035] hover:bg-[#3c4045] transition-colors">1</button>
-              <button className="flex items-center justify-center text-sm font-normal leading-normal text-white rounded-full size-10 hover:bg-[#2c3035] transition-colors">2</button>
-              <button className="flex items-center justify-center text-sm font-normal leading-normal text-white rounded-full size-10 hover:bg-[#2c3035] transition-colors">3</button>
-              <span className="flex items-center justify-center text-sm font-normal leading-normal text-white rounded-full size-10">...</span>
-              <button className="flex items-center justify-center text-sm font-normal leading-normal text-white rounded-full size-10 hover:bg-[#2c3035] transition-colors">10</button>
-              <button className="flex items-center justify-center size-10 hover:bg-[#2c3035] rounded-full transition-colors">
-                {/* Caret Right */}
-                <div className="text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                    <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                  </svg>
-                </div>
-              </button>
+              {/* Pagination logic can be added here later */}
             </div>
           </div>
         </div>

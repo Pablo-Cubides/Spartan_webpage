@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import type { IteratePayload } from '@/lib/asesor-estilo/types/ai'
 import { uploadImage } from '@/lib/asesor-estilo/api-client'
 import { getTokenCookie } from '@/lib/api';
@@ -436,7 +437,15 @@ export default function Page() {
                 )}
                 {m.image && (
                   <div className="msg-image-container">
-                    <img src={m.image} alt="uploaded" className="msg-image" />
+                    <Image 
+                      src={m.image} 
+                      alt="uploaded" 
+                      className="msg-image" 
+                      width={0} 
+                      height={0} 
+                      sizes="100vw" 
+                      style={{ width: '100%', height: 'auto' }} 
+                    />
                   </div>
                 )}
                 {m.action?.type === 'retry-iterate' && (

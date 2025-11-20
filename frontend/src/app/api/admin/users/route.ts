@@ -1,20 +1,14 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/server/prisma'
-import { verifyIdToken } from '@/lib/server/firebaseAdmin'
+import { verifyAdmin } from '@/lib/server/auth'
 
 export async function GET(request: Request) {
+  const admin = await verifyAdmin(request);
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
-    const auth = request.headers.get('authorization') || ''
-    if (!auth.startsWith('Bearer ')) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    const idToken = auth.split('Bearer ')[1]
-    const decoded = await verifyIdToken(idToken)
-
-    // Simple admin check: email domain
-    const email = decoded.email || ''
-    if (!email.endsWith('@spartan.com') && email !== 'admin@spartan.com') {
-      return NextResponse.json({ error: 'forbidden' }, { status: 403 })
-    }
-
     const users = await prisma.user.findMany({ orderBy: { created_at: 'desc' } })
     return NextResponse.json({ users })
   } catch (err: unknown) {

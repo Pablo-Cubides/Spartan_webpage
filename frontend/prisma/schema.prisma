@@ -20,6 +20,7 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime?
   purchases  Purchase[]
+  posts      BlogPost[]
 }
 
 model CreditPackage {
@@ -46,4 +47,38 @@ model Purchase {
   status           String   @default("pending")
   created_at       DateTime @default(now())
   completed_at     DateTime?
+}
+
+model AppSetting {
+  key         String   @id
+  value       String
+  description String?
+  updated_at  DateTime @updatedAt
+}
+
+model Announcement {
+  id          Int      @id @default(autoincrement())
+  title       String
+  message     String
+  start_date  DateTime
+  end_date    DateTime
+  is_active   Boolean  @default(true)
+  type        String   @default("info")
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  content     String
+  excerpt     String?
+  cover_image String?
+  author_id   Int
+  author      User     @relation(fields: [author_id], references: [id])
+  is_published Boolean @default(false)
+  published_at DateTime?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { verifyIdToken } from '@/lib/server/firebaseAdmin';
 import { uploadToStorage, getCanonicalUrl, getOptimizedUrl } from '@/lib/asesor-estilo/storage';
 import { appendLog } from '@/lib/asesor-estilo/ai/logger';
 
@@ -10,6 +11,38 @@ const ALLOWED_IMAGE_TYPES = (process.env.ALLOWED_IMAGE_TYPES || 'image/jpeg,imag
 export async function POST(req: Request) {
   try {
     await appendLog({ phase: 'api.upload.received', timestamp: Date.now() });
+
+    // 0. Authenticate User
+    const auth = req.headers.get('authorization') || '';
+    let userId: string | undefined;
+    
+    if (auth.startsWith('Bearer ')) {
+      try {
+        const idToken = auth.split('Bearer ')[1];
+        const decoded = await verifyIdToken(idToken);
+        userId = decoded.uid;
+      } catch {
+        // ignore invalid token
+      }
+    }
+
+    // Require authentication for uploads to prevent abuse
+    if (!userId) {
+      // Check for a special API key for development/testing if needed, 
+      // or strictly enforce user auth.
+      // For now, we'll allow a specific API key for dev tools if configured,
+      // otherwise require user auth.
+      const apiKey = req.headers.get('x-api-key');
+      const validApiKey = process.env.UPLOAD_API_KEYS?.split(',').includes(apiKey || '');
+      
+      if (!validApiKey) {
+        return NextResponse.json(
+          { error: 'Unauthorized. Please log in to upload images.' },
+          { status: 401 }
+        );
+      }
+    }
+
     const form = await req.formData();
     const file = (form.get('file') as File | null) || (form.get('image') as File | null);
 
