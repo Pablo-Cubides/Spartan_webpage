@@ -33,7 +33,7 @@ export default function HerramientasPage() {
         <div className="flex justify-center flex-1 px-40 py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             {/* Hero (aplicando efecto tipo blog: fondo fijo + overlay y contenido superpuesto) */}
-            <div className="relative h-[60vh] min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+            <div className="relative h-[60vh] min-h-[420px] w-screen left-1/2 -translate-x-1/2 flex items-center justify-center overflow-hidden">
               <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
                 style={{
