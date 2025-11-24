@@ -30,24 +30,24 @@ export default function HerramientasPage() {
   return (
     <div className="relative flex size-full min-h-screen flex-col bg-[#181111] dark group/design-root overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
       <div className="flex flex-col h-full layout-container grow">
+        {/* Hero moved outside the centered container so bg-fixed works correctly */}
+        <div className="w-full">
+          <div className="relative h-[60vh] min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+              style={{ backgroundImage: `url(${encodeURI('/Herramientas/Hero_herramientas_spartan.jpg')})` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]"></div>
+            </div>
+
+            <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-8">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Herramientas para tu Transformación</h1>
+              <p className="text-[#ba9c9c] text-sm md:text-base">Descubre las herramientas diseñadas para impulsarte en tu camino hacia una vida más disciplinada y plena.</p>
+            </div>
+          </div>
+        </div>
         <div className="flex justify-center flex-1 px-40 py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            {/* Hero (aplicando efecto tipo blog: fondo fijo + overlay y contenido superpuesto) */}
-            <div className="relative h-[60vh] min-h-[420px] w-screen left-1/2 -translate-x-1/2 flex items-center justify-center overflow-hidden">
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-                style={{
-                  backgroundImage: `url(${encodeURI('/Herramientas/Hero_herramientas_spartan.jpg')})`,
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]"></div>
-              </div>
-
-              <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-8">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Herramientas para tu Transformación</h1>
-                <p className="text-[#ba9c9c] text-sm md:text-base">Descubre las herramientas diseñadas para impulsarte en tu camino hacia una vida más disciplinada y plena.</p>
-              </div>
-            </div>
 
             {/* Grid de Herramientas */}
             <div className="grid grid-cols-1 gap-4 p-4">
