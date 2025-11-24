@@ -379,7 +379,8 @@ export default function Page() {
     return (
       <div className="app-center">
         <div className="chat-shell">
-          <div className="chat-header">
+          <div className="chat-header text-center">
+            <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto" />
             <h1 className="chat-title">Tu Asesor de Estilo Personal</h1>
             <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más.</p>
           </div>
@@ -413,7 +414,8 @@ export default function Page() {
   return (
     <div className="app-center">
       <div className="chat-shell">
-        <div className="chat-header">
+        <div className="chat-header text-center">
+          <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-20 md:h-24 lg:h-28 object-contain mb-4" />
           <h1 className="chat-title">Tu Asesor de Estilo Personal</h1>
           <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más.</p>
         </div>

@@ -1,164 +1,136 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
-
-interface BlogPost {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  cover_image: string;
-  published_at: string;
-  author: {
-    name: string;
-  };
-}
+import POSTS from "@/lib/blog/posts";
 
 export default function BlogPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [q, setQ] = useState("");
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch("/api/blog");
-        if (res.ok) {
-          const data = await res.json();
-          setPosts(data);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const allPosts = POSTS;
 
-    fetchPosts();
-  }, []);
+  const SAMPLE_FEATURED = allPosts.filter((p) => p.featured).slice(0, 6);
+  const SAMPLE_LIST = allPosts.filter((p) => !p.featured);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implementar búsqueda local o remota
-    console.log("Buscando:", searchTerm);
-  };
+  const filteredFeatured = useMemo(() => {
+    if (!q) return SAMPLE_FEATURED;
+    const term = q.toLowerCase();
+    return SAMPLE_FEATURED.filter((p) => {
+      const title = p.title || "";
+      const excerpt = p.excerpt || "";
+      return title.toLowerCase().includes(term) || excerpt.toLowerCase().includes(term);
+    });
+  }, [q]);
 
-  const filteredPosts = posts.filter(post => 
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredList = useMemo(() => {
+    if (!q) return SAMPLE_LIST;
+    const term = q.toLowerCase();
+    return SAMPLE_LIST.filter((p) => {
+      const title = p.title || "";
+      const excerpt = p.excerpt || "";
+      return title.toLowerCase().includes(term) || excerpt.toLowerCase().includes(term);
+    });
+  }, [q]);
 
   return (
-    <div
-      className="relative flex size-full min-h-screen flex-col bg-[#121416] dark group/design-root overflow-x-hidden"
-      style={{ fontFamily: '"Plus Jakarta Sans", "Noto Sans", sans-serif' }}
-    >
-      <div className="flex flex-col h-full layout-container grow">
-        {/* SIN HEADER */}
+    <div className="min-h-screen bg-spartan-dark text-spartan-text font-sans selection:bg-spartan-red selection:text-white">
+      <main>
+        {/* HERO */}
+        <div className="relative h-[80vh] min-h-[600px] w-full flex items-center justify-center overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1920&q=80')",
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]"></div>
+          </div>
 
-        <div className="flex justify-center flex-1 px-40 py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            {/* Title */}
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <p className="text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">
-                Blog de Transformación
-              </p>
-            </div>
+          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
+            <h1 className="font-display font-bold text-4xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight mb-4 drop-shadow-2xl">
+              Blog de Transformación
+            </h1>
+            <p className="font-sans text-lg md:text-2xl text-gray-200 font-light tracking-wide mb-8">
+              Transforma tu vida, Forja tu legado
+            </p>
+          </div>
+        </div>
 
-            {/* Hero Image/Carousel */}
-            <div className="@container">
-              <div className="@[480px]:px-4 @[480px]:py-3">
-                <div
-                  className="bg-cover bg-center flex flex-col justify-end overflow-hidden bg-[#121416] @[480px]:rounded-xl min-h-80"
-                  style={{
-                    backgroundImage:
-                      'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 25%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCTIN_nTSSE1sTcrJLsIRVi4gX8DVE-fsObRwG6aaWWVIFlwOfbPIF-JlNz8pHxfPXr0WJfqZcXs5uvn16aqGDOt-QU2E2Oo7WVUhhk1ej9AIpIGT9SGrtLnp3vqibDkB3hlyhqsVhMJfxUBASPjnWTLSn_jSuAvAJkADJA7Fnsh5NcdRznJaQ6G9hGmqbJwrxZOE-06ghtjzgjqruDDq_ETDsKg75Smd0bksTHNkBSYCvq0sMlpPsT9DBhYORYwf6gtgpCmgNOqMxh")',
-                  }}
+        {/* FEATURED GRID */}
+        <section className="relative -mt-32 z-20 px-4 md:px-8 pb-16">
+          <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredFeatured.map((post) => (
+                <article
+                  key={post.id}
+                  className="group bg-spartan-card rounded-lg overflow-hidden shadow-2xl border border-neutral-800 hover:border-spartan-red/30 transition-all duration-300 hover:-translate-y-2"
                 >
-                  <div className="flex justify-center gap-2 p-5">
-                    <div className="size-1.5 rounded-full bg-[#121416]"></div>
-                    <div className="size-1.5 rounded-full bg-[#121416] opacity-50"></div>
-                    <div className="size-1.5 rounded-full bg-[#121416] opacity-50"></div>
-                    <div className="size-1.5 rounded-full bg-[#121416] opacity-50"></div>
-                    <div className="size-1.5 rounded-full bg-[#121416] opacity-50"></div>
+                  <div className="h-48 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
+                    <img src={post.cover} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  </div>
+                  <div className="p-6 md:p-8">
+                    <h3 className="font-display font-bold text-xl text-white mb-3 leading-tight uppercase">{post.title}</h3>
+                    <p className="text-spartan-muted text-sm leading-relaxed mb-6 line-clamp-3">{post.excerpt}</p>
+                        <Link href={`/blog/${post.slug}`} className="inline-block">
+                          <button className="font-display font-semibold transition-all duration-300 rounded uppercase tracking-wider bg-spartan-red hover:bg-red-700 text-white shadow-lg shadow-red-900/20 px-4 py-1.5 text-xs">
+                            LEER MAS
+                          </button>
+                        </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SEARCH + LIST */}
+        <section className="container mx-auto px-4 md:px-8 pb-24">
+          <div className="relative max-w-4xl mx-auto mb-16">
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              type="text"
+              placeholder="Buscar en el blog"
+              className="w-full bg-[#1a1a1a] border border-neutral-800 rounded-full py-4 px-8 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-spartan-red focus:ring-1 focus:ring-spartan-red transition-all"
+            />
+            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-spartan-red p-2.5 rounded-full text-white hover:bg-red-700 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-8">
+            {filteredList.map((post) => (
+              <div key={post.id} className="flex flex-col md:flex-row bg-[#0a0a0a] rounded-xl overflow-hidden group hover:bg-[#121212] transition-colors duration-300 border border-transparent hover:border-neutral-800">
+                <div className="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
+                  <img src={post.cover} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                </div>
+                <div className="md:w-2/3 p-6 md:p-8 flex flex-col justify-center">
+                  <h3 className="font-display font-bold text-xl md:text-2xl text-white mb-3 uppercase">{post.title}</h3>
+                  <p className="text-gray-400 mb-4 leading-relaxed">{post.excerpt}</p>
+                  <div className="mt-auto">
+                    <Link href={`/blog/${post.slug}`} className="text-spartan-red hover:text-red-400 font-display font-semibold uppercase text-sm">Leer más</Link>
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Search Input */}
-            <div className="px-4 py-3">
-              <form onSubmit={handleSearch}>
-                <label className="flex flex-col w-full h-12 min-w-40">
-                  <div className="flex items-stretch flex-1 w-full h-full rounded-xl">
-                    <div className="text-[#a2aab3] flex border-none bg-[#2c3035] items-center justify-center pl-4 rounded-l-xl border-r-0">
-                      {/* Lupa */}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path
-                          d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Buscar en el blog"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#2c3035] focus:border-none h-full placeholder:text-[#a2aab3] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
-                    />
-                  </div>
-                </label>
-              </form>
-            </div>
-
-            {/* Destacados */}
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-              Artículos Recientes
-            </h2>
-
-            {/* Artículos */}
-            <div className="p-4 space-y-4">
-              {loading ? (
-                <p className="text-white text-center">Cargando artículos...</p>
-              ) : filteredPosts.length === 0 ? (
-                <p className="text-gray-400 text-center">No se encontraron artículos.</p>
-              ) : (
-                filteredPosts.map((post) => (
-                  <div key={post.id} className="flex items-stretch justify-between gap-4 rounded-xl">
-                    <div className="flex flex-[2_2_0px] flex-col gap-4">
-                      <div className="flex flex-col gap-1">
-                        <p className="text-base font-bold leading-tight text-white">
-                          {post.title}
-                        </p>
-                        <p className="text-[#a2aab3] text-sm font-normal leading-normal line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 flex-row-reverse bg-[#2c3035] text-white text-sm font-medium leading-normal w-fit hover:bg-[#3c4045] transition-colors"
-                      >
-                        <span className="truncate">Leer más</span>
-                      </Link>
-                    </div>
-                    <div
-                      className="flex-1 w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl"
-                      style={{
-                        backgroundImage: `url("${post.cover_image || 'https://via.placeholder.com/300'}")`,
-                      }}
-                    ></div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-center p-4">
-              {/* Pagination logic can be added here later */}
-            </div>
+            ))}
           </div>
-        </div>
-      </div>
+
+          {/* Pagination (static placeholder) */}
+          <div className="flex justify-center items-center mt-16 gap-4 font-display font-bold text-gray-500">
+            <button className="hover:text-white transition-colors">{`<`}</button>
+            <span className="w-8 h-8 flex items-center justify-center bg-neutral-800 text-white rounded-full">1</span>
+            <span className="hover:text-white cursor-pointer transition-colors">2</span>
+            <span>8</span>
+            <span>..</span>
+            <span>10</span>
+            <button className="hover:text-white transition-colors">{`>`}</button>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }

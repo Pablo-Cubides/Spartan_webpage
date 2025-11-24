@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# QUICK START GUIDE - Spartan Edge Production Deployment
+# QUICK START GUIDE - Spartan Club Production Deployment
 # ============================================================================
 # 
 # Este script te ayuda a navegar rápidamente por toda la documentación
@@ -9,7 +9,7 @@
 # ============================================================================
 
 echo "╔══════════════════════════════════════════════════════════════════════╗"
-echo "║                 SPARTAN EDGE - PRODUCTION READY                     ║"
+echo "║                 SPARTAN CLUB - PRODUCTION READY                     ║"
 echo "║              Guía Rápida de Despliegue y Documentación              ║"
 echo "╚══════════════════════════════════════════════════════════════════════╝"
 echo ""

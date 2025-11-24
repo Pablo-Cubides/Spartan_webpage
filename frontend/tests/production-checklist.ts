@@ -288,8 +288,8 @@ export const productionChecklistTests = [
         name: "🚀 Docker Build",
         description: "Dockerfile compila imagen correctamente",
         steps: [
-          "docker build -t spartan-edge .",
-          "docker run spartan-edge npm run build",
+          "docker build -t spartan-club .",
+          "docker run spartan-club npm run build",
           "Health check responde"
         ],
         expectedResult: "Imagen Docker compila y corre"
@@ -323,7 +323,7 @@ export const productionChecklistTests = [
  */
 export function printChecklist() {
   console.log('\n' + '='.repeat(60));
-  console.log('PRODUCTION READINESS CHECKLIST - SPARTAN EDGE');
+  console.log('PRODUCTION READINESS CHECKLIST - SPARTAN CLUB');
   console.log('='.repeat(60) + '\n');
 
   for (const section of productionChecklistTests) {

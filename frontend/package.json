@@ -1,9 +1,9 @@
 {
-  "name": "spartan-edge-frontend",
+  "name": "spartan-club-frontend",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Spartan Edge - Frontend con Next.js",
+  "description": "Spartan Club - Frontend con Next.js",
   "scripts": {
     "dev": "next dev",
     "build": "npm run prisma:generate && next build",

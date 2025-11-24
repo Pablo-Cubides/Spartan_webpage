@@ -44,7 +44,7 @@ async function runCommand(command, name) {
 }
 
 async function runVerifications() {
-  log('\n🚀 SPARTAN EDGE - PRODUCTION READINESS VERIFICATION', 'magenta');
+  log('\n🚀 SPARTAN CLUB - PRODUCTION READINESS VERIFICATION', 'magenta');
   log('Starting comprehensive system checks...\n', 'blue');
 
   const results = [];

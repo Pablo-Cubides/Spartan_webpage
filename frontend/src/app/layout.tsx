@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-noto-sans' });
 
 export const metadata = {
-  title: 'Spartan Edge',
+  title: 'Spartan Club',
   description: 'Forjando hombres, moldeando destinos',
 };
 

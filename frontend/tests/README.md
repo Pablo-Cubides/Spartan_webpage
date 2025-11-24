@@ -1,7 +1,7 @@
 
 # Test Suite
 
-This directory contains integration tests for the Spartan Edge application.
+This directory contains integration tests for the Spartan Club application.
 
 ## Structure
 

@@ -2,7 +2,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | Spartan Edge",
+  title: "Admin Dashboard | Spartan Club",
   description: "Administrative control panel",
 };
 
@@ -15,8 +15,8 @@ export default function AdminLayout({
     <div className="min-h-screen bg-gray-900 text-white flex">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 border-r border-gray-700 flex-shrink-0">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-blue-500">Spartan Admin</h1>
+          <div className="p-6">
+          <h1 className="text-2xl font-bold text-blue-500">Spartan Club Admin</h1>
         </div>
         <nav className="mt-6 px-4 space-y-2">
           <a href="/admin/dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">

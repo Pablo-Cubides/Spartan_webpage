@@ -205,7 +205,7 @@ jobs:
         
         # Deploy script
         ssh -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST << 'EOF'
-          cd /app/spartan-market
+          cd /app/spartan-club
           git pull origin main
           docker-compose pull
           docker-compose up -d

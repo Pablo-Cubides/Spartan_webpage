@@ -511,12 +511,14 @@ export default function Page() {
           <header className="chat-header">
             {step === 'upload' ? (
               <div style={{textAlign: 'center'}}>
+                <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto mb-4" />
                 <h1 className="chat-title">{UI_CONFIG.APP_NAME}</h1>
                 <p className="chat-sub">Recibe recomendaciones sobre prendas, combinaciones y cómo potenciar tu silueta.</p>
               </div>
             ) : (
               <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem'}}>
-                <div>
+                <div style={{flex: '1 1 auto', textAlign: 'center'}}>
+                  <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto mb-4" />
                   <h1 className="chat-title">{UI_CONFIG.APP_NAME}</h1>
                   <p className="chat-sub">Recibe recomendaciones sobre prendas, combinaciones y cómo potenciar tu silueta.</p>
                 </div>

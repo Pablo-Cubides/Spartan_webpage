@@ -118,6 +118,15 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
           </svg>
         </button>
         
+        {/* Logo */}
+        <div className="flex justify-center mb-4">
+          <img
+            src={encodeURI('/Logo spartan club - sin fondo.png')}
+            alt="Spartan Club"
+            className="mx-auto h-40 w-auto object-contain drop-shadow-2xl"
+          />
+        </div>
+
         {/* Tabs */}
         <div className="flex justify-center gap-4 mb-6">
           <button

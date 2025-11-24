@@ -21,7 +21,7 @@ async function getHomePageContent() {
     console.error('Failed to fetch home content:', error);
     // Provide a safe default so build/prerender doesn't fail when the API is not reachable
     const defaultContent: HomeContent = {
-      hero: { backgroundImageUrl: '', title: 'Spartan Market', subtitle: 'Bienvenido' },
+      hero: { backgroundImageUrl: '', title: 'Spartan Club', subtitle: 'Bienvenido' },
       featuredPost: { imageUrl: '', category: 'General', title: 'Bienvenido a Spartan', description: 'Contenido de ejemplo' },
       posts: [],
       tools: [],
@@ -44,20 +44,26 @@ export default async function Home() {
                 <div
                   className="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-center justify-center p-4"
                   style={{
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("${content.hero.backgroundImageUrl}")`
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 100%), url(${encodeURI('/Hero.png')})`
                   }}
                 >
-                  <div className="flex flex-col gap-2 text-center">
-                    <h1 className="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">
-                      {content.hero.title}
-                    </h1>
-                    <p className="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
-                      {content.hero.subtitle}
-                    </p>
+                  {/* Hidden H1 for SEO/accessibility */}
+                  <h1 className="sr-only">Spartan Club</h1>
+
+                  {/* Centered logo optimized for multiple breakpoints */}
+                  <div className="flex flex-col items-center justify-center gap-6">
+                    <img
+                      src={encodeURI('/Texto Spartan.png')}
+                      alt="Spartan Club"
+                      className="h-12 w-auto drop-shadow-2xl"
+                    />
+
+                    <div>
+                      <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#141414] text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]">
+                        <span className="truncate">Explorar el Blog</span>
+                      </button>
+                    </div>
                   </div>
-                  <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#141414] text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]">
-                    <span className="truncate">Explorar el Blog</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -103,7 +109,7 @@ export default async function Home() {
                 <div>
                   <p className="text-base font-medium leading-normal text-white">Nuestra Misión</p>
                   <p className="text-[#ababab] text-sm font-normal leading-normal">
-                    En Spartan Edge, creemos en el poder transformador de la disciplina y la resiliencia. Nuestra misión es guiar a los hombres en su viaje hacia la automejora,
+                    En Spartan Club, creemos en el poder transformador de la disciplina y la resiliencia. Nuestra misión es guiar a los hombres en su viaje hacia la automejora,
                     proporcionando las herramientas y el apoyo necesarios para alcanzar su máximo potencial.
                   </p>
                 </div>

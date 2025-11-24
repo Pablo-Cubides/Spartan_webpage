@@ -96,7 +96,7 @@ const nextConfig: NextConfig = {
 
   // Environment variables
   env: {
-    NEXT_PUBLIC_APP_NAME: "Spartan Edge",
+    NEXT_PUBLIC_APP_NAME: "Spartan Club",
     NEXT_PUBLIC_APP_VERSION: process.env.npm_package_version || "1.0.0",
   },
 

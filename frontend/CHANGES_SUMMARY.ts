@@ -1,6 +1,6 @@
 /**
  * RESUMEN DE CAMBIOS REALIZADOS
- * Proyecto: Spartan Edge - Production Readiness Initiative
+ * Proyecto: Spartan Club - Production Readiness Initiative
  * Fecha: 20 de Noviembre, 2025
  * 
  * Este archivo documenta EXACTAMENTE qué fue modificado, creado y por qué.

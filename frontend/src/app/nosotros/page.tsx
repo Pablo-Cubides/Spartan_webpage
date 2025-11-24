@@ -46,7 +46,7 @@ export default function NosotrosPage() {
               <div className="flex flex-col gap-3 rounded-xl bg-[#181a1d] p-6">
                 <h2 className="mb-2 text-xl font-bold leading-tight text-white">Nuestra Misión</h2>
                 <p className="text-[#a2aab3] text-base font-normal leading-normal">
-                  En <span className="font-bold text-white">Spartan Edge</span>, creemos en el poder transformador de la disciplina, la hermandad y la resiliencia.
+                  En <span className="font-bold text-white">Spartan Club</span>, creemos en el poder transformador de la disciplina, la hermandad y la resiliencia.
                   Nuestra misión es guiar a los hombres modernos a forjar su carácter y desarrollar el potencial de liderazgo, ayudándolos a enfrentar los desafíos de la vida con coraje y propósito.
                 </p>
               </div>
