@@ -32,18 +32,20 @@ export default function HerramientasPage() {
       <div className="flex flex-col h-full layout-container grow">
         <div className="flex justify-center flex-1 px-40 py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            {/* Hero */}
-            <div className="@container">
-              <div className="@[480px]:px-4 @[480px]:py-3">
-                <div className="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#181111] @[480px]:rounded-xl min-h-80" style={{ backgroundImage: `url(${encodeURI('/Herramientas/Hero_herramientas_spartan.jpg')})` }} />
+            {/* Hero (aplicando efecto tipo blog: fondo fijo + overlay y contenido superpuesto) */}
+            <div className="relative h-[60vh] min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+              <div
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
+                style={{
+                  backgroundImage: `url(${encodeURI('/Herramientas/Hero_herramientas_spartan.jpg')})`,
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]"></div>
               </div>
-            </div>
 
-            {/* Título y descripción */}
-            <div className="flex flex-wrap justify-between gap-3 p-4">
-              <div className="flex flex-col gap-3 min-w-72">
-                <p className="text-white tracking-light text-[32px] font-bold leading-tight">Herramientas para tu Transformación</p>
-                <p className="text-[#ba9c9c] text-sm font-normal leading-normal">Descubre las herramientas diseñadas para impulsarte en tu camino hacia una vida más disciplinada y plena.</p>
+              <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-8">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Herramientas para tu Transformación</h1>
+                <p className="text-[#ba9c9c] text-sm md:text-base">Descubre las herramientas diseñadas para impulsarte en tu camino hacia una vida más disciplinada y plena.</p>
               </div>
             </div>
 
