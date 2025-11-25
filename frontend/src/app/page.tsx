@@ -41,7 +41,7 @@ export default async function Home() {
     <div className="bg-spartan-dark text-spartan-text font-sans selection:bg-spartan-red selection:text-white">
       <main>
         {/* HERO SECTION */}
-        <section id="hero" className="relative h-[60vh] min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+        <section id="hero" className="relative w-full flex items-center justify-center overflow-visible md:min-h-[60vh] min-h-[420px] py-12">
           <div className="absolute inset-0 z-0">
             <img
               src={'/Hero.png'}
@@ -53,7 +53,7 @@ export default async function Home() {
 
           {/* header provides branding; no duplicate logo inside hero */}
 
-          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-12">
+          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-wider mb-6 leading-tight drop-shadow-lg">
               Desata Tu Potencial <span className="text-spartan-red">Espartano</span>
             </h1>
