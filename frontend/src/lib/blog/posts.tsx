@@ -1,7 +1,7 @@
 import React from "react";
 
 export type Post = {
-  id: string | number;
+  id: string;
   slug: string;
   title: string;
   excerpt: string;
