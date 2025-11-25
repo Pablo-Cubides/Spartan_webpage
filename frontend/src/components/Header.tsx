@@ -11,14 +11,9 @@ export default function Header() {
     <>
       <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#303030] px-10 py-3">
         <div className="flex items-center gap-4 text-white">
-          <Link href="/" className="flex items-center gap-2 text-white">
-            <div className="flex items-center">
-              <img
-                src={encodeURI('/Texto Spartan.png')}
-                alt="Spartan"
-                className="h-8 w-auto object-contain"
-              />
-            </div>
+          <Link href="/" className="flex items-center gap-3 text-white">
+            <img src="/Icono spartan club.png" alt="Spartan helmet" className="h-8 w-8 object-contain" />
+            <span className="hidden sm:inline-block font-display font-bold tracking-wider">SPARTAN CLUB</span>
           </Link>
         </div>
         <div className="flex justify-end flex-1 gap-8">

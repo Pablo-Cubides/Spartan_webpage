@@ -32,7 +32,7 @@ export default function HerramientasPage() {
       <div className="flex flex-col h-full layout-container grow">
         {/* Hero moved outside the centered container so bg-fixed works correctly */}
         <div className="w-full">
-          <div className="relative h-[60vh] min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+          <div className="relative h-[60vh] min-h-[360px] w-full flex items-center justify-center overflow-hidden">
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
               style={{ backgroundImage: `url(${encodeURI('/Herramientas/Hero_herramientas_spartan.jpg')})` }}

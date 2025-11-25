@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import { Card } from '@/components/Card';
 import { apiCall } from '@/lib/api';
+import POSTS from '@/lib/blog/posts';
+import NewsletterForm from '@/components/NewsletterForm';
 
 type Post = { imageUrl: string; title: string; description?: string };
 type Tool = { imageUrl?: string; title: string; description?: string };
@@ -32,131 +34,124 @@ async function getHomePageContent() {
 
 export default async function Home() {
   const content = await getHomePageContent();
+  // Use real posts for articles section
+  const posts = POSTS || [];
 
   return (
-    <div className="relative flex size-full min-h-screen flex-col bg-[#141414] dark group/design-root overflow-x-hidden">
-      <div className="flex flex-col h-full layout-container grow">
-        <div className="flex justify-center flex-1 px-40 py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            {/* Hero Section */}
-            <div className="@container">
-              <div className="@[480px]:p-4">
-                <div
-                  className="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-center justify-center p-4"
-                  style={{
-                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 100%), url(${encodeURI('/Hero.png')})`
-                  }}
-                >
-                  {/* Hidden H1 for SEO/accessibility */}
-                  <h1 className="sr-only">Spartan Club</h1>
-
-                  {/* Centered logo optimized for multiple breakpoints */}
-                  <div className="flex flex-col items-center justify-center gap-6">
-                    <img
-                      src={encodeURI('/Texto Spartan.png')}
-                      alt="Spartan Club"
-                      className="h-12 w-auto drop-shadow-2xl"
-                    />
-
-                    <div>
-                      <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#141414] text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]">
-                        <span className="truncate">Explorar el Blog</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Últimos Posts */}
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Últimos Posts del Blog</h2>
-            <div className="p-4 @container">
-              <div className="flex flex-col items-stretch justify-start rounded-lg @xl:flex-row @xl:items-start">
-                <div
-                  className="w-full bg-center bg-no-repeat bg-cover rounded-lg aspect-video"
-                  style={{
-                    backgroundImage: `url("${content.featuredPost.imageUrl}")`
-                  }}
-                ></div>
-                <div className="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 py-4 @xl:px-4">
-                  <p className="text-[#ababab] text-sm font-normal leading-normal">{content.featuredPost.category}</p>
-                  <p className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
-                    {content.featuredPost.title}
-                  </p>
-                  <div className="flex items-end justify-between gap-3">
-                    <p className="text-[#ababab] text-base font-normal leading-normal">
-                      {content.featuredPost.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Grid de Posts */}
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-              {content.posts.map((post, index) => (
-                <Card key={index} {...post} />
-              ))}
-            </div>
-            {/* Nosotros */}
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Nosotros</h2>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-              <div className="flex flex-col gap-3 pb-3">
-                <div
-                  className="w-full bg-center bg-no-repeat bg-cover rounded-lg aspect-video"
-                  style={{
-                    backgroundImage: `url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWiAn1qUQaMU9qfqLHmsFJ1oa8V4v_b1X0ucbWpE1ylSNZSDL1QSCVfWQOwvNyrsYEa3kvxoc8LQKmNosCJJ19jQ2d8ZLL7zkwHZNGiltz3z17LJ_cf2qwYoVZULSh6q8hwK9C-H1kOFodk3VBQHCG4g20eyVk4m5XPNGw-Y-HXXdx1cAnr77NcLVxbFXAakC4d18Tmj7gsXpPKcK4PvQR7KzxuQSO3rYTFUO5PrjYSpGOdb6Qqtwz00nT-xERFp4osLAQLD-hJ_bi")`
-                  }}
-                ></div>
-                <div>
-                  <p className="text-base font-medium leading-normal text-white">Nuestra Misión</p>
-                  <p className="text-[#ababab] text-sm font-normal leading-normal">
-                    En Spartan Club, creemos en el poder transformador de la disciplina y la resiliencia. Nuestra misión es guiar a los hombres en su viaje hacia la automejora,
-                    proporcionando las herramientas y el apoyo necesarios para alcanzar su máximo potencial.
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* Herramientas */}
-            <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Herramientas</h2>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
-              {content.tools.map((tool, index) => (
-                tool.imageUrl ? (
-                  <Card key={index} {...(tool as { imageUrl: string; title: string; description?: string })} />
-                ) : (
-                  <div key={index} className="flex flex-col gap-3 pb-3">
-                    <div className="w-full aspect-[3/4] rounded-lg bg-gray-800" />
-                    <p className="text-base font-medium leading-normal text-white">{tool.title}</p>
-                    {tool.description && <p className="text-[#ababab] text-sm font-normal leading-normal">{tool.description}</p>}
-                  </div>
-                )
-              ))}
-            </div>
-            {/* CTA Final */}
-            <div className="@container">
-              <div className="flex flex-col justify-end gap-6 px-4 py-10 @[480px]:gap-8 @[480px]:px-10 @[480px]:py-20">
-                <div className="flex flex-col gap-2 text-center">
-                  <h2 className="text-white tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]">
-                    Desata tu Potencial Espartano
-                  </h2>
-                  <p className="text-white text-base font-normal leading-normal max-w-[720px]">
-                    Inscríbete hoy y comienza tu viaje hacia una vida más disciplinada, resiliente y plena.
-                  </p>
-                </div>
-                <div className="flex justify-center flex-1">
-                  <div className="flex justify-center">
-                    <Link
-                      href="/herramientas"
-                      className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#141414] text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow"
-                    >
-                      <span className="truncate">Únete a la Transformación</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* Fin contenido */}
+    <div className="bg-spartan-dark text-spartan-text font-sans selection:bg-spartan-red selection:text-white">
+      <main>
+        {/* HERO SECTION */}
+        <section id="hero" className="relative h-[60vh] min-h-[420px] w-full flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img
+              src={'/Hero.png'}
+              alt={posts[0]?.title || 'Spartan Club'}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[#0a0a0a]"></div>
           </div>
-        </div>
-      </div>
+
+          {/* header provides branding; no duplicate logo inside hero */}
+
+          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-12">
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-wider mb-6 leading-tight drop-shadow-lg">
+              Desata Tu Potencial <span className="text-spartan-red">Espartano</span>
+            </h1>
+            <p className="font-sans text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Forja tu mejor versión. Conviértete en el hombre que estás destinado a ser: fuerte, disciplinado y con un propósito inquebrantable.
+            </p>
+            <Link href="/blog" className="inline-block">
+              <button className="bg-spartan-red hover:bg-red-700 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all duration-300 transform hover:scale-105 border border-red-800 shadow-[0_0_20px_rgba(217,35,35,0.4)]">
+                Comienza Tu Transformación
+              </button>
+            </Link>
+          </div>
+
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg className="w-6 h-6 text-gray-400" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+          </div>
+        </section>
+
+        {/* MISSION SECTION */}
+        <section id="mision" className="py-24 bg-spartan-dark">
+          <div className="container mx-auto px-6 md:px-12">
+            <div className="flex flex-col md:flex-row items-center gap-16">
+              <div className="w-full md:w-1/2">
+                <h2 className="font-display text-4xl font-bold text-white uppercase mb-8 tracking-wide border-l-4 border-spartan-red pl-6">Nuestra Misión</h2>
+                <div className="space-y-6 text-gray-400 leading-relaxed text-lg">
+                  <p>En Spartan Club, creemos que todo hombre posee un potencial ilimitado. Nuestra misión es proporcionarte el conocimiento, las herramientas y la comunidad para que superes tus límites.</p>
+                  <p>Te guiamos en el camino hacia la excelencia física, mental y espiritual, basándonos en los principios atemporales de disciplina, honor y resiliencia.</p>
+                </div>
+              </div>
+              <div className="w-full md:w-1/2 flex justify-center">
+                <div className="relative w-full max-w-md aspect-square rounded-lg overflow-hidden shadow-2xl">
+                  <img src="/Logo spartan club.png" alt="Spartan" className="w-full h-full object-contain" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ARTICLES SECTION */}
+        <section id="articulos" className="py-24 bg-[#1a1a1a] relative overflow-hidden">
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="font-display text-4xl font-bold text-white uppercase tracking-wide inline-block relative pb-2">Artículos Destacados</h2>
+              <p className="mt-4 text-gray-400">Conocimiento y estrategias para tu arsenal de crecimiento personal.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {posts.slice(0, 3).map((p) => (
+                <article key={p.slug} className="bg-spartan-dark rounded-md overflow-hidden border border-gray-800 hover:border-spartan-red/50 transition-all duration-300 group hover:-translate-y-2 shadow-lg">
+                  <div className="h-48 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all z-10"></div>
+                    <img src={p.cover} alt={p.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl font-bold text-white uppercase mb-3 leading-snug min-h-[3.5rem]">{p.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{p.excerpt}</p>
+                    <Link href={`/blog/${p.slug}`} className="inline-block text-spartan-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">Leer Más &rarr;</Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ARSENAL SECTION */}
+        <section id="arsenal" className="relative py-32 flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+            <div className="w-full max-w-7xl mx-auto overflow-hidden rounded-md">
+              <img src="/Herramientas/Hero_herramientas_spartan.jpg" alt="Arsenal" className="w-full h-[420px] md:h-[520px] object-cover" />
+            </div>
+            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-spartan-red/10 to-black/40" />
+            <div className="absolute inset-0 z-20 bg-black/20" />
+          </div>
+          <div className="relative z-30 container mx-auto px-6 text-center">
+            <div className="max-w-3xl mx-auto border border-spartan-red/30 bg-black/40 backdrop-blur-sm p-12 rounded-sm relative">
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase mb-6 tracking-wide drop-shadow-lg">Armas Para Tu Arsenal</h2>
+              <p className="text-gray-300 text-lg mb-10 leading-relaxed">Accede a nuestra colección de recursos exclusivos diseñados para acelerar tu progreso y ayudarte a conquistar tus objetivos.</p>
+              <Link href="/herramientas" className="bg-spartan-red hover:bg-red-600 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all shadow-lg hover:shadow-red-900/50">Explorar Herramientas</Link>
+            </div>
+          </div>
+        </section>
+
+        {/* NEWSLETTER SECTION */}
+        <section id="unete" className="py-24 bg-spartan-dark flex justify-center items-center">
+          <div className="container mx-auto px-6">
+            <div className="bg-[#1f1f1f] rounded-lg p-8 md:p-12 max-w-4xl mx-auto border border-gray-800 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-spartan-red to-transparent"></div>
+              <div className="relative z-10 text-center">
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-4">Únete a la Legión</h2>
+                <p className="text-gray-400 mb-8 max-w-2xl mx-auto">Recibe estrategias semanales, inspiración y acceso exclusivo a contenido directamente en tu email. Sin spam, solo valor.</p>
+                <NewsletterForm />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
