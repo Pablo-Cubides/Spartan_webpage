@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import { Camera, Upload, X, SwitchCamera } from 'lucide-react';
 import type { IteratePayload } from '@/lib/asesor-estilo/types/ai'
 import { uploadImage } from '@/lib/asesor-estilo/api-client'
 import { getTokenCookie } from '@/lib/api';
@@ -25,6 +26,7 @@ export default function Page() {
   const [isDragging, setIsDragging] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
 
   const suggestions = [
     "Crear un estilo de barba que alargue mi rostro",
@@ -85,6 +87,11 @@ export default function Page() {
     setPrompt(text);
     // auto-send the suggestion into the chat
     handleGenerate(text);
+  }
+
+  async function handleCameraCapture(file: File) {
+    setShowCamera(false);
+    await processUpload(file);
   }
 
   function handleUploadClick() {
@@ -378,11 +385,13 @@ export default function Page() {
   if (step === "upload") {
     return (
       <div className="app-center">
+        {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
+        
         <div className="chat-shell">
           <div className="chat-header text-center">
             <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto" />
-            <h1 className="chat-title">Tu Asesor de Estilo Personal</h1>
-            <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más.</p>
+            <h1 className="chat-title">Asesor de Forma de Cara</h1>
+            <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más adaptados a tu forma de cara.</p>
           </div>
 
           <div className="p-6">
@@ -395,8 +404,25 @@ export default function Page() {
             >
               <h2 className="mb-2 text-lg font-semibold">Sube tu foto para una asesoría</h2>
               <p className="mb-4 text-sm text-muted-foreground">Recomendamos que sea una foto de frente con buena iluminación.</p>
-              <div className="flex items-center justify-center gap-4">
-                <button onClick={handleUploadClick} disabled={loading} className="btn-accent">{loading ? "Procesando..." : "Seleccionar Imagen"}</button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                <button 
+                  onClick={handleUploadClick} 
+                  disabled={loading} 
+                  className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
+                >
+                  <Upload size={20} />
+                  {loading ? "Procesando..." : "Subir Foto"}
+                </button>
+                
+                <button 
+                  onClick={() => setShowCamera(true)} 
+                  disabled={loading} 
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
+                >
+                  <Camera size={20} />
+                  Tomar Foto
+                </button>
+                
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               </div>
             </div>
@@ -413,11 +439,13 @@ export default function Page() {
   // Ready/chat view
   return (
     <div className="app-center">
+      {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
+      
       <div className="chat-shell">
         <div className="chat-header text-center">
           <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-20 md:h-24 lg:h-28 object-contain mb-4" />
-          <h1 className="chat-title">Tu Asesor de Estilo Personal</h1>
-          <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más.</p>
+          <h1 className="chat-title">Asesor de Forma de Cara</h1>
+          <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más adaptados a tu forma de cara.</p>
         </div>
 
         <div className="messages">
@@ -471,10 +499,15 @@ export default function Page() {
 
         <div className="input-bar">
           <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Sube una imagen primero"} className="input-textarea" />
-          <div className="flex items-center gap-3">
-            <button onClick={handleUploadClick} className="p-2">📤</button>
+          <div className="flex items-center gap-2">
+            <button onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Subir imagen">
+              <Upload size={20} />
+            </button>
+            <button onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
+              <Camera size={20} />
+            </button>
             <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-            <button onClick={() => handleGenerate()} disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent">{loading ? "Procesando..." : "Generar Cambios"}</button>
+            <button onClick={() => handleGenerate()} disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
           </div>
         </div>
 
@@ -511,6 +544,215 @@ export default function Page() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; onClose: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function initCamera() {
+      try {
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+          streamRef.current = null;
+        }
+
+        setError(null);
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("Tu navegador no soporta acceso a cámara. Actualiza tu navegador o usa Chrome/Edge.");
+        }
+
+        console.log("[Camera] Verificando permisos existentes...");
+        
+        let permissionStatus = 'prompt';
+        try {
+          if (navigator.permissions && navigator.permissions.query) {
+            const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
+            permissionStatus = result.state;
+            console.log("[Camera] Estado de permiso actual:", permissionStatus);
+            
+            if (permissionStatus === 'denied') {
+              throw Object.assign(new Error('Permission previously denied'), { name: 'NotAllowedError' });
+            }
+          }
+        } catch (permErr) {
+          console.warn("[Camera] No se pudo verificar permisos (puede ser normal):", permErr);
+        }
+
+        console.log("[Camera] Solicitando acceso a cámara...");
+        
+        let newStream: MediaStream;
+        try {
+          newStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: facingMode,
+              width: { ideal: 1280 },
+              height: { ideal: 720 }
+            }
+          });
+          console.log("[Camera] ✓ Cámara abierta con facingMode:", facingMode);
+        } catch (err1) {
+          console.warn("[Camera] Fallo con facingMode, intentando sin restricciones...", err1);
+          
+          try {
+            newStream = await navigator.mediaDevices.getUserMedia({
+              video: true
+            });
+            console.log("[Camera] ✓ Cámara abierta con video:true");
+          } catch (err2) {
+            console.error("[Camera] Ambos intentos fallaron");
+            throw err2;
+          }
+        }
+
+        if (!mounted) {
+          console.log("[Camera] Componente desmontado, cerrando stream");
+          newStream.getTracks().forEach(track => track.stop());
+          return;
+        }
+
+        streamRef.current = newStream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = newStream;
+          console.log("[Camera] ✓ Stream asignado al elemento video");
+        }
+      } catch (err: any) {
+        if (!mounted) return;
+        console.error("[Camera] ❌ Error final:", err);
+        
+        let msg = "";
+        const code = err.name || 'Unknown';
+        
+        if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
+          msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEO LA CAMARA.\n\n**Pasos para solucionar:**\n\n1. Cierra este modal\n2. Haz clic en el icono junto a la URL\n3. En 'Camara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Vuelve a hacer clic en 'Tomar Foto'\n\nSi el problema persiste, el antivirus puede estar bloqueando la cámara.";
+        } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
+          msg = "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
+        } else if (code === 'NotReadableError' || code === 'TrackStartError') {
+          msg = "⚠️ **Cámara Ocupada**\n\nOtra aplicación está usando la cámara.\n\nCierra estas apps si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
+        } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {
+          msg = "⚙️ **Configuración Incompatible**\n\nLa cámara no soporta la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
+        } else {
+          msg = `❌ **Error Desconocido**\n\n${err.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
+        }
+        
+        msg += `\n\n**Codigo tecnico:** ${code}`;
+        setError(msg);
+      }
+    }
+
+    const timer = setTimeout(initCamera, 100);
+
+    return () => {
+      clearTimeout(timer);
+      mounted = false;
+      if (streamRef.current) {
+        console.log("[Camera] Limpiando stream en cleanup");
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+    };
+  }, [facingMode]);
+
+  function handleCapture() {
+    if (!videoRef.current || !streamRef.current) return;
+
+    const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    ctx.drawImage(video, 0, 0);
+    
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const file = new File([blob], `foto-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      onCapture(file);
+      
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+    }, 'image/jpeg', 0.95);
+  }
+
+  function handleSwitchCamera() {
+    setFacingMode(prev => prev === "user" ? "environment" : "user");
+  }
+
+  function handleClose() {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
+      <div className="relative w-full h-full max-w-4xl max-h-screen flex flex-col">
+        <div className="absolute top-4 left-0 right-0 z-10 flex justify-between items-center px-4">
+          <button
+            onClick={handleClose}
+            className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+            aria-label="Cerrar cámara"
+          >
+            <X size={24} />
+          </button>
+          
+          <button
+            onClick={handleSwitchCamera}
+            className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+            aria-label="Cambiar cámara"
+          >
+            <SwitchCamera size={24} />
+          </button>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center overflow-hidden">
+          {error ? (
+            <div className="max-w-md mx-4 p-6 bg-red-900/20 border border-red-500/30 rounded-lg text-white">
+              <pre className="whitespace-pre-wrap text-sm font-sans">{error}</pre>
+              <button
+                onClick={handleClose}
+                className="mt-4 w-full px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+              >
+                Cerrar
+              </button>
+            </div>
+          ) : (
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="max-w-full max-h-full object-contain"
+            />
+          )}
+        </div>
+
+        {!error && (
+          <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+            <button
+              onClick={handleCapture}
+              className="w-16 h-16 rounded-full bg-white border-4 border-gray-300 hover:border-gray-400 transition-all shadow-lg active:scale-95"
+              aria-label="Tomar foto"
+            >
+              <div className="w-full h-full rounded-full bg-white" />
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

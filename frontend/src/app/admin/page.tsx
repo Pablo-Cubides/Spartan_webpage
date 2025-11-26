@@ -34,13 +34,35 @@ interface CreditPackage {
   is_active: boolean;
 }
 
+interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  cover_image?: string;
+  is_published: boolean;
+  published_at?: string;
+  created_at: string;
+  author: {
+    name: string;
+    email: string;
+  };
+}
+
 export default function AdminPanel() {
   const { user, loading } = useAuth();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [packages, setPackages] = useState<CreditPackage[]>([]);
-  const [activeTab, setActiveTab] = useState<'users' | 'purchases' | 'packages'>('users');
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [activeTab, setActiveTab] = useState<'users' | 'purchases' | 'packages' | 'blog'>('users');
   const [loadingData, setLoadingData] = useState(false);
+  
+  // Blog Form State
+  const [isEditingPost, setIsEditingPost] = useState(false);
+  const [currentPost, setCurrentPost] = useState<Partial<BlogPost>>({});
+  const [postFormError, setPostFormError] = useState<string | null>(null);
 
   // Verificar si el usuario es admin (basado en role en BD, no en email)
   const isAdmin = user && user.uid ? (
@@ -85,6 +107,17 @@ export default function AdminPanel() {
           const packagesData = await packagesResponse.json();
           setPackages(packagesData);
         }
+
+        // Fetch blog posts
+        const postsResponse = await fetch('/api/admin/blog', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (postsResponse.ok) {
+          const postsData = await postsResponse.json();
+          setPosts(postsData.posts);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -94,6 +127,64 @@ export default function AdminPanel() {
 
     void fetchData();
   }, [user, isAdmin]);
+
+  const handleSavePost = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPostFormError(null);
+    
+    try {
+      const token = await user?.getIdToken();
+      const url = currentPost.id 
+        ? `/api/admin/blog/${currentPost.id}` 
+        : '/api/admin/blog';
+      
+      const method = currentPost.id ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(currentPost),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error saving post');
+      }
+
+      // Refresh posts
+      const postsResponse = await fetch('/api/admin/blog', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (postsResponse.ok) {
+        const postsData = await postsResponse.json();
+        setPosts(postsData.posts);
+      }
+
+      setIsEditingPost(false);
+      setCurrentPost({});
+    } catch (error: any) {
+      setPostFormError(error.message);
+    }
+  };
+
+  const handleDeletePost = async (id: number) => {
+    if (!confirm('¿Estás seguro de eliminar este post?')) return;
+
+    try {
+      const token = await user?.getIdToken();
+      await fetch(`/api/admin/blog/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      setPosts(posts.filter(p => p.id !== id));
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -197,6 +288,16 @@ export default function AdminPanel() {
               }`}
             >
               Paquetes ({packages.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('blog')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === 'blog'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
+            >
+              Blog ({posts.length})
             </button>
           </div>
         </div>
@@ -365,9 +466,181 @@ export default function AdminPanel() {
                 </div>
               </div>
             )}
+
+            {activeTab === 'blog' && (
+              <div className="px-6 py-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-medium text-gray-900">Gestión del Blog</h2>
+                  <button
+                    onClick={() => {
+                      setCurrentPost({ is_published: false });
+                      setIsEditingPost(true);
+                    }}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Nuevo Post
+                  </button>
+                </div>
+
+                {isEditingPost ? (
+                  <div className="bg-gray-50 p-6 rounded-lg mb-6">
+                    <h3 className="text-lg font-medium mb-4">{currentPost.id ? 'Editar Post' : 'Nuevo Post'}</h3>
+                    {postFormError && (
+                      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                        {postFormError}
+                      </div>
+                    )}
+                    <form onSubmit={handleSavePost} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Título</label>
+                        <input
+                          type="text"
+                          value={currentPost.title || ''}
+                          onChange={e => setCurrentPost({...currentPost, title: e.target.value})}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Slug</label>
+                        <input
+                          type="text"
+                          value={currentPost.slug || ''}
+                          onChange={e => setCurrentPost({...currentPost, slug: e.target.value})}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Extracto</label>
+                        <textarea
+                          value={currentPost.excerpt || ''}
+                          onChange={e => setCurrentPost({...currentPost, excerpt: e.target.value})}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                          rows={2}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Contenido</label>
+                        <textarea
+                          value={currentPost.content || ''}
+                          onChange={e => setCurrentPost({...currentPost, content: e.target.value})}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                          rows={10}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">Imagen de Portada (URL)</label>
+                        <input
+                          type="url"
+                          value={currentPost.cover_image || ''}
+                          onChange={e => setCurrentPost({...currentPost, cover_image: e.target.value})}
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Fecha de Publicación</label>
+                          <input
+                            type="datetime-local"
+                            value={currentPost.published_at ? new Date(currentPost.published_at).toISOString().slice(0, 16) : ''}
+                            onChange={e => setCurrentPost({...currentPost, published_at: new Date(e.target.value).toISOString()})}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2 border"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Si se deja vacío, no se programará.</p>
+                        </div>
+                        <div className="flex items-center pt-6">
+                          <input
+                            type="checkbox"
+                            checked={currentPost.is_published || false}
+                            onChange={e => setCurrentPost({...currentPost, is_published: e.target.checked})}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                          <label className="ml-2 block text-sm text-gray-900">
+                            Publicado
+                          </label>
+                        </div>
+                      </div>
+                      <div className="flex justify-end space-x-3">
+                        <button
+                          type="button"
+                          onClick={() => setIsEditingPost(false)}
+                          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="submit"
+                          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          Guardar
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publicación</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autor</th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {posts.map((post) => (
+                          <tr key={post.id}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">{post.title}</div>
+                              <div className="text-sm text-gray-500">{post.slug}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                post.is_published 
+                                  ? 'bg-green-100 text-green-800'
+                                  : 'bg-yellow-100 text-yellow-800'
+                              }`}>
+                                {post.is_published ? 'Publicado' : 'Borrador'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {post.published_at ? new Date(post.published_at).toLocaleString() : '-'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {post.author?.name || 'Unknown'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                              <button
+                                onClick={() => {
+                                  setCurrentPost(post);
+                                  setIsEditingPost(true);
+                                }}
+                                className="text-blue-600 hover:text-blue-900 mr-4"
+                              >
+                                Editar
+                              </button>
+                              <button
+                                onClick={() => handleDeletePost(post.id)}
+                                className="text-red-600 hover:text-red-900"
+                              >
+                                Eliminar
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </main>
     </div>
   );
-} 
+}

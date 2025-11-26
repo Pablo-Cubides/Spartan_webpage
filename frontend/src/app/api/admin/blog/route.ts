@@ -62,7 +62,7 @@ const postHandler = async (request: NextRequest) => {
   }
 
   const body = await parseJsonBody<Record<string, unknown>>(request, CreateBlogPostSchema);
-  const { title, slug, content, excerpt, cover_image, is_published } = body;
+  const { title, slug, content, excerpt, cover_image, is_published, published_at } = body;
 
   // Check if slug exists
   const existing = await prisma.blogPost.findUnique({ where: { slug: slug as string } });
@@ -78,6 +78,7 @@ const postHandler = async (request: NextRequest) => {
       excerpt: excerpt as string | undefined,
       cover_image: cover_image as string | undefined,
       is_published: (is_published as boolean) || false,
+      published_at: published_at ? new Date(published_at as string) : null,
       author_id: user.id,
     },
   });

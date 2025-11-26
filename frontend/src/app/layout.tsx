@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" className={`${inter.variable} ${notoSans.variable}`}>
       <body
-        className="relative flex size-full min-h-screen flex-col bg-[#141414] text-white font-sans overflow-x-hidden"
+        className="relative flex size-full min-h-screen flex-col bg-[#141414] text-white font-sans"
       >
         <Header />
         {children}

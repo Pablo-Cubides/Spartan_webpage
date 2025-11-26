@@ -38,6 +38,7 @@ export const CreateBlogPostSchema = z.object({
     .max(100, 'El slug no puede exceder 100 caracteres')
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'El slug debe contener solo minúsculas, números y guiones'),
   is_published: z.boolean().optional(),
+  published_at: z.string().datetime({ offset: true }).optional().or(z.date().optional()),
 });
 
 export const UpdateBlogPostSchema = CreateBlogPostSchema.partial();

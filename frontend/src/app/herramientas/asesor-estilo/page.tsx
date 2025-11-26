@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import { Camera, Upload, X, RefreshCw, SwitchCamera } from 'lucide-react';
 import type { IteratePayload } from '@/lib/asesor-estilo/types/ai';
 import { getApiUrl, UPLOAD_CONFIG, UI_CONFIG } from '../../../lib/asesor-estilo/config/api';
 import ModalLogin from '@/components/ModalLogin';
@@ -34,6 +35,7 @@ export default function Page() {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const xhrRef = useRef<XMLHttpRequest | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
   const lastGenerateAt = useRef<number>(0);
 
   // Auth & Credits State
@@ -458,6 +460,11 @@ export default function Page() {
     }
   }
 
+  async function handleCameraCapture(file: File) {
+    setShowCamera(false);
+    await processUpload(file);
+  }
+
   function handleDragOver(e: React.DragEvent) {
     e.preventDefault();
     setIsDragging(true);
@@ -479,6 +486,7 @@ export default function Page() {
     return (
       <main className="app-center" role="main">
         <ModalLogin open={showLoginModal} onClose={() => setShowLoginModal(false)} />
+        {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
         
         {showCreditsModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
@@ -539,8 +547,27 @@ export default function Page() {
             >
               <h2 className="mb-2 text-lg font-semibold">Sube tu foto para una asesoría de outfit</h2>
               <p className="mb-4 text-sm text-muted-foreground">Recomendamos que sea una foto que muestre el cuerpo completo con buena iluminación para mejores recomendaciones.</p>
-              <div className="flex items-center justify-start gap-4">
-                <button aria-label="Seleccionar imagen" onClick={handleUploadClick} disabled={loading} className="btn-accent">{loading ? (loadingPhase === 'uploading' ? 'Subiendo...' : loadingPhase === 'analyzing' ? 'Analizando...' : 'Generando...') : 'Seleccionar Imagen'}</button>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                <button 
+                  aria-label="Seleccionar imagen" 
+                  onClick={handleUploadClick} 
+                  disabled={loading} 
+                  className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
+                >
+                  <Upload size={20} />
+                  {loading ? (loadingPhase === 'uploading' ? 'Subiendo...' : loadingPhase === 'analyzing' ? 'Analizando...' : 'Generando...') : 'Subir Foto'}
+                </button>
+                
+                <button 
+                  aria-label="Tomar foto" 
+                  onClick={() => setShowCamera(true)} 
+                  disabled={loading} 
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
+                >
+                  <Camera size={20} />
+                  Tomar Foto
+                </button>
+                
                 <input aria-label="Seleccionar archivo de imagen" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               </div>
             </div>
@@ -570,6 +597,7 @@ export default function Page() {
   return (
     <main className="app-center" role="main">
       <ModalLogin open={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
       
       {showCreditsModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
@@ -678,10 +706,15 @@ export default function Page() {
 
         <form className="input-bar" onSubmit={(e) => { e.preventDefault(); handleGenerate(); }} aria-label="Controles de entrada">
           <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); } }} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Sube una imagen primero"} aria-label="Descripción de los cambios a generar" className="input-textarea" />
-          <div className="flex items-center gap-3">
-            <button aria-label="Subir imagen" onClick={handleUploadClick} className="p-2">📤</button>
+          <div className="flex items-center gap-2">
+            <button aria-label="Subir imagen" onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Subir imagen">
+                <Upload size={20} />
+            </button>
+            <button aria-label="Tomar foto" onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
+                <Camera size={20} />
+            </button>
             <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-            <button aria-label="Generar cambios" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent">{loading ? "Procesando..." : "Generar Cambios"}</button>
+            <button aria-label="Generar cambios" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
           </div>
         </form>
         {/* suggestions area (also shown in upload state when edited image exists) */}
@@ -699,5 +732,198 @@ export default function Page() {
         )}
       </section>
     </main>
+  );
+}
+
+function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; onClose: () => void }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null); // Ref para limpieza confiable
+  const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function initCamera() {
+      try {
+        // Limpiar stream anterior si existe
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+          streamRef.current = null;
+        }
+
+        setError(null);
+
+        // Verificar disponibilidad de API
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error("Tu navegador no soporta acceso a cámara. Actualiza tu navegador o usa Chrome/Edge.");
+        }
+
+        console.log("[Camera] Verificando permisos existentes...");
+        
+        // Verificar estado actual de permisos (si está disponible)
+        let permissionStatus = 'prompt';
+        try {
+          if (navigator.permissions && navigator.permissions.query) {
+            const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
+            permissionStatus = result.state;
+            console.log("[Camera] Estado de permiso actual:", permissionStatus);
+            
+            if (permissionStatus === 'denied') {
+              throw Object.assign(new Error('Permission previously denied'), { name: 'NotAllowedError' });
+            }
+          }
+        } catch (permErr) {
+          console.warn("[Camera] No se pudo verificar permisos (puede ser normal):", permErr);
+        }
+
+        console.log("[Camera] Solicitando acceso a cámara...");
+        
+        // Estrategia 1: Intentar con configuración específica
+        let newStream: MediaStream;
+        try {
+          newStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: facingMode,
+              width: { ideal: 1280 },
+              height: { ideal: 720 }
+            }
+          });
+          console.log("[Camera] ✓ Cámara abierta con facingMode:", facingMode);
+        } catch (err1) {
+          console.warn("[Camera] Fallo con facingMode, intentando sin restricciones...", err1);
+          
+          // Estrategia 2: Configuración mínima
+          try {
+            newStream = await navigator.mediaDevices.getUserMedia({
+              video: true
+            });
+            console.log("[Camera] ✓ Cámara abierta con video:true");
+          } catch (err2) {
+            console.error("[Camera] Ambos intentos fallaron");
+            throw err2;
+          }
+        }
+
+        if (!mounted) {
+          console.log("[Camera] Componente desmontado, cerrando stream");
+          newStream.getTracks().forEach(track => track.stop());
+          return;
+        }
+
+        streamRef.current = newStream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = newStream;
+          console.log("[Camera] ✓ Stream asignado al elemento video");
+        }
+      } catch (err: any) {
+        if (!mounted) return;
+        console.error("[Camera] ❌ Error final:", err);
+        
+        let msg = "";
+        const code = err.name || 'Unknown';
+        
+        if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
+          msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para solucionar:**\n\n1. Cierra este modal\n2. Haz clic en el icono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Vuelve a hacer clic en 'Tomar Foto'\n\nSi el problema persiste, el antivirus puede estar bloqueando la cámara.";
+        } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
+          msg = "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
+        } else if (code === 'NotReadableError' || code === 'TrackStartError') {
+          msg = "⚠️ **Cámara Ocupada**\n\nOtra aplicación está usando la cámara.\n\nCierra estas apps si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
+        } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {
+          msg = "⚙️ **Configuración Incompatible**\n\nLa cámara no soporta la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
+        } else {
+          msg = `❌ **Error Desconocido**\n\n${err.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
+        }
+        
+        msg += `\n\n**Codigo tecnico:** ${code}`;
+        setError(msg);
+      }
+    }
+
+    // Pequeño delay para evitar race conditions en Strict Mode
+    const timer = setTimeout(initCamera, 100);
+
+    return () => {
+      clearTimeout(timer);
+      mounted = false;
+      if (streamRef.current) {
+        console.log("[Camera] Limpiando stream en cleanup");
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+    };
+  }, [facingMode]);
+
+  function handleCapture() {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    // Flip if user facing mode to mirror like a selfie
+    if (facingMode === 'user') {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+    }
+    
+    ctx.drawImage(video, 0, 0);
+    
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+        onCapture(file);
+        onClose();
+      }
+    }, "image/jpeg", 0.9);
+  }
+
+  function toggleCamera() {
+    setFacingMode(prev => prev === "user" ? "environment" : "user");
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+      <div className="relative w-full max-w-lg bg-black rounded-xl overflow-hidden flex flex-col items-center border border-white/10 shadow-2xl">
+        {error ? (
+            <div className="p-8 text-white text-center max-w-md mx-4">
+                <div className="mb-6 bg-red-500/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-red-500">
+                    <Camera size={32} />
+                </div>
+                <h3 className="text-xl font-bold mb-2">Problema con la cámara</h3>
+                <p className="mb-6 text-gray-300 whitespace-pre-wrap">{error}</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onClick={() => setFacingMode(prev => prev)} className="btn-accent px-6 py-2 rounded-lg">Intentar de nuevo</button>
+                    <button onClick={onClose} className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">Cancelar</button>
+                </div>
+            </div>
+        ) : (
+            <>
+                <video 
+                    ref={videoRef} 
+                    autoPlay 
+                    playsInline 
+                    className={`w-full h-auto max-h-[70vh] object-cover ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`} 
+                />
+                
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex justify-between items-center">
+                    <button onClick={onClose} className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all">
+                        <X size={24} />
+                    </button>
+                    
+                    <button onClick={handleCapture} className="p-1 rounded-full border-4 border-white/30 hover:border-white/50 transition-all transform hover:scale-105">
+                        <div className="w-16 h-16 rounded-full bg-white hover:bg-gray-200 transition-colors"></div>
+                    </button>
+                    
+                    <button onClick={toggleCamera} className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all">
+                        <SwitchCamera size={24} />
+                    </button>
+                </div>
+            </>
+        )}
+      </div>
+    </div>
   );
 }

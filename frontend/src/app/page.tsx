@@ -1,5 +1,6 @@
 // Server component: fetches home content server-side
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card } from '@/components/Card';
 import { apiCall } from '@/lib/api';
 import POSTS from '@/lib/blog/posts';
@@ -43,10 +44,12 @@ export default async function Home() {
         {/* HERO SECTION */}
         <section id="hero" className="relative w-full flex items-center justify-center overflow-visible md:min-h-[60vh] min-h-[420px] py-12">
           <div className="absolute inset-0 z-0">
-            <img
+            <Image
               src={'/Hero.png'}
               alt={posts[0]?.title || 'Spartan Club'}
-              className="w-full h-full object-cover"
+              layout="fill"
+              objectFit="cover"
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-[#0a0a0a]"></div>
           </div>
@@ -87,7 +90,7 @@ export default async function Home() {
               </div>
               <div className="w-full md:w-1/2 flex justify-center">
                 <div className="relative w-full max-w-md aspect-square rounded-lg overflow-hidden shadow-2xl">
-                  <img src="/Logo spartan club.png" alt="Spartan" className="w-full h-full object-contain" />
+                  <Image src="/Logo spartan club.png" alt="Spartan" layout="fill" objectFit="contain" />
                 </div>
               </div>
             </div>
@@ -107,7 +110,7 @@ export default async function Home() {
                 <article key={p.slug} className="bg-spartan-dark rounded-md overflow-hidden border border-gray-800 hover:border-spartan-red/50 transition-all duration-300 group hover:-translate-y-2 shadow-lg">
                   <div className="h-48 overflow-hidden relative">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all z-10"></div>
-                    <img src={p.cover} alt={p.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
+                    <Image src={p.cover} alt={p.title} layout="fill" objectFit="cover" className="transform group-hover:scale-110 transition-transform duration-500" />
                   </div>
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold text-white uppercase mb-3 leading-snug min-h-[3.5rem]">{p.title}</h3>
@@ -124,7 +127,7 @@ export default async function Home() {
         <section id="arsenal" className="relative py-32 flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
             <div className="w-full max-w-7xl mx-auto overflow-hidden rounded-md">
-              <img src="/Herramientas/Hero_herramientas_spartan.jpg" alt="Arsenal" className="w-full h-[420px] md:h-[520px] object-cover" />
+              <Image src="/Herramientas/Hero_herramientas_spartan.jpg" alt="Arsenal" layout="fill" objectFit="cover" />
             </div>
             <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-spartan-red/10 to-black/40" />
             <div className="absolute inset-0 z-20 bg-black/20" />

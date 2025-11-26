@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getTokenCookie } from "@/lib/api";
 
 interface UserProfile {
@@ -62,13 +63,14 @@ export default function PerfilPage() {
             <div className="flex p-4 @container">
               <div className="flex flex-col items-center w-full gap-4">
                 <div className="flex flex-col items-center gap-4">
-                  <div
-                    className="w-32 bg-center bg-no-repeat bg-cover rounded-full aspect-square min-h-32 bg-gray-700"
-                    style={{
-                      backgroundImage: profile.avatar_url ? `url("${profile.avatar_url}")` : undefined,
-                    }}
-                  >
-                    {!profile.avatar_url && <span className="flex items-center justify-center h-full text-4xl">👤</span>}
+                  <div className="w-32 h-32 relative">
+                    <Image
+                      src={profile.avatar_url || '/icono spartan club - sin fondo.png'}
+                      alt={profile.name || 'Avatar de usuario'}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-full"
+                    />
                   </div>
                   <div className="flex flex-col items-center justify-center">
                     <p className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">
@@ -82,11 +84,13 @@ export default function PerfilPage() {
                     </p>
                   </div>
                 </div>
-                <button
-                  className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#342d2d] text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto"
-                >
-                  <span className="truncate">Editar Perfil</span>
-                </button>
+                <Link href="/perfil/edit">
+                  <button
+                    className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#342d2d] text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto"
+                  >
+                    <span className="truncate">Editar Perfil</span>
+                  </button>
+                </Link>
               </div>
             </div>
             

@@ -115,7 +115,7 @@ export default function BuyCredits() {
               <div className="text-2xl font-bold text-gray-900 mb-2">
                 ${pkg.price.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-500 mb-6">ARS</div>
+              <div className="text-sm text-gray-500 mb-6">COP</div>
 
               <button
                 onClick={(e) => {
