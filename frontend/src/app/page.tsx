@@ -24,8 +24,8 @@ async function getHomePageContent() {
     console.error('Failed to fetch home content:', error);
     // Provide a safe default so build/prerender doesn't fail when the API is not reachable
     const defaultContent: HomeContent = {
-      hero: { backgroundImageUrl: '', title: 'Spartan Club', subtitle: 'Bienvenido' },
-      featuredPost: { imageUrl: '', category: 'General', title: 'Bienvenido a Spartan', description: 'Contenido de ejemplo' },
+      hero: { backgroundImageUrl: '', title: 'Spartan Club', subtitle: 'Welcome' },
+      featuredPost: { imageUrl: '', category: 'General', title: 'Welcome to Spartan', description: 'Example content' },
       posts: [],
       tools: [],
     };
@@ -58,14 +58,14 @@ export default async function Home() {
 
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-wider mb-6 leading-tight drop-shadow-lg">
-              Desata Tu Potencial <span className="text-spartan-red">Espartano</span>
+              Unleash Your <span className="text-spartan-red">Spartan</span> Potential
             </h1>
             <p className="font-sans text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Forja tu mejor versión. Conviértete en el hombre que estás destinado a ser: fuerte, disciplinado y con un propósito inquebrantable.
+              Forge your best version. Become the man you are destined to be: strong, disciplined, and with an unwavering purpose.
             </p>
             <Link href="/blog" className="inline-block">
               <button className="bg-spartan-red hover:bg-red-700 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all duration-300 transform hover:scale-105 border border-red-800 shadow-[0_0_20px_rgba(217,35,35,0.4)]">
-                Comienza Tu Transformación
+                Start Your Transformation
               </button>
             </Link>
           </div>
@@ -82,10 +82,10 @@ export default async function Home() {
           <div className="container mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row items-center gap-16">
               <div className="w-full md:w-1/2">
-                <h2 className="font-display text-4xl font-bold text-white uppercase mb-8 tracking-wide border-l-4 border-spartan-red pl-6">Nuestra Misión</h2>
+                <h2 className="font-display text-4xl font-bold text-white uppercase mb-8 tracking-wide border-l-4 border-spartan-red pl-6">Our Mission</h2>
                 <div className="space-y-6 text-gray-400 leading-relaxed text-lg">
-                  <p>En Spartan Club, creemos que todo hombre posee un potencial ilimitado. Nuestra misión es proporcionarte el conocimiento, las herramientas y la comunidad para que superes tus límites.</p>
-                  <p>Te guiamos en el camino hacia la excelencia física, mental y espiritual, basándonos en los principios atemporales de disciplina, honor y resiliencia.</p>
+                  <p>At Spartan Club, we believe every man possesses unlimited potential. Our mission is to provide you with the knowledge, tools, and community to overcome your limits.</p>
+                  <p>We guide you on the path to physical, mental, and spiritual excellence, based on the timeless principles of discipline, honor, and resilience.</p>
                 </div>
               </div>
               <div className="w-full md:w-1/2 flex justify-center">
@@ -101,8 +101,8 @@ export default async function Home() {
         <section id="articulos" className="py-24 bg-[#1a1a1a] relative overflow-hidden">
           <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
-              <h2 className="font-display text-4xl font-bold text-white uppercase tracking-wide inline-block relative pb-2">Artículos Destacados</h2>
-              <p className="mt-4 text-gray-400">Conocimiento y estrategias para tu arsenal de crecimiento personal.</p>
+              <h2 className="font-display text-4xl font-bold text-white uppercase tracking-wide inline-block relative pb-2">Featured Articles</h2>
+              <p className="mt-4 text-gray-400">Knowledge and strategies for your personal growth arsenal.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -115,7 +115,7 @@ export default async function Home() {
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold text-white uppercase mb-3 leading-snug min-h-[3.5rem]">{p.title}</h3>
                     <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{p.excerpt}</p>
-                    <Link href={`/blog/${p.slug}`} className="inline-block text-spartan-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">Leer Más &rarr;</Link>
+                    <Link href={`/blog/${p.slug}`} className="inline-block text-spartan-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">Read More &rarr;</Link>
                   </div>
                 </article>
               ))}
@@ -134,9 +134,9 @@ export default async function Home() {
           </div>
           <div className="relative z-30 container mx-auto px-6 text-center">
             <div className="max-w-3xl mx-auto border border-spartan-red/30 bg-black/40 backdrop-blur-sm p-12 rounded-sm relative">
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase mb-6 tracking-wide drop-shadow-lg">Armas Para Tu Arsenal</h2>
-              <p className="text-gray-300 text-lg mb-10 leading-relaxed">Accede a nuestra colección de recursos exclusivos diseñados para acelerar tu progreso y ayudarte a conquistar tus objetivos.</p>
-              <Link href="/herramientas" className="bg-spartan-red hover:bg-red-600 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all shadow-lg hover:shadow-red-900/50">Explorar Herramientas</Link>
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase mb-6 tracking-wide drop-shadow-lg">Weapons For Your Arsenal</h2>
+              <p className="text-gray-300 text-lg mb-10 leading-relaxed">Access our collection of exclusive resources designed to accelerate your progress and help you conquer your goals.</p>
+              <Link href="/herramientas" className="bg-spartan-red hover:bg-red-600 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all shadow-lg hover:shadow-red-900/50">Explore Tools</Link>
             </div>
           </div>
         </section>
@@ -147,7 +147,7 @@ export default async function Home() {
             <div className="bg-[#1f1f1f] rounded-lg p-8 md:p-12 max-w-4xl mx-auto border border-gray-800 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-spartan-red to-transparent"></div>
               <div className="relative z-10 text-center">
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-4">Únete a la Legión</h2>
+                <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-4">Join the Legion</h2>
                 <p className="text-gray-400 mb-8 max-w-2xl mx-auto">Recibe estrategias semanales, inspiración y acceso exclusivo a contenido directamente en tu email. Sin spam, solo valor.</p>
                 <NewsletterForm />
               </div>
