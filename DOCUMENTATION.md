@@ -946,6 +946,8 @@ For technical support or development inquiries:
 
 *This documentation represents a comprehensive guide for the Spartan Club platform, designed to enable developers to understand, maintain, and extend the application effectively. The serverless architecture and modern tech stack provide a scalable foundation for continued growth and feature development.*
 
+*Last updated: November 27, 2025*
+
 ## Arquitectura del Sistema
 
 ### Arquitectura General
