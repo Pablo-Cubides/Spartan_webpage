@@ -92,7 +92,7 @@ export async function POST(req: Request): Promise<Response> {
       return NextResponse.json(
         {
           error: 'EMAIL_NOT_VERIFIED',
-          message: 'Debes verificar tu correo electrónico para realizar análisis.',
+          message: 'You must verify your email to perform analyzes.',
         },
         { status: 403 }
       );
