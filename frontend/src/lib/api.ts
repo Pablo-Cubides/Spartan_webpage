@@ -1,6 +1,6 @@
 /**
  * API Client Configuration
- * Centraliza la configuración de URLs y headers para todas las peticiones
+ * Centralizes URL and header configuration for all requests
  */
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -57,7 +57,7 @@ export const apiCall = async <T = unknown>(
 };
 
 /**
- * Configuración segura de cookies para tokens
+ * Secure cookie configuration for tokens
  */
 export const setTokenCookie = (token: string): void => {
   if (typeof document !== 'undefined') {
