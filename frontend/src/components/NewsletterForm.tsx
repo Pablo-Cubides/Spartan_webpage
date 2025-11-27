@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-export default function NewsletterForm(): JSX.Element {
+export default function NewsletterForm() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 

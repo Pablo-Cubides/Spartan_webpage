@@ -24,7 +24,10 @@ const handler = async (request: NextRequest) => {
   // Parse and validate body
   const body = await parseJsonBody(request, BuyCreditSchema)
   const packageId = body.package_id
-  const back_urls = body.back_urls || { success: '', failure: '' }
+  const back_urls = body.back_urls ? {
+    success: body.back_urls.success || '',
+    failure: body.back_urls.failure || ''
+  } : { success: '', failure: '' }
 
   // Fetch package
   const pack = await prisma.creditPackage.findUnique({ where: { id: packageId } })

@@ -58,7 +58,8 @@ export default function BlogEditor({ initialData, isNew = false }: BlogEditorPro
     setLoading(true);
 
     try {
-      const token = await auth.currentUser?.getIdToken();
+      if (!auth || !auth.currentUser) throw new Error("Not authenticated");
+      const token = await auth.currentUser.getIdToken();
       if (!token) throw new Error("Not authenticated");
 
       const payload = { ...formData };

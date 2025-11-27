@@ -20,41 +20,41 @@ export default function Footer() {
             </div>
           </div>
           <p className="text-[#ababab] text-sm mt-2">
-            Forjando hombres, moldeando destinos.<br />
-            Disciplina. Coraje. Hermandad.
+            Forging men, shaping destinies.<br />
+            Discipline. Courage. Brotherhood.
           </p>
         </div>
         {/* Links rápidos */}
         <div>
-          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">Navegación</h3>
+          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">Navigation</h3>
           <ul className="flex flex-col gap-2">
             <li><Link href="/blog" className="hover:text-[#C62828] transition text-sm">Blog</Link></li>
-            <li><Link href="/herramientas" className="hover:text-[#C62828] transition text-sm">Herramientas</Link></li>
-            <li><Link href="/nosotros" className="hover:text-[#C62828] transition text-sm">Sobre Nosotros</Link></li>
+            <li><Link href="/herramientas" className="hover:text-[#C62828] transition text-sm">Tools</Link></li>
+            <li><Link href="/nosotros" className="hover:text-[#C62828] transition text-sm">About Us</Link></li>
           </ul>
         </div>
         {/* Newsletter */}
         <div>
           <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">Newsletter</h3>
-          <p className="text-[#ababab] text-sm mb-3">Recibe tips de disciplina, masculinidad y automejora en tu correo.</p>
+          <p className="text-[#ababab] text-sm mb-3">Receive tips on discipline, masculinity, and self-improvement in your email.</p>
           <form className="flex flex-col gap-2">
             <input
               type="email"
               className="rounded-lg bg-[#222] border border-[#303030] px-3 py-2 text-sm text-white placeholder-[#888] focus:outline-none"
-              placeholder="Tu email"
+              placeholder="Your email"
               autoComplete="email"
             />
             <button
               type="submit"
               className="rounded-lg bg-[#C62828] px-3 py-2 font-bold text-white text-sm hover:bg-[#a21d1d] transition"
             >
-              Suscribirse
+              Subscribe
             </button>
           </form>
         </div>
         {/* Redes sociales */}
         <div>
-          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">Síguenos</h3>
+          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">Follow Us</h3>
           <div className="flex gap-4 mt-1">
             <a href="#" aria-label="X" className="hover:text-[#C62828] transition">
               {/* X */}
@@ -83,10 +83,10 @@ export default function Footer() {
       </div>
       <div className="border-t border-[#303030] py-4 text-center text-[#ababab] text-xs bg-[#141414]">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
-          <span>&copy; {new Date().getFullYear()} Spartan Club — Todos los derechos reservados.</span>
+          <span>&copy; {new Date().getFullYear()} Spartan Club — All rights reserved.</span>
           <div className="flex gap-4">
-            <Link href="/terminos-y-condiciones" className="hover:text-[#C62828] transition">Términos y Condiciones</Link>
-            <Link href="/politica-de-privacidad" className="hover:text-[#C62828] transition">Política de Privacidad</Link>
+            <Link href="/terminos-y-condiciones" className="hover:text-[#C62828] transition">Terms and Conditions</Link>
+            <Link href="/politica-de-privacidad" className="hover:text-[#C62828] transition">Privacy Policy</Link>
           </div>
         </div>
       </div>

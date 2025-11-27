@@ -26,11 +26,11 @@ export default function BuyCredits() {
           const data = await res.json();
           setPackages(data.packages || []);
         } else {
-          setError('Error al cargar los paquetes');
+          setError('Error loading packages');
         }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (_) {
-        setError('Error de conexión al cargar paquetes');
+        setError('Connection error loading packages');
       } finally {
         setFetching(false);
       }
@@ -62,31 +62,31 @@ export default function BuyCredits() {
         if (paymentUrl) {
           window.location.href = paymentUrl;
         } else {
-          setError('No se pudo obtener la URL de pago');
+          setError('Could not get payment URL');
         }
       } else {
         const errorData = await response.json();
-        setError(errorData.error || 'Error al procesar la compra');
+        setError(errorData.error || 'Error processing purchase');
       }
     } catch {
-      setError('Error de conexión');
+      setError('Connection error');
     } finally {
       setLoading(false);
     }
   };
 
   if (fetching) {
-    return <div className="text-center py-8">Cargando paquetes...</div>;
+    return <div className="text-center py-8">Loading packages...</div>;
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          Comprar Créditos
+          Buy Credits
         </h1>
         <p className="text-gray-600">
-          Selecciona un paquete de créditos para continuar
+          Select a credit package to continue
         </p>
       </div>
 
@@ -111,7 +111,7 @@ export default function BuyCredits() {
               <div className="text-3xl font-bold text-blue-600 mb-2">
                 {pkg.credits.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600 mb-4">créditos</div>
+              <div className="text-sm text-gray-600 mb-4">credits</div>
               
               <div className="text-2xl font-bold text-gray-900 mb-2">
                 ${pkg.price.toLocaleString()}
@@ -126,7 +126,7 @@ export default function BuyCredits() {
                 disabled={loading}
                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               >
-                {loading ? 'Procesando...' : 'Comprar'}
+                {loading ? 'Processing...' : 'Buy'}
               </button>
             </div>
           </div>
@@ -135,13 +135,13 @@ export default function BuyCredits() {
 
       <div className="mt-8 bg-gray-50 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Información Importante
+          Important Information
         </h3>
         <ul className="space-y-2 text-sm text-gray-600">
-          <li>• Los créditos se acreditan automáticamente después del pago</li>
-          <li>• Puedes usar los créditos para comprar productos en la plataforma</li>
-          <li>• Los pagos se procesan de forma segura a través de MercadoPago</li>
-          <li>• Si tienes problemas, contacta a soporte</li>
+          <li>• Credits are automatically credited after payment</li>
+          <li>• You can use credits to buy products on the platform</li>
+          <li>• Payments are processed securely through MercadoPago</li>
+          <li>• If you have problems, contact support</li>
         </ul>
       </div>
     </div>

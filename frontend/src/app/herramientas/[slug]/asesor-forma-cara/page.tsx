@@ -24,6 +24,8 @@ export default function Page() {
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showCreditsModal, setShowCreditsModal] = useState(false);
 
   const suggestions = [
     "Create a beard style that elongates my face",

@@ -1,5 +1,5 @@
 // src/components/Carousel.tsx
-"use client"; // necesario en Next.js 14+
+"use client"; // required in Next.js 14+
 
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';

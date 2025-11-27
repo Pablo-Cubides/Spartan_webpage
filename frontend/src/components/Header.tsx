@@ -23,10 +23,10 @@ export default function Header() {
               Blog
             </Link>
             <Link href="/herramientas" className="text-sm font-medium leading-normal text-white">
-              Herramientas
+              Tools
             </Link>
             <Link href="/nosotros" className="text-sm font-medium leading-normal text-white">
-              Sobre Nosotros
+              About Us
             </Link>
           </div>
           <div className="flex gap-2">
@@ -34,7 +34,7 @@ export default function Header() {
               onClick={() => setModalOpen(true)}
               className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-white text-sm font-bold leading-normal tracking-[0.015em]"
             >
-              <span className="truncate">Iniciar Sesión</span>
+              <span className="truncate">Log In</span>
             </button>
           </div>
         </div>

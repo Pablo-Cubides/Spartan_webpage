@@ -47,20 +47,15 @@ const putHandler = async (request: NextRequest) => {
   const body = await parseJsonBody(request, UpdateUserProfileSchema)
 
   const data = {
-    email: body.email,
-    name: body.name,
-    alias: body.alias,
-    avatar_id: body.avatar_id,
+    ...(body.email && { email: body.email }),
+    ...(body.name && { name: body.name }),
+    ...(body.alias && { alias: body.alias }),
+    ...(body.avatar_id && { avatar_id: body.avatar_id }),
   }
 
-  const user = await prisma.user.upsert({
+  const user = await prisma.user.update({
     where: { uid },
-    update: data,
-    create: { 
-      uid, 
-      ...data,
-      credits: 2 // Give 2 free credits on first signup
-    },
+    data,
   })
 
   return NextResponse.json({ user })

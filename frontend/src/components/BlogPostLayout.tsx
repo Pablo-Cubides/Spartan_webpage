@@ -26,7 +26,7 @@ export default function BlogPostLayout({ title, date, category, heroImage, child
           <div className="max-w-4xl mx-auto -mt-20 md:-mt-24 relative z-10 bg-[#121212] p-6 md:p-10 text-center rounded-xl shadow-xl border border-neutral-800">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight">{title}</h1>
             {date || category ? (
-              <p className="mt-4 text-sm md:text-base text-[#D1D5DB]">{date ? `Publicado el ${date}` : ""} {category ? ` | Categoría: ${category}` : ""}</p>
+              <p className="mt-4 text-sm md:text-base text-[#D1D5DB]">{date ? `Published on ${date}` : ""} {category ? ` | Category: ${category}` : ""}</p>
             ) : null}
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function BlogPostLayout({ title, date, category, heroImage, child
 
           <aside className="space-y-8 lg:col-span-1">
             <div className="rounded-xl bg-[#222222] p-6">
-              <h3 className="text-xl text-white font-bold">Artículos Relacionados</h3>
+              <h3 className="text-xl text-white font-bold">Related Articles</h3>
               <div className="mt-6 space-y-6">
                 {related.length > 0 ? (
                   related.map((r) => (
@@ -62,7 +62,7 @@ export default function BlogPostLayout({ title, date, category, heroImage, child
                     </a>
                   ))
                 ) : (
-                  <p className="text-sm text-[#D1D5DB]">No hay artículos relacionados.</p>
+                  <p className="text-sm text-[#D1D5DB]">No related articles.</p>
                 )}
               </div>
             </div>

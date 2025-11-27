@@ -29,18 +29,18 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
     setMsg(null);
     try {
       if (!auth) {
-        setMsg("Error: servicio de autenticación no inicializado.");
+        setMsg("Error: authentication service not initialized.");
         setLoading(false);
         return;
       }
       await signInWithEmailAndPassword(auth, email, password);
-      setMsg("¡Bienvenido!");
+      setMsg("Welcome!");
       setTimeout(onClose, 800);
     } catch (error) {
       if (error instanceof Error) {
-        setMsg(error.message || "Error al iniciar sesión.");
+        setMsg(error.message || "Error logging in.");
       } else {
-        setMsg("Error al iniciar sesión.");
+        setMsg("Error logging in.");
       }
     } finally {
       setLoading(false);
@@ -53,18 +53,18 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
     setMsg(null);
     try {
       if (!auth) {
-        setMsg("Error: servicio de autenticación no inicializado.");
+        setMsg("Error: authentication service not initialized.");
         setLoading(false);
         return;
       }
       await createUserWithEmailAndPassword(auth, email, password);
-      setMsg("¡Registro exitoso!");
+      setMsg("Registration successful!");
       setTimeout(onClose, 1000);
     } catch (error) {
       if (error instanceof Error) {
-        setMsg(error.message || "Error al registrar.");
+        setMsg(error.message || "Error registering.");
       } else {
-        setMsg("Error al registrar.");
+        setMsg("Error registering.");
       }
     } finally {
       setLoading(false);
@@ -77,12 +77,12 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
     try {
       const provider = new GoogleAuthProvider();
       if (!auth) {
-        setMsg("Error: servicio de autenticación no inicializado.");
+        setMsg("Error: authentication service not initialized.");
         setLoading(false);
         return;
       }
       await signInWithPopup(auth, provider);
-      setMsg("¡Bienvenido con Google!");
+      setMsg("Welcome with Google!");
       setTimeout(onClose, 800);
     } catch (error: unknown) {
       // Manejo seguro sin usar `any`
@@ -91,14 +91,14 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
         if (typeof maybe.code === 'string' && maybe.code === 'auth/popup-closed-by-user') {
           setMsg("");
         } else if (error instanceof Error) {
-          setMsg(error.message || "Error al iniciar sesión con Google.");
+          setMsg(error.message || "Error logging in with Google.");
         } else {
-          setMsg("Error al iniciar sesión con Google.");
+          setMsg("Error logging in with Google.");
         }
       } else if (error instanceof Error) {
-        setMsg(error.message || "Error al iniciar sesión con Google.");
+        setMsg(error.message || "Error logging in with Google.");
       } else {
-        setMsg("Error al iniciar sesión con Google.");
+        setMsg("Error logging in with Google.");
       }
     } finally {
       setLoading(false);
@@ -112,7 +112,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
         <button
           className="absolute right-5 top-5 text-[#ba9c9c] hover:text-white"
           onClick={onClose}
-          aria-label="Cerrar"
+          aria-label="Close"
         >
           <svg width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
             <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -140,7 +140,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
             }`}
             onClick={() => setTab("login")}
           >
-            Iniciar Sesión
+            Log In
           </button>
           <button
             className={`pb-2 font-bold text-base ${
@@ -150,7 +150,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
             }`}
             onClick={() => setTab("register")}
           >
-            Registrarse
+            Register
           </button>
         </div>
 
@@ -171,7 +171,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            {loading ? "Cargando..." : "Continuar con Google"}
+            {loading ? "Loading..." : "Continue with Google"}
           </button>
         </div>
 
@@ -181,7 +181,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
             <div className="w-full border-t border-[#392828]"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-[#181111] text-[#ba9c9c]">o</span>
+            <span className="px-2 bg-[#181111] text-[#ba9c9c]">or</span>
           </div>
         </div>
 
@@ -191,7 +191,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
             type="email"
             required
             autoFocus
-            placeholder="Correo electrónico"
+            placeholder="Email"
             className="rounded-lg bg-[#222] border border-[#392828] px-3 py-2 text-sm text-white placeholder-[#888] focus:outline-none focus:border-[#c20909]"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -199,7 +199,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
           <input
             type="password"
             required
-            placeholder="Contraseña"
+            placeholder="Password"
             minLength={6}
             className="rounded-lg bg-[#222] border border-[#392828] px-3 py-2 text-sm text-white placeholder-[#888] focus:outline-none focus:border-[#c20909]"
             value={password}
@@ -214,7 +214,7 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
                 : "bg-[#c20909] text-white hover:bg-[#a21d1d] cursor-pointer"
             }`}
           >
-            {loading ? "Cargando..." : tab === "login" ? "Entrar" : "Registrarse"}
+            {loading ? "Loading..." : tab === "login" ? "Enter" : "Register"}
           </button>
           {msg && (
             <div className={`text-center text-sm ${
@@ -228,9 +228,9 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
         {/* Información adicional */}
         <div className="mt-6 text-center text-xs text-[#ba9c9c]">
           {tab === "login" ? (
-            <p>¿No tienes cuenta? <button onClick={() => setTab("register")} className="text-[#c20909] hover:underline">Regístrate aquí</button></p>
+            <p>Don&apos;t have an account? <button onClick={() => setTab("register")} className="text-[#c20909] hover:underline">Register here</button></p>
           ) : (
-            <p>¿Ya tienes cuenta? <button onClick={() => setTab("login")} className="text-[#c20909] hover:underline">Inicia sesión aquí</button></p>
+            <p>Already have an account? <button onClick={() => setTab("login")} className="text-[#c20909] hover:underline">Log in here</button></p>
           )}
         </div>
       </div>

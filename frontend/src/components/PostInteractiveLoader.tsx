@@ -36,7 +36,7 @@ export default function PostInteractiveLoader({ slug, title }: { slug: string; t
       <ShareButton title={title} />
       <button onClick={handleCommentClick} className="flex items-center gap-2 bg-[#111] border border-[#333] px-4 py-2 rounded hover:bg-[#1a1a1a] text-white">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#D1D5DB]"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-        Comentar
+        Comment
       </button>
 
       <ModalLogin open={showLogin} onClose={() => setShowLogin(false)} />
