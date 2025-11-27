@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Spartan Club Frontend
+
+A modern Next.js application for the Spartan Club platform.
+
 ## Getting Started
 
 First, run the development server:
