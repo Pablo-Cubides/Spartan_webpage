@@ -1,5 +1,5 @@
 // Barrel exports for asesor-estilo module
-export * from './cache/index';
+export * from './cache';
 export * from './config/app.config';
 export * from './ai/logger';
 export * from './credits';
