@@ -392,8 +392,8 @@ export default function Page() {
             <div className="relative h-60 w-auto mx-auto">
               <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
             </div>
-            <h1 className="chat-title">Asesor de Forma de Cara</h1>
-            <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más adaptados a tu forma de cara.</p>
+            <h1 className="chat-title">Face Shape Advisor</h1>
+            <p className="chat-sub">Get advice on beard cuts, hairstyles and more tailored to your face shape.</p>
           </div>
 
           <div className="p-6">
@@ -404,8 +404,8 @@ export default function Page() {
               onDrop={handleDrop}
               className={`p-8 rounded-lg text-center dropzone-visible ${isDragging ? "border-dashed border-indigo-400 bg-indigo-800/5" : "border-dashed border-transparent"}`}
             >
-              <h2 className="mb-2 text-lg font-semibold">Sube tu foto para una asesoría</h2>
-              <p className="mb-4 text-sm text-muted-foreground">Recomendamos que sea una foto de frente con buena iluminación.</p>
+              <h2 className="mb-2 text-lg font-semibold">Upload your photo for advice</h2>
+              <p className="mb-4 text-sm text-muted-foreground">We recommend a front-facing photo with good lighting.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
                 <button 
                   onClick={handleUploadClick} 
@@ -413,7 +413,7 @@ export default function Page() {
                   className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
                 >
                   <Upload size={20} />
-                  {loading ? "Procesando..." : "Subir Foto"}
+                  {loading ? "Processing..." : "Upload Photo"}
                 </button>
                 
                 <button 
@@ -422,7 +422,7 @@ export default function Page() {
                   className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
                 >
                   <Camera size={20} />
-                  Tomar Foto
+                  Take Photo
                 </button>
                 
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
@@ -448,13 +448,13 @@ export default function Page() {
           <div className="relative mx-auto mb-4 h-20 md:h-24 lg:h-28 w-auto">
             <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
           </div>
-          <h1 className="chat-title">Asesor de Forma de Cara</h1>
-          <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más adaptados a tu forma de cara.</p>
+          <h1 className="chat-title">Face Shape Advisor</h1>
+          <p className="chat-sub">Get advice on beard cuts, hairstyles and more tailored to your face shape.</p>
         </div>
 
         <div className="messages">
           {messages.length === 0 && (
-            <div className="py-12 text-center text-gray-400">Sube una imagen para comenzar la asesoría.</div>
+            <div className="py-12 text-center text-gray-400">Upload an image to start the consultation.</div>
           )}
 
           {messages.map((m, i) => (
@@ -487,7 +487,7 @@ export default function Page() {
                     {(() => {
                       const payload = m.action?.payload;
                       return (
-                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Procesando...' : 'Reintentar'}</button>
+                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Processing...' : 'Retry'}</button>
                       );
                     })()}
                   </div>
@@ -502,16 +502,16 @@ export default function Page() {
         </div>
 
         <div className="input-bar">
-          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Sube una imagen primero"} className="input-textarea" />
+          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder={originalUrl ? "Describe the changes you want..." : "Upload an image first"} className="input-textarea" />
           <div className="flex items-center gap-2">
-            <button onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Subir imagen">
+            <button onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Upload image">
               <Upload size={20} />
             </button>
-            <button onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
+            <button onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Take photo">
               <Camera size={20} />
             </button>
             <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-            <button onClick={() => handleGenerate()} disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
+            <button onClick={() => handleGenerate()} disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Processing..." : "Generate"}</button>
           </div>
         </div>
 
@@ -524,7 +524,7 @@ export default function Page() {
               </button>
             ))
           ) : (
-            <div className="text-sm text-muted-foreground">Sube una imagen para ver sugerencias.</div>
+            <div className="text-sm text-muted-foreground">Upload an image to see suggestions.</div>
           )}
         </div>
       </div>
@@ -571,7 +571,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         setError(null);
 
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error("Tu navegador no soporta acceso a cámara. Actualiza tu navegador o usa Chrome/Edge.");
+          throw new Error("Your browser does not support camera access. Update your browser or use Chrome/Edge.");
         }
 
         console.log("[Camera] Verificando permisos existentes...");
@@ -639,7 +639,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
           msg = "🚫 **Permission Denied**\n\nTHE BROWSER BLOCKED THE CAMERA.\n\n**Steps to fix:**\n\n1. Close this modal\n2. Click on the 🔒 or ⓘ icon next to the URL\n3. In 'Camera', select 'Allow'\n4. Reload the page (F5)\n5. Click 'Take Photo' again\n\nIf the problem persists, your antivirus may be blocking the camera.";
         } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
-          msg = "📷 **No Camera**\n\nNo connected camera detected.\n\nCheck that:\n• The camera is connected\n• Drivers are installed\n• Windows recognizes it (Settings > Camera)";
+          msg = "📷 **No Camera Found**\n\nNo connected camera detected.\n\nCheck that:\n• The camera is connected\n• Drivers are installed\n• Windows recognizes it (Settings > Camera)";
         } else if (code === 'NotReadableError' || code === 'TrackStartError') {
           msg = "⚠️ **Camera Busy**\n\nAnother application is using the camera.\n\nClose these apps if open:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
         } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {

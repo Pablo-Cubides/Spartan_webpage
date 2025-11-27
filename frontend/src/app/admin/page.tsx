@@ -67,7 +67,7 @@ export default function AdminPanel() {
   // Verificar si el usuario es admin (basado en role en BD, no en email)
   const isAdmin = user && user.uid ? (
     // La verificación real ocurre en el servidor en /api/v1/admin/users
-    // El cliente solo intenta cargar datos; el servidor rechazará si no es admin
+    // The client only attempts to load data; the server will reject if not admin
     true // Permitir intento; servidor validará
   ) : false;
 
@@ -171,7 +171,7 @@ export default function AdminPanel() {
   };
 
   const handleDeletePost = async (id: number) => {
-    if (!confirm('¿Estás seguro de eliminar este post?')) return;
+    if (!confirm('Are you sure you want to delete this post?')) return;
 
     try {
       const token = await user?.getIdToken();
@@ -191,7 +191,7 @@ export default function AdminPanel() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando...</p>
+          <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -202,13 +202,13 @@ export default function AdminPanel() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-8">Panel de Administración</h1>
-            <p className="text-gray-600 mb-6">Inicia sesión para acceder al panel de administración</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-8">Administration Panel</h1>
+            <p className="text-gray-600 mb-6">Sign in to access the administration panel</p>
             <button
               onClick={signInWithGoogle}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Iniciar sesión con Google
+              Sign in with Google
             </button>
           </div>
         </div>
@@ -221,13 +221,13 @@ export default function AdminPanel() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">Acceso Denegado</h1>
-            <p className="text-gray-600 mb-6">No tienes permisos para acceder al panel de administración</p>
+            <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+            <p className="text-gray-600 mb-6">You do not have permissions to access the administration panel</p>
             <button
               onClick={signOut}
               className="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors"
             >
-              Cerrar sesión
+              Sign out
             </button>
           </div>
         </div>
@@ -241,14 +241,14 @@ export default function AdminPanel() {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <h1 className="text-2xl font-bold text-gray-900">Panel de Administración</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Administration Panel</h1>
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">{user.email}</span>
               <button
                 onClick={signOut}
                 className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
               >
-                Cerrar sesión
+                Sign out
               </button>
             </div>
           </div>
@@ -267,7 +267,7 @@ export default function AdminPanel() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              Usuarios ({users.length})
+              Users ({users.length})
             </button>
             <button
               onClick={() => setActiveTab('purchases')}
@@ -277,7 +277,7 @@ export default function AdminPanel() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              Compras ({purchases.length})
+              Purchases ({purchases.length})
             </button>
             <button
               onClick={() => setActiveTab('packages')}
@@ -287,7 +287,7 @@ export default function AdminPanel() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
-              Paquetes ({packages.length})
+              Packages ({packages.length})
             </button>
             <button
               onClick={() => setActiveTab('blog')}
@@ -308,28 +308,28 @@ export default function AdminPanel() {
         {loadingData ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Cargando datos...</p>
+            <p className="mt-4 text-gray-600">Loading data...</p>
           </div>
         ) : (
           <div className="bg-white shadow rounded-lg">
             {activeTab === 'users' && (
               <div className="px-6 py-4">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Usuarios Registrados</h2>
+                <h2 className="text-lg font-medium text-gray-900 mb-4">Registered Users</h2>
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Usuario
+                          User
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Alias
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Créditos
+                          Credits
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Registro
+                          Registration
                         </th>
                       </tr>
                     </thead>
@@ -373,7 +373,7 @@ export default function AdminPanel() {
 
             {activeTab === 'purchases' && (
               <div className="px-6 py-4">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Historial de Compras</h2>
+                <h2 className="text-lg font-medium text-gray-900 mb-4">Purchase History</h2>
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
@@ -382,19 +382,19 @@ export default function AdminPanel() {
                           ID
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Usuario
+                          User
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Paquete
+                          Package
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Monto
+                          Amount
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Estado
+                          Status
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Fecha
+                          Date
                         </th>
                       </tr>
                     </thead>
@@ -408,7 +408,7 @@ export default function AdminPanel() {
                             {purchase.user_id}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {purchase.credits_received} créditos
+                            {purchase.credits_received} credits
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             ${purchase.amount_paid}
@@ -437,7 +437,7 @@ export default function AdminPanel() {
 
             {activeTab === 'packages' && (
               <div className="px-6 py-4">
-                <h2 className="text-lg font-medium text-gray-900 mb-4">Paquetes de Créditos</h2>
+                <h2 className="text-lg font-medium text-gray-900 mb-4">Credit Packages</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {packages.map((pkg) => (
                     <div key={pkg.id} className="bg-gray-50 rounded-lg p-6">
@@ -448,16 +448,16 @@ export default function AdminPanel() {
                             ? 'bg-green-100 text-green-800'
                             : 'bg-red-100 text-red-800'
                         }`}>
-                          {pkg.is_active ? 'Activo' : 'Inactivo'}
+                          {pkg.is_active ? 'Active' : 'Inactive'}
                         </span>
                       </div>
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Créditos:</span>
+                          <span className="text-gray-600">Credits:</span>
                           <span className="font-medium">{pkg.credits}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-600">Precio:</span>
+                          <span className="text-gray-600">Price:</span>
                           <span className="font-medium">${pkg.price}</span>
                         </div>
                       </div>
@@ -470,7 +470,7 @@ export default function AdminPanel() {
             {activeTab === 'blog' && (
               <div className="px-6 py-4">
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-medium text-gray-900">Gestión del Blog</h2>
+                  <h2 className="text-lg font-medium text-gray-900">Blog Management</h2>
                   <button
                     onClick={() => {
                       setCurrentPost({ is_published: false });
@@ -478,13 +478,13 @@ export default function AdminPanel() {
                     }}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   >
-                    Nuevo Post
+                    New Post
                   </button>
                 </div>
 
                 {isEditingPost ? (
                   <div className="bg-gray-50 p-6 rounded-lg mb-6">
-                    <h3 className="text-lg font-medium mb-4">{currentPost.id ? 'Editar Post' : 'Nuevo Post'}</h3>
+                    <h3 className="text-lg font-medium mb-4">{currentPost.id ? 'Edit Post' : 'New Post'}</h3>
                     {postFormError && (
                       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                         {postFormError}
@@ -492,7 +492,7 @@ export default function AdminPanel() {
                     )}
                     <form onSubmit={handleSavePost} className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Título</label>
+                        <label className="block text-sm font-medium text-gray-700">Title</label>
                         <input
                           type="text"
                           value={currentPost.title || ''}
@@ -512,7 +512,7 @@ export default function AdminPanel() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Extracto</label>
+                        <label className="block text-sm font-medium text-gray-700">Excerpt</label>
                         <textarea
                           value={currentPost.excerpt || ''}
                           onChange={e => setCurrentPost({...currentPost, excerpt: e.target.value})}
@@ -521,7 +521,7 @@ export default function AdminPanel() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Contenido</label>
+                        <label className="block text-sm font-medium text-gray-700">Content</label>
                         <textarea
                           value={currentPost.content || ''}
                           onChange={e => setCurrentPost({...currentPost, content: e.target.value})}
@@ -531,7 +531,7 @@ export default function AdminPanel() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Imagen de Portada (URL)</label>
+                        <label className="block text-sm font-medium text-gray-700">Cover Image (URL)</label>
                         <input
                           type="url"
                           value={currentPost.cover_image || ''}
@@ -541,7 +541,7 @@ export default function AdminPanel() {
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Fecha de Publicación</label>
+                          <label className="block text-sm font-medium text-gray-700">Publication Date</label>
                           <input
                             type="datetime-local"
                             value={currentPost.published_at ? new Date(currentPost.published_at).toISOString().slice(0, 16) : ''}
@@ -558,7 +558,7 @@ export default function AdminPanel() {
                             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                           />
                           <label className="ml-2 block text-sm text-gray-900">
-                            Publicado
+                            Published
                           </label>
                         </div>
                       </div>
@@ -568,13 +568,13 @@ export default function AdminPanel() {
                           onClick={() => setIsEditingPost(false)}
                           className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
                         >
-                          Cancelar
+                          Cancel
                         </button>
                         <button
                           type="submit"
                           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                         >
-                          Guardar
+                          Save
                         </button>
                       </div>
                     </form>
@@ -584,11 +584,11 @@ export default function AdminPanel() {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publicación</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Autor</th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publication</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
@@ -604,7 +604,7 @@ export default function AdminPanel() {
                                   ? 'bg-green-100 text-green-800'
                                   : 'bg-yellow-100 text-yellow-800'
                               }`}>
-                                {post.is_published ? 'Publicado' : 'Borrador'}
+                                {post.is_published ? 'Published' : 'Draft'}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -621,13 +621,13 @@ export default function AdminPanel() {
                                 }}
                                 className="text-blue-600 hover:text-blue-900 mr-4"
                               >
-                                Editar
+                                Edit
                               </button>
                               <button
                                 onClick={() => handleDeletePost(post.id)}
                                 className="text-red-600 hover:text-red-900"
                               >
-                                Eliminar
+                                Delete
                               </button>
                             </td>
                           </tr>

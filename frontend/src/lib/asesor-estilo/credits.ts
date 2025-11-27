@@ -39,19 +39,19 @@ export async function enforceCredits(
   }
 
   if (!userId) {
-    throw new CreditError('Debes iniciar sesión para usar esta función.', cost, 0);
+    throw new CreditError('You must log in to use this function.', cost, 0);
   }
 
   const user = await prisma.user.findUnique({ where: { uid: userId } });
   if (!user) {
-    throw new CreditError('Usuario no encontrado.', cost, 0);
+    throw new CreditError('User not found.', cost, 0);
   }
   
   const hasEnough = await globalCheck(user.id, cost);
   
   if (!hasEnough) {
     throw new CreditError(
-      `Créditos insuficientes. Requeridos: ${cost}, Disponibles: ${user.credits}`,
+      `Insufficient credits. Required: ${cost}, Available: ${user.credits}`,
       cost,
       user.credits
     );

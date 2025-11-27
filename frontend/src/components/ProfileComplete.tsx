@@ -95,7 +95,7 @@ export default function ProfileComplete() {
               />
             </div>
 
-            {/* Nombre Completo */}
+            {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Name *
@@ -124,7 +124,7 @@ export default function ProfileComplete() {
               />
             </div>
 
-            {/* Ubicación */}
+            {/* Location */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Location *
@@ -141,7 +141,7 @@ export default function ProfileComplete() {
               </select>
             </div>
 
-            {/* Género */}
+            {/* Gender */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Gender *
@@ -158,7 +158,7 @@ export default function ProfileComplete() {
               </select>
             </div>
 
-            {/* Fecha de Nacimiento */}
+            {/* Birth Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Birth Date
@@ -171,7 +171,7 @@ export default function ProfileComplete() {
               />
             </div>
 
-            {/* Sitio Web */}
+            {/* Website */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Website
@@ -185,7 +185,7 @@ export default function ProfileComplete() {
               />
             </div>
 
-            {/* Redes Sociales */}
+            {/* Social Media */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-900">Social Media</h3>
               
