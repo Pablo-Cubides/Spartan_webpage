@@ -101,10 +101,12 @@ dist/
 # UPLOADS & CACHE
 # =============================================================================
 uploads/
-cache/
+/cache/
 .cache/
-temp/
-tmp/
+/temp/
+/tmp/
+# Exception: source code cache modules should be tracked
+!frontend/src/lib/asesor-estilo/cache/
 
 # =============================================================================
 # GIT

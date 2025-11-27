@@ -1,0 +1,4 @@
+{
+  "name": "@spartan-club/cache",
+  "main": "./index.ts"
+}
