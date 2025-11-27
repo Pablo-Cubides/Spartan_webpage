@@ -1,9 +1,9 @@
 /**
- * FASE 4: Paginación - Implementación Completada
+ * PHASE 4: Pagination - Implementation Completed
  * 
- * Este archivo documenta la paginación implementada en los endpoints críticos.
+ * This file documents the pagination implemented in critical endpoints.
  * 
- * ENDPOINTS CON PAGINACIÓN:
+ * ENDPOINTS WITH PAGINATION:
  * 
  * 1. GET /api/admin/users
  *    Query params: ?page=1&limit=10
@@ -25,26 +25,26 @@
  *    Response includes: { posts[], pagination { page, limit, total, pages, hasNextPage, hasPrevPage } }
  *    Max limit: 50 (public endpoint - more restrictive)
  * 
- * CARACTERÍSTICAS:
- * - ✅ Validación de parámetros (page >= 1, limit entre 1 y max)
+ * FEATURES:
+ * - ✅ Parameter validation (page >= 1, limit between 1 and max)
  * - ✅ Total count calculations
- * - ✅ Información de navegación (hasNextPage, hasPrevPage)
- * - ✅ Respuestas consistentes
- * - ✅ Errores bien tipados (ValidationError)
+ * - ✅ Navigation information (hasNextPage, hasPrevPage)
+ * - ✅ Consistent responses
+ * - ✅ Well-typed errors (ValidationError)
  * 
- * EJEMPLO DE USO:
+ * USAGE EXAMPLE:
  * 
- * // Obtener página 1 con 10 items
+ * // Get page 1 with 10 items
  * const response = await fetch('/api/admin/users?page=1&limit=10', {
  *   headers: { 'Authorization': 'Bearer YOUR_TOKEN' }
  * });
  * 
  * const data = await response.json();
- * console.log(data.users);           // Array de usuarios
- * console.log(data.pagination.total); // Total de usuarios en BD
- * console.log(data.pagination.pages); // Número de páginas
+ * console.log(data.users);           // User array
+ * console.log(data.pagination.total); // Total users in DB
+ * console.log(data.pagination.pages); // Number of pages
  * 
- * // Cliente puede iterar usando hasNextPage
+ * // Client can iterate using hasNextPage
  * if (data.pagination.hasNextPage) {
  *   const nextPage = await fetch(`/api/admin/users?page=${page + 1}&limit=10`);
  * }
@@ -68,7 +68,7 @@ export const PAGINATION_CONFIG = {
 };
 
 /**
- * Helper function para construir URLs de paginación
+ * Helper function to build pagination URLs
  */
 export function buildPaginationUrl(baseUrl: string, page: number, limit: number): string {
   const url = new URL(baseUrl);
@@ -78,7 +78,7 @@ export function buildPaginationUrl(baseUrl: string, page: number, limit: number)
 }
 
 /**
- * Interface para respuestas paginadas
+ * Interface for paginated responses
  */
 export interface PaginatedResponse<T> {
   data: T[];

@@ -1,45 +1,45 @@
 /**
- * Input Validation y Sanitización para Frontend
+ * Input Validation and Sanitization for Frontend
  */
 import React from 'react';
 
 export const FormValidator = {
   /**
-   * Validar email
+   * Validate email
    */
   email: (email: string): { valid: boolean; error?: string } => {
     const trimmed = email.trim().toLowerCase();
     const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (!trimmed) {
-      return { valid: false, error: 'El email es requerido' };
+      return { valid: false, error: 'Email is required' };
     }
     
     if (!pattern.test(trimmed)) {
-      return { valid: false, error: 'Email inválido' };
+      return { valid: false, error: 'Invalid email' };
     }
     
     if (trimmed.length > 254) {
-      return { valid: false, error: 'Email demasiado largo' };
+      return { valid: false, error: 'Email too long' };
     }
     
     return { valid: true };
   },
 
   /**
-   * Validar contraseña
+   * Validate password
    */
   password: (password: string): { valid: boolean; error?: string } => {
     if (!password) {
-      return { valid: false, error: 'La contraseña es requerida' };
+      return { valid: false, error: 'Password is required' };
     }
     
     if (password.length < 8) {
-      return { valid: false, error: 'Mínimo 8 caracteres' };
+      return { valid: false, error: 'Minimum 8 characters' };
     }
     
     if (password.length > 128) {
-      return { valid: false, error: 'Máximo 128 caracteres' };
+      return { valid: false, error: 'Maximum 128 characters' };
     }
     
     const hasUpper = /[A-Z]/.test(password);
@@ -49,7 +49,7 @@ export const FormValidator = {
     if (!hasUpper || !hasLower || !hasDigit) {
       return {
         valid: false,
-        error: 'Debe contener mayúsculas, minúsculas y números'
+        error: 'Must contain uppercase, lowercase and numbers'
       };
     }
     
@@ -57,27 +57,27 @@ export const FormValidator = {
   },
 
   /**
-   * Validar username
+   * Validate username
    */
   username: (username: string): { valid: boolean; error?: string } => {
     const trimmed = username.trim();
     
     if (!trimmed) {
-      return { valid: false, error: 'El usuario es requerido' };
+      return { valid: false, error: 'Username is required' };
     }
     
     if (trimmed.length < 3) {
-      return { valid: false, error: 'Mínimo 3 caracteres' };
+      return { valid: false, error: 'Minimum 3 characters' };
     }
     
     if (trimmed.length > 30) {
-      return { valid: false, error: 'Máximo 30 caracteres' };
+      return { valid: false, error: 'Maximum 30 characters' };
     }
     
     if (!/^[a-zA-Z0-9_-]+$/.test(trimmed)) {
       return {
         valid: false,
-        error: 'Solo letras, números, guiones y guiones bajos'
+        error: 'Only letters, numbers, hyphens and underscores'
       };
     }
     
@@ -85,19 +85,19 @@ export const FormValidator = {
   },
 
   /**
-   * Validar URL
+   * Validate URL
    */
   url: (url: string): { valid: boolean; error?: string } => {
     try {
       new URL(url);
       return { valid: true };
     } catch {
-      return { valid: false, error: 'URL inválida' };
+      return { valid: false, error: 'Invalid URL' };
     }
   },
 
   /**
-   * Validar número
+   * Validate number
    */
   number: (
     value: string | number,
@@ -107,42 +107,42 @@ export const FormValidator = {
     const num = Number(value);
     
     if (isNaN(num)) {
-      return { valid: false, error: 'Debe ser un número' };
+      return { valid: false, error: 'Must be a number' };
     }
     
     if (min !== undefined && num < min) {
-      return { valid: false, error: `Mínimo ${min}` };
+      return { valid: false, error: `Minimum ${min}` };
     }
     
     if (max !== undefined && num > max) {
-      return { valid: false, error: `Máximo ${max}` };
+      return { valid: false, error: `Maximum ${max}` };
     }
     
     return { valid: true };
   },
 
   /**
-   * Validar archivo
+   * Validate file
    */
   file: (
     file: File,
     options?: { maxSize?: number; allowedTypes?: string[] }
   ): { valid: boolean; error?: string } => {
     if (!file) {
-      return { valid: false, error: 'Archivo requerido' };
+      return { valid: false, error: 'File required' };
     }
 
     if (options?.maxSize && file.size > options.maxSize) {
       return {
         valid: false,
-        error: `Archivo demasiado grande (máx ${(options.maxSize / 1024 / 1024).toFixed(2)}MB)`
+        error: `File too large (max ${(options.maxSize / 1024 / 1024).toFixed(2)}MB)`
       };
     }
 
     if (options?.allowedTypes && !options.allowedTypes.includes(file.type)) {
       return {
         valid: false,
-        error: `Tipo de archivo no permitido. Permitidos: ${options.allowedTypes.join(', ')}`
+        error: `File type not allowed. Allowed: ${options.allowedTypes.join(', ')}`
       };
     }
 
@@ -151,11 +151,11 @@ export const FormValidator = {
 };
 
 /**
- * Sanitizar strings
+ * Sanitize strings
  */
 export const Sanitizer = {
   /**
-   * Remover HTML peligroso
+   * Remove dangerous HTML
    */
   html: (text: string): string => {
     const div = document.createElement('div');
@@ -164,7 +164,7 @@ export const Sanitizer = {
   },
 
   /**
-   * Sanitizar string simple
+   * Sanitize simple string
    */
   text: (text: string, maxLength?: number): string => {
     let result = text.trim();
@@ -180,7 +180,7 @@ export const Sanitizer = {
   },
 
   /**
-   * Remover caracteres especiales peligrosos
+   * Remove dangerous special characters
    */
   alphanum: (text: string): string => {
     return text.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -200,7 +200,7 @@ interface FormTouched {
 }
 
 /**
- * Hook personalizado para validación de formularios
+ * Custom hook for form validation
  */
 export const useFormValidation = (
   initialState: FormState,
@@ -214,7 +214,7 @@ export const useFormValidation = (
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues(prev => ({ ...prev, [name]: value }));
-    // Limpiar error cuando el usuario empieza a escribir
+    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
