@@ -7,8 +7,8 @@ type Tool = { imageUrl?: string; title: string; description?: string };
 const getHandler = async (request: NextRequest) => {
   // Minimal default content used for local development and preview.
   const defaultContent = {
-    hero: { backgroundImageUrl: '/default-hero.jpg', title: 'Spartan Club', subtitle: 'Bienvenido' },
-    featuredPost: { imageUrl: '/default-post.jpg', category: 'General', title: 'Bienvenido a Spartan Club', description: 'Contenido de ejemplo' },
+    hero: { backgroundImageUrl: '/default-hero.jpg', title: 'Spartan Club', subtitle: 'Welcome' },
+    featuredPost: { imageUrl: '/default-post.jpg', category: 'General', title: 'Welcome to Spartan Club', description: 'Example content' },
     posts: [] as Post[],
     tools: [] as Tool[],
   };

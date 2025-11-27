@@ -148,7 +148,7 @@ export default async function Home() {
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-spartan-red to-transparent"></div>
               <div className="relative z-10 text-center">
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-4">Join the Legion</h2>
-                <p className="text-gray-400 mb-8 max-w-2xl mx-auto">Recibe estrategias semanales, inspiración y acceso exclusivo a contenido directamente en tu email. Sin spam, solo valor.</p>
+                <p className="text-gray-400 mb-8 max-w-2xl mx-auto">Receive weekly strategies, inspiration, and exclusive content directly in your email. No spam, just value.</p>
                 <NewsletterForm />
               </div>
             </div>

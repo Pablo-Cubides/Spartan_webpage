@@ -27,119 +27,117 @@ const makeSlug = (s: string) =>
 export const POSTS: Post[] = [
   {
     id: "f1",
-    slug: makeSlug("EL CAMINO DEL GUERRERO: DISCIPLINA Y RESILIENCIA"),
-    title: "EL CAMINO DEL GUERRERO: DISCIPLINA Y RESILIENCIA",
+    slug: makeSlug("THE WARRIOR'S PATH: DISCIPLINE AND RESILIENCE"),
+    title: "THE WARRIOR'S PATH: DISCIPLINE AND RESILIENCE",
     excerpt:
-      "Descubre como la disciplina y la resiliencia son fundamentales para los males y superar los obstáculos de la vida.",
+      "Discover how discipline and resilience are fundamental for facing challenges and overcoming life's obstacles.",
     cover:
       "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80",
     heroImage:
       "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1920&q=80",
     date: "2024-07-15",
-    category: "Mentalidad",
-    tags: ["disciplina", "resiliencia"],
+    category: "Mindset",
+    tags: ["discipline", "resilience"],
     featured: true,
     content: (
       <>
         <p>
-          La disciplina sostenida y la resiliencia forman la base del progreso sostenido. En este artículo veremos
-          ejercicios prácticos para incorporar hábitos diarios que te acerquen a tus objetivos.
+          Sustained discipline and resilience form the foundation of sustained progress. In this article, we will look at practical exercises to incorporate daily habits that bring you closer to your goals.
         </p>
-        <h3>Rutinas diarias</h3>
+        <h3>Daily routines</h3>
         <p>
-          Establece bloques de trabajo, descanso y entrenamiento. La repetición y la medición permiten mejoras continuas.
+          Establish blocks for work, rest, and training. Repetition and measurement allow for continuous improvements.
         </p>
       </>
     ),
   },
   {
     id: "f2",
-    slug: makeSlug("FORJANDO EL CARÁCTER: SUPERANDO OBSTÁCULOS"),
-    title: "FORJANDO EL CARÁCTER: SUPERANDO OBSTÁCULOS",
+    slug: makeSlug("FORGING CHARACTER: OVERCOMING OBSTACLES"),
+    title: "FORGING CHARACTER: OVERCOMING OBSTACLES",
     excerpt:
-      "Aprende a convertir los obstáculos en oportunidades de crecimiento para forjar un carácter inquebrantable.",
+      "Learn to turn obstacles into growth opportunities to forge an unbreakable character.",
     cover:
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
     heroImage:
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80",
     date: "2024-06-20",
-    category: "Desarrollo",
-    tags: ["caracter", "superacion"],
+    category: "Development",
+    tags: ["character", "overcoming"],
     featured: true,
     content: (
       <>
         <p>
-          Superar obstáculos es una habilidad que puede entrenarse. Aquí verás estrategias prácticas para afrontar
-          retos y convertirlos en palancas de crecimiento.
+          Overcoming obstacles is a skill that can be trained. Here you will see practical strategies to face
+          challenges and turn them into levers for growth.
         </p>
-        <h3>Enfoque y Prioridades</h3>
-        <p>Aprende a priorizar tareas y gestionar energía para avanzar incluso en condiciones adversas.</p>
+        <h3>Focus and Priorities</h3>
+        <p>Learn to prioritize tasks and manage energy to advance even in adverse conditions.</p>
       </>
     ),
   },
   {
     id: "f3",
-    slug: makeSlug("MENTE DE ACERO: ESTRATEGIAS PARA EL ÉXITO"),
-    title: "MENTE DE ACERO: ESTRATEGIAS PARA EL ÉXITO",
+    slug: makeSlug("STEEL MIND: STRATEGIES FOR SUCCESS"),
+    title: "STEEL MIND: STRATEGIES FOR SUCCESS",
     excerpt:
-      "Domina tu mente y desarrolla estrategias ofensivas para alcanzar el éxito en todas las áreas de tu vida.",
+      "Master your mind and develop offensive strategies to achieve success in all areas of your life.",
     cover:
       "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
     heroImage:
       "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1920&q=80",
     date: "2024-05-10",
-    category: "Estrategia",
-    tags: ["mente", "exito"],
+    category: "Strategy",
+    tags: ["mind", "success"],
     featured: true,
     content: (
       <>
         <p>
-          Las estrategias mentales no son intuitivas: se aprenden. Exploraremos técnicas de visualización, hábitos de
-          decisión y micro-rituales para fortalecer tu rendimiento diario.
+          Mental strategies are not intuitive: they are learned. We will explore visualization techniques, decision-making habits, and micro-rituals to strengthen your daily performance.
         </p>
       </>
     ),
   },
   {
     id: "r1",
-    slug: makeSlug("EL LEGADO DEL LÍDER: INSPIRANDO A OTROS"),
-    title: "EL LEGADO DEL LÍDER: INSPIRANDO A OTROS",
+    slug: makeSlug("THE LEADER'S LEGACY: INSPIRING OTHERS"),
+    title: "THE LEADER'S LEGACY: INSPIRING OTHERS",
     excerpt:
-      "Inspirate como el líder inspira y las características que son fundamentales para alcanzar tus metas y superar tus desafíos de tu vida.",
+      "Be inspired by how the leader inspires and the fundamental characteristics to achieve your goals and overcome life's challenges.",
     cover:
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
     heroImage:
       "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=1920&q=80",
     date: "2024-04-01",
-    category: "Liderazgo",
-    tags: ["liderazgo", "inspiracion"],
+    category: "Leadership",
+    tags: ["leadership", "inspiration"],
     featured: false,
     content: (
       <>
         <p>
-          El liderazgo efectivo deja huella. En este artículo planteamos prácticas para inspirar y elevar a tu equipo.
+          Effective leadership leaves a mark. In this article, we propose practices to inspire and elevate your team.
         </p>
       </>
     ),
   },
   {
     id: "r2",
-    slug: makeSlug("FORJANDO EL CARÁCTER: SUPERANDO OBSTÁCULOS-2"),
-    title: "FORJANDO EL CARÁCTER: SUPERANDO OBSTÁCULOS",
+    slug: makeSlug("FORGING CHARACTER: OVERCOMING OBSTACLES-2"),
+    title: "FORGING CHARACTER: OVERCOMING OBSTACLES",
     excerpt:
-      "Aprende a convertir los obstáculos en oportunidades de crecimiento y forjar un carácter inquebrantable.",
+      "Learn to turn obstacles into growth opportunities and forge an unbreakable character.",
     cover:
       "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=800&q=80",
     heroImage:
       "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=1920&q=80",
     date: "2024-03-12",
-    category: "Crecimiento",
-    tags: ["caracter", "retos"],
+    category: "Growth",
+    tags: ["character", "challenges"],
     featured: false,
     content: (
       <>
         <p>
-          Reflexiones y ejercicios para fortalecer el carácter a través de retos controlados y metas alcanzables.
+          Reflections and exercises to strengthen character through controlled challenges and achievable goals.
         </p>
       </>
     ),
