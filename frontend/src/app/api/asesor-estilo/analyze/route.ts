@@ -5,7 +5,7 @@ import { appendLog } from '@/lib/asesor-estilo/ai/logger';
 import { enforceRateLimit, getRequestIdentifier } from '@/lib/asesor-estilo/rate-limit';
 import { enforceCredits, consumeCredits, getActionCost } from '@/lib/asesor-estilo/credits';
 import { validateImageUrl } from '@/lib/asesor-estilo/validation/image';
-import { getCached, setCached, generateAnalysisCacheKey } from '@/lib/asesor-estilo';
+import { getCached, setCached, generateAnalysisCacheKey } from '@/lib/asesor-estilo/cache/index';
 import { getImageBuffer, calculateImageHash } from '@/lib/asesor-estilo/validation/image';
 import { extractErrorInfo } from '@/lib/asesor-estilo/errors';
 import { APP_CONFIG } from '@/lib/asesor-estilo/config/app.config';

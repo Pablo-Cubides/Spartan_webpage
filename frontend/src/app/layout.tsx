@@ -5,8 +5,8 @@ import Header from '@/components/Header';
 import { Inter, Noto_Sans } from 'next/font/google';
 import { assertEnvironment } from '@/lib/config/validate-env';
 
-// Validate environment at build/startup time
-if (process.env.NODE_ENV === 'production') {
+// Validate environment at startup time (not during build)
+if (process.env.NODE_ENV === 'production' && typeof window === 'undefined' && !process.env.NEXT_PHASE?.includes('build')) {
   assertEnvironment();
 }
 
