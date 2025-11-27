@@ -55,7 +55,6 @@ export async function POST(req: Request) {
       await appendLog({ phase: 'api.iterate.received_raw', sessionId: effectiveSessionId, body: sanitized, timestamp: Date.now() });
     } catch (e) {
       // don't let logging failures break the request flow
-      // eslint-disable-next-line no-console
       console.error('appendLog failed for iterate incoming body', e);
     }
 

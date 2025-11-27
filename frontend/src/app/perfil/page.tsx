@@ -47,8 +47,8 @@ export default function PerfilPage() {
     fetchProfile();
   }, []);
 
-  if (loading) return <div className="text-white text-center py-20">Cargando perfil...</div>;
-  if (!profile) return <div className="text-white text-center py-20">Por favor inicia sesión para ver tu perfil.</div>;
+  if (loading) return <div className="text-white text-center py-20">Loading profile...</div>;
+  if (!profile) return <div className="text-white text-center py-20">Please log in to view your profile.</div>;
 
   return (
     <div
@@ -66,7 +66,7 @@ export default function PerfilPage() {
                   <div className="w-32 h-32 relative">
                     <Image
                       src={profile.avatar_url || '/icono spartan club - sin fondo.png'}
-                      alt={profile.name || 'Avatar de usuario'}
+                      alt={profile.name || 'User Avatar'}
                       layout="fill"
                       objectFit="cover"
                       className="rounded-full"
@@ -74,10 +74,10 @@ export default function PerfilPage() {
                   </div>
                   <div className="flex flex-col items-center justify-center">
                     <p className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">
-                      {profile.name || 'Guerrero Espartano'}
+                      {profile.name || 'Spartan Warrior'}
                     </p>
                     <p className="text-[#b2a4a4] text-base font-normal leading-normal text-center">
-                      Alias: {profile.alias || 'Sin alias'}
+                      Alias: {profile.alias || 'No alias'}
                     </p>
                     <p className="text-[#b2a4a4] text-base font-normal leading-normal text-center">
                       Email: {profile.email}
@@ -88,7 +88,7 @@ export default function PerfilPage() {
                   <button
                     className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#342d2d] text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto"
                   >
-                    <span className="truncate">Editar Perfil</span>
+                    <span className="truncate">Edit Profile</span>
                   </button>
                 </Link>
               </div>
@@ -96,11 +96,11 @@ export default function PerfilPage() {
             
             {/* Créditos */}
             <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-              Créditos
+              Credits
             </h2>
             <div className="p-4 grid grid-cols-[20%_1fr] gap-x-6">
               <div className="col-span-2 grid grid-cols-subgrid border-t border-t-[#4d4242] py-5">
-                <p className="text-[#b2a4a4] text-sm font-normal leading-normal">Créditos Restantes</p>
+                <p className="text-[#b2a4a4] text-sm font-normal leading-normal">Remaining Credits</p>
                 <p className="text-sm font-normal leading-normal text-white">{profile.credits}</p>
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function PerfilPage() {
                 <button
                   className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e8c9c9] text-[#161313] text-sm font-bold leading-normal tracking-[0.015em]"
                 >
-                  <span className="truncate">Comprar Créditos</span>
+                  <span className="truncate">Buy Credits</span>
                 </button>
               </Link>
             </div>

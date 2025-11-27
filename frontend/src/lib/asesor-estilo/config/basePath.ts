@@ -5,6 +5,6 @@
 
 export function injectBasePath() {
   if (typeof window !== 'undefined') {
-    (window as any).__NEXT_PUBLIC_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
+    (window as Window & Record<string, unknown>).__NEXT_PUBLIC_BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
   }
 }

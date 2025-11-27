@@ -1,6 +1,5 @@
 import { APP_CONFIG } from './config/app.config';
 import { CreditError } from './errors';
-import { appendLog } from './ai/logger';
 import { consumeCredits as globalConsume, hasSufficientCredits as globalCheck } from '../server/credits';
 import { prisma } from '../server/prisma';
 
@@ -85,10 +84,12 @@ export async function consumeCredits(
 }
 
 // Legacy/Unused functions kept for compatibility if needed, but stubbed
-export async function checkCredits(sessionId: string): Promise<number> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function checkCredits(_sessionId: string): Promise<number> {
   return 0; 
 }
 
-export async function addCredits(sessionId: string, amount: number): Promise<{ ok: boolean; newBalance: number }> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function addCredits(_sessionId: string, _amount: number): Promise<{ ok: boolean; newBalance: number }> {
   return { ok: false, newBalance: 0 };
 }

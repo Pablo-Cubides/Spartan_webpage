@@ -100,7 +100,6 @@ class RedisRateLimiter {
         let RedisCtor: unknown | undefined = undefined;
         if (mod && typeof mod === 'object' && 'Redis' in mod) RedisCtor = (mod as Record<string, unknown>)['Redis'];
         if (!RedisCtor) throw new Error('@upstash/redis not installed');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         // Narrow the Redis constructor to a generic "newable" to avoid broad `any`.
         const Ctor = RedisCtor as unknown as new (...args: unknown[]) => unknown;
         this.redis = this.redisToken

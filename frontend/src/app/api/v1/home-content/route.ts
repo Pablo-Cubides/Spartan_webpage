@@ -1,10 +1,10 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withErrorHandler } from '@/lib/api/error-handler';
 
 type Post = { imageUrl: string; title: string; description?: string };
 type Tool = { imageUrl?: string; title: string; description?: string };
 
-const getHandler = async (request: NextRequest) => {
+const getHandler = async () => {
   // Minimal default content used for local development and preview.
   const defaultContent = {
     hero: { backgroundImageUrl: '/default-hero.jpg', title: 'Spartan Club', subtitle: 'Welcome' },

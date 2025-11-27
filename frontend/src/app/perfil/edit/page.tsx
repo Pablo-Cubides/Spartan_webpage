@@ -88,7 +88,7 @@ export default function EditProfilePage() {
     });
     };
 
-  if (loading) return <div className="text-white text-center py-20">Cargando perfil...</div>;
+  if (loading) return <div className="text-white text-center py-20">Loading profile...</div>;
   if (!profile) return null;
 
   return (
@@ -99,11 +99,11 @@ export default function EditProfilePage() {
       <div className="flex flex-col h-full layout-container grow">
         <div className="flex justify-center flex-1 px-40 py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <h1 className="text-white text-3xl font-bold mb-5">Editar Perfil</h1>
+            <h1 className="text-white text-3xl font-bold mb-5">Edit Profile</h1>
             <form onSubmit={handleUpdate}>
               <div className="flex flex-col gap-4">
                 <div>
-                  <label htmlFor="name" className="text-white">Nombre</label>
+                  <label htmlFor="name" className="text-white">Name</label>
                   <input type="text" name="name" id="name" value={profile.name} onChange={handleChange} className="w-full p-2 rounded bg-[#342d2d] text-white" />
                 </div>
                 <div>
@@ -118,7 +118,7 @@ export default function EditProfilePage() {
                   type="submit"
                   className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e8c9c9] text-[#161313] text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto"
                 >
-                  <span className="truncate">Guardar Cambios</span>
+                  <span className="truncate">Save Changes</span>
                 </button>
               </div>
             </form>

@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { Camera, Upload, X, RefreshCw, SwitchCamera } from 'lucide-react';
+import { Camera, Upload, X, SwitchCamera } from 'lucide-react';
 import type { IteratePayload } from '@/lib/asesor-estilo/types/ai';
 import { getApiUrl, UPLOAD_CONFIG, UI_CONFIG } from '../../../lib/asesor-estilo/config/api';
 import ModalLogin from '@/components/ModalLogin';
@@ -77,14 +77,14 @@ export default function Page() {
         // Handle Auth/Credits errors
         if (res.status === 401) {
            setShowLoginModal(true);
-           return { success: false, error: 'Debes iniciar sesión', status: 401 };
+           return { success: false, error: 'You must log in', status: 401 };
         }
         if (res.status === 402 || res.status === 403) {
            // Check if it's a credit issue
            const data = await res.json();
-           if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('créditos')) {
+           if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
              setShowCreditsModal(true);
-             return { success: false, error: 'Créditos insuficientes', status: 402 };
+             return { success: false, error: 'Insufficient credits', status: 402 };
            }
            return { success: false, error: data.error || data.message || 'unknown', status: res.status };
         }
@@ -195,14 +195,14 @@ export default function Page() {
     // client-side size validation before starting upload
     const maxBytes = UPLOAD_CONFIG.MAX_SIZE_MB * 1024 * 1024;
     if (file.size > maxBytes) {
-      setMessages((m) => [...m, { from: 'system', text: `La imagen excede el límite de ${UPLOAD_CONFIG.MAX_SIZE_MB}MB. Reduce el tamaño o elige otra imagen.` }]);
+      setMessages((m) => [...m, { from: 'system', text: `The image exceeds the limit of ${UPLOAD_CONFIG.MAX_SIZE_MB}MB. Reduce the size or choose another image.` }]);
       return;
     }
 
     setLoading(true);
     setLoadingPhase('uploading');
     // Keep user on the main chat UI and append a system message for analysis
-    setMessages((m) => [...m, { from: "system", text: "Analizando tu foto... esto puede tardar unos segundos." }]);
+    setMessages((m) => [...m, { from: "system", text: "Analyzing your photo... this may take a few seconds." }]);
 
     try {
       // Use XHR to obtain upload progress events (fetch has no upload progress in browsers)
@@ -248,12 +248,12 @@ export default function Page() {
       setPublicId(uploadData.publicId);
 
       // add uploaded image into the chat as a user message so it's always visible
-      setMessages((m) => [...m, { from: "user", text: "Imagen subida", image: uploadData.imageUrl }]);
+      setMessages((m) => [...m, { from: "user", text: "Image uploaded", image: uploadData.imageUrl }]);
       // switch to chat/ready view so the analysis message is visible in the conversation
       setStep("ready");
 
       setLoadingPhase('analyzing');
-      // Hacer analyze primero para obtener el advisory
+      // Perform analyze first to get the advisory
       const analyzeRes = await fetch(getApiUrl('ANALYZE'), {
         method: "POST",
         headers: { 
@@ -270,9 +270,9 @@ export default function Page() {
       }
       if (analyzeRes.status === 402 || analyzeRes.status === 403) {
            const data = await analyzeRes.json();
-           if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('créditos')) {
+           if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
              setShowCreditsModal(true);
-             setMessages((m) => [...m, { from: "system", text: "No tienes suficientes créditos para analizar la imagen." }]);
+             setMessages((m) => [...m, { from: "system", text: "You don't have enough credits to analyze the image." }]);
              setLoading(false);
              return;
            }
@@ -285,7 +285,7 @@ export default function Page() {
       const analysisRec = analysis as Record<string, unknown>;
       const ok = (analysisRec['bodyOk'] as boolean | undefined) ?? (analysisRec['faceOk'] as boolean | undefined);
       if (analyzeData.error || !ok) {
-        setMessages((m) => [...m, { from: "system", text: analysis.advisoryText || "No se pudo analizar la imagen correctamente." }]);
+        setMessages((m) => [...m, { from: "system", text: analysis.advisoryText || "Could not analyze the image correctly." }]);
         setStep("upload");
         setLoading(false);
         return;
@@ -293,11 +293,11 @@ export default function Page() {
 
       const advisory = analyzeData.analysis?.advisoryText || "";
 
-      // Pequeño delay para evitar problemas de concurrencia con analyze
+      // Small delay to avoid concurrency issues with analyze
       await new Promise(resolve => setTimeout(resolve, 100));
 
       setLoadingPhase('generating');
-      // Hacer iterate para generar la imagen con reintentos ante 503 transitorios
+      // Perform iterate to generate the image with retries for transient 503 errors
       const iteratePayload = {
         sessionId: uploadData.sessionId,
         originalImageUrl: uploadData.imageUrl,
@@ -317,7 +317,7 @@ export default function Page() {
             setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
             setMessages((m) => [...m, {
               from: 'system',
-              text: 'El servicio de edición de imágenes no está disponible por ahora.',
+              text: 'The image editing service is not available for now.',
               action: {
                 type: 'retry-iterate',
                 payload: iteratePayload,
@@ -326,10 +326,10 @@ export default function Page() {
           } else if (iterateResult.status === 402) {
               // Already handled by helper (showCreditsModal)
               setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-              setMessages((m) => [...m, { from: 'system', text: 'Necesitas créditos para generar la imagen.' }]);
+              setMessages((m) => [...m, { from: 'system', text: 'You need credits to generate the image.' }]);
           } else {
              setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-             setMessages((m) => [...m, { from: 'system', text: `Error en edición: ${iterateResult.error}` }]);
+             setMessages((m) => [...m, { from: 'system', text: `Editing error: ${iterateResult.error}` }]);
           }
           setLoading(false);
           setLoadingPhase('idle');
@@ -341,9 +341,9 @@ export default function Page() {
       setEditedUrl(iterateData.editedUrl);
       setPublicId(iterateData.publicId);
 
-      // Agregar UN solo mensaje con el análisis completo (la imagen editada
-      // se muestra a continuación en el BeforeAfterSlider usando el estado
-      // `editedUrl` para evitar mostrar la misma imagen dos veces)
+      // Add ONE message with the complete analysis (the edited image
+      // is shown below in the BeforeAfterSlider using the state
+      // `editedUrl` to avoid showing the same image twice)
       setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
       scrollToBottom();
     } catch (err: unknown) {
@@ -351,7 +351,7 @@ export default function Page() {
       // Check for 402/403 in the catch block if promise rejected with status
       if (typeof err === 'object' && err !== null && 'status' in err && ((err as { status: number }).status === 402 || (err as { status: number }).status === 403)) {
           setShowCreditsModal(true);
-          setMessages((m) => [...m, { from: "system", text: "Créditos insuficientes." }]);
+          setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
       } else {
           setMessages((m) => [...m, { from: "system", text: `Error: ${msg}` }]);
       }
@@ -373,7 +373,7 @@ export default function Page() {
     // simple client-side rate limit: ignore repeated clicks within 2s
     const now = Date.now();
     if (now - lastGenerateAt.current < 2000) {
-      setMessages((m) => [...m, { from: 'system', text: 'Por favor espera un momento antes de generar otra edición.' }]);
+      setMessages((m) => [...m, { from: 'system', text: 'Please wait a moment before generating another edit.' }]);
       return;
     }
     lastGenerateAt.current = now;
@@ -392,7 +392,7 @@ export default function Page() {
         if (result.status === 503) {
           setMessages((m) => [...m, {
             from: "system",
-            text: "El servicio de edición de imágenes no está disponible por ahora.",
+            text: "The image editing service is not available for now.",
             action: {
               type: "retry-iterate",
               payload,
@@ -400,7 +400,7 @@ export default function Page() {
           }]);
         } else if (result.status === 402) {
              // Already handled
-             setMessages((m) => [...m, { from: "system", text: "Créditos insuficientes." }]);
+             setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
         } else {
             setMessages((m) => [...m, { from: "system", text: `Error: ${result.error || 'unknown'}` }]);
         }
@@ -411,11 +411,12 @@ export default function Page() {
       const iterateData2 = result.data;
       setEditedUrl(iterateData2.editedUrl);
       setPublicId(iterateData2.publicId);
-      setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Edición completada" }]);
+      setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Editing completed" }]);
       scrollToBottom();
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error: ${err}` }]);
-    } finally {
+    }
+ finally {
       setLoading(false);
       setLoadingPhase('idle');
     }
@@ -431,18 +432,18 @@ export default function Page() {
     setLoading(true);
     setLoadingPhase('generating');
     // show a small system message indicating retry started
-    setMessages((m) => [...m, { from: "system", text: "Reintentando la edición..." }]);
+    setMessages((m) => [...m, { from: "system", text: "Retrying the edit..." }]);
 
     try {
       const result = await performIterateWithRetries(payload);
 
       if (!result.success) {
           if (result.status === 503) {
-            setMessages((m) => [...m, { from: "system", text: "El servicio de edición sigue sin estar disponible. Intenta más tarde." }]);
+            setMessages((m) => [...m, { from: "system", text: "The editing service is still unavailable. Please try again later." }]);
           } else if (result.status === 402) {
-             setMessages((m) => [...m, { from: "system", text: "Créditos insuficientes." }]);
+             setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
           } else {
-            setMessages((m) => [...m, { from: "system", text: `Error en edición: ${result.error}` }]);
+            setMessages((m) => [...m, { from: "system", text: `Editing error: ${result.error}` }]);
           }
           return;
       }
@@ -450,11 +451,12 @@ export default function Page() {
       const data = result.data;
       setEditedUrl(data.editedUrl);
       setPublicId(data.publicId);
-      setMessages((m) => [...m, { from: "assistant", text: data.note || "Edición completada" }]);
+      setMessages((m) => [...m, { from: "assistant", text: data.note || "Editing completed" }]);
       scrollToBottom();
     } catch (err) {
-      setMessages((m) => [...m, { from: "system", text: `Error al reintentar: ${err}` }]);
-    } finally {
+      setMessages((m) => [...m, { from: "system", text: `Error when retrying: ${err}` }]);
+    }
+ finally {
       setLoading(false);
        setLoadingPhase('idle');
     }
@@ -513,22 +515,26 @@ export default function Page() {
             ></div>
             {/* ARIA live region for screen readers to announce progress/phase changes */}
             <div className="sr-only" aria-live="polite" aria-atomic="true">
-              {loading ? (loadingPhase === 'uploading' ? `Subiendo ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analizando la imagen...' : loadingPhase === 'generating' ? 'Generando la imagen...' : '') : ''}
+              {loading ? (loadingPhase === 'uploading' ? `Uploading ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analyzing the image...' : loadingPhase === 'generating' ? 'Generating the image...' : '') : ''}
             </div>
           </div>
           <header className="chat-header">
             {step === 'upload' ? (
               <div style={{textAlign: 'center'}}>
-                <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto mb-4" />
+                <div className="relative h-60 w-auto mx-auto mb-4">
+                  <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+                </div>
                 <h1 className="chat-title">{UI_CONFIG.APP_NAME}</h1>
-                <p className="chat-sub">Recibe recomendaciones sobre prendas, combinaciones y cómo potenciar tu silueta.</p>
+                <p className="chat-sub">Get recommendations on garments, combinations, and how to enhance your silhouette.</p>
               </div>
             ) : (
               <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem'}}>
                 <div style={{flex: '1 1 auto', textAlign: 'center'}}>
-                  <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto mb-4" />
+                  <div className="relative h-60 w-auto mx-auto mb-4">
+                    <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+                  </div>
                   <h1 className="chat-title">{UI_CONFIG.APP_NAME}</h1>
-                  <p className="chat-sub">Recibe recomendaciones sobre prendas, combinaciones y cómo potenciar tu silueta.</p>
+                  <p className="chat-sub">Get recommendations on garments, combinations, and how to enhance your silhouette.</p>
                 </div>
                 <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
                   {/* reset button appears later after edited image */}
@@ -537,7 +543,7 @@ export default function Page() {
             )}
           </header>
 
-          <section className="p-6 upload-container" aria-label="Subir imagen">
+          <section className="p-6 upload-container" aria-label="Upload image">
             <div
               ref={dropZoneRef}
               onDragOver={handleDragOver}
@@ -545,30 +551,30 @@ export default function Page() {
               onDrop={handleDrop}
               className={`drop-zone ${isDragging ? "dragging" : ""}`}
             >
-              <h2 className="mb-2 text-lg font-semibold">Sube tu foto para una asesoría de outfit</h2>
-              <p className="mb-4 text-sm text-muted-foreground">Recomendamos que sea una foto que muestre el cuerpo completo con buena iluminación para mejores recomendaciones.</p>
+              <h2 className="mb-2 text-lg font-semibold">Upload your photo for an outfit advisory</h2>
+              <p className="mb-4 text-sm text-muted-foreground">We recommend a full-body photo with good lighting for best recommendations.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
                 <button 
-                  aria-label="Seleccionar imagen" 
+                  aria-label="Select image" 
                   onClick={handleUploadClick} 
                   disabled={loading} 
                   className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
                 >
                   <Upload size={20} />
-                  {loading ? (loadingPhase === 'uploading' ? 'Subiendo...' : loadingPhase === 'analyzing' ? 'Analizando...' : 'Generando...') : 'Subir Foto'}
+                  {loading ? (loadingPhase === 'uploading' ? 'Uploading...' : loadingPhase === 'analyzing' ? 'Analyzing...' : 'Generating...') : 'Upload Photo'}
                 </button>
                 
                 <button 
-                  aria-label="Tomar foto" 
+                  aria-label="Take photo" 
                   onClick={() => setShowCamera(true)} 
                   disabled={loading} 
                   className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
                 >
                   <Camera size={20} />
-                  Tomar Foto
+                  Take Photo
                 </button>
                 
-                <input aria-label="Seleccionar archivo de imagen" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+                <input aria-label="Select image file" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               </div>
             </div>
 
@@ -576,10 +582,10 @@ export default function Page() {
               {/* Suggestions are only shown after an edited image exists to avoid confusion */}
               {editedUrl ? (
                 <>
-                  <h3 className="mb-2 text-sm font-medium">Prueba estas ideas</h3>
+                  <h3 className="mb-2 text-sm font-medium">Try these ideas</h3>
                   <div className="space-y-2">
                     {suggestions.map((s) => (
-                      <button key={s} className="suggestion" onClick={() => handleSuggestionClick(s)} disabled={loading} aria-label={`Sugerencia: ${s}`}>{s}</button>
+                      <button key={s} className="suggestion" onClick={() => handleSuggestionClick(s)} disabled={loading} aria-label={`Suggestion: ${s}`}>{s}</button>
                     ))}
                   </div>
                 </>
@@ -615,15 +621,15 @@ export default function Page() {
             </div>
         )}
 
-      <section className="chat-shell" aria-label="Asesor de estilo">
+      <section className="chat-shell" aria-label="Style advisor">
         <header className="chat-header">
-          <h1 className="chat-title">Tu Asesor de Estilo Personal</h1>
-          <p className="chat-sub">Recibe recomendaciones sobre prendas, combinaciones y estilo personal.</p>
+          <h1 className="chat-title">Your Personal Style Advisor</h1>
+          <p className="chat-sub">Receive recommendations on garments, combinations, and personal style.</p>
         </header>
 
         <section className="messages" role="log" aria-live="polite" aria-atomic="false">
           {messages.length === 0 && (
-            <div className="py-12 text-center text-gray-400">Sube una imagen para comenzar la asesoría.</div>
+            <div className="py-12 text-center text-gray-400">Upload an image to start the advisory.</div>
           )}
 
           {messages.map((m, i) => (
@@ -634,7 +640,7 @@ export default function Page() {
                     <div className="msg-image-container" aria-hidden={false}>
                     <Image 
                       src={m.image} 
-                      alt={m.from === 'user' ? 'Imagen subida' : 'Imagen'} 
+                      alt={m.from === 'user' ? 'Uploaded image' : 'Image'} 
                       className="msg-image" 
                       width={0} 
                       height={0} 
@@ -646,8 +652,8 @@ export default function Page() {
                 <div style={{display:'flex', gap:8, marginTop:8}}>
                   {m.from === 'user' && !m.image && (
                     <>
-                      <button aria-label={`Editar mensaje ${i}`} className="btn-ghost" onClick={() => editMessage(i)}>Editar</button>
-                      <button aria-label={`Eliminar mensaje ${i}`} className="btn-ghost" onClick={() => deleteMessage(i)}>Eliminar</button>
+                      <button aria-label={`Edit message ${i}`} className="btn-ghost" onClick={() => editMessage(i)}>Edit</button>
+                      <button aria-label={`Delete message ${i}`} className="btn-ghost" onClick={() => deleteMessage(i)}>Delete</button>
                     </>
                   )}
                 </div>
@@ -656,7 +662,7 @@ export default function Page() {
                     {(() => {
                       const payload = m.action?.payload;
                       return (
-                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Procesando...' : 'Reintentar'}</button>
+                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Processing...' : 'Retry'}</button>
                       );
                     })()}
                   </div>
@@ -668,11 +674,11 @@ export default function Page() {
           {editedUrl && (
             <div className="flex justify-start">
               <div className="bubble assistant">
-                <p className="whitespace-pre-wrap">¡Aquí está tu imagen editada! 🎨</p>
+                <p className="whitespace-pre-wrap">Here is your edited image! 🎨</p>
                 <div className="msg-image-container">
                   <Image 
                     src={editedUrl} 
-                    alt="Imagen editada" 
+                    alt="Edited image" 
                     className="msg-image" 
                     width={0} 
                     height={0} 
@@ -689,7 +695,7 @@ export default function Page() {
             <div className="flex justify-start">
               <div className="bubble system" role="status" aria-live="polite">
                 <p className="whitespace-pre-wrap mb-2">
-                  {loadingPhase === 'uploading' ? `Subiendo imagen — ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analizando la imagen…' : 'Generando la imagen…'}
+                  {loadingPhase === 'uploading' ? `Uploading image — ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analyzing the image…' : 'Generating the image…'}
                 </p>
                 <div className="progress-inline" aria-hidden="false">
                   <div
@@ -704,24 +710,24 @@ export default function Page() {
           <div ref={chatEndRef} />
         </section>
 
-        <form className="input-bar" onSubmit={(e) => { e.preventDefault(); handleGenerate(); }} aria-label="Controles de entrada">
-          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); } }} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Sube una imagen primero"} aria-label="Descripción de los cambios a generar" className="input-textarea" />
+        <form className="input-bar" onSubmit={(e) => { e.preventDefault(); handleGenerate(); }} aria-label="Input controls">
+          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); } }} placeholder={originalUrl ? "Describe the changes you want..." : "Upload an image first"} aria-label="Description of changes to generate" className="input-textarea" />
           <div className="flex items-center gap-2">
-            <button aria-label="Subir imagen" onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Subir imagen">
+            <button aria-label="Upload image" onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Upload image">
                 <Upload size={20} />
             </button>
-            <button aria-label="Tomar foto" onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
+            <button aria-label="Take photo" onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Take photo">
                 <Camera size={20} />
             </button>
             <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-            <button aria-label="Generar cambios" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
+            <button aria-label="Generate changes" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Processing..." : "Generate"}</button>
           </div>
         </form>
         {/* suggestions area (also shown in upload state when edited image exists) */}
         {editedUrl && (
           <div className="suggestions" aria-hidden={!editedUrl}>
             <div style={{display:'flex', justifyContent:'flex-end', marginBottom: '0.5rem'}}> 
-              <button aria-label="Reiniciar conversación" onClick={handleReset} className="btn-ghost">Empezar de nuevo</button>
+              <button aria-label="Restart conversation" onClick={handleReset} className="btn-ghost">Start over</button>
             </div>
             {suggestions.map((s) => (
               <button key={s} onClick={() => handleSuggestionClick(s)} disabled={loading} className={`suggestion`}>
@@ -737,7 +743,7 @@ export default function Page() {
 
 function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; onClose: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const streamRef = useRef<MediaStream | null>(null); // Ref para limpieza confiable
+  const streamRef = useRef<MediaStream | null>(null); // Ref for reliable cleanup
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
   const [error, setError] = useState<string | null>(null);
 
@@ -746,7 +752,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
 
     async function initCamera() {
       try {
-        // Limpiar stream anterior si existe
+        // Clear previous stream if exists
         if (streamRef.current) {
           streamRef.current.getTracks().forEach(track => track.stop());
           streamRef.current = null;
@@ -754,32 +760,32 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
 
         setError(null);
 
-        // Verificar disponibilidad de API
+        // Check API availability
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error("Tu navegador no soporta acceso a cámara. Actualiza tu navegador o usa Chrome/Edge.");
+          throw new Error("Your browser does not support camera access. Update your browser or use Chrome/Edge.");
         }
 
-        console.log("[Camera] Verificando permisos existentes...");
+        console.log("[Camera] Checking existing permissions...");
         
-        // Verificar estado actual de permisos (si está disponible)
+        // Check current permission status (if available)
         let permissionStatus = 'prompt';
         try {
           if (navigator.permissions && navigator.permissions.query) {
             const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
             permissionStatus = result.state;
-            console.log("[Camera] Estado de permiso actual:", permissionStatus);
+            console.log("[Camera] Current permission status:", permissionStatus);
             
             if (permissionStatus === 'denied') {
               throw Object.assign(new Error('Permission previously denied'), { name: 'NotAllowedError' });
             }
           }
         } catch (permErr) {
-          console.warn("[Camera] No se pudo verificar permisos (puede ser normal):", permErr);
+          console.warn("[Camera] Could not verify permissions (may be normal):", permErr);
         }
 
-        console.log("[Camera] Solicitando acceso a cámara...");
+        console.log("[Camera] Requesting camera access...");
         
-        // Estrategia 1: Intentar con configuración específica
+        // Strategy 1: Try with specific configuration
         let newStream: MediaStream;
         try {
           newStream = await navigator.mediaDevices.getUserMedia({
@@ -789,24 +795,24 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
               height: { ideal: 720 }
             }
           });
-          console.log("[Camera] ✓ Cámara abierta con facingMode:", facingMode);
+          console.log("[Camera] ✓ Camera opened with facingMode:", facingMode);
         } catch (err1) {
-          console.warn("[Camera] Fallo con facingMode, intentando sin restricciones...", err1);
+          console.warn("[Camera] Failed with facingMode, trying without restrictions...", err1);
           
-          // Estrategia 2: Configuración mínima
+          // Strategy 2: Minimum configuration
           try {
             newStream = await navigator.mediaDevices.getUserMedia({
               video: true
             });
-            console.log("[Camera] ✓ Cámara abierta con video:true");
+            console.log("[Camera] ✓ Camera opened with video:true");
           } catch (err2) {
-            console.error("[Camera] Ambos intentos fallaron");
+            console.error("[Camera] Both attempts failed");
             throw err2;
           }
         }
 
         if (!mounted) {
-          console.log("[Camera] Componente desmontado, cerrando stream");
+          console.log("[Camera] Component unmounted, closing stream");
           newStream.getTracks().forEach(track => track.stop());
           return;
         }
@@ -814,40 +820,41 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         streamRef.current = newStream;
         if (videoRef.current) {
           videoRef.current.srcObject = newStream;
-          console.log("[Camera] ✓ Stream asignado al elemento video");
+          console.log("[Camera] ✓ Stream assigned to video element");
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (!mounted) return;
-        console.error("[Camera] ❌ Error final:", err);
+        console.error("[Camera] ❌ Final error:", err);
         
+        const error = err instanceof Error ? err : new Error(String(err));
         let msg = "";
-        const code = err.name || 'Unknown';
+        const code = error.name || 'Unknown';
         
         if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
-          msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para solucionar:**\n\n1. Cierra este modal\n2. Haz clic en el icono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Vuelve a hacer clic en 'Tomar Foto'\n\nSi el problema persiste, el antivirus puede estar bloqueando la cámara.";
+          msg = "🚫 **Permission Denied**\n\nTHE BROWSER BLOCKED THE CAMERA.\n\n**Steps to fix:**\n\n1. Close this modal\n2. Click on the 🔒 or ⓘ icon next to the URL\n3. In 'Camera', select 'Allow'\n4. Reload the page (F5)\n5. Click 'Take Photo' again\n\nIf the problem persists, your antivirus may be blocking the camera.";
         } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
-          msg = "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
+          msg = "📷 **No Camera**\n\nNo connected camera detected.\n\nCheck that:\n• The camera is connected\n• Drivers are installed\n• Windows recognizes it (Settings > Camera)";
         } else if (code === 'NotReadableError' || code === 'TrackStartError') {
-          msg = "⚠️ **Cámara Ocupada**\n\nOtra aplicación está usando la cámara.\n\nCierra estas apps si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
+          msg = "⚠️ **Camera Busy**\n\nAnother application is using the camera.\n\nClose these apps if open:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
         } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {
-          msg = "⚙️ **Configuración Incompatible**\n\nLa cámara no soporta la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
+          msg = "⚙️ **Incompatible Configuration**\n\nThe camera does not support the requested configuration.\n\nThis is rare - try with another browser.";
         } else {
-          msg = `❌ **Error Desconocido**\n\n${err.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
+          msg = `❌ **Unknown Error**\n\n${error.message || String(err)}\n\nTry:\n• Restarting the browser\n• Updating the browser\n• Using Chrome or Edge`;
         }
         
-        msg += `\n\n**Codigo tecnico:** ${code}`;
+        msg += `\n\n**Technical Code:** ${code}`;
         setError(msg);
       }
     }
 
-    // Pequeño delay para evitar race conditions en Strict Mode
+    // Small delay to avoid race conditions in Strict Mode
     const timer = setTimeout(initCamera, 100);
 
     return () => {
       clearTimeout(timer);
       mounted = false;
       if (streamRef.current) {
-        console.log("[Camera] Limpiando stream en cleanup");
+        console.log("[Camera] Cleaning up stream on cleanup");
         streamRef.current.getTracks().forEach(track => track.stop());
         streamRef.current = null;
       }
@@ -892,11 +899,11 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
                 <div className="mb-6 bg-red-500/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-red-500">
                     <Camera size={32} />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Problema con la cámara</h3>
+                <h3 className="text-xl font-bold mb-2">Camera problem</h3>
                 <p className="mb-6 text-gray-300 whitespace-pre-wrap">{error}</p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button onClick={() => setFacingMode(prev => prev)} className="btn-accent px-6 py-2 rounded-lg">Intentar de nuevo</button>
-                    <button onClick={onClose} className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">Cancelar</button>
+                    <button onClick={() => setFacingMode(prev => prev)} className="btn-accent px-6 py-2 rounded-lg">Try again</button>
+                    <button onClick={onClose} className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">Cancel</button>
                 </div>
             </div>
         ) : (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getTokenCookie, getApiUrl } from '@/lib/api';
+import { getTokenCookie } from '@/lib/api';
 
 interface CreditPackage {
   id: string;
@@ -28,7 +28,8 @@ export default function BuyCredits() {
         } else {
           setError('Error al cargar los paquetes');
         }
-      } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (_) {
         setError('Error de conexión al cargar paquetes');
       } finally {
         setFetching(false);

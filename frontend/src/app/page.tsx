@@ -1,40 +1,10 @@
 // Server component: fetches home content server-side
 import Link from 'next/link';
 import Image from 'next/image';
-import { Card } from '@/components/Card';
-import { apiCall } from '@/lib/api';
 import POSTS from '@/lib/blog/posts';
 import NewsletterForm from '@/components/NewsletterForm';
 
-type Post = { imageUrl: string; title: string; description?: string };
-type Tool = { imageUrl?: string; title: string; description?: string };
-
-type HomeContent = {
-  hero: { backgroundImageUrl: string; title: string; subtitle: string };
-  featuredPost: { imageUrl: string; category: string; title: string; description: string };
-  posts: Post[];
-  tools: Tool[];
-};
-
-async function getHomePageContent() {
-  try {
-    const data = await apiCall<HomeContent>('/api/v1/home-content');
-    return data as HomeContent;
-  } catch (error) {
-    console.error('Failed to fetch home content:', error);
-    // Provide a safe default so build/prerender doesn't fail when the API is not reachable
-    const defaultContent: HomeContent = {
-      hero: { backgroundImageUrl: '', title: 'Spartan Club', subtitle: 'Welcome' },
-      featuredPost: { imageUrl: '', category: 'General', title: 'Welcome to Spartan', description: 'Example content' },
-      posts: [],
-      tools: [],
-    };
-    return defaultContent;
-  }
-}
-
 export default async function Home() {
-  const content = await getHomePageContent();
   // Use real posts for articles section
   const posts = POSTS || [];
 

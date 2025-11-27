@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 type Comment = {
   id: string;
@@ -16,7 +16,7 @@ export default function Comments({ postSlug, userName }: { postSlug: string; use
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       const res = await fetch(`/api/comments?post=${encodeURIComponent(postSlug)}`);
       const data = await res.json();
@@ -24,11 +24,11 @@ export default function Comments({ postSlug, userName }: { postSlug: string; use
     } catch (e) {
       console.error(e);
     }
-  };
+  }, [postSlug]);
 
   useEffect(() => {
     fetchComments();
-  }, [postSlug]);
+  }, [fetchComments]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +48,8 @@ export default function Comments({ postSlug, userName }: { postSlug: string; use
       } else {
         setMessage("No se pudo enviar el comentario");
       }
-    } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       setMessage("Error al enviar");
     } finally {
       setLoading(false);

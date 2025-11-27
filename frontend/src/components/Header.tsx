@@ -2,6 +2,7 @@
 'use client';
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import ModalLogin from "@/components/ModalLogin";
 
 export default function Header() {
@@ -12,7 +13,7 @@ export default function Header() {
       <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#303030] px-10 py-3">
         <div className="flex items-center gap-4 text-white">
           <Link href="/" className="flex items-center gap-3 text-white">
-            <img src="/Icono spartan club.png" alt="Spartan helmet" className="h-8 w-8 object-contain" />
+            <Image width={32} height={32} src="/Icono spartan club.png" alt="Spartan helmet" className="object-contain" />
             <span className="hidden sm:inline-block font-display font-bold tracking-wider">SPARTAN CLUB</span>
           </Link>
         </div>

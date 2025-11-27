@@ -3,8 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = {
-  title: 'Nosotros - Spartan Club',
-  description: 'Conoce nuestra misión, visión y el código que guía a Spartan Club.',
+  title: 'About Us - Spartan Club',
+  description: 'Learn about our mission, vision, and the code that guides Spartan Club.',
 };
 
 // Icon components using SVG
@@ -55,15 +55,15 @@ export default function NosotrosPage() {
               <div className="md:w-1/2 flex flex-col gap-6">
                 <div className="space-y-4">
                   <h1 className="text-white text-5xl font-black leading-tight uppercase tracking-tight md:text-6xl">
-                    FORJANDO HOMBRES DE <span className="text-[#D32F2F]">ÉLITE</span>
+                    FORGING <span className="text-[#D32F2F]">ELITE</span> MEN
                   </h1>
                   <p className="text-[#9CA3AF] text-lg md:text-xl leading-relaxed">
-                    Nuestra misión es empoderarte con las herramientas para conquistar tus metas. Nuestra visión es crear una hermandad de hombres disciplinados que lideren con el ejemplo.
+                    Our mission is to empower you with the tools to conquer your goals. Our vision is to create a brotherhood of disciplined men who lead by example.
                   </p>
                 </div>
                 <Link href="/herramientas" className="inline-block w-fit group">
                   <span className="inline-flex items-center justify-center rounded-lg bg-[#D32F2F] px-8 py-4 text-white font-bold uppercase tracking-wide hover:bg-red-700 transition-all transform group-hover:scale-105 shadow-lg hover:shadow-red-900/50">
-                    Únete a la Legión
+                    Join the Legion
                   </span>
                 </Link>
               </div>
@@ -89,9 +89,9 @@ export default function NosotrosPage() {
                   <FlagIcon />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Nuestra Misión</h3>
+                  <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Our Mission</h3>
                   <p className="text-[#9CA3AF] text-base leading-relaxed">
-                    Empoderar a cada hombre con las herramientas, el conocimiento y la disciplina necesarios para forjar su mejor versión y construir una vida de propósito.
+                    To empower every man with the tools, knowledge, and discipline necessary to forge his best version and build a life of purpose.
                   </p>
                 </div>
               </div>
@@ -100,9 +100,9 @@ export default function NosotrosPage() {
                   <EyeIcon />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Nuestra Visión</h3>
+                  <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Our Vision</h3>
                   <p className="text-[#9CA3AF] text-base leading-relaxed">
-                    Ser la hermandad de referencia para hombres que buscan la excelencia, creando líderes que impacten positivamente en sus comunidades.
+                    To be the reference brotherhood for men seeking excellence, creating leaders who positively impact their communities.
                   </p>
                 </div>
               </div>
@@ -113,10 +113,10 @@ export default function NosotrosPage() {
           <section className="py-10 md:py-16">
             <div className="text-center mb-12">
               <h2 className="text-white text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">
-                El <span className="text-[#D32F2F]">Código</span>
+                The <span className="text-[#D32F2F]">Code</span>
               </h2>
               <p className="text-[#9CA3AF] text-lg max-w-2xl mx-auto">
-                Los principios fundamentales que guían nuestra hermandad
+                The fundamental principles that guide our brotherhood
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -125,9 +125,9 @@ export default function NosotrosPage() {
                   <CalendarIcon />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-white text-2xl font-bold uppercase tracking-tight">Disciplina</p>
+                  <p className="text-white text-2xl font-bold uppercase tracking-tight">Discipline</p>
                   <p className="text-[#9CA3AF] leading-relaxed">
-                    Compromiso inquebrantable con la consistencia y el autocontrol diario para forjar carácter.
+                    Unwavering commitment to consistency and daily self-control to forge character.
                   </p>
                 </div>
               </div>
@@ -136,9 +136,9 @@ export default function NosotrosPage() {
                   <GroupsIcon />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-white text-2xl font-bold uppercase tracking-tight">Hermandad</p>
+                  <p className="text-white text-2xl font-bold uppercase tracking-tight">Brotherhood</p>
                   <p className="text-[#9CA3AF] leading-relaxed">
-                    Apoyo mutuo y lealtad que nos une; juntos somos más fuertes que la suma de nuestras partes.
+                    Mutual support and loyalty that unites us; together we are stronger than the sum of our parts.
                   </p>
                 </div>
               </div>
@@ -147,9 +147,9 @@ export default function NosotrosPage() {
                   <ShieldIcon />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-white text-2xl font-bold uppercase tracking-tight">Liderazgo</p>
+                  <p className="text-white text-2xl font-bold uppercase tracking-tight">Leadership</p>
                   <p className="text-[#9CA3AF] leading-relaxed">
-                    Tomar las riendas de tu vida e inspirar a otros a alcanzar su máximo potencial a través del ejemplo.
+                    Taking the reins of your life and inspiring others to reach their full potential through example.
                   </p>
                 </div>
               </div>
@@ -160,8 +160,8 @@ export default function NosotrosPage() {
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 py-10 md:py-16">
             <div className="flex flex-col gap-8">
               <div className="space-y-2">
-                <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Conecta con la Tribu</h3>
-                <p className="text-[#9CA3AF]">Síguenos en nuestras redes sociales</p>
+                <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Connect with the Tribe</h3>
+                <p className="text-[#9CA3AF]">Follow us on our social networks</p>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                 <a className="flex flex-col items-center gap-3 text-center group" href="#" aria-label="Instagram">
@@ -193,14 +193,14 @@ export default function NosotrosPage() {
 
             <div className="flex flex-col gap-6">
               <div className="space-y-2">
-                <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Comunícate con Nosotros</h3>
-                <p className="text-[#9CA3AF]">Envíanos tu mensaje y te responderemos pronto</p>
+                <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Contact Us</h3>
+                <p className="text-[#9CA3AF]">Send us your message and we will reply soon</p>
               </div>
               <form className="flex flex-col gap-5" action="/api/contact" method="POST">
                 <textarea
                   name="message"
                   className="w-full rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D32F2F] focus:border-transparent transition-all resize-none"
-                  placeholder="Escribe tu mensaje aquí..."
+                  placeholder="Write your message here..."
                   rows={6}
                   required
                 />
@@ -208,7 +208,7 @@ export default function NosotrosPage() {
                   type="submit"
                   className="flex items-center justify-center self-start rounded-xl px-8 py-4 bg-[#D32F2F] text-white font-bold uppercase tracking-wide hover:bg-red-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-red-900/50"
                 >
-                  Enviar Mensaje
+                  Send Message
                 </button>
               </form>
             </div>
@@ -221,15 +221,15 @@ export default function NosotrosPage() {
               <div className="relative z-10 flex flex-col items-center gap-8">
                 <div className="space-y-4 max-w-3xl">
                   <h2 className="text-white text-4xl md:text-5xl font-black uppercase tracking-tight">
-                    ¿Listo para tu <span className="text-[#D32F2F]">Transformación</span>?
+                    Ready for your <span className="text-[#D32F2F]">Transformation</span>?
                   </h2>
                   <p className="text-[#9CA3AF] text-xl leading-relaxed">
-                    Únete a una comunidad de hombres que no se conforman. Es hora de forjar la mejor versión de ti mismo.
+                    Join a community of men who are not content. It&apos;s time to forge the best version of yourself.
                   </p>
                 </div>
                 <Link href="/herramientas" className="group">
                   <span className="inline-flex items-center justify-center rounded-xl bg-[#D32F2F] px-10 py-5 text-white text-lg font-bold uppercase tracking-wide hover:bg-red-600 transition-all transform group-hover:scale-105 shadow-2xl hover:shadow-red-900/50">
-                    ÚNETE A LA LEGIÓN AHORA
+                    JOIN THE LEGION NOW
                   </span>
                 </Link>
               </div>

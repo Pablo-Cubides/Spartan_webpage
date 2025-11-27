@@ -7,8 +7,8 @@ export default function ShareButton({ title, url }: { title?: string; url?: stri
   const handleShare = async () => {
     const shareData = { title: title || document.title, url: url || window.location.href };
     try {
-      if ((navigator as any).share) {
-        await (navigator as any).share(shareData);
+      if ((navigator as Navigator & { share?: (data: { title?: string; url?: string }) => Promise<void> }).share) {
+        await (navigator as Navigator & { share?: (data: { title?: string; url?: string }) => Promise<void> }).share(shareData);
         setMsg("Compartido");
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(shareData.url);
@@ -23,7 +23,8 @@ export default function ShareButton({ title, url }: { title?: string; url?: stri
         document.body.removeChild(input);
         setMsg("Enlace copiado");
       }
-    } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       setMsg("No fue posible compartir");
     }
 

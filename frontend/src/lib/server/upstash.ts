@@ -22,4 +22,6 @@ export async function upstashSet(key: string, value: string, ttl = 3600) {
   })
 }
 
-export default { upstashGet, upstashSet }
+const upstash = { upstashGet, upstashSet };
+
+export default upstash;

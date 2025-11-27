@@ -14,8 +14,8 @@
 export function useApiPath(path: string): string {
   // Get basePath from NEXT_PUBLIC_BASE_PATH environment variable
   // This is set during build/runtime and propagated to the browser
-  const basePath = typeof window !== 'undefined' && (window as any).__NEXT_PUBLIC_BASE_PATH
-    ? (window as any).__NEXT_PUBLIC_BASE_PATH
+  const basePath = typeof window !== 'undefined' && (window as Window & Record<string, unknown>).__NEXT_PUBLIC_BASE_PATH
+    ? (window as Window & Record<string, unknown>).__NEXT_PUBLIC_BASE_PATH as string
     : process.env.NEXT_PUBLIC_BASE_PATH || '';
 
   // Return the path with basePath prefix if available

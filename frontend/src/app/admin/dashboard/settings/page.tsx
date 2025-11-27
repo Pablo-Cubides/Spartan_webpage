@@ -24,7 +24,7 @@ export default function AdminSettings() {
     try {
       // await fetch('/api/admin/settings', { method: 'POST', body: JSON.stringify(settings) });
       setMessage("Settings saved successfully!");
-    } catch (error) {
+    } catch {
       setMessage("Error saving settings.");
     } finally {
       setLoading(false);

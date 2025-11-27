@@ -29,9 +29,9 @@ export default function Page() {
   const [showCamera, setShowCamera] = useState(false);
 
   const suggestions = [
-    "Crear un estilo de barba que alargue mi rostro",
-    "Sugerir peinados de bajo mantenimiento para cabello ondulado",
-    "¿Qué productos necesito para una barba saludable y bien cuidada?",
+    "Create a beard style that elongates my face",
+    "Suggest low-maintenance hairstyles for wavy hair",
+    "What products do I need for a healthy and well-groomed beard?",
   ];
 
   // Helper: perform /api/asesor-estilo/iterate with retries for transient 503 errors
@@ -121,7 +121,7 @@ export default function Page() {
     };
 
     // start with upload phase so users see immediate feedback
-    upsertProcessing('upload', 0, 'Subiendo...');
+    upsertProcessing('upload', 0, 'Uploading...');
 
     try {
       type UploadResult = { imageUrl: string; sessionId?: string; publicId?: string; error?: string };
@@ -132,7 +132,7 @@ export default function Page() {
           const idx = prev.findIndex(x => x.processingPhase === 'upload');
           if (idx === -1) return prev;
           const copy = [...prev];
-          copy[idx] = { ...copy[idx], progress: p, text: `Subiendo... ${p}%` };
+          copy[idx] = { ...copy[idx], progress: p, text: `Uploading... ${p}%` };
           return copy;
         });
       });
@@ -151,11 +151,11 @@ export default function Page() {
   setSessionId(u.sessionId ?? null);
   setPublicId(u.publicId ?? null);
   // add uploaded image into the chat and a processing indicator in a single update to avoid duplicates
-  setMessages((m) => [...m, { from: "user", text: "Imagen subida", image: u.imageUrl }, { from: 'system', text: 'Cargando edición...', processingPhase: 'analyze' }]);
+  setMessages((m) => [...m, { from: "user", text: "Image uploaded", image: u.imageUrl }, { from: 'system', text: 'Loading edit...', processingPhase: 'analyze' }]);
   // switch to chat/ready view so the analysis message is visible in the conversation
   setStep('ready');
 
-      // Hacer analyze primero para obtener el advisory
+      // Perform analyze first to get the advisory
       const analyzeRes = await fetch("/api/asesor-estilo/analyze", {
         method: "POST",
         headers: { 
@@ -182,7 +182,7 @@ export default function Page() {
   // remove processing indicator and append advisory in a single update
   setMessages((m) => {
     const filtered = m.filter(msg => !msg.processingPhase);
-    return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || "No se pudo analizar la imagen correctamente." }];
+    return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || "Could not analyze the image correctly." }];
   });
         setStep("upload");
         setLoading(false);
@@ -191,10 +191,10 @@ export default function Page() {
 
   const advisory = analyzeData.analysis.advisoryText || "";
 
-      // Pequeño delay para evitar problemas de concurrencia con analyze
+      // Small delay to avoid concurrency issues with analyze
       await new Promise(resolve => setTimeout(resolve, 100));
 
-      // Hacer iterate para generar la imagen con reintentos ante 503 transitorios
+      // Perform iterate to generate the image with retries for transient 503 errors
       const iteratePayload2 = {
         sessionId: u.sessionId,
         originalImageUrl: u.imageUrl,
@@ -203,8 +203,8 @@ export default function Page() {
         analysis: analyzeData.analysis,
       };
 
-      // Hacer iterate para generar la imagen (petición única con pequeño delay
-      // para mitigar condiciones de carrera en el servicio externo)
+      // Perform iterate to generate the image (single request with small delay
+      // to mitigate race conditions in the external service)
       const iteratePayload = {
         sessionId: u.sessionId,
         originalImageUrl: u.imageUrl,
@@ -238,7 +238,7 @@ export default function Page() {
         // remove processing indicator and append assistant advisory + system retry message in one update
         setMessages((m) => {
           const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: 'assistant', text: advisory }, { from: 'system', text: 'El servicio de edición de imágenes no está disponible por ahora.', action: { type: 'retry-iterate', payload: iteratePayload } }];
+          return [...filtered, { from: 'assistant', text: advisory }, { from: 'system', text: 'The image editing service is not available for now.', action: { type: 'retry-iterate', payload: iteratePayload } }];
         });
         setLoading(false);
         return;
@@ -250,7 +250,7 @@ export default function Page() {
         // remove processing indicator and append advisory + error in single update
         setMessages((m) => {
           const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: 'assistant', text: advisory }, { from: 'system', text: `Error en edición: ${iterateData.error}` }];
+          return [...filtered, { from: 'assistant', text: advisory }, { from: 'system', text: `Editing error: ${iterateData.error}` }];
         });
         setLoading(false);
         return;
@@ -262,7 +262,7 @@ export default function Page() {
   // remove processing indicator now that editing is complete and append edited image + advisory in one update
   setMessages((m) => {
     const filtered = m.filter(msg => !msg.processingPhase);
-    return [...filtered, { from: 'assistant', text: iterateData.note || 'Edición completada', image: iterateData.editedUrl }, { from: 'assistant', text: advisory }];
+    return [...filtered, { from: 'assistant', text: iterateData.note || 'Editing completed', image: iterateData.editedUrl }, { from: 'assistant', text: advisory }];
   });
       scrollToBottom();
     } catch (err: unknown) {
@@ -284,7 +284,7 @@ export default function Page() {
     scrollToBottom();
 
     try {
-      // usar helper con reintentos
+      // use helper with retries
       const payload = { sessionId, originalImageUrl: originalUrl, userText, prevPublicId: publicId };
       const result = await performIterateWithRetries(payload);
       if (!result.success) {
@@ -301,7 +301,7 @@ export default function Page() {
         if (result.status === 503) {
           setMessages((m) => [...m, {
             from: "system",
-            text: "El servicio de edición de imágenes no está disponible por ahora.",
+            text: "The image editing service is not available for now.",
             action: {
               type: "retry-iterate",
               payload,
@@ -318,7 +318,7 @@ export default function Page() {
       const iterateData2 = result.data;
   setEditedUrl(iterateData2.editedUrl);
   setPublicId(iterateData2.publicId);
-  setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Edición completada", image: iterateData2.editedUrl }]);
+  setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Editing completed", image: iterateData2.editedUrl }]);
       scrollToBottom();
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error: ${err}` }]);
@@ -331,7 +331,7 @@ export default function Page() {
     if (!payload) return;
     setLoading(true);
     // show a small system message indicating retry started
-    setMessages((m) => [...m, { from: "system", text: "Reintentando la edición..." }]);
+    setMessages((m) => [...m, { from: "system", text: "Retrying the edit..." }]);
 
     try {
       const res = await fetch("/api/asesor-estilo/iterate", {
@@ -344,22 +344,22 @@ export default function Page() {
       });
 
       if (res.status === 503) {
-        setMessages((m) => [...m, { from: "system", text: "El servicio de edición sigue sin estar disponible. Intenta más tarde." }]);
+        setMessages((m) => [...m, { from: "system", text: "The editing service is still unavailable. Please try again later." }]);
         return;
       }
 
       const data = await res.json();
       if (data.error) {
-        setMessages((m) => [...m, { from: "system", text: `Error en edición: ${data.error}` }]);
+        setMessages((m) => [...m, { from: "system", text: `Editing error: ${data.error}` }]);
         return;
       }
 
   setEditedUrl(data.editedUrl);
   setPublicId(data.publicId);
-  setMessages((m) => [...m, { from: "assistant", text: data.note || "Edición completada", image: data.editedUrl }]);
+  setMessages((m) => [...m, { from: "assistant", text: data.note || "Editing completed", image: data.editedUrl }]);
       scrollToBottom();
     } catch (err) {
-      setMessages((m) => [...m, { from: "system", text: `Error al reintentar: ${err}` }]);
+      setMessages((m) => [...m, { from: "system", text: `Error when retrying: ${err}` }]);
     } finally {
       setLoading(false);
     }
@@ -389,7 +389,9 @@ export default function Page() {
         
         <div className="chat-shell">
           <div className="chat-header text-center">
-            <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-60 w-auto" />
+            <div className="relative h-60 w-auto mx-auto">
+              <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+            </div>
             <h1 className="chat-title">Asesor de Forma de Cara</h1>
             <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más adaptados a tu forma de cara.</p>
           </div>
@@ -443,7 +445,9 @@ export default function Page() {
       
       <div className="chat-shell">
         <div className="chat-header text-center">
-          <img src={encodeURI('/Logo spartan club - sin fondo.png')} alt="Spartan Club" className="mx-auto h-20 md:h-24 lg:h-28 object-contain mb-4" />
+          <div className="relative mx-auto mb-4 h-20 md:h-24 lg:h-28 w-auto">
+            <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+          </div>
           <h1 className="chat-title">Asesor de Forma de Cara</h1>
           <p className="chat-sub">Recibe consejos sobre cortes de barba, peinados y más adaptados a tu forma de cara.</p>
         </div>
@@ -624,26 +628,27 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
           videoRef.current.srcObject = newStream;
           console.log("[Camera] ✓ Stream asignado al elemento video");
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (!mounted) return;
         console.error("[Camera] ❌ Error final:", err);
         
+        const error = err instanceof Error ? err : new Error(String(err));
         let msg = "";
-        const code = err.name || 'Unknown';
+        const code = error.name || 'Unknown';
         
         if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
-          msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEO LA CAMARA.\n\n**Pasos para solucionar:**\n\n1. Cierra este modal\n2. Haz clic en el icono junto a la URL\n3. En 'Camara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Vuelve a hacer clic en 'Tomar Foto'\n\nSi el problema persiste, el antivirus puede estar bloqueando la cámara.";
+          msg = "🚫 **Permission Denied**\n\nTHE BROWSER BLOCKED THE CAMERA.\n\n**Steps to fix:**\n\n1. Close this modal\n2. Click on the 🔒 or ⓘ icon next to the URL\n3. In 'Camera', select 'Allow'\n4. Reload the page (F5)\n5. Click 'Take Photo' again\n\nIf the problem persists, your antivirus may be blocking the camera.";
         } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
-          msg = "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
+          msg = "📷 **No Camera**\n\nNo connected camera detected.\n\nCheck that:\n• The camera is connected\n• Drivers are installed\n• Windows recognizes it (Settings > Camera)";
         } else if (code === 'NotReadableError' || code === 'TrackStartError') {
-          msg = "⚠️ **Cámara Ocupada**\n\nOtra aplicación está usando la cámara.\n\nCierra estas apps si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
+          msg = "⚠️ **Camera Busy**\n\nAnother application is using the camera.\n\nClose these apps if open:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
         } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {
-          msg = "⚙️ **Configuración Incompatible**\n\nLa cámara no soporta la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
+          msg = "⚙️ **Incompatible Configuration**\n\nThe camera does not support the requested configuration.\n\nThis is rare - try with another browser.";
         } else {
-          msg = `❌ **Error Desconocido**\n\n${err.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
+          msg = `❌ **Unknown Error**\n\n${error.message || String(err)}\n\nTry:\n• Restarting the browser\n• Updating the browser\n• Using Chrome or Edge`;
         }
         
-        msg += `\n\n**Codigo tecnico:** ${code}`;
+        msg += `\n\n**Technical Code:** ${code}`;
         setError(msg);
       }
     }
@@ -705,7 +710,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
           <button
             onClick={handleClose}
             className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-            aria-label="Cerrar cámara"
+            aria-label="Close camera"
           >
             <X size={24} />
           </button>
@@ -713,7 +718,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
           <button
             onClick={handleSwitchCamera}
             className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-            aria-label="Cambiar cámara"
+            aria-label="Switch camera"
           >
             <SwitchCamera size={24} />
           </button>
@@ -727,7 +732,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
                 onClick={handleClose}
                 className="mt-4 w-full px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
               >
-                Cerrar
+                Close
               </button>
             </div>
           ) : (
@@ -746,7 +751,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
             <button
               onClick={handleCapture}
               className="w-16 h-16 rounded-full bg-white border-4 border-gray-300 hover:border-gray-400 transition-all shadow-lg active:scale-95"
-              aria-label="Tomar foto"
+              aria-label="Take photo"
             >
               <div className="w-full h-full rounded-full bg-white" />
             </button>

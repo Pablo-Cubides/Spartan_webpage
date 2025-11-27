@@ -16,7 +16,7 @@ function findWritablePath() {
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       if (!fs.existsSync(p)) fs.writeFileSync(p, JSON.stringify({ comments: [] }, null, 2));
       return p;
-    } catch (e) {
+    } catch {
       // continue
     }
   }
@@ -39,7 +39,7 @@ function readComments(): { comments: Comment[] } {
   try {
     const raw = fs.readFileSync(COMMENTS_FILE, "utf8");
     return JSON.parse(raw);
-  } catch (e) {
+  } catch {
     return { comments: [] };
   }
 }
@@ -63,11 +63,11 @@ export async function POST(request: Request) {
     if (!postSlug || !content) return NextResponse.json({ error: "Invalid" }, { status: 400 });
 
     const data = readComments();
-    const comment: Comment = { id: uuidv4(), postSlug, name: name || null, content, createdAt: new Date().toISOString(), status: "pending" } as any;
+    const comment: Comment = { id: uuidv4(), postSlug, name: name || undefined, content, createdAt: new Date().toISOString(), status: "pending" };
     data.comments.unshift(comment);
     writeComments(data);
     return NextResponse.json({ ok: true, comment });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
 }
@@ -87,7 +87,7 @@ export async function PATCH(request: Request) {
     data.comments[idx].status = action === "approve" ? "approved" : "rejected";
     writeComments(data);
     return NextResponse.json({ ok: true, comment: data.comments[idx] });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
 }

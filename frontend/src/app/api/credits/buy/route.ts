@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { prisma } from '@/lib/server/prisma'
 import { verifyIdToken } from '@/lib/server/firebaseAdmin'
 import { BuyCreditSchema } from '@/lib/validation/schemas'
-import { withErrorHandler, AuthenticationError, NotFoundError, ValidationError, parseJsonBody } from '@/lib/api/error-handler'
+import { withErrorHandler, AuthenticationError, NotFoundError, parseJsonBody } from '@/lib/api/error-handler'
 
 const handler = async (request: NextRequest) => {
   // Verify authentication

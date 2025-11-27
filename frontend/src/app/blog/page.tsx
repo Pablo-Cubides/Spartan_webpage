@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface BlogPost {
   id: number;
@@ -79,10 +80,10 @@ export default function BlogPage() {
 
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
             <h1 className="font-display font-bold text-4xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight mb-4 drop-shadow-2xl">
-              Blog de Transformación
+              Transformation Blog
             </h1>
             <p className="font-sans text-lg md:text-2xl text-gray-200 font-light tracking-wide mb-8">
-              Transforma tu vida, Forja tu legado
+              Transform your life, Forge your legacy
             </p>
           </div>
         </div>
@@ -103,14 +104,14 @@ export default function BlogPage() {
                   >
                     <div className="h-48 overflow-hidden relative">
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                      <img src={post.cover_image || 'https://via.placeholder.com/800x600'} alt={post.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <Image fill src={post.cover_image || 'https://via.placeholder.com/800x600'} alt={post.title} className="object-cover transition-transform duration-700 group-hover:scale-110" />
                     </div>
                     <div className="p-6 md:p-8">
                       <h3 className="font-display font-bold text-xl text-white mb-3 leading-tight uppercase">{post.title}</h3>
                       <p className="text-spartan-muted text-sm leading-relaxed mb-6 line-clamp-3">{post.excerpt}</p>
                           <Link href={`/blog/${post.slug}`} className="inline-block">
                             <button className="font-display font-semibold transition-all duration-300 rounded uppercase tracking-wider bg-spartan-red hover:bg-red-700 text-white shadow-lg shadow-red-900/20 px-4 py-1.5 text-xs">
-                              LEER MAS
+                              READ MORE
                             </button>
                           </Link>
                     </div>
@@ -128,7 +129,7 @@ export default function BlogPage() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               type="text"
-              placeholder="Buscar en el blog"
+              placeholder="Search in blog"
               className="w-full bg-[#1a1a1a] border border-neutral-800 rounded-full py-4 px-8 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-spartan-red focus:ring-1 focus:ring-spartan-red transition-all"
             />
             <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-spartan-red p-2.5 rounded-full text-white hover:bg-red-700 transition-colors">
@@ -143,13 +144,13 @@ export default function BlogPage() {
             {filteredList.map((post) => (
               <div key={post.id} className="flex flex-col md:flex-row bg-[#0a0a0a] rounded-xl overflow-hidden group hover:bg-[#121212] transition-colors duration-300 border border-transparent hover:border-neutral-800">
                 <div className="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
-                  <img src={post.cover_image || 'https://via.placeholder.com/800x600'} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image fill src={post.cover_image || 'https://via.placeholder.com/800x600'} alt={post.title} className="object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
                 <div className="md:w-2/3 p-6 md:p-8 flex flex-col justify-center">
                   <h3 className="font-display font-bold text-xl md:text-2xl text-white mb-3 uppercase">{post.title}</h3>
                   <p className="text-gray-400 mb-4 leading-relaxed">{post.excerpt}</p>
                   <div className="mt-auto">
-                    <Link href={`/blog/${post.slug}`} className="text-spartan-red hover:text-red-400 font-display font-semibold uppercase text-sm">Leer más</Link>
+                    <Link href={`/blog/${post.slug}`} className="text-spartan-red hover:text-red-400 font-display font-semibold uppercase text-sm">Read more</Link>
                   </div>
                 </div>
               </div>

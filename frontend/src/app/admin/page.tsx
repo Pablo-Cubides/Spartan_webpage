@@ -165,8 +165,8 @@ export default function AdminPanel() {
 
       setIsEditingPost(false);
       setCurrentPost({});
-    } catch (error: any) {
-      setPostFormError(error.message);
+    } catch (error: unknown) {
+      setPostFormError(error instanceof Error ? error.message : 'Error saving post');
     }
   };
 

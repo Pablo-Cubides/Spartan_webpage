@@ -22,7 +22,8 @@ export async function verifyAdmin(request: Request) {
     }
 
     return null;
-  } catch (error) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
     return null;
   }
 }

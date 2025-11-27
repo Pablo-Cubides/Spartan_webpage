@@ -1,5 +1,6 @@
 
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard | Spartan Club",
@@ -19,21 +20,21 @@ export default function AdminLayout({
           <h1 className="text-2xl font-bold text-blue-500">Spartan Club Admin</h1>
         </div>
         <nav className="mt-6 px-4 space-y-2">
-          <a href="/admin/dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+          <Link href="/admin/dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
             Dashboard
-          </a>
-          <a href="/admin/dashboard/settings" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+          </Link>
+          <Link href="/admin/dashboard/settings" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
             Settings & Costs
-          </a>
-          <a href="/admin/dashboard/users" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+          </Link>
+          <Link href="/admin/dashboard/users" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
             Users & Roles
-          </a>
-          <a href="/admin/dashboard/blog" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+          </Link>
+          <Link href="/admin/dashboard/blog" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
             Blog Posts
-          </a>
-          <a href="/admin/dashboard/announcements" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
+          </Link>
+          <Link href="/admin/dashboard/announcements" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
             Announcements
-          </a>
+          </Link>
         </nav>
       </aside>
 

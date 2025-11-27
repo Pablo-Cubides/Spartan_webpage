@@ -16,6 +16,7 @@ function findWritablePath() {
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       if (!fs.existsSync(p)) fs.writeFileSync(p, JSON.stringify({ subscribers: [] }, null, 2));
       return p;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       // continue
     }
@@ -31,6 +32,7 @@ function readFile(): { subscribers: Subscriber[] } {
   try {
     const raw = fs.readFileSync(FILE, 'utf8');
     return JSON.parse(raw);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return { subscribers: [] };
   }
@@ -59,6 +61,7 @@ export async function POST(request: Request) {
     data.subscribers.unshift(sub);
     writeFile(data);
     return NextResponse.json({ ok: true, subscriber: sub });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 });
   }

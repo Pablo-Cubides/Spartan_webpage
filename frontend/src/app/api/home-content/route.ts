@@ -1,10 +1,10 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { withErrorHandler } from '@/lib/api/error-handler';
 
 type Post = { imageUrl: string; title: string; description?: string };
 type Tool = { imageUrl?: string; title: string; description?: string };
 
-const getHandler = async (request: NextRequest) => {
+const getHandler = async () => {
   // Mirror of /api/v1/home-content — keep minimal default content for dev.
   const defaultContent = {
     hero: { backgroundImageUrl: '', title: 'Spartan Club', subtitle: 'Bienvenido' },

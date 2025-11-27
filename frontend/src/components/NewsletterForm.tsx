@@ -25,7 +25,8 @@ export default function NewsletterForm(): JSX.Element {
 
       setStatus('sent');
       setEmail('');
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
       setStatus('error');
     }
   };

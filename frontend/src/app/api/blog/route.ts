@@ -66,9 +66,9 @@ const getHandler = async (request: NextRequest) => {
         hasPrevPage: page > 1,
       },
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     // If Prisma / DATABASE_URL not configured in local dev, return sample data instead
-    console.warn("blog API prisma error, returning sample data:", err?.message || err);
+    console.warn("blog API prisma error, returning sample data:", err instanceof Error ? err.message : err);
 
     const SAMPLE = [
       {

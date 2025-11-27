@@ -8,7 +8,8 @@ export async function hasSufficientCredits(userId: number, amount: number): Prom
   return (user?.credits ?? 0) >= amount
 }
 
-export async function consumeCredits(userId: number, amount: number, description: string): Promise<boolean> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function consumeCredits(userId: number, amount: number, _description: string): Promise<boolean> {
   try {
     return await prisma.$transaction(async (tx) => {
       const user = await tx.user.findUnique({

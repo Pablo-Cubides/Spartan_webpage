@@ -35,13 +35,13 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
     // Validar tipo de archivo
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-      setError('Solo se permiten archivos JPG, PNG o GIF');
+      setError('Only JPG, PNG or GIF files are allowed');
       return;
     }
 
     // Validar tamaño (2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setError('El archivo debe ser menor a 2MB');
+      setError('The file must be smaller than 2MB');
       return;
     }
 
@@ -75,7 +75,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
 
       if (!presignRes.ok) {
         const err = await presignRes.json().catch(() => ({}));
-        setError(err.error || 'Error obteniendo URL firmada');
+        setError(err.error || 'Error getting presigned URL');
         setLoading(false);
         return;
       }
@@ -92,7 +92,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
       });
 
       if (!putRes.ok) {
-        setError('Error subiendo archivo a storage');
+        setError('Error uploading file to storage');
         setLoading(false);
         return;
       }
@@ -109,7 +109,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
 
       if (!confirmRes.ok) {
         const err = await confirmRes.json().catch(() => ({}));
-        setError(err.error || 'Error confirmando subida');
+        setError(err.error || 'Error confirming upload');
         setLoading(false);
         return;
       }
@@ -118,7 +118,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
       onAvatarChange('uploaded', data.avatar_url);
       setError('');
     } catch (e) {
-      setError((e as Error).message || 'Error de conexión');
+      setError((e as Error).message || 'Connection error');
     } finally {
       setLoading(false);
     }
@@ -144,10 +144,10 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
         setError('');
       } else {
         const errorData = await response.json();
-        setError(errorData.detail || 'Error al eliminar avatar');
+        setError(errorData.detail || 'Error deleting avatar');
       }
     } catch {
-      setError('Error de conexión');
+      setError('Connection error');
     } finally {
       setLoading(false);
     }
@@ -157,7 +157,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Seleccionar Avatar
+          Select Avatar
         </h1>
 
         {error && (
@@ -169,11 +169,11 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
         {/* Avatar Actual */}
         {currentAvatar && (
           <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Avatar Actual</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Current Avatar</h3>
             <div className="flex items-center space-x-4">
               <Image
                 src={currentAvatar || ''}
-                alt="Avatar actual"
+                alt="Current avatar"
                 width={64}
                 height={64}
                 className="w-16 h-16 rounded-full object-cover"
@@ -184,7 +184,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
                 disabled={loading}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
               >
-                {loading ? 'Eliminando...' : 'Eliminar Avatar'}
+                {loading ? 'Deleting...' : 'Delete Avatar'}
               </button>
             </div>
           </div>
@@ -192,7 +192,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
 
         {/* Iconos Predefinidos */}
         <div className="mb-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Iconos Predefinidos</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Predefined Icons</h3>
           <div className="grid grid-cols-5 gap-4">
             {AVATAR_ICONS.map((icon, index) => (
               <button
@@ -212,7 +212,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
 
         {/* Subida de Archivo */}
         <div className="mb-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Subir Imagen</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Upload Image</h3>
           
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
             <input
@@ -226,16 +226,16 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
             {!uploadedFile ? (
               <div>
                 <p className="text-gray-600 mb-4">
-                  Arrastra una imagen aquí o haz clic para seleccionar
+                  Drag an image here or click to select
                 </p>
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  Seleccionar Archivo
+                  Select File
                 </button>
                 <p className="text-sm text-gray-500 mt-2">
-                  Formatos: JPG, PNG, GIF. Máximo 2MB
+                  Formats: JPG, PNG, GIF. Maximum 2MB
                 </p>
               </div>
             ) : (
@@ -256,7 +256,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
                     disabled={loading}
                     className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
                   >
-                    {loading ? 'Subiendo...' : 'Usar Esta Imagen'}
+                    {loading ? 'Uploading...' : 'Use This Image'}
                   </button>
                   <button
                     onClick={() => {
@@ -266,7 +266,7 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
                     }}
                     className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
                   >
-                    Cancelar
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -277,14 +277,14 @@ export default function AvatarSelector({ currentAvatar, onAvatarChange }: Avatar
         {/* Información */}
         <div className="p-4 bg-blue-50 rounded-md">
           <h3 className="text-sm font-medium text-blue-900 mb-2">
-            Información sobre Avatares
+            Avatar Information
           </h3>
           <ul className="text-sm text-blue-800 space-y-1">
-            <li>• Puedes elegir entre 10 iconos predefinidos</li>
-            <li>• O subir tu propia imagen (máximo 2MB)</li>
-            <li>• Formatos soportados: JPG, PNG, GIF</li>
-            <li>• La imagen se procesará automáticamente</li>
-            <li>• Puedes cambiar tu avatar en cualquier momento</li>
+            <li>• You can choose from 10 predefined icons</li>
+            <li>• Or upload your own image (maximum 2MB)</li>
+            <li>• Supported formats: JPG, PNG, GIF</li>
+            <li>• The image will be processed automatically</li>
+            <li>• You can change your avatar at any time</li>
           </ul>
         </div>
       </div>

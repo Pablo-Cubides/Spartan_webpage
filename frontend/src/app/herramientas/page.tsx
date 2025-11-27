@@ -5,24 +5,24 @@ import Link from 'next/link';
 const HERRAMIENTAS = [
   {
     id: 'asesor-forma-cara',
-    titulo: 'Análisis de Barba y Corte de Cabello',
-    descripcion: 'Descubre tu forma de cara y aprende a resaltar tus mejores rasgos. Obtén consejos personalizados sobre cortes de cabello, estilos de barba y accesorios que te favorecen.',
-    imagen: encodeURI('/Herramientas/Hombre con barba.png'),
-    estado: 'activo',
+    title: 'Beard and Haircut Analysis',
+    description: 'Discover your face shape and learn to highlight your best features. Get personalized advice on haircuts, beard styles, and accessories that suit you.',
+    image: encodeURI('/Herramientas/Hombre con barba.png'),
+    status: 'active',
   },
   {
     id: 'personal-coach',
-    titulo: 'Personal Coach Espartano',
-    descripcion: 'Un programa de entrenamiento y mentoría personalizado para alcanzar tus metas de forma espartana.',
-    imagen: encodeURI('/Herramientas/Guerrero spartano.png'),
-    estado: 'proximamente',
+    title: 'Spartan Personal Coach',
+    description: 'A personalized training and mentorship program to achieve your goals in a spartan way.',
+    image: encodeURI('/Herramientas/Guerrero spartano.png'),
+    status: 'soon',
   },
   {
     id: 'asesor-estilo',
-    titulo: 'Tu Asesor de Estilo Personal',
-    descripcion: 'Recibe recomendaciones de estilo adaptadas a tus preferencias y tipo de cuerpo. Crea un guardarropa que refleje tu personalidad y te haga sentir seguro en cualquier situación.',
-    imagen: encodeURI('/Herramientas/Seleccionar ropa tool.png'),
-    estado: 'activo',
+    title: 'Your Personal Style Advisor',
+    description: 'Receive style recommendations tailored to your preferences and body type. Create a wardrobe that reflects your personality and makes you feel confident in any situation.',
+    image: encodeURI('/Herramientas/Seleccionar ropa tool.png'),
+    status: 'active',
   },
 ];
 
@@ -41,8 +41,8 @@ export default function HerramientasPage() {
             </div>
 
             <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Herramientas para tu Transformación</h1>
-              <p className="text-[#ba9c9c] text-sm md:text-base">Descubre las herramientas diseñadas para impulsarte en tu camino hacia una vida más disciplinada y plena.</p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Tools for your Transformation</h1>
+              <p className="text-[#ba9c9c] text-sm md:text-base">Discover the tools designed to propel you on your path to a more disciplined and fulfilling life.</p>
             </div>
           </div>
         </div>
@@ -51,22 +51,22 @@ export default function HerramientasPage() {
 
             {/* Grid de Herramientas */}
             <div className="grid grid-cols-1 gap-4 p-4">
-              {HERRAMIENTAS.map((herramienta) => (
+              {HERRAMIENTAS.map((tool) => (
                 <Link
-                  key={herramienta.id}
-                  href={herramienta.estado === 'activo' ? `/herramientas/${herramienta.id}` : '#'}
+                  key={tool.id}
+                  href={tool.status === 'active' ? `/herramientas/${tool.id}` : '#'}
                   className={`@container cursor-pointer transition-transform hover:scale-102 ${
-                    herramienta.estado === 'proximamente' ? 'opacity-75 cursor-not-allowed' : ''
+                    tool.status === 'soon' ? 'opacity-75 cursor-not-allowed' : ''
                   }`}
-                  onClick={(e) => herramienta.estado === 'proximamente' && e.preventDefault()}
+                  onClick={(e) => tool.status === 'soon' && e.preventDefault()}
                 >
                   <div className="flex flex-col items-stretch justify-start rounded-xl @xl:flex-row @xl:items-start bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] overflow-hidden hover:from-[#333333] hover:to-[#222222] transition-colors">
-                    <div className="w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl @xl:rounded-none @xl:w-96 flex-shrink-0" style={{ backgroundImage: `url("${herramienta.imagen}")` }} />
+                    <div className="w-full bg-center bg-no-repeat bg-cover aspect-video rounded-xl @xl:rounded-none @xl:w-96 flex-shrink-0" style={{ backgroundImage: `url("${tool.image}")` }} />
                     <div className="flex w-full grow flex-col items-stretch justify-center gap-2 p-4 @xl:px-6">
-                      <p className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">{herramienta.titulo}</p>
-                      <p className="text-[#ba9c9c] text-base font-normal leading-normal">{herramienta.descripcion}</p>
-                      {herramienta.estado === 'proximamente' && (
-                        <p className="text-[#c20909] text-sm font-semibold mt-2">Próximamente</p>
+                      <p className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">{tool.title}</p>
+                      <p className="text-[#ba9c9c] text-base font-normal leading-normal">{tool.description}</p>
+                      {tool.status === 'soon' && (
+                        <p className="text-[#c20909] text-sm font-semibold mt-2">Coming Soon</p>
                       )}
                     </div>
                   </div>
@@ -77,7 +77,7 @@ export default function HerramientasPage() {
             {/* CTA final */}
             <div className="flex justify-center px-4 py-3">
               <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#c20909] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors">
-                <span className="truncate">Desata tu Potencial Espartano</span>
+                <span className="truncate">Unleash your Spartan Potential</span>
               </button>
             </div>
           </div>

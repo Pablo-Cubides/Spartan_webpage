@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
@@ -120,10 +121,12 @@ export default function ModalLogin({ open, onClose }: { open: boolean; onClose: 
         
         {/* Logo */}
         <div className="flex justify-center mb-4">
-          <img
-            src={encodeURI('/Logo spartan club - sin fondo.png')}
+          <Image
+            width={160}
+            height={160}
+            src="/Logo spartan club - sin fondo.png"
             alt="Spartan Club"
-            className="mx-auto h-40 w-auto object-contain drop-shadow-2xl"
+            className="object-contain drop-shadow-2xl"
           />
         </div>
 

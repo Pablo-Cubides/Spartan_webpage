@@ -1,5 +1,6 @@
 // components/Footer.tsx
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
@@ -9,10 +10,12 @@ export default function Footer() {
         <div className="flex flex-col items-start gap-4">
           <div className="flex items-center gap-2">
             <div className="flex items-center">
-              <img
-                src={encodeURI('/Logo spartan club - sin fondo.png')}
+              <Image
+                width={160}
+                height={160}
+                src="/Logo spartan club - sin fondo.png"
                 alt="Spartan Club"
-                className="h-40 w-auto object-contain"
+                className="object-contain"
               />
             </div>
           </div>

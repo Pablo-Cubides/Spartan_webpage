@@ -18,7 +18,6 @@ if (!admin.apps.length) {
       // If the provided private key is invalid or parsing fails, avoid throwing
       // during build/collect-phase — log and fall back to default initialization
       // which may still work if running in a GCP environment.
-      // eslint-disable-next-line no-console
       console.warn('Firebase admin initialization skipped due to invalid key:', err instanceof Error ? err.message : String(err))
       try {
         admin.initializeApp()
