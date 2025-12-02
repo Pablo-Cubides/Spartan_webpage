@@ -225,14 +225,19 @@ function getRateLimiter(): InMemoryRateLimiter | RedisRateLimiter {
           APP_CONFIG.cache.REDIS_URL,
           APP_CONFIG.cache.REDIS_TOKEN
         );
-        console.log('✓ Using Redis rate limiter');
-      } catch (error) {
-        console.warn('Redis rate limiter initialization failed, falling back to in-memory:', error);
+        // Log only in development
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('✓ Using Redis rate limiter');
+        }
+      } catch {
         rateLimiter = new InMemoryRateLimiter();
       }
     } else {
       rateLimiter = new InMemoryRateLimiter();
-      console.log('✓ Using in-memory rate limiter');
+      // Log only in development
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('✓ Using in-memory rate limiter');
+      }
     }
   }
   return rateLimiter;

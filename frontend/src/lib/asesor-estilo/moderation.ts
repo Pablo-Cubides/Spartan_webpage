@@ -123,7 +123,7 @@ async function callVisionModeration(imageUrl: string, accessToken: string, redac
     }
 
     const safeSearch = (annotation.safeSearchAnnotation ?? {}) as Record<string, string>
-    const hasNsfw = [safeSearch.adult, safeSearch.violence, safeSearch.racy, safeSearch.medical].some((value) =>
+    const hasNsfw = [safeSearch.adult, safeSearch.adult, safeSearch.violence, safeSearch.racy, safeSearch.medical].some((value) =>
       value ? BLOCK_LEVELS.has(value) : false,
     )
     if (hasNsfw) {

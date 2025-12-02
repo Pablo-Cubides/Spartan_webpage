@@ -55,10 +55,21 @@ export async function POST(request: Request) {
     const xSignature = request.headers.get('x-signature');
     const xRequestId = request.headers.get('x-request-id');
     const mpWebhookSecret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+    const isProduction = process.env.NODE_ENV === 'production';
 
-    // Note: If webhook secret is not configured, we'll proceed with fallback validation
-    // (fetching from MercadoPago API). In production, always configure the secret.
-    if (mpWebhookSecret && (xSignature || xRequestId)) {
+    // In production, webhook secret is REQUIRED for security
+    if (isProduction && !mpWebhookSecret) {
+      console.error('[Webhook] MERCADOPAGO_WEBHOOK_SECRET not configured in production');
+      return NextResponse.json({ error: 'webhook_not_configured' }, { status: 500 });
+    }
+
+    // Verify signature if secret is configured
+    if (mpWebhookSecret) {
+      if (!xSignature || !xRequestId) {
+        console.warn('[Webhook] Missing signature headers');
+        return NextResponse.json({ error: 'missing_signature' }, { status: 401 });
+      }
+
       const isValid = verifyMercadopagoSignature(
         await request.clone().text(),
         xSignature,
@@ -67,7 +78,7 @@ export async function POST(request: Request) {
       );
 
       if (!isValid) {
-        console.warn('Invalid MercadoPago webhook signature');
+        console.warn('[Webhook] Invalid MercadoPago signature');
         return NextResponse.json({ error: 'invalid_signature' }, { status: 403 });
       }
     }

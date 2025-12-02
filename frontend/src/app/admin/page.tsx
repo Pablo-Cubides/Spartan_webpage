@@ -58,21 +58,47 @@ export default function AdminPanel() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [activeTab, setActiveTab] = useState<'users' | 'purchases' | 'packages' | 'blog'>('users');
   const [loadingData, setLoadingData] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   
   // Blog Form State
   const [isEditingPost, setIsEditingPost] = useState(false);
   const [currentPost, setCurrentPost] = useState<Partial<BlogPost>>({});
   const [postFormError, setPostFormError] = useState<string | null>(null);
 
-  // Verificar si el usuario es admin (basado en role en BD, no en email)
-  const isAdmin = user && user.uid ? (
-    // La verificación real ocurre en el servidor en /api/v1/admin/users
-    // The client only attempts to load data; the server will reject if not admin
-    true // Permitir intento; servidor validará
-  ) : false;
+  // Check if user has admin access by attempting to fetch admin data
+  // The server validates the role from database
+  useEffect(() => {
+    if (!user) {
+      setIsAuthorized(null);
+      return;
+    }
+
+    const checkAdminAccess = async () => {
+      try {
+        const token = await user.getIdToken();
+        const response = await fetch('/api/v1/admin/users', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (response.ok) {
+          setIsAuthorized(true);
+          const usersData = await response.json();
+          setUsers(usersData);
+        } else if (response.status === 401 || response.status === 403) {
+          setIsAuthorized(false);
+        } else {
+          setIsAuthorized(false);
+        }
+      } catch {
+        setIsAuthorized(false);
+      }
+    };
+
+    checkAdminAccess();
+  }, [user]);
 
   useEffect(() => {
-    if (!(user && isAdmin)) return;
+    if (!user || !isAuthorized) return;
 
     const fetchData = async () => {
       setLoadingData(true);
@@ -126,7 +152,7 @@ export default function AdminPanel() {
     };
 
     void fetchData();
-  }, [user, isAdmin]);
+  }, [user, isAuthorized]);
 
   const handleSavePost = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -216,7 +242,19 @@ export default function AdminPanel() {
     );
   }
 
-  if (!isAdmin) {
+  // Still checking authorization
+  if (isAuthorized === null) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Verifying admin access...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">

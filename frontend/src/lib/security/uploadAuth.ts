@@ -10,6 +10,8 @@ const ALLOWED_ORIGINS = (process.env.ALLOWED_UPLOAD_ORIGINS || '')
   .map(s => s.trim())
   .filter(Boolean)
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 function initFirebase() {
   try {
     if (!admin.apps.length) {
@@ -22,10 +24,26 @@ function initFirebase() {
   }
 }
 
-export function isOriginAllowed(origin?: string) {
-  if (!ALLOWED_ORIGINS.length) return true // permissive when not configured
-  if (!origin) return false
-  return ALLOWED_ORIGINS.includes(origin)
+/**
+ * Check if the origin is allowed for uploads.
+ * In production, ALLOWED_UPLOAD_ORIGINS must be configured.
+ * In development, allows all origins if not configured.
+ */
+export function isOriginAllowed(origin?: string): boolean {
+  // In production, require explicit origin configuration
+  if (isProduction) {
+    if (!ALLOWED_ORIGINS.length) {
+      console.warn('[Security] ALLOWED_UPLOAD_ORIGINS not configured in production - blocking all origins');
+      return false;
+    }
+    if (!origin) return false;
+    return ALLOWED_ORIGINS.includes(origin);
+  }
+  
+  // In development, be permissive if not configured
+  if (!ALLOWED_ORIGINS.length) return true;
+  if (!origin) return false;
+  return ALLOWED_ORIGINS.includes(origin);
 }
 
 export async function verifyFirebaseIdToken(idToken: string) {
