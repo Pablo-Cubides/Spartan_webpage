@@ -4,7 +4,7 @@ import { BlogBreadcrumb } from "@/types/blog";
 
 interface BreadcrumbNavProps {
   items: BlogBreadcrumb[];
-  schema?: any; // Schema JSON-LD
+  schema?: Record<string, unknown>; // Schema JSON-LD
 }
 
 /**

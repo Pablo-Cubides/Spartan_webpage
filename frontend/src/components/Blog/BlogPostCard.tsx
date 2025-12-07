@@ -24,9 +24,10 @@ export const BlogPostCard: React.FC<BlogPostCardProps> = ({
       {post.cover_image && (
         <div className="post-image">
           <Link href={postUrl}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={post.cover_image}
-              alt={post.cover_image_alt || post.title}
+              alt={post.cover_image_alt || `Portada del artículo ${post.title}`}
               loading="lazy"
             />
           </Link>

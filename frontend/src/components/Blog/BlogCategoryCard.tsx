@@ -17,9 +17,10 @@ export const BlogCategoryCard: React.FC<BlogCategoryCardProps> = ({
     <article className="blog-category-card">
       {category.featured_image && (
         <div className="category-image">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={category.featured_image}
-            alt={category.name_display}
+            alt={`Imagen de la categoría ${category.name_display}`}
             loading="lazy"
           />
         </div>

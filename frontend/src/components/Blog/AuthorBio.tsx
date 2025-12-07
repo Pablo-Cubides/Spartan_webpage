@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { SocialLink } from "@/types/blog";
 
 interface AuthorBioProps {
@@ -27,7 +26,8 @@ export const AuthorBio: React.FC<AuthorBioProps> = ({
       <div className="author-container">
         {avatar && (
           <div className="author-avatar">
-            <img src={avatar} alt={name} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={avatar} alt={`Avatar de ${name}`} />
           </div>
         )}
 

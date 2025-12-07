@@ -1,174 +1,358 @@
-"use client";
-import React, { useMemo, useState, useEffect } from "react";
+import { Metadata } from "next";
+import { prisma } from "@/lib/server/prisma";
+import { generateWebSiteSchema } from "@/lib/blog/schema-generator";
 import Link from "next/link";
-import Image from "next/image";
 
-interface BlogPost {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  cover_image: string;
-  published_at: string;
-  author: {
-    name: string;
-  };
-}
+export const metadata: Metadata = {
+  title: "Blog Spartan Club – Artículos sobre Desarrollo Masculino",
+  description:
+    "Descubre artículos sobre entrenamiento físico, estilo, mentalidad y productividad para hombres. Contenidos de calidad para tu desarrollo personal.",
+  openGraph: {
+    title: "Blog Spartan Club",
+    description:
+      "Artículos sobre cuerpo, estilo, mentalidad y productividad para hombres",
+    type: "website",
+    url: "https://spartanclub.co/blog/",
+  },
+  alternates: {
+    canonical: "https://spartanclub.co/blog/",
+  },
+};
 
-export default function BlogPage() {
-  const [q, setQ] = useState("");
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
+export default async function BlogPage() {
+  const categories = await prisma.blogCategory.findMany({
+    where: { is_active: true },
+    orderBy: { sort_order: "asc" },
+  });
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('/api/blog?limit=50');
-        if (res.ok) {
-          const data = await res.json();
-          setPosts(data.posts);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const allPosts = await prisma.blogPost.findMany({
+    where: { is_published: true },
+    select: {
+      slug: true,
+      title: true,
+      excerpt: true,
+      cover_image: true,
+      reading_time_minutes: true,
+      published_at: true,
+      category: {
+        select: { slug: true, name_display: true },
+      },
+      author: {
+        select: { name: true },
+      },
+    },
+    orderBy: { published_at: "desc" },
+    take: 9,
+  });
 
-    fetchPosts();
-  }, []);
-
-  // For now, we'll just take the first few as "featured" if we don't have a specific flag
-  // or we could add a 'featured' flag to the DB later.
-  const SAMPLE_FEATURED = posts.slice(0, 3);
-  const SAMPLE_LIST = posts.slice(3);
-
-  const filteredFeatured = useMemo(() => {
-    if (!q) return SAMPLE_FEATURED;
-    const term = q.toLowerCase();
-    return SAMPLE_FEATURED.filter((p) => {
-      const title = p.title || "";
-      const excerpt = p.excerpt || "";
-      return title.toLowerCase().includes(term) || excerpt.toLowerCase().includes(term);
-    });
-  }, [q, SAMPLE_FEATURED]);
-
-  const filteredList = useMemo(() => {
-    if (!q) return SAMPLE_LIST;
-    const term = q.toLowerCase();
-    return SAMPLE_LIST.filter((p) => {
-      const title = p.title || "";
-      const excerpt = p.excerpt || "";
-      return title.toLowerCase().includes(term) || excerpt.toLowerCase().includes(term);
-    });
-  }, [q, SAMPLE_LIST]);
+  // Generar schemas
+  const websiteSchema = generateWebSiteSchema("https://spartanclub.co", {
+    siteName: "Spartan Club",
+    siteImage: "https://spartanclub.co/og-image.png",
+  });
 
   return (
-    <div className="min-h-screen bg-spartan-dark text-spartan-text font-sans selection:bg-spartan-red selection:text-white">
-      <main>
-        {/* HERO */}
-        <div className="relative h-[80vh] min-h-[600px] w-full flex items-center justify-center overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=1920&q=80')",
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]"></div>
-          </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
 
-          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
-            <h1 className="font-display font-bold text-4xl md:text-6xl lg:text-7xl text-white uppercase tracking-tight mb-4 drop-shadow-2xl">
-              Transformation Blog
-            </h1>
-            <p className="font-sans text-lg md:text-2xl text-gray-200 font-light tracking-wide mb-8">
-              Transform your life, Forge your legacy
-            </p>
-          </div>
-        </div>
-
-        {/* FEATURED GRID */}
-        <section className="relative -mt-32 z-20 px-4 md:px-8 pb-16">
-          <div className="container mx-auto">
-            {loading ? (
-               <div className="text-center py-12">
-                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-spartan-red mx-auto"></div>
-               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredFeatured.map((post) => (
-                  <article
-                    key={post.id}
-                    className="group bg-spartan-card rounded-lg overflow-hidden shadow-2xl border border-neutral-800 hover:border-spartan-red/30 transition-all duration-300 hover:-translate-y-2"
-                  >
-                    <div className="h-48 overflow-hidden relative">
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                      <Image fill src={post.cover_image || 'https://via.placeholder.com/800x600'} alt={post.title} className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                    </div>
-                    <div className="p-6 md:p-8">
-                      <h3 className="font-display font-bold text-xl text-white mb-3 leading-tight uppercase">{post.title}</h3>
-                      <p className="text-spartan-muted text-sm leading-relaxed mb-6 line-clamp-3">{post.excerpt}</p>
-                          <Link href={`/blog/${post.slug}`} className="inline-block">
-                            <button className="font-display font-semibold transition-all duration-300 rounded uppercase tracking-wider bg-spartan-red hover:bg-red-700 text-white shadow-lg shadow-red-900/20 px-4 py-1.5 text-xs">
-                              READ MORE
-                            </button>
-                          </Link>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
-          </div>
+      <main className="blog-main">
+        {/* Header */}
+        <section className="blog-header">
+          <h1>Blog Spartan Club</h1>
+          <p>
+            Artículos sobre entrenamiento físico, estilo, mentalidad y
+            productividad para tu desarrollo como hombre
+          </p>
         </section>
 
-        {/* SEARCH + LIST */}
-        <section className="container mx-auto px-4 md:px-8 pb-24">
-          <div className="relative max-w-4xl mx-auto mb-16">
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              type="text"
-              placeholder="Search in blog"
-              className="w-full bg-[#1a1a1a] border border-neutral-800 rounded-full py-4 px-8 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-spartan-red focus:ring-1 focus:ring-spartan-red transition-all"
-            />
-            <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-spartan-red p-2.5 rounded-full text-white hover:bg-red-700 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </button>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-8">
-            {filteredList.map((post) => (
-              <div key={post.id} className="flex flex-col md:flex-row bg-[#0a0a0a] rounded-xl overflow-hidden group hover:bg-[#121212] transition-colors duration-300 border border-transparent hover:border-neutral-800">
-                <div className="md:w-1/3 h-64 md:h-auto overflow-hidden relative">
-                  <Image fill src={post.cover_image || 'https://via.placeholder.com/800x600'} alt={post.title} className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                </div>
-                <div className="md:w-2/3 p-6 md:p-8 flex flex-col justify-center">
-                  <h3 className="font-display font-bold text-xl md:text-2xl text-white mb-3 uppercase">{post.title}</h3>
-                  <p className="text-gray-400 mb-4 leading-relaxed">{post.excerpt}</p>
-                  <div className="mt-auto">
-                    <Link href={`/blog/${post.slug}`} className="text-spartan-red hover:text-red-400 font-display font-semibold uppercase text-sm">Read more</Link>
+        {/* Categorías */}
+        <section className="blog-categories">
+          <h2>Categorías</h2>
+          <div className="categories-grid">
+            {categories.map((category) => (
+              <div key={category.id} className="category-card">
+                {category.featured_image && (
+                  <div className="category-image">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={category.featured_image}
+                      alt={`Categoría ${category.name_display}`}
+                      loading="lazy"
+                    />
                   </div>
+                )}
+                <div className="category-content">
+                  <h3>
+                    <Link href={`/blog/${category.slug}/`}>
+                      {category.name_display}
+                    </Link>
+                  </h3>
+                  <p>{category.description}</p>
+                  <Link href={`/blog/${category.slug}/`} className="read-more">
+                    Ver artículos →
+                  </Link>
                 </div>
               </div>
             ))}
           </div>
+        </section>
 
-          {/* Pagination (static placeholder) */}
-          <div className="flex justify-center items-center mt-16 gap-4 font-display font-bold text-gray-500">
-            <button className="hover:text-white transition-colors">{`<`}</button>
-            <span className="w-8 h-8 flex items-center justify-center bg-neutral-800 text-white rounded-full">1</span>
-            <span className="hover:text-white cursor-pointer transition-colors">2</span>
-            <span>8</span>
-            <span>..</span>
-            <span>10</span>
-            <button className="hover:text-white transition-colors">{`>`}</button>
+        {/* Artículos destacados */}
+        <section className="blog-featured">
+          <h2>Últimos artículos</h2>
+          <div className="posts-grid">
+            {allPosts.map((post) => (
+              <article key={post.slug} className="post-card">
+                {post.cover_image && (
+                  <div className="post-image">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={post.cover_image}
+                      alt={post.title}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className="post-content">
+                  <div className="post-meta">
+                    <Link href={`/blog/${post.category.slug}/`}>
+                      {post.category.name_display}
+                    </Link>
+                    <span>
+                      {post.reading_time_minutes || 5} min de lectura
+                    </span>
+                  </div>
+                  <h3>
+                    <Link href={`/blog/${post.category.slug}/${post.slug}/`}>
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p>{post.excerpt}</p>
+                  <Link
+                    href={`/blog/${post.category.slug}/${post.slug}/`}
+                    className="read-more"
+                  >
+                    Leer artículo →
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
       </main>
-    </div>
+
+      <style jsx>{`
+        .blog-main {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+        }
+
+        .blog-header {
+          text-align: center;
+          margin-bottom: 60px;
+        }
+
+        .blog-header h1 {
+          font-size: 48px;
+          font-weight: 700;
+          margin-bottom: 16px;
+          color: #1a1a1a;
+        }
+
+        .blog-header p {
+          font-size: 18px;
+          color: #666;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        .blog-categories {
+          margin-bottom: 80px;
+        }
+
+        .blog-categories h2,
+        .blog-featured h2 {
+          font-size: 32px;
+          font-weight: 700;
+          margin-bottom: 40px;
+          color: #1a1a1a;
+        }
+
+        .categories-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 30px;
+          margin-bottom: 40px;
+        }
+
+        .category-card {
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid #e0e0e0;
+          transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+          border-color: #d4af37;
+          box-shadow: 0 8px 24px rgba(212, 175, 55, 0.1);
+        }
+
+        .category-image {
+          width: 100%;
+          height: 200px;
+          overflow: hidden;
+          background: #f5f5f5;
+        }
+
+        .category-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .category-content {
+          padding: 24px;
+        }
+
+        .category-content h3 {
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 12px;
+        }
+
+        .category-content h3 a {
+          color: #1a1a1a;
+          text-decoration: none;
+        }
+
+        .category-content h3 a:hover {
+          color: #d4af37;
+        }
+
+        .category-content p {
+          font-size: 14px;
+          color: #666;
+          margin-bottom: 16px;
+          line-height: 1.5;
+        }
+
+        .read-more {
+          color: #d4af37;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 14px;
+          transition: color 0.2s ease;
+        }
+
+        .read-more:hover {
+          color: #1a1a1a;
+        }
+
+        .posts-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 30px;
+        }
+
+        .post-card {
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid #e0e0e0;
+          transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+          border-color: #d4af37;
+          box-shadow: 0 8px 24px rgba(212, 175, 55, 0.1);
+        }
+
+        .post-image {
+          width: 100%;
+          height: 200px;
+          overflow: hidden;
+          background: #f5f5f5;
+        }
+
+        .post-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .post-content {
+          padding: 24px;
+        }
+
+        .post-meta {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 12px;
+          font-size: 12px;
+          color: #999;
+        }
+
+        .post-meta a {
+          color: #d4af37;
+          text-decoration: none;
+          font-weight: 600;
+        }
+
+        .post-content h3 {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 12px;
+          line-height: 1.4;
+        }
+
+        .post-content h3 a {
+          color: #1a1a1a;
+          text-decoration: none;
+        }
+
+        .post-content h3 a:hover {
+          color: #d4af37;
+        }
+
+        .post-content p {
+          font-size: 14px;
+          color: #666;
+          margin-bottom: 16px;
+          line-height: 1.5;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+          .blog-main {
+            padding: 20px;
+          }
+
+          .blog-header h1 {
+            font-size: 32px;
+          }
+
+          .blog-categories h2,
+          .blog-featured h2 {
+            font-size: 24px;
+          }
+
+          .categories-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .posts-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+    </>
   );
 }

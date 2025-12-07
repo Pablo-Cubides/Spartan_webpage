@@ -49,7 +49,7 @@ export interface BlogPostWithRelations extends BlogPost {
     email: string;
     socialLinks: SocialLink[];
   };
-  category?: BlogCategory;
+  category: BlogCategory;
   relatedPosts?: BlogPost[];
 }
 

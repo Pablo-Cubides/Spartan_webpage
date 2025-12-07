@@ -3,7 +3,7 @@
  * Google usa estos schemas para entender el contenido
  */
 
-import { BlogPost, BlogCategory, BlogBreadcrumb } from "@/types/blog";
+import { BlogCategory, BlogBreadcrumb, BlogPostWithRelations } from "@/types/blog";
 
 interface SchemaOptions {
   baseUrl: string;
@@ -16,14 +16,7 @@ interface SchemaOptions {
  * Incluye: headline, description, image, author, datePublished, dateModified
  */
 export function generateBlogPostingSchema(
-  post: BlogPost & {
-    author: {
-      name?: string;
-      avatar_id?: string;
-      socialLinks?: { platform: string; url: string }[];
-    };
-    category: BlogCategory;
-  },
+  post: BlogPostWithRelations,
   options: SchemaOptions
 ) {
   const postUrl = `${options.baseUrl}/blog/${post.category.slug}/${post.slug}/`;
@@ -36,16 +29,18 @@ export function generateBlogPostingSchema(
     image: post.cover_image ? [post.cover_image] : [],
     datePublished: (post.published_at || post.created_at).toISOString(),
     dateModified: post.updated_at.toISOString(),
-    author: {
-      "@type": "Person",
-      name: post.author.name || "Spartan Club",
-      url: `${options.baseUrl}/autor/${post.author.name?.toLowerCase().replace(/\s+/g, "-")}`,
-      // sameAs con redes sociales del autor
-      sameAs: post.author.socialLinks?.map((link) => link.url) || [],
-      image: post.author.avatar_id
-        ? { "@type": "ImageObject", url: post.author.avatar_id }
-        : undefined,
-    },
+    ...(post.author && {
+      author: {
+        "@type": "Person",
+        name: post.author.name || "Spartan Club",
+        url: `${options.baseUrl}/autor/${post.author.name?.toLowerCase().replace(/\s+/g, "-")}`,
+        // sameAs con redes sociales del autor
+        sameAs: post.author.socialLinks?.map((link) => link.url) || [],
+        image: post.author.avatar_id
+          ? { "@type": "ImageObject", url: post.author.avatar_id }
+          : undefined,
+      },
+    }),
     publisher: {
       "@type": "Organization",
       name: options.siteName || "Spartan Club",
@@ -72,7 +67,7 @@ export function generateBlogPostingSchema(
  */
 export function generateCollectionPageSchema(
   category: BlogCategory,
-  posts: BlogPost[],
+  posts: BlogPostWithRelations[],
   options: SchemaOptions
 ) {
   const categoryUrl = `${options.baseUrl}/blog/${category.slug}/`;
@@ -93,10 +88,12 @@ export function generateCollectionPageSchema(
         image: post.cover_image,
         description: post.excerpt,
         datePublished: (post.published_at || post.created_at).toISOString(),
-        author: {
-          "@type": "Person",
-          name: post.author?.name || "Spartan Club",
-        },
+        ...(post.author && {
+          author: {
+            "@type": "Person",
+            name: post.author.name || "Spartan Club",
+          },
+        }),
       })),
     },
   };
@@ -125,8 +122,7 @@ export function generateBreadcrumbSchema(
  * Genera schema FAQPage si el artículo contiene FAQs
  */
 export function generateFAQSchema(
-  faqs: Array<{ question: string; answer: string }>,
-  options: SchemaOptions
+  faqs: Array<{ question: string; answer: string }>
 ) {
   return {
     "@context": "https://schema.org",
@@ -171,20 +167,19 @@ export function generateOrganizationSchema(
  * Permite búsqueda desde Google Search
  */
 export function generateWebSiteSchema(
-  name: string,
   url: string,
-  searchUrl: string
+  options?: { siteName?: string; searchUrl?: string; siteImage?: string }
 ) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name,
+    name: options?.siteName || "Spartan Club",
     url,
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${searchUrl}?q={search_term_string}`,
+        urlTemplate: options?.searchUrl || `${url}/blog/?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -195,7 +190,7 @@ export function generateWebSiteSchema(
  * Combina múltiples schemas en un array
  * Útil para inyectar varios schemas en una página
  */
-export function combineSchemas(...schemas: any[]): any[] {
+export function combineSchemas(...schemas: Record<string, unknown>[]): Record<string, unknown>[] {
   return schemas.filter(Boolean);
 }
 

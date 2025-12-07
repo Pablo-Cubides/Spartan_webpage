@@ -53,12 +53,12 @@ async function seedBlogCategories() {
   ];
 
   for (const category of categories) {
-    const existing = await prisma.blogCategory.findUnique({
+    const existing = await (prisma as any).blogCategory.findUnique({
       where: { slug: category.slug },
     });
 
     if (!existing) {
-      await prisma.blogCategory.create({ data: category });
+      await (prisma as any).blogCategory.create({ data: category });
       console.log(`✅ Created category: ${category.name_display}`);
     } else {
       console.log(`⏭️  Category already exists: ${category.name_display}`);
