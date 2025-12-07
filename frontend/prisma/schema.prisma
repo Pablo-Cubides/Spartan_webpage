@@ -14,7 +14,6 @@ model User {
   name            String?
   alias           String?   @unique
   avatar_id       String?
-  bio             String?   // Bio para página de autor
   role            String    @default("user")
   credits         Int       @default(0)
   is_active       Boolean   @default(true)
@@ -22,7 +21,6 @@ model User {
   updated_at      DateTime?
   purchases       Purchase[]
   posts           BlogPost[]
-  social_links    SocialLink[] // URLs de redes sociales para schema Person
 }
 
 model CreditPackage {
@@ -71,68 +69,16 @@ model Announcement {
 }
 
 model BlogPost {
-  id               Int       @id @default(autoincrement())
-  slug             String    @unique
-  title            String    // H1 visible (épico)
-  content          String    // Markdown o HTML
-  excerpt          String?   // Resumen corto para listados
-  cover_image      String?   // URL de imagen destacada
-  cover_image_alt  String?   // Alt text para la imagen
-  
-  // SEO y Metadatos
-  meta_title       String?   // Title tag (si es diferente de title)
-  meta_description String?   // Meta description (~160 caracteres)
-  slug_canonical   String?   // Canonical URL (usualmente el slug actual)
-  
-  // Autoridad y E-E-A-T
-  author_id        Int
-  author           User      @relation(fields: [author_id], references: [id])
-  expertise_areas  String?   // JSON array o CSV de áreas de expertise del autor
-  
-  // Categorización
-  category_id      Int
-  category         BlogCategory @relation(fields: [category_id], references: [id])
-  tags             String?   // JSON array de tags o CSV
-  
-  // Publicación
-  is_published     Boolean   @default(false)
-  published_at     DateTime?
-  created_at       DateTime  @default(now())
-  updated_at       DateTime  @updatedAt
-  
-  // Lectura y engagement
-  reading_time_minutes Int? // Estimación automática basada en palabras
-  view_count       Int       @default(0)
-}
-
-model BlogCategory {
-  id              Int        @id @default(autoincrement())
-  name_display    String     // Nombre épico visible (ej. "Mentalidad Espartana")
-  slug            String     @unique // Slug de URL (ej. "mentalidad-y-disciplina")
-  description     String?    // Descripción de la categoría (1-3 párrafos)
-  meta_title      String?    // Title tag para página de categoría
-  meta_description String?   // Meta description para página de categoría
-  
-  // Imagen de categoría (opcional, para listados)
-  featured_image  String?
-  
-  // Relaciones
-  posts           BlogPost[]
-  
-  // Control
-  is_active       Boolean    @default(true)
-  sort_order      Int        @default(0) // Para ordenar en menús
-  created_at      DateTime   @default(now())
-  updated_at      DateTime   @updatedAt
-}
-
-model SocialLink {
-  id        Int     @id @default(autoincrement())
-  user_id   Int
-  user      User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  platform  String  // linkedin, twitter, github, etc.
-  url       String  // URL completa de la red social
-  created_at DateTime @default(now())
-  
-  @@unique([user_id, platform])
+  id           Int       @id @default(autoincrement())
+  slug         String    @unique
+  title        String
+  content      String
+  excerpt      String?
+  cover_image  String?
+  author_id    Int
+  author       User      @relation(fields: [author_id], references: [id])
+  is_published Boolean   @default(false)
+  published_at DateTime?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
 }

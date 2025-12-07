@@ -80,7 +80,6 @@ const postHandler = async (request: NextRequest) => {
       is_published: (is_published as boolean) || false,
       published_at: published_at ? new Date(published_at as string) : null,
       author_id: user.id,
-      category_id: 1, // Default to first category
     },
   });
 
