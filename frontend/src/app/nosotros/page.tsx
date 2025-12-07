@@ -1,10 +1,32 @@
 // app/nosotros/page.tsx
 import Link from 'next/link';
 import Image from 'next/image';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'About Us - Spartan Club',
-  description: 'Learn about our mission, vision, and the code that guides Spartan Club.',
+const BASE_URL = 'https://spartanclub.co';
+
+export const metadata: Metadata = {
+  title: 'Nosotros | Spartan Club - Nuestra Misión y Visión',
+  description: 'Conoce la misión, visión y valores de Spartan Club. Somos una comunidad de hombres disciplinados comprometidos con el desarrollo personal, la excelencia física y la fortaleza mental.',
+  keywords: ['spartan club', 'misión', 'visión', 'comunidad', 'desarrollo personal'],
+  
+  openGraph: {
+    title: 'Nosotros | Spartan Club',
+    description: 'Nuestra misión es forjar hombres de excelencia',
+    type: 'website',
+    url: `${BASE_URL}/nosotros`,
+  },
+
+  twitter: {
+    card: 'summary',
+    title: 'Nosotros | Spartan Club',
+    description: 'Nuestra misión es forjar hombres de excelencia',
+  },
+
+  alternates: {
+    canonical: `${BASE_URL}/nosotros`,
+  },
 };
 
 // Icon components using SVG
@@ -49,8 +71,11 @@ export default function NosotrosPage() {
     <div className="relative flex min-h-screen w-full flex-col bg-[#0a0a0a] text-[#D1D5DB] overflow-x-hidden">
       <main className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-          {/* HERO */}
-          <section className="py-8 md:py-16">
+          {/* Breadcrumb */}
+          <Breadcrumb items={[
+            { label: 'Inicio', href: '/' },
+            { label: 'Nosotros', href: '/nosotros', current: true },
+          ]} />
             <div className="flex flex-col-reverse gap-8 md:flex-row md:items-center md:gap-12 lg:gap-16">
               <div className="md:w-1/2 flex flex-col gap-6">
                 <div className="space-y-4">

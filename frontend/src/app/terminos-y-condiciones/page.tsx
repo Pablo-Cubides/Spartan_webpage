@@ -1,4 +1,16 @@
 
+import type { Metadata } from 'next';
+
+const BASE_URL = 'https://spartanclub.co';
+
+export const metadata: Metadata = {
+  title: 'Términos y Condiciones | Spartan Club',
+  description: 'Términos y condiciones de uso de Spartan Club. Acepta nuestros términos antes de usar el sitio.',
+  alternates: {
+    canonical: `${BASE_URL}/terminos-y-condiciones`,
+  },
+};
+
 export default function TerminosPage() {
   return (
     <main className="px-6 py-12 mx-auto max-w-4xl text-white">

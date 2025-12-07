@@ -1,5 +1,16 @@
 
 /* eslint-disable react/no-unescaped-entities */
+import type { Metadata } from 'next';
+
+const BASE_URL = 'https://spartanclub.co';
+
+export const metadata: Metadata = {
+  title: 'Política de Privacidad | Spartan Club',
+  description: 'Política de privacidad de Spartan Club. Conoce cómo protegemos tus datos y tu privacidad.',
+  alternates: {
+    canonical: `${BASE_URL}/politica-de-privacidad`,
+  },
+};
 
 export default function PrivacidadPage() {
   return (

@@ -1,6 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import type { Metadata } from 'next';
+
+const BASE_URL = 'https://spartanclub.co';
+
+// Nota: Metadata no puede estar en 'use client', pero la agregamos como comentario
+// export const metadata: Metadata = {
+//   title: 'Herramientas | Spartan Club - Asesor de Estilo y Análisis',
+//   description: 'Descubre nuestras herramientas de IA para análisis de estilo y forma de cara. Recomendaciones personalizadas para tu transformación.',
+//   keywords: ['herramientas', 'asesor estilo', 'análisis imagen', 'recomendaciones', 'IA'],
+//   alternates: { canonical: `${BASE_URL}/herramientas` },
+// };
 
 const HERRAMIENTAS = [
   {
@@ -30,6 +42,14 @@ export default function HerramientasPage() {
   return (
     <div className="relative flex size-full min-h-screen flex-col bg-[#181111] dark group/design-root overflow-x-hidden" style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}>
       <div className="flex flex-col h-full layout-container grow">
+        {/* Breadcrumb */}
+        <div className="relative z-40 px-4 md:px-40 py-5">
+          <Breadcrumb items={[
+            { label: 'Inicio', href: '/' },
+            { label: 'Herramientas', href: '/herramientas', current: true },
+          ]} />
+        </div>
+
         {/* Hero moved outside the centered container so bg-fixed works correctly */}
         <div className="w-full">
           <div className="relative h-[60vh] min-h-[360px] w-full flex items-center justify-center overflow-hidden">

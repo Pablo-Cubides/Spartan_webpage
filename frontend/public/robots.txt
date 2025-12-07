@@ -1,0 +1,23 @@
+# Spartan Club - robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /private
+Disallow: /*.json$
+Disallow: /_next/
+Disallow: /public/
+
+# Sitemaps
+Sitemap: https://spartanclub.co/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 0.5
+
+# Specific rules
+User-agent: AdsBot-Google
+Disallow: /admin
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
