@@ -47,7 +47,8 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const selectCoach = useCallback((id: string) => {
         setSelectedCoach(id);
         const coach = coaches.find(c => c.id === id);
-        if (coach && !coach.welcomeShown) {
+        // Don't show welcome modal for general coach (no video needed)
+        if (coach && !coach.welcomeShown && id !== 'general') {
             setShowWelcomeModal(true);
         }
     }, [coaches]);

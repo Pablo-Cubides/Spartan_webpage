@@ -49,7 +49,7 @@ export const COACHES: Record<CoachType, CoachConfig> = {
     description: 'Tu guía principal en el camino Spartan. Coordina tu desarrollo integral.',
     icon: '⚔️',
     color: '#c20909',
-    welcomeVideo: '/videos/coach-espartano/general-welcome.mp4', // Placeholder
+    welcomeVideo: '', // No welcome video - users arrive here after onboarding
     systemPrompt: `${BASE_PERSONALITY}
 
 Eres el Coach General del Spartan Club. Tu rol es:
