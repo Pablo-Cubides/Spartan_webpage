@@ -21,7 +21,7 @@ export interface BlogPostMetadata {
   expertise_areas?: string[]; // Author's expertise areas
   tags?: string[]; // Tags for categorization
   reading_time_minutes?: number; // Reading time estimation
-  view_count: number; // Number of views
+  // view_count removed as not in DB
   cover_image_alt?: string; // Alt text for featured image
 }
 
@@ -33,7 +33,10 @@ export interface BlogPost extends BlogPostMetadata {
   excerpt?: string;
   cover_image?: string;
   author_id: number;
-  category_id?: number;
+  category_slug?: string; // Slug de la categoría
+  meta_title?: string;
+  meta_description?: string;
+  keywords?: string[];
   is_published: boolean;
   published_at?: Date;
   created_at: Date;
@@ -49,7 +52,7 @@ export interface BlogPostWithRelations extends BlogPost {
     email: string;
     socialLinks: SocialLink[];
   };
-  category: BlogCategory;
+  // category removed, using category_slug directly
   relatedPosts?: BlogPost[];
 }
 

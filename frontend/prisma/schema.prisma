@@ -70,18 +70,22 @@ model Announcement {
 }
 
 model BlogPost {
-  id           Int       @id @default(autoincrement())
-  slug         String    @unique
-  title        String
-  content      String
-  excerpt      String?
-  cover_image  String?
-  author_id    Int
-  author       User      @relation(fields: [author_id], references: [id])
-  is_published Boolean   @default(false)
-  published_at DateTime?
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
+  id              Int       @id @default(autoincrement())
+  slug            String    @unique
+  title           String
+  content         String
+  excerpt         String?
+  cover_image     String?
+  category_slug   String?   // Slug de la categoría (entrenamiento-y-energia-fisica, etc.)
+  meta_title      String?
+  meta_description String?
+  keywords        String[]  // Array de keywords
+  author_id       Int
+  author          User      @relation(fields: [author_id], references: [id])
+  is_published    Boolean   @default(false)
+  published_at    DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
 }
 
 // =============================================

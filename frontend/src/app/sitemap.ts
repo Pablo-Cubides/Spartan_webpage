@@ -19,6 +19,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: 'daily',
         priority: 0.9,
       },
+      // Blog categories (hubs)
+      {
+        url: `${BASE_URL}/blog/entrenamiento-y-energia-fisica`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
+        url: `${BASE_URL}/blog/estilo-y-presencia`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
+        url: `${BASE_URL}/blog/mentalidad-y-disciplina`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
+        url: `${BASE_URL}/blog/productividad-y-gestion-del-tiempo`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
       {
         url: `${BASE_URL}/herramientas`,
         lastModified: new Date(),
@@ -33,6 +58,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
       {
         url: `${BASE_URL}/herramientas/asesor-forma-cara`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
+        url: `${BASE_URL}/herramientas/couch_spartano`,
         lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.8,
@@ -62,6 +93,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       where: { is_published: true },
       select: {
         slug: true,
+        category_slug: true,
         updated_at: true,
         created_at: true,
       },
@@ -69,7 +101,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
 
     const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-      url: `${BASE_URL}/blog/${post.slug}`,
+      url: `${BASE_URL}/blog/${post.category_slug}/${post.slug}`,
       lastModified: post.updated_at || post.created_at,
       changeFrequency: 'weekly' as const,
       priority: 0.8,

@@ -1,15 +1,24 @@
 # Spartan Club - robots.txt
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /api
-Disallow: /private
-Disallow: /*.json$
-Disallow: /_next/
-Disallow: /public/
+
+# Block access to admin areas
+Disallow: /admin/
+Disallow: /api/admin/
+
+# Block access to private API routes
+Disallow: /api/auth/
+Disallow: /api/webhooks/
+
+# Allow crawling of public content
+Allow: /blog/
+Allow: /herramientas/
+Allow: /nosotros/
+Allow: /politica-de-privacidad/
+Allow: /terminos-y-condiciones/
 
 # Sitemaps
-Sitemap: https://spartanclub.co/sitemap.xml
+Sitemap: https://spartanclub.com/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 0.5
