@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     'asesor de estilo',
     'hombre spartano',
   ],
-  
+
   // ==================== Metadata ====================
   authors: [{ name: 'Spartan Club', url: BASE_URL }],
   creator: 'Spartan Club',
@@ -53,9 +53,9 @@ export const metadata: Metadata = {
     nosnippet: false,
     noarchive: false,
     noimageindex: false,
-    maxSnippet: -1,
-    maxImagePreview: 'large',
-    maxVideoPreview: -1,
+    'max-snippet': -1,
+    'max-image-preview': 'large',
+    'max-video-preview': -1,
     googleBot: {
       index: true,
       follow: true,

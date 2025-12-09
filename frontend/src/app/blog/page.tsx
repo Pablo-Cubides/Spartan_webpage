@@ -55,7 +55,6 @@ export default async function BlogPage() {
     published_at: Date | null;
     author_id: number;
     author?: { name: string | null } | null;
-    meta_description?: string | null;
   };
 
   let posts: BlogPostWithAuthor[] = [];
@@ -70,7 +69,6 @@ export default async function BlogPage() {
         cover_image: true,
         published_at: true,
         author_id: true,
-        meta_description: true,
       },
       orderBy: { published_at: "desc" },
       take: 12,
@@ -105,7 +103,7 @@ export default async function BlogPage() {
         url: `${BASE_URL}/blog/${post.slug}`,
         name: post.title,
         image: post.cover_image,
-        description: post.meta_description || post.excerpt,
+        description: post.excerpt,
         datePublished: post.published_at?.toISOString(),
         ...(post.author && {
           author: {
@@ -196,9 +194,7 @@ export default async function BlogPage() {
                     </p>
                   )}
                   <p className="text-gray-400 mb-4">
-                    {post.meta_description ||
-                      post.excerpt ||
-                      "Lee este artículo para obtener más información."}
+                    {post.excerpt || "Lee este artículo para obtener más información."}
                   </p>
                   <div className="flex justify-between items-center">
                     {post.author && (
