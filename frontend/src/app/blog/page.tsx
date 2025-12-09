@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "productividad",
     "desarrollo personal",
   ],
-  
+
   openGraph: {
     title: "Blog | Spartan Club",
     description:
@@ -226,38 +226,5 @@ export default async function BlogPage() {
         )}
       </main>
     </>
-  );
-}
-                {post.published_at && (
-                  <p className="text-sm text-gray-500 mb-2">
-                    {new Date(post.published_at).toLocaleDateString("es-ES")}
-                  </p>
-                )}
-                <p className="text-gray-700 mb-4">{post.excerpt}</p>
-                <div className="flex justify-between items-center">
-                  {post.author && (
-                    <span className="text-sm text-gray-600">
-                      Por {post.author.name}
-                    </span>
-                  )}
-                  <Link
-                    href={`/blog/${post.slug}/`}
-                    className="text-blue-600 hover:text-blue-800 font-semibold"
-                  >
-                    Leer más →
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-600">
-            No hay artículos publicados aún. ¡Vuelve pronto!
-          </p>
-        </div>
-      )}
-    </main>
   );
 }

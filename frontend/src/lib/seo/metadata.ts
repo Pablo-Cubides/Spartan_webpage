@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 
 const BASE_URL = 'https://spartanclub.co';
 
@@ -26,7 +26,7 @@ export function generatePageMetadata(config: PageMetadataConfig): Metadata {
     description: config.description,
     keywords: config.keywords,
     authors: config.author ? [{ name: config.author }] : undefined,
-    
+
     openGraph: {
       title: config.title,
       description: config.description,

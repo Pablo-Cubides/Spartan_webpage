@@ -74,7 +74,7 @@ export function sanitizeAIResponse(response: string): string {
     // This is a secondary safety layer
 
     // Basic sanitization - can be expanded as needed
-    let sanitized = response;
+    const sanitized = response;
 
     // Remove any URLs that aren't our approved crisis resources
     // (keeping crisis resources is important)

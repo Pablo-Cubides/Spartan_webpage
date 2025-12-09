@@ -2,16 +2,11 @@
 
 import Link from 'next/link';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import type { Metadata } from 'next';
 
-const BASE_URL = 'https://spartanclub.co';
-
-// Nota: Metadata no puede estar en 'use client', pero la agregamos como comentario
+// Nota: Metadata no puede estar en 'use client', mover a layout.tsx si se necesita
 // export const metadata: Metadata = {
 //   title: 'Herramientas | Spartan Club - Asesor de Estilo y Análisis',
-//   description: 'Descubre nuestras herramientas de IA para análisis de estilo y forma de cara. Recomendaciones personalizadas para tu transformación.',
-//   keywords: ['herramientas', 'asesor estilo', 'análisis imagen', 'recomendaciones', 'IA'],
-//   alternates: { canonical: `${BASE_URL}/herramientas` },
+//   description: 'Descubre nuestras herramientas de IA...',
 // };
 
 const HERRAMIENTAS = [
