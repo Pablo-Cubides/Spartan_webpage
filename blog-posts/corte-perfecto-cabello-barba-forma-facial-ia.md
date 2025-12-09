@@ -47,6 +47,8 @@ Sube una foto frontal clara, y la herramienta:
 ### Paso 2: Accede a la Herramienta
 Dirígete a [Herramientas > Asesor de Forma de Cara](/herramientas/asesor-forma-cara). Regístrate si no lo has hecho, y verifica tus créditos.
 
+💡 **Pro Tip:** Después del análisis, habla con el **[Coach de Estilo Espartano](/herramientas/couch_spartano?coach=estilo)** para recibir asesoría personalizada sobre grooming, mantenimiento y cómo integrar tu nuevo corte con tu estilo general.
+
 ### Paso 3: Sube y Analiza
 La IA procesa en segundos y genera un reporte personalizado.
 

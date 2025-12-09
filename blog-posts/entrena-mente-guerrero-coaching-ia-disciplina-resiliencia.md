@@ -95,10 +95,26 @@ Como espartanos modernos, no esperamos que la vida sea fácil; la conquistamos. 
 
 ---
 
-**Enlaces relacionados:**
-- [Hábitos de Disciplina Espartana](/blog/mentalidad-y-disciplina/habitos-disciplina)
-- [Resiliencia Mental para Hombres](/blog/mentalidad-y-disciplina/resiliencia-mental)
-- [Herramientas de Desarrollo Personal](/herramientas)
+## 🔥 Transforma tu Mentalidad con el Coach Espartano
+
+¿Quieres desarrollar disciplina inquebrantable y resiliencia de acero? El **[Coach Espartano](/herramientas/couch_spartano)** tiene 5 coaches especializados:
+
+- **Coach de Mentalidad** 🧠: Hábitos, disciplina y carácter
+- **Coach de Cuerpo** 💪: Entrenamiento y energía física  
+- **Coach de Estilo** 👔: Presencia e imagen personal
+- **Coach de Productividad** ⚡: Organización y rendimiento
+- **Coach General** 🔥: Coordinación de tu transformación
+
+[Accede gratis al Coach Espartano →](/herramientas/couch_spartano)
+
+**Artículo relacionado:** [Guía Completa del Coach Espartano](/blog/mentalidad-y-disciplina/coach-espartano-ia-coaching-personalizado-transformacion-masculina-mentalidad-y-disciplina)
+
+---
+
+**Más herramientas y recursos:**
+- [Asesor de Estilo con IA](/herramientas/asesor-estilo) - Análisis visual personalizado
+- [Asesor de Forma de Cara](/herramientas/asesor-forma-cara) - Cortes según tu rostro
+- [Todas las Herramientas](/herramientas) - Transforma todas las áreas de tu vida
 
 **Meta Title:** Entrena tu Mente como un Guerrero: Coaching IA para Disciplina y Resiliencia Masculina | Spartan Club  
 **Meta Description:** Fortalece tu mentalidad con coaching IA personalizado. Guía del Coach Espartano: estrategias para hábitos, metas y resiliencia. Únete a la comunidad de hombres disciplinados.  

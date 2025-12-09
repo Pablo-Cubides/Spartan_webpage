@@ -41,6 +41,8 @@ Nuestra herramienta analiza fotos tuyas (rostro, cuerpo completo) y responde pre
 ### Paso 1: Accede a la Herramienta
 Ve a [Herramientas > Asesor de Estilo](/herramientas/asesor-estilo) en Spartan Club. Inicia sesión y asegúrate de tener créditos disponibles (¡prueba gratis con el plan básico!).
 
+🎯 **Maximiza tu resultado:** Combina el Asesor de Estilo con el **[Coach de Estilo Espartano](/herramientas/couch_spartano?coach=estilo)** para obtener asesoría continua, responder preguntas específicas y recibir feedback sobre tus elecciones de vestuario. El coach aprende tus preferencias y te da consejos personalizados 24/7.
+
 ### Paso 2: Sube tus Fotos
 - **Foto del rostro**: Para analizar tono de piel y rasgos faciales.
 - **Foto del cuerpo**: De pie, con ropa neutra, para evaluar proporciones.

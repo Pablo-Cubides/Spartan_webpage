@@ -6,9 +6,9 @@
  * No hardcoded credentials in this file.
  */
 
-import * as dotenv from '../frontend/node_modules/dotenv';
+import dotenv from 'dotenv';
 dotenv.config({ path: '../frontend/.env.local' });
-import { PrismaClient } from '../frontend/node_modules/@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
 import path from 'path';
 
