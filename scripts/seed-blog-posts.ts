@@ -1,3 +1,11 @@
+/**
+ * Blog Posts Seeder Script
+ * Seeds the database with blog posts from markdown files
+ *
+ * SECURITY NOTE: Database credentials are loaded from environment variables only.
+ * No hardcoded credentials in this file.
+ */
+
 import * as dotenv from '../frontend/node_modules/dotenv';
 dotenv.config({ path: '../frontend/.env.local' });
 import { PrismaClient } from '../frontend/node_modules/@prisma/client';
