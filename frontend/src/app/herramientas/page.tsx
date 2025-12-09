@@ -23,11 +23,11 @@ const HERRAMIENTAS = [
     status: 'active',
   },
   {
-    id: 'personal-coach',
+    id: 'couch_spartano',
     title: 'Spartan Personal Coach',
-    description: 'A personalized training and mentorship program to achieve your goals in a spartan way.',
+    description: 'Un programa personalizado de coaching con IA para alcanzar tus metas de manera espartana. Cuerpo, mentalidad, estilo y productividad.',
     image: encodeURI('/Herramientas/Guerrero spartano.png'),
-    status: 'soon',
+    status: 'active',
   },
   {
     id: 'asesor-estilo',
@@ -75,9 +75,8 @@ export default function HerramientasPage() {
                 <Link
                   key={tool.id}
                   href={tool.status === 'active' ? `/herramientas/${tool.id}` : '#'}
-                  className={`@container cursor-pointer transition-transform hover:scale-102 ${
-                    tool.status === 'soon' ? 'opacity-75 cursor-not-allowed' : ''
-                  }`}
+                  className={`@container cursor-pointer transition-transform hover:scale-102 ${tool.status === 'soon' ? 'opacity-75 cursor-not-allowed' : ''
+                    }`}
                   onClick={(e) => tool.status === 'soon' && e.preventDefault()}
                 >
                   <div className="flex flex-col items-stretch justify-start rounded-xl @xl:flex-row @xl:items-start bg-gradient-to-br from-[#2a2a2a] to-[#1a1a1a] overflow-hidden hover:from-[#333333] hover:to-[#222222] transition-colors">

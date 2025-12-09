@@ -21,6 +21,7 @@ model User {
   updated_at      DateTime?
   purchases       Purchase[]
   posts           BlogPost[]
+  spartanProfile  SpartanProfile?
 }
 
 model CreditPackage {
@@ -81,4 +82,73 @@ model BlogPost {
   published_at DateTime?
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
+}
+
+// =============================================
+// Coach Espartano Models
+// =============================================
+
+// User's coaching profile with goals and preferences
+model SpartanProfile {
+  id             Int      @id @default(autoincrement())
+  user_id        Int      @unique
+  user           User     @relation(fields: [user_id], references: [id])
+  mainGoal       String?
+  subGoals       String[] // Array of sub-objectives
+  levels         Json?    // { body: "novice", style: "intermediate", ... }
+  restrictions   Json?    // { time: "2h/week", budget: "low", ... }
+  preferences    Json?    // { gym: false, homeWorkout: true, ... }
+  currentFocuses String[]
+  enabledCoaches String[] @default([]) // ["general", "cuerpo", "estilo", ...]
+  strategistPlan Json?    // Layer 2 internal guidance
+  onboardingDone Boolean  @default(false)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  
+  conversations  CoachConversation[]
+}
+
+// Conversation with a specific coach
+model CoachConversation {
+  id           Int            @id @default(autoincrement())
+  profile      SpartanProfile @relation(fields: [profile_id], references: [id])
+  profile_id   Int
+  coachType    String         // "general", "cuerpo", "estilo", "mentalidad", "productividad"
+  messages     CoachMessage[]
+  welcomeShown Boolean        @default(false)
+  messageCount Int            @default(0)
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  
+  @@unique([profile_id, coachType])
+}
+
+// Individual messages in a conversation (encrypted)
+model CoachMessage {
+  id             Int               @id @default(autoincrement())
+  conversation   CoachConversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  role           String            // "user" | "assistant" | "system"
+  content        String            // Encrypted content
+  created_at     DateTime          @default(now())
+}
+
+// Free message tracking per month
+model CoachFreeMessages {
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @unique
+  count      Int      @default(0)
+  monthYear  String   // "2024-12" format
+  updated_at DateTime @updatedAt
+}
+
+// Community analytics (aggregated, anonymized)
+model CoachAnalytics {
+  id           Int      @id @default(autoincrement())
+  reportDate   DateTime
+  reportType   String   // "monthly", "on_demand"
+  content      String   // JSON report content
+  userCount    Int
+  messageCount Int
+  created_at   DateTime @default(now())
 }
