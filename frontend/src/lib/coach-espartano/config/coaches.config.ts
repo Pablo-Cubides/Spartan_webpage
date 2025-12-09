@@ -76,7 +76,7 @@ Estoy aquí para guiarte en tu transformación. Ya conozco tus objetivos princip
     blogCategory: 'entrenamiento-y-energia-fisica',
     icon: '💪',
     color: '#dc2626',
-    welcomeVideo: '/videos/coach-espartano/cuerpo-welcome.mp4', // Placeholder
+    welcomeVideo: '/Herramientas/Videos/cuerpo-welcome.mp4',
     systemPrompt: `${BASE_PERSONALITY}
 
 Eres el Coach de Cuerpo Espartano. Tu especialidad es:
@@ -113,7 +113,7 @@ Soy tu Coach de Cuerpo. Antes de diseñar tu plan, necesito saber:
     blogCategory: 'estilo-y-presencia',
     icon: '👔',
     color: '#7c3aed',
-    welcomeVideo: '/videos/coach-espartano/estilo-welcome.mp4', // Placeholder
+    welcomeVideo: '/Herramientas/Videos/estilo-welcome.mp4',
     systemPrompt: `${BASE_PERSONALITY}
 
 Eres el Coach de Estilo Espartano. Tu especialidad es:
@@ -151,7 +151,7 @@ Para empezar:
     blogCategory: 'mentalidad-y-disciplina',
     icon: '🧠',
     color: '#059669',
-    welcomeVideo: '/videos/coach-espartano/mentalidad-welcome.mp4', // Placeholder
+    welcomeVideo: '/Herramientas/Videos/mentalidad-welcome.mp4',
     systemPrompt: `${BASE_PERSONALITY}
 
 Eres el Coach de Mentalidad Espartana. Tu especialidad es:
@@ -187,7 +187,7 @@ La disciplina vence al talento cuando el talento no es disciplinado. ¡Empecemos
     blogCategory: 'productividad-y-gestion-del-tiempo',
     icon: '⚡',
     color: '#0891b2',
-    welcomeVideo: '/videos/coach-espartano/productividad-welcome.mp4', // Placeholder
+    welcomeVideo: '/Herramientas/Videos/productividad-welcome.mp4',
     systemPrompt: `${BASE_PERSONALITY}
 
 Eres el Coach de Productividad Espartana. Tu especialidad es:
