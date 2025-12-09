@@ -52,10 +52,9 @@ export function generateBlogPostingSchema(
       "@type": "WebPage",
       "@id": postUrl,
     },
-    articleSection: typedPost.category?.name_display,
-    keywords: typedPost.expertise_areas?.join(", ") || typedPost.tags?.join(", "),
+    keywords: (typedPost.expertise_areas as string[] | null)?.join(", ") || (typedPost.tags as string[] | null)?.join(", "),
     wordCount: Math.ceil((typedPost.content as string).split(/\s+/).length),
-    timeRequired: `PT${typedPost.reading_time_minutes || 5}M`,
+    timeRequired: `PT${(typedPost.reading_time_minutes as number | null) || 5}M`,
     inLanguage: "es-ES",
     isAccessibleForFree: true,
   };

@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load env vars before importing modules that depend on them
-dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
+dotenv.config({ path: path.resolve(__dirname, '../.env.local'), override: true });
 
 async function runAsesorEstiloConfigTest() {
   console.log('🚀 Testing Asesor Estilo Configuration...');

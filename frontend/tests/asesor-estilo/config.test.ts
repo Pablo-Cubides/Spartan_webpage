@@ -5,7 +5,7 @@ import path from 'path';
 // Load environment variables from .env.local
 const envPath = path.resolve(process.cwd(), '.env.local');
 console.log(`Loading environment from ${envPath}`);
-const result = dotenv.config({ path: envPath });
+const result = dotenv.config({ path: envPath, override: true });
 
 if (result.error) {
   console.error('Error loading .env.local:', result.error);
