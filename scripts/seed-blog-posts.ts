@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 const prisma = new PrismaClient({
-  datasourceUrl: "postgresql://postgres.frvswvnrlysamwtyywwi:E_@@Rgcu3Fae24H@aws-1-us-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true",
+  datasourceUrl: process.env.DATABASE_URL,
 });
 
 async function seedBlogPosts() {
