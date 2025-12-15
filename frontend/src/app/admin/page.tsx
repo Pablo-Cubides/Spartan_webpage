@@ -52,6 +52,7 @@ interface BlogPost {
 
 export default function AdminPanel() {
   const { user, loading } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [packages, setPackages] = useState<CreditPackage[]>([]);
@@ -65,9 +66,16 @@ export default function AdminPanel() {
   const [currentPost, setCurrentPost] = useState<Partial<BlogPost>>({});
   const [postFormError, setPostFormError] = useState<string | null>(null);
 
+  // Set mounted state to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Check if user has admin access by attempting to fetch admin data
   // The server validates the role from database
   useEffect(() => {
+    if (!mounted || loading) return;
+    
     if (!user) {
       setIsAuthorized(null);
       return;
@@ -76,14 +84,14 @@ export default function AdminPanel() {
     const checkAdminAccess = async () => {
       try {
         const token = await user.getIdToken();
-        const response = await fetch('/api/v1/admin/users', {
+        const response = await fetch('/api/admin/users', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
         if (response.ok) {
           setIsAuthorized(true);
-          const usersData = await response.json();
-          setUsers(usersData);
+          const data = await response.json();
+          setUsers(data.users || []);
         } else if (response.status === 401 || response.status === 403) {
           setIsAuthorized(false);
         } else {
@@ -95,7 +103,7 @@ export default function AdminPanel() {
     };
 
     checkAdminAccess();
-  }, [user]);
+  }, [user, mounted, loading]);
 
   useEffect(() => {
     if (!user || !isAuthorized) return;
@@ -106,32 +114,32 @@ export default function AdminPanel() {
         const token = await user?.getIdToken();
 
         // Fetch users
-        const usersResponse = await fetch('/api/v1/admin/users', {
+        const usersResponse = await fetch('/api/admin/users', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
         if (usersResponse.ok) {
           const usersData = await usersResponse.json();
-          setUsers(usersData);
+          setUsers(usersData.users || []);
         }
 
         // Fetch purchases
-        const purchasesResponse = await fetch('/api/v1/admin/purchases', {
+        const purchasesResponse = await fetch('/api/admin/purchases', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
         if (purchasesResponse.ok) {
           const purchasesData = await purchasesResponse.json();
-          setPurchases(purchasesData);
+          setPurchases(purchasesData.purchases || purchasesData || []);
         }
 
         // Fetch packages
-        const packagesResponse = await fetch('/api/v1/credits/packages');
+        const packagesResponse = await fetch('/api/credits/packages');
         if (packagesResponse.ok) {
           const packagesData = await packagesResponse.json();
-          setPackages(packagesData);
+          setPackages(packagesData.packages || packagesData || []);
         }
 
         // Fetch blog posts
@@ -142,7 +150,7 @@ export default function AdminPanel() {
         });
         if (postsResponse.ok) {
           const postsData = await postsResponse.json();
-          setPosts(postsData.posts);
+          setPosts(postsData.posts || []);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -212,12 +220,12 @@ export default function AdminPanel() {
     }
   };
 
-  if (loading) {
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">Cargando...</p>
         </div>
       </div>
     );
