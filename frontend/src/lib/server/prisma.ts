@@ -14,14 +14,31 @@ declare global {
 
 const databaseUrl = process.env.DATABASE_URL
 
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is not set')
+let prismaInstance: PrismaClient | null = null
+
+function getPrismaClient(): PrismaClient {
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL environment variable is not set')
+  }
+
+  if (!prismaInstance) {
+    prismaInstance = global.__prisma ?? new PrismaClient({
+      datasourceUrl: databaseUrl,
+    })
+
+    if (process.env.NODE_ENV !== 'production') {
+      global.__prisma = prismaInstance
+    }
+  }
+
+  return prismaInstance
 }
 
-export const prisma = global.__prisma ?? new PrismaClient({
-  datasourceUrl: databaseUrl,
+export const prisma = new Proxy({} as PrismaClient, {
+  get: (_, prop) => {
+    const client = getPrismaClient()
+    return Reflect.get(client, prop)
+  },
 })
-
-if (process.env.NODE_ENV !== 'production') global.__prisma = prisma
 
 export default prisma
