@@ -5,22 +5,60 @@ import Link from "next/link";
 import Image from "next/image";
 import ModalLogin from "@/components/ModalLogin";
 import { useAuth, signOut } from "@/lib/firebase";
-import { removeTokenCookie } from "@/lib/api";
+import { removeTokenCookie, setTokenCookie } from "@/lib/api";
+
+interface UserProfile {
+  role?: string;
+}
 
 export default function Header() {
   const [modalOpen, setModalOpen] = useState(false);
   const { user, loading } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   // Prevent hydration mismatch by only rendering auth-dependent UI after mount
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Fetch user profile to get role
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (!user) {
+        setUserProfile(null);
+        return;
+      }
+
+      try {
+        const token = await user.getIdToken();
+        setTokenCookie(token);
+        
+        const res = await fetch('/api/users/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUserProfile(data.user);
+        }
+      } catch (err) {
+        console.error('Error fetching user role:', err);
+      }
+    };
+
+    if (mounted && !loading && user) {
+      fetchUserRole();
+    }
+  }, [user, loading, mounted]);
+
   const handleSignOut = async () => {
     await signOut();
     removeTokenCookie();
+    setUserProfile(null);
     setMenuOpen(false);
   };
 
@@ -78,6 +116,15 @@ export default function Header() {
                     >
                       Mi Perfil
                     </Link>
+                    {userProfile?.role === 'admin' && (
+                      <Link
+                        href="/admin"
+                        onClick={() => setMenuOpen(false)}
+                        className="block px-4 py-2 text-sm text-amber-400 hover:bg-[#303030] transition-colors"
+                      >
+                        ⚙️ Panel Admin
+                      </Link>
+                    )}
                     <button
                       onClick={handleSignOut}
                       className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-[#303030] transition-colors"
