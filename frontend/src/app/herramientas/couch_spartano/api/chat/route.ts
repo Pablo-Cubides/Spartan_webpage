@@ -5,7 +5,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/server/prisma';
 import { verifyIdToken } from '@/lib/server/firebaseAdmin';
 import { withErrorHandler, AuthenticationError, NotFoundError } from '@/lib/api/error-handler';
-import { getChatResponse, runStrategistAnalysis, type SpartanProfileContext, type ChatMessage } from '@/lib/coach-espartano/openai';
+import { getChatResponse, runStrategistAnalysis, type SpartanProfileContext, type ChatMessage } from '@/lib/coach-espartano/gemini';
 import { canSendMessage, recordMessageSent } from '@/lib/coach-espartano/credits';
 import { encryptMessage, decryptMessage } from '@/lib/coach-espartano/encryption';
 import { checkMessageSafety } from '@/lib/coach-espartano/safety';

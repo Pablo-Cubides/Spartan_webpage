@@ -77,14 +77,14 @@ export default function Page() {
         // Handle Auth/Credits errors
         if (res.status === 401) {
            setShowLoginModal(true);
-           return { success: false, error: 'You must log in', status: 401 };
+           return { success: false, error: 'Debes iniciar sesión', status: 401 };
         }
         if (res.status === 402 || res.status === 403) {
            // Check if it's a credit issue
            const data = await res.json();
            if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
              setShowCreditsModal(true);
-             return { success: false, error: 'Insufficient credits', status: 402 };
+             return { success: false, error: 'Créditos insuficientes', status: 402 };
            }
            return { success: false, error: data.error || data.message || 'unknown', status: res.status };
         }
@@ -195,14 +195,14 @@ export default function Page() {
     // client-side size validation before starting upload
     const maxBytes = UPLOAD_CONFIG.MAX_SIZE_MB * 1024 * 1024;
     if (file.size > maxBytes) {
-      setMessages((m) => [...m, { from: 'system', text: `The image exceeds the limit of ${UPLOAD_CONFIG.MAX_SIZE_MB}MB. Reduce the size or choose another image.` }]);
+      setMessages((m) => [...m, { from: 'system', text: `La imagen excede el límite de ${UPLOAD_CONFIG.MAX_SIZE_MB}MB. Reduce el tamaño o elige otra imagen.` }]);
       return;
     }
 
     setLoading(true);
     setLoadingPhase('uploading');
     // Keep user on the main chat UI and append a system message for analysis
-    setMessages((m) => [...m, { from: "system", text: "Analyzing your photo... this may take a few seconds." }]);
+    setMessages((m) => [...m, { from: "system", text: "Analizando tu foto... esto puede tomar unos segundos." }]);
 
     try {
       // Use XHR to obtain upload progress events (fetch has no upload progress in browsers)
@@ -326,10 +326,10 @@ export default function Page() {
           } else if (iterateResult.status === 402) {
               // Already handled by helper (showCreditsModal)
               setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-              setMessages((m) => [...m, { from: 'system', text: 'You need credits to generate the image.' }]);
+              setMessages((m) => [...m, { from: 'system', text: 'Necesitas créditos para generar la imagen.' }]);
           } else {
              setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-             setMessages((m) => [...m, { from: 'system', text: `Editing error: ${iterateResult.error}` }]);
+             setMessages((m) => [...m, { from: 'system', text: `Error de edición: ${iterateResult.error}` }]);
           }
           setLoading(false);
           setLoadingPhase('idle');
@@ -373,7 +373,7 @@ export default function Page() {
     // simple client-side rate limit: ignore repeated clicks within 2s
     const now = Date.now();
     if (now - lastGenerateAt.current < 2000) {
-      setMessages((m) => [...m, { from: 'system', text: 'Please wait a moment before generating another edit.' }]);
+           setMessages((m) => [...m, { from: 'system', text: 'Por favor espera un momento antes de generar otra edición.' }]);
       return;
     }
     lastGenerateAt.current = now;
@@ -561,7 +561,7 @@ export default function Page() {
                   className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
                 >
                   <Upload size={20} />
-                  {loading ? (loadingPhase === 'uploading' ? 'Uploading...' : loadingPhase === 'analyzing' ? 'Analyzing...' : 'Generating...') : 'Upload Photo'}
+                  {loading ? (loadingPhase === 'uploading' ? 'Cargando...' : loadingPhase === 'analyzing' ? 'Analizando...' : 'Generando...') : 'Cargar Foto'}
                 </button>
                 
                 <button 
@@ -571,7 +571,7 @@ export default function Page() {
                   className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
                 >
                   <Camera size={20} />
-                  Take Photo
+                  Tomar Foto
                 </button>
                 
                 <input aria-label="Select image file" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
@@ -623,13 +623,13 @@ export default function Page() {
 
       <section className="chat-shell" aria-label="Style advisor">
         <header className="chat-header">
-          <h1 className="chat-title">Your Personal Style Advisor</h1>
-          <p className="chat-sub">Receive recommendations on garments, combinations, and personal style.</p>
+          <h1 className="chat-title">Tu Asesor Personal de Estilo</h1>
+          <p className="chat-sub">Recibe recomendaciones sobre prendas, combinaciones y estilo personal.</p>
         </header>
 
         <section className="messages" role="log" aria-live="polite" aria-atomic="false">
           {messages.length === 0 && (
-            <div className="py-12 text-center text-gray-400">Upload an image to start the advisory.</div>
+            <div className="py-12 text-center text-gray-400">Carga una imagen para iniciar el asesoramiento.</div>
           )}
 
           {messages.map((m, i) => (
@@ -652,8 +652,8 @@ export default function Page() {
                 <div style={{display:'flex', gap:8, marginTop:8}}>
                   {m.from === 'user' && !m.image && (
                     <>
-                      <button aria-label={`Edit message ${i}`} className="btn-ghost" onClick={() => editMessage(i)}>Edit</button>
-                      <button aria-label={`Delete message ${i}`} className="btn-ghost" onClick={() => deleteMessage(i)}>Delete</button>
+                      <button aria-label={`Editar mensaje ${i}`} className="btn-ghost" onClick={() => editMessage(i)}>Editar</button>
+                      <button aria-label={`Eliminar mensaje ${i}`} className="btn-ghost" onClick={() => deleteMessage(i)}>Eliminar</button>
                     </>
                   )}
                 </div>
@@ -662,7 +662,7 @@ export default function Page() {
                     {(() => {
                       const payload = m.action?.payload;
                       return (
-                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Processing...' : 'Retry'}</button>
+                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Procesando...' : 'Reintentar'}</button>
                       );
                     })()}
                   </div>
@@ -674,7 +674,7 @@ export default function Page() {
           {editedUrl && (
             <div className="flex justify-start">
               <div className="bubble assistant">
-                <p className="whitespace-pre-wrap">Here is your edited image! 🎨</p>
+                <p className="whitespace-pre-wrap">¡Aquí está tu imagen editada! 🎨</p>
                 <div className="msg-image-container">
                   <Image 
                     src={editedUrl} 
@@ -695,7 +695,7 @@ export default function Page() {
             <div className="flex justify-start">
               <div className="bubble system" role="status" aria-live="polite">
                 <p className="whitespace-pre-wrap mb-2">
-                  {loadingPhase === 'uploading' ? `Uploading image — ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analyzing the image…' : 'Generating the image…'}
+                  {loadingPhase === 'uploading' ? `Cargando imagen — ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analizando la imagen…' : 'Generando la imagen…'}
                 </p>
                 <div className="progress-inline" aria-hidden="false">
                   <div
@@ -711,23 +711,23 @@ export default function Page() {
         </section>
 
         <form className="input-bar" onSubmit={(e) => { e.preventDefault(); handleGenerate(); }} aria-label="Input controls">
-          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); } }} placeholder={originalUrl ? "Describe the changes you want..." : "Upload an image first"} aria-label="Description of changes to generate" className="input-textarea" />
+          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); } }} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Carga una imagen primero"} aria-label="Descripción de cambios a generar" className="input-textarea" />
           <div className="flex items-center gap-2">
-            <button aria-label="Upload image" onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Upload image">
+            <button aria-label="Cargar imagen" onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Cargar imagen">
                 <Upload size={20} />
             </button>
-            <button aria-label="Take photo" onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Take photo">
+            <button aria-label="Tomar foto" onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
                 <Camera size={20} />
             </button>
             <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-            <button aria-label="Generate changes" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Processing..." : "Generate"}</button>
+            <button aria-label="Generar cambios" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
           </div>
         </form>
         {/* suggestions area (also shown in upload state when edited image exists) */}
         {editedUrl && (
           <div className="suggestions" aria-hidden={!editedUrl}>
             <div style={{display:'flex', justifyContent:'flex-end', marginBottom: '0.5rem'}}> 
-              <button aria-label="Restart conversation" onClick={handleReset} className="btn-ghost">Start over</button>
+              <button aria-label="Reiniciar conversación" onClick={handleReset} className="btn-ghost">Comenzar de nuevo</button>
             </div>
             {suggestions.map((s) => (
               <button key={s} onClick={() => handleSuggestionClick(s)} disabled={loading} className={`suggestion`}>
@@ -762,7 +762,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
 
         // Check API availability
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error("Your browser does not support camera access. Update your browser or use Chrome/Edge.");
+          throw new Error("Tu navegador no soporta acceso a cámara. Actualiza tu navegador o usa Chrome/Edge.");
         }
 
         console.log("[Camera] Checking existing permissions...");
@@ -831,15 +831,15 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         const code = error.name || 'Unknown';
         
         if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
-          msg = "🚫 **Permission Denied**\n\nTHE BROWSER BLOCKED THE CAMERA.\n\n**Steps to fix:**\n\n1. Close this modal\n2. Click on the 🔒 or ⓘ icon next to the URL\n3. In 'Camera', select 'Allow'\n4. Reload the page (F5)\n5. Click 'Take Photo' again\n\nIf the problem persists, your antivirus may be blocking the camera.";
+          msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para corregir:**\n\n1. Cierra este modal\n2. Haz clic en el ícono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Haz clic en 'Tomar Foto' nuevamente\n\nSi el problema persiste, tu antivirus podría estar bloqueando la cámara.";
         } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
-          msg = "📷 **No Camera**\n\nNo connected camera detected.\n\nCheck that:\n• The camera is connected\n• Drivers are installed\n• Windows recognizes it (Settings > Camera)";
+          msg = "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
         } else if (code === 'NotReadableError' || code === 'TrackStartError') {
-          msg = "⚠️ **Camera Busy**\n\nAnother application is using the camera.\n\nClose these apps if open:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
+          msg = "⚠️ **Cámara en Uso**\n\nOtra aplicación está usando la cámara.\n\nCierra estas aplicaciones si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
         } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {
-          msg = "⚙️ **Incompatible Configuration**\n\nThe camera does not support the requested configuration.\n\nThis is rare - try with another browser.";
+          msg = "⚙️ **Configuración Incompatible**\n\nLa cámara no admite la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
         } else {
-          msg = `❌ **Unknown Error**\n\n${error.message || String(err)}\n\nTry:\n• Restarting the browser\n• Updating the browser\n• Using Chrome or Edge`;
+          msg = `❌ **Error Desconocido**\n\n${error.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
         }
         
         msg += `\n\n**Technical Code:** ${code}`;

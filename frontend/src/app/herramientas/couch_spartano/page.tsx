@@ -59,11 +59,19 @@ export default function CoachEspartanoPage() {
                 }
 
                 // Initialize coaches in hook
-                chatState.setCoaches(data.coaches || []);
+                const coaches = data.coaches || [];
+                chatState.setCoaches(coaches);
                 chatState.updateCredits({
                     credits: data.credits || 5,
                     messagesRemaining: (data.credits || 5) * 5
                 });
+                
+                // Auto-select the general coach (main coach) if available
+                const generalCoach = coaches.find((c: { id: string }) => c.id === 'general');
+                if (generalCoach) {
+                    chatState.selectCoach('general');
+                }
+                
                 setPageState('chat');
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -75,17 +83,26 @@ export default function CoachEspartanoPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, authLoading]);
 
-    // Load first message when coach is selected and welcome is shown
+    // Load first message when coach is selected and welcome flow is complete
     useEffect(() => {
-        if (!chatState.selectedCoach || !chatState.currentCoach?.welcomeShown) return;
+        if (!chatState.selectedCoach || !chatState.currentCoach) return;
+        
+        // Skip if messages already loaded
         if (chatState.currentMessages.length > 0) return;
+        
+        // For 'general' coach, no welcome modal needed - load first message immediately
+        // For other coaches, wait until welcome has been shown
+        const isGeneralCoach = chatState.selectedCoach === 'general';
+        const welcomeComplete = isGeneralCoach || chatState.currentCoach.welcomeShown;
+        
+        if (!welcomeComplete) return;
 
         // Get coach config for first message
         const coachConfig = COACHES[chatState.selectedCoach as keyof typeof COACHES];
         if (coachConfig?.firstMessage) {
             chatState.addFirstMessage(chatState.selectedCoach, coachConfig.firstMessage);
         }
-    }, [chatState.selectedCoach, chatState.currentCoach?.welcomeShown, chatState.currentMessages.length, chatState]);
+    }, [chatState.selectedCoach, chatState.currentCoach, chatState.currentCoach?.welcomeShown, chatState.currentMessages.length, chatState]);
 
     // Handle onboarding completion
     const handleOnboardingComplete = (response: string, profile: ProfileData) => {

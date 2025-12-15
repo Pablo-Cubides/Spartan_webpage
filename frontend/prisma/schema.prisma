@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -69,6 +70,27 @@ model Announcement {
   updated_at  DateTime @updatedAt
 }
 
+// =============================================
+// Blog Models
+// =============================================
+
+// Note: Run `npx prisma db push` to create this table
+// model BlogCategory {
+//   id              Int        @id @default(autoincrement())
+//   slug            String     @unique
+//   epic_name       String
+//   description     String
+//   meta_title      String?
+//   meta_description String?
+//   icon            String?
+//   cover_image     String?
+//   order           Int        @default(0)
+//   is_active       Boolean    @default(true)
+//   created_at      DateTime   @default(now())
+//   updated_at      DateTime   @updatedAt
+//   posts           BlogPost[]
+// }
+
 model BlogPost {
   id              Int       @id @default(autoincrement())
   slug            String    @unique
@@ -76,10 +98,10 @@ model BlogPost {
   content         String
   excerpt         String?
   cover_image     String?
-  category_slug   String?   // Slug de la categoría (entrenamiento-y-energia-fisica, etc.)
+  category_slug   String?
   meta_title      String?
   meta_description String?
-  keywords        String[]  // Array de keywords
+  keywords        String[]
   author_id       Int
   author          User      @relation(fields: [author_id], references: [id])
   is_published    Boolean   @default(false)

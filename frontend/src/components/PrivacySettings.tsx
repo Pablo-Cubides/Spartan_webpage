@@ -45,7 +45,7 @@ export default function PrivacySettings() {
         setSettings(data.privacy_settings);
       }
     } catch {
-      setError('Error loading privacy settings');
+      setError('Error al cargar la configuración de privacidad');
     } finally {
       setLoading(false);
     }
@@ -74,13 +74,13 @@ export default function PrivacySettings() {
       });
 
       if (response.ok) {
-        setSuccess('Privacy settings updated successfully');
+        setSuccess('Configuración de privacidad actualizada correctamente');
       } else {
         const data = await response.json();
-        setError(data.detail || 'Error updating privacy');
+        setError(data.detail || 'Error al actualizar la privacidad');
       }
     } catch {
-      setError('Connection error');
+      setError('Error de conexión');
     } finally {
       setSaving(false);
     }
@@ -122,7 +122,7 @@ export default function PrivacySettings() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading settings...</p>
+          <p className="mt-2 text-gray-600">Cargando configuración...</p>
         </div>
       </div>
     );
@@ -132,7 +132,7 @@ export default function PrivacySettings() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <div className="bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Privacy Settings
+          Configuración de Privacidad
         </h1>
 
         {error && (
@@ -151,50 +151,50 @@ export default function PrivacySettings() {
           <ToggleSwitch
             enabled={settings.full_name_public}
             onToggle={() => handleToggle('full_name_public')}
-            label="Full Name"
-            description="Allow other users to see your full name"
+            label="Nombre Completo"
+            description="Permitir que otros usuarios vean tu nombre completo"
           />
 
           <ToggleSwitch
             enabled={settings.bio_public}
             onToggle={() => handleToggle('bio_public')}
-            label="Biography"
-            description="Show your biography on your public profile"
+            label="Biografía"
+            description="Mostrar tu biografía en tu perfil público"
           />
 
           <ToggleSwitch
             enabled={settings.location_public}
             onToggle={() => handleToggle('location_public')}
-            label="Location"
-            description="Show your location on your public profile"
+            label="Ubicación"
+            description="Mostrar tu ubicación en tu perfil público"
           />
 
           <ToggleSwitch
             enabled={settings.gender_public}
             onToggle={() => handleToggle('gender_public')}
-            label="Gender"
-            description="Show your gender on your public profile"
+            label="Género"
+            description="Mostrar tu género en tu perfil público"
           />
 
           <ToggleSwitch
             enabled={settings.birth_date_public}
             onToggle={() => handleToggle('birth_date_public')}
-            label="Birth Date"
-            description="Show your birth date on your public profile"
+            label="Fecha de Nacimiento"
+            description="Mostrar tu fecha de nacimiento en tu perfil público"
           />
 
           <ToggleSwitch
             enabled={settings.website_public}
             onToggle={() => handleToggle('website_public')}
-            label="Website"
-            description="Show your website on your public profile"
+            label="Página Web"
+            description="Mostrar tu página web en tu perfil público"
           />
 
           <ToggleSwitch
             enabled={settings.social_media_public}
             onToggle={() => handleToggle('social_media_public')}
-            label="Social Media"
-            description="Show your social media on your public profile"
+            label="Redes Sociales"
+            description="Mostrar tus redes sociales en tu perfil público"
           />
         </div>
 
@@ -204,19 +204,19 @@ export default function PrivacySettings() {
             disabled={saving}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
-            {saving ? 'Saving...' : 'Save Settings'}
+            {saving ? 'Guardando...' : 'Guardar Configuración'}
           </button>
         </div>
 
         <div className="mt-6 p-4 bg-gray-50 rounded-md">
           <h3 className="text-sm font-medium text-gray-900 mb-2">
-            Privacy Information
+            Información de Privacidad
           </h3>
           <ul className="text-sm text-gray-600 space-y-1">
-            <li>• Changes apply immediately</li>
-            <li>• Only enabled fields will be visible on your public profile</li>
-            <li>• You can change these settings at any time</li>
-            <li>• Your information will always be secure and protected</li>
+            <li>• Los cambios se aplican inmediatamente</li>
+            <li>• Solo los campos habilitados serán visibles en tu perfil público</li>
+            <li>• Puedes cambiar estas configuraciones en cualquier momento</li>
+            <li>• Tu información siempre estará segura y protegida</li>
           </ul>
         </div>
       </div>

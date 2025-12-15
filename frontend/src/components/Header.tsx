@@ -1,12 +1,38 @@
 // components/Header.tsx
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ModalLogin from "@/components/ModalLogin";
+import { useAuth, signOut } from "@/lib/firebase";
+import { removeTokenCookie } from "@/lib/api";
 
 export default function Header() {
   const [modalOpen, setModalOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch by only rendering auth-dependent UI after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleSignOut = async () => {
+    await signOut();
+    removeTokenCookie();
+    setMenuOpen(false);
+  };
+
+  // Skeleton button that matches the "Iniciar Sesión" button exactly
+  const AuthSkeleton = () => (
+    <button
+      disabled
+      className="flex min-w-[84px] max-w-[480px] cursor-default items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-transparent text-sm font-bold leading-normal tracking-[0.015em] animate-pulse"
+    >
+      <span className="truncate">Cargando...</span>
+    </button>
+  );
 
   return (
     <>
@@ -23,19 +49,52 @@ export default function Header() {
               Blog
             </Link>
             <Link href="/herramientas" className="text-sm font-medium leading-normal text-white">
-              Tools
+              Herramientas
             </Link>
             <Link href="/nosotros" className="text-sm font-medium leading-normal text-white">
-              About Us
+              Nosotros
             </Link>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={() => setModalOpen(true)}
-              className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-            >
-              <span className="truncate">Log In</span>
-            </button>
+            {!mounted || loading ? (
+              <AuthSkeleton />
+            ) : user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className="flex items-center gap-2 cursor-pointer overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#404040] transition-colors"
+                >
+                  <span className="truncate max-w-[150px]">{user.displayName || user.email?.split('@')[0] || 'Usuario'}</span>
+                  <svg className={`w-4 h-4 transition-transform ${menuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-[#303030] rounded-lg shadow-lg z-50">
+                    <Link
+                      href="/perfil"
+                      onClick={() => setMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-white hover:bg-[#303030] transition-colors"
+                    >
+                      Mi Perfil
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-[#303030] transition-colors"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => setModalOpen(true)}
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#404040] transition-colors"
+              >
+                <span className="truncate">Iniciar Sesión</span>
+              </button>
+            )}
           </div>
         </div>
       </header>

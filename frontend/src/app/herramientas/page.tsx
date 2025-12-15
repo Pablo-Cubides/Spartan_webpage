@@ -12,8 +12,8 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 const HERRAMIENTAS = [
   {
     id: 'asesor-forma-cara',
-    title: 'Beard and Haircut Analysis',
-    description: 'Discover your face shape and learn to highlight your best features. Get personalized advice on haircuts, beard styles, and accessories that suit you.',
+    title: 'Análisis de Barba y Corte de Cabello',
+    description: 'Descubre la forma de tu rostro y aprende a destacar tus mejores características. Obtén asesoramiento personalizado sobre cortes, estilos de barba y accesorios que te favorezcan.',
     image: encodeURI('/Herramientas/Hombre con barba.png'),
     status: 'active',
   },
@@ -26,8 +26,8 @@ const HERRAMIENTAS = [
   },
   {
     id: 'asesor-estilo',
-    title: 'Your Personal Style Advisor',
-    description: 'Receive style recommendations tailored to your preferences and body type. Create a wardrobe that reflects your personality and makes you feel confident in any situation.',
+    title: 'Tu Asesor Personal de Estilo',
+    description: 'Recibe recomendaciones de estilo personalizadas según tus preferencias y tipo de cuerpo. Crea un guardarropa que refleje tu personalidad y te haga sentir confiado en cualquier situación.',
     image: encodeURI('/Herramientas/Seleccionar ropa tool.png'),
     status: 'active',
   },
@@ -56,8 +56,8 @@ export default function HerramientasPage() {
             </div>
 
             <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-8">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Tools for your Transformation</h1>
-              <p className="text-[#ba9c9c] text-sm md:text-base">Discover the tools designed to propel you on your path to a more disciplined and fulfilling life.</p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">Herramientas para tu Transformación</h1>
+              <p className="text-[#ba9c9c] text-sm md:text-base">Descubre las herramientas diseñadas para impulsarte en tu camino hacia una vida más disciplinada y plena.</p>
             </div>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function HerramientasPage() {
                       <p className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">{tool.title}</p>
                       <p className="text-[#ba9c9c] text-base font-normal leading-normal">{tool.description}</p>
                       {tool.status === 'soon' && (
-                        <p className="text-[#c20909] text-sm font-semibold mt-2">Coming Soon</p>
+                        <p className="text-[#c20909] text-sm font-semibold mt-2">Próximamente</p>
                       )}
                     </div>
                   </div>
@@ -91,7 +91,7 @@ export default function HerramientasPage() {
             {/* CTA final */}
             <div className="flex justify-center px-4 py-3">
               <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#c20909] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors">
-                <span className="truncate">Unleash your Spartan Potential</span>
+                <span className="truncate">Desata tu Potencial Espartano</span>
               </button>
             </div>
           </div>

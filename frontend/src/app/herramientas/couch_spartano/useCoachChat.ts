@@ -47,8 +47,20 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const selectCoach = useCallback((id: string) => {
         setSelectedCoach(id);
         const coach = coaches.find(c => c.id === id);
-        // Don't show welcome modal for general coach (no video needed)
-        if (coach && !coach.welcomeShown && id !== 'general') {
+        
+        // For 'general' coach: no welcome video needed, mark as shown immediately
+        if (id === 'general') {
+            // Auto-mark as shown for general coach
+            if (coach && !coach.welcomeShown) {
+                setCoaches(prev => prev.map(c =>
+                    c.id === 'general' ? { ...c, welcomeShown: true } : c
+                ));
+            }
+            return;
+        }
+        
+        // For other coaches: show welcome modal if not already shown
+        if (coach && !coach.welcomeShown) {
             setShowWelcomeModal(true);
         }
     }, [coaches]);
@@ -56,6 +68,15 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const closeWelcomeModal = useCallback(async () => {
         if (!selectedCoach) return;
 
+        // First close the modal to give immediate feedback
+        setShowWelcomeModal(false);
+
+        // Then update the coach state to mark welcome as shown
+        setCoaches(prev => prev.map(c =>
+            c.id === selectedCoach ? { ...c, welcomeShown: true } : c
+        ));
+
+        // Persist to backend (fire and forget)
         try {
             const token = getTokenCookie();
             await fetch('/herramientas/couch_spartano/api/welcome', {
@@ -66,16 +87,10 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
                 },
                 body: JSON.stringify({ coachType: selectedCoach })
             });
-
-            // Update local state
-            setCoaches(prev => prev.map(c =>
-                c.id === selectedCoach ? { ...c, welcomeShown: true } : c
-            ));
         } catch (error) {
             console.error('Error marking welcome shown:', error);
+            // Don't revert - user experience is more important
         }
-
-        setShowWelcomeModal(false);
     }, [selectedCoach]);
 
     const sendMessage = useCallback(async (content: string) => {

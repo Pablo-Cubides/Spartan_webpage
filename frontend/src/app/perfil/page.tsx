@@ -4,7 +4,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { getTokenCookie } from "@/lib/api";
+import { useAuth } from "@/lib/firebase";
+import { setTokenCookie } from "@/lib/api";
 
 interface UserProfile {
   name: string;
@@ -15,18 +16,37 @@ interface UserProfile {
 }
 
 export default function PerfilPage() {
+  const { user: firebaseUser, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      try {
-        const token = getTokenCookie();
-        if (!token) {
-          setLoading(false);
-          return;
-        }
+      // Esperar a que Firebase termine de cargar
+      if (authLoading) return;
 
+      // Si no hay usuario de Firebase, no hay sesión
+      if (!firebaseUser) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Obtener token fresco de Firebase
+        const token = await firebaseUser.getIdToken();
+        setTokenCookie(token);
+
+        // Primero sincronizar el usuario
+        await fetch('/api/auth/sync', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Luego obtener el perfil
         const res = await fetch('/api/users/profile', {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -36,19 +56,69 @@ export default function PerfilPage() {
         if (res.ok) {
           const data = await res.json();
           setProfile(data.user);
+        } else {
+          const errorData = await res.json();
+          setError(errorData.message || 'Error al cargar perfil');
         }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+        setError('Error de conexión');
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [firebaseUser, authLoading]);
 
-  if (loading) return <div className="text-white text-center py-20">Loading profile...</div>;
-  if (!profile) return <div className="text-white text-center py-20">Please log in to view your profile.</div>;
+  if (authLoading || loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#161313]">
+        <div className="text-white text-center py-20">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-white mx-auto mb-4"></div>
+          Cargando perfil...
+        </div>
+      </div>
+    );
+  }
+
+  if (!firebaseUser) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#161313]">
+        <div className="text-center py-20">
+          <p className="text-white text-xl mb-4">Por favor inicia sesión para ver tu perfil.</p>
+          <Link href="/" className="text-[#c20909] hover:underline">
+            Volver al inicio
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[#161313]">
+        <div className="text-center py-20">
+          <p className="text-red-400 text-xl mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="text-[#c20909] hover:underline"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Si tenemos usuario de Firebase pero no perfil de BD, mostrar datos básicos
+  const displayProfile = profile || {
+    name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'Usuario',
+    email: firebaseUser.email || '',
+    alias: null,
+    credits: 0,
+    avatar_url: firebaseUser.photoURL || '/icono spartan club - sin fondo.png'
+  };
 
   return (
     <div
@@ -65,22 +135,21 @@ export default function PerfilPage() {
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-32 h-32 relative">
                     <Image
-                      src={profile.avatar_url || '/icono spartan club - sin fondo.png'}
-                      alt={profile.name || 'User Avatar'}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-full"
+                      src={displayProfile.avatar_url || '/icono spartan club - sin fondo.png'}
+                      alt={displayProfile.name || 'User Avatar'}
+                      fill
+                      className="rounded-full object-cover"
                     />
                   </div>
                   <div className="flex flex-col items-center justify-center">
                     <p className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">
-                      {profile.name || 'Spartan Warrior'}
+                      {displayProfile.name || 'Spartan Warrior'}
                     </p>
                     <p className="text-[#b2a4a4] text-base font-normal leading-normal text-center">
-                      Alias: {profile.alias || 'No alias'}
+                      Alias: {displayProfile.alias || 'No alias'}
                     </p>
                     <p className="text-[#b2a4a4] text-base font-normal leading-normal text-center">
-                      Email: {profile.email}
+                      Email: {displayProfile.email}
                     </p>
                   </div>
                 </div>
@@ -88,20 +157,20 @@ export default function PerfilPage() {
                   <button
                     className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#342d2d] text-white text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-[480px] @[480px]:w-auto"
                   >
-                    <span className="truncate">Edit Profile</span>
+                    <span className="truncate">Editar Perfil</span>
                   </button>
                 </Link>
               </div>
             </div>
-            
+
             {/* Créditos */}
             <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-              Credits
+              Créditos
             </h2>
             <div className="p-4 grid grid-cols-[20%_1fr] gap-x-6">
               <div className="col-span-2 grid grid-cols-subgrid border-t border-t-[#4d4242] py-5">
-                <p className="text-[#b2a4a4] text-sm font-normal leading-normal">Remaining Credits</p>
-                <p className="text-sm font-normal leading-normal text-white">{profile.credits}</p>
+                <p className="text-[#b2a4a4] text-sm font-normal leading-normal">Créditos Disponibles</p>
+                <p className="text-sm font-normal leading-normal text-white">{displayProfile.credits}</p>
               </div>
             </div>
             <div className="flex justify-start px-4 py-3">
@@ -109,7 +178,7 @@ export default function PerfilPage() {
                 <button
                   className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e8c9c9] text-[#161313] text-sm font-bold leading-normal tracking-[0.015em]"
                 >
-                  <span className="truncate">Buy Credits</span>
+                  <span className="truncate">Comprar Créditos</span>
                 </button>
               </Link>
             </div>

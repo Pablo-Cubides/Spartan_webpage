@@ -9,10 +9,10 @@ export default function ShareButton({ title, url }: { title?: string; url?: stri
     try {
       if ((navigator as Navigator & { share?: (data: { title?: string; url?: string }) => Promise<void> }).share) {
         await (navigator as Navigator & { share?: (data: { title?: string; url?: string }) => Promise<void> }).share(shareData);
-        setMsg("Shared");
+        setMsg("Compartido");
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(shareData.url);
-        setMsg("Link copied to clipboard");
+        setMsg("Enlace copiado al portapapeles");
       } else {
         // fallback: select and copy
         const input = document.createElement("input");
@@ -21,11 +21,11 @@ export default function ShareButton({ title, url }: { title?: string; url?: stri
         input.select();
         document.execCommand("copy");
         document.body.removeChild(input);
-        setMsg("Link copied");
+        setMsg("Enlace copiado");
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_) {
-      setMsg("Could not share");
+      setMsg("No se pudo compartir");
     }
 
     setTimeout(() => setMsg(""), 2500);
@@ -33,8 +33,8 @@ export default function ShareButton({ title, url }: { title?: string; url?: stri
 
   return (
     <div className="inline-flex items-center gap-2">
-      <button onClick={handleShare} aria-label="Share" className="bg-[#E02626] text-white px-3 py-2 rounded-md text-sm">
-        Share
+      <button onClick={handleShare} aria-label="Compartir" className="bg-[#E02626] text-white px-3 py-2 rounded-md text-sm">
+        Compartir
       </button>
       {msg ? <span className="text-sm text-[#D1D5DB]">{msg}</span> : null}
     </div>

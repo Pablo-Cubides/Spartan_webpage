@@ -50,10 +50,10 @@
 │  │  PostgreSQL │  │   Firebase  │  │   Gemini    │  │ MercadoPago │     │
 │  │  (Prisma)   │  │    Auth     │  │     AI      │  │   Payments  │     │
 │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘     │
-│  ┌─────────────┐  ┌─────────────┐                                       │
-│  │  Cloudinary │  │   Upstash   │                                       │
-│  │   Images    │  │    Redis    │                                       │
-│  └─────────────┘  └─────────────┘                                       │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                      │
+│  │  Cloudinary │  │   Upstash   │  │   Stripe    │                      │
+│  │   Images    │  │    Redis    │  │   Payments  │                      │
+│  └─────────────┘  └─────────────┘  └─────────────┘                      │
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -278,12 +278,11 @@ if (user?.role !== 'admin') {
 ### Configuración de Paquetes de Créditos
 
 ```typescript
-// Paquetes predefinidos en la base de datos
+// Paquetes predefinidos (COP - Pesos Colombianos)
 const packages = [
-  { name: 'Básico',    credits: 10,  price: 5.99  },
-  { name: 'Popular',   credits: 25,  price: 12.99 },
-  { name: 'Premium',   credits: 50,  price: 22.99 },
-  { name: 'Ultimate',  credits: 100, price: 39.99 },
+  { name: 'Iniciación', credits: 5,   price: 10000 },  // ~$2.50 USD
+  { name: 'Guerrero',   credits: 20,  price: 30000 },  // ~$7.50 USD
+  { name: 'Leónidas',   credits: 100, price: 100000 }, // ~$25.00 USD
 ];
 ```
 
@@ -293,6 +292,7 @@ const packages = [
 |-----------|-------|-------------|
 | Análisis de imagen | 1 crédito | Análisis facial con Gemini |
 | Generación de imagen | 1 crédito | Edición de imagen con IA |
+| Coach Espartano | 1 crédito / 5 mensajes | Chat con coach IA |
 | Registro nuevo usuario | +2 créditos | Bonus de bienvenida |
 
 ### Verificación de Webhook (Seguridad)
@@ -386,6 +386,54 @@ FORMATO DE RESPUESTA (JSON estricto):
   "suggestedText": "Recomendación personalizada aquí..."
 }
 `;
+```
+
+### Coach Espartano - Sistema de Coaching IA
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      ARQUITECTURA DEL COACH                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │                    COACHES ESPECIALIZADOS                     │  │
+│  ├──────────────────────────────────────────────────────────────┤  │
+│  │  General      │ Guía principal, coordina con otros coaches   │  │
+│  │  Cuerpo       │ Entrenamiento, nutrición, fuerza             │  │
+│  │  Estilo       │ Imagen personal, vestimenta, presencia       │  │
+│  │  Mentalidad   │ Disciplina, fortaleza mental, hábitos        │  │
+│  │  Productividad│ Gestión del tiempo, objetivos, sistemas      │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐     │
+│  │  User    │───►│ Profile  │───►│  Gemini  │───►│ Encrypted│     │
+│  │  Chat    │    │ Context  │    │   AI     │    │  Storage │     │
+│  └──────────┘    └──────────┘    └──────────┘    └──────────┘     │
+│       │               │               │               │            │
+│       ▼               ▼               ▼               ▼            │
+│  Message Input   User Goals      gemini-1.5-flash  AES-256-GCM    │
+│  Coach Select    Personality     System Prompts    BD Messages    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+#### APIs del Coach Espartano
+
+| Endpoint | Método | Descripción |
+|----------|--------|-------------|
+| `/herramientas/couch_spartano/api/chat` | POST | Enviar mensaje al coach |
+| `/herramientas/couch_spartano/api/profile` | GET | Obtener perfil de coaching |
+| `/herramientas/couch_spartano/api/profile` | POST | Crear/actualizar perfil de onboarding |
+| `/herramientas/couch_spartano/api/coaches` | GET | Lista de coaches disponibles |
+
+#### Modelo de Créditos del Coach
+
+```typescript
+// Sistema de créditos para el coach
+const MESSAGES_PER_CREDIT = 5;
+
+// Consumo: 1 crédito cada 5 mensajes enviados
+// El conteo se reinicia al comprar más créditos
 ```
 
 ### Configuración de IA
@@ -611,7 +659,7 @@ Body: {
 
 ### Endpoints de Pagos
 
-#### POST `/api/credits/buy`
+#### POST `/api/credits/buy` (MercadoPago)
 
 ```typescript
 // Request
@@ -631,7 +679,26 @@ Body: {
 }
 ```
 
-#### POST `/api/payments/webhook`
+#### POST `/api/credits/buy-stripe` (Stripe)
+
+```typescript
+// Request
+Headers: {
+  Authorization: "Bearer <firebase-id-token>",
+  "Content-Type": "application/json"
+}
+Body: {
+  "packageId": 2
+}
+
+// Response 200
+{
+  "sessionId": "cs_xxx",
+  "url": "https://checkout.stripe.com/pay/cs_xxx"
+}
+```
+
+#### POST `/api/payments/webhook` (MercadoPago)
 
 ```typescript
 // Request (from MercadoPago)
@@ -646,9 +713,27 @@ Body: {
 
 // Response 200
 { "status": "processed" }
+```
 
-// Response 401 (invalid signature - production only)
-{ "error": "UNAUTHORIZED", "message": "Invalid webhook signature" }
+#### POST `/api/payments/stripe/webhook` (Stripe)
+
+```typescript
+// Request (from Stripe)
+Headers: {
+  "stripe-signature": "t=1234567890,v1=abc123..."
+}
+Body: {
+  "type": "checkout.session.completed",
+  "data": {
+    "object": {
+      "id": "cs_xxx",
+      "metadata": { "userId": "1", "packageId": "2" }
+    }
+  }
+}
+
+// Response 200
+{ "received": true }
 ```
 
 ---
@@ -990,6 +1075,12 @@ console.log(JSON.stringify({
 
 ---
 
-*Última actualización: Diciembre 2025*
+*Última actualización: Diciembre 2025 - v1.1.0*
+
+*Cambios recientes:*
+- *Integración de Stripe como pasarela de pago global*
+- *Coach Espartano migrado a Google Gemini (gemini-1.5-flash)*
+- *Sistema de coaches especializados (5 áreas de desarrollo)*
+- *Encriptación AES-256-GCM para mensajes del coach*
 
 *© 2025 Spartan Club. Todos los derechos reservados.*

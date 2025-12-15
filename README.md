@@ -11,7 +11,7 @@
   [![Prisma](https://img.shields.io/badge/Prisma-5.17-2D3748?logo=prisma)](https://www.prisma.io/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
   
-  **Estado:** ✅ Production Ready | **Versión:** 1.0.0
+  **Estado:** ✅ Production Ready | **Versión:** 1.1.0 | **Última actualización:** Diciembre 2025
 </div>
 
 ---
@@ -28,13 +28,12 @@
 - [APIs](#-apis)
 - [Seguridad](#-seguridad)
 - [Testing](#-testing)
-- [Contribución](#-contribución)
 
 ---
 
 ## 📖 Descripción
 
-**Spartan Club** es una plataforma web dedicada al desarrollo personal masculino, combinando contenido educativo, herramientas de IA para asesoría de estilo, y un sistema de monetización basado en créditos.
+**Spartan Club** es una plataforma web dedicada al desarrollo personal masculino, combinando contenido educativo, herramientas de IA para asesoría de estilo y coaching personalizado, y un sistema de monetización basado en créditos.
 
 ### Filosofía
 Inspirado en los principios de los antiguos guerreros espartanos: disciplina, resiliencia, excelencia física y fortaleza mental.
@@ -44,8 +43,19 @@ Inspirado en los principios de los antiguos guerreros espartanos: disciplina, re
 ## ✨ Características
 
 ### 🤖 Herramientas de IA
-- **Asesor de Estilo**: Análisis de imagen con Google Gemini para recomendaciones de vestimenta
-- **Asesor de Forma de Cara**: Recomendaciones de cortes de cabello y barba personalizados
+
+| Herramienta | Descripción | IA |
+|-------------|-------------|-----|
+| **Asesor de Estilo** | Análisis de imagen con recomendaciones de vestimenta | Google Gemini |
+| **Asesor de Forma de Cara** | Recomendaciones de cortes de cabello y barba | Google Gemini |
+| **Coach Espartano** | Coaching personalizado en 5 áreas de desarrollo | Google Gemini |
+
+#### Coach Espartano - Sistema de Coaching IA
+- **Coach General**: Guía principal y coordinador
+- **Cuerpo Espartano**: Entrenamiento, fuerza y nutrición
+- **Estilo Espartano**: Imagen personal y presencia
+- **Mentalidad Espartana**: Disciplina y fortaleza mental
+- **Productividad Espartana**: Gestión del tiempo y objetivos
 
 ### 📝 Sistema de Contenido
 - **Blog CMS**: Gestión de artículos con programación de publicación
@@ -53,9 +63,22 @@ Inspirado en los principios de los antiguos guerreros espartanos: disciplina, re
 - **Comentarios**: Sistema de comentarios con moderación
 
 ### 💳 Monetización
-- **Sistema de Créditos**: Modelo freemium con créditos para funciones premium
-- **Integración MercadoPago**: Pagos seguros para mercado LATAM
-- **Webhooks Seguros**: Verificación HMAC-SHA256
+
+| Pasarela | Cobertura | Moneda |
+|----------|-----------|--------|
+| **MercadoPago** | Colombia, Argentina, Brasil, México, Chile, Perú, Uruguay | Local (COP, ARS, BRL, etc.) |
+| **Stripe** | Global (46+ países) | USD |
+
+#### Paquetes de Créditos
+| Paquete | Créditos | Precio COP | Precio USD |
+|---------|----------|------------|------------|
+| Iniciación | 5 | $10,000 | ~$2.50 |
+| Guerrero | 20 | $30,000 | ~$7.50 |
+| Leónidas | 100 | $100,000 | ~$25.00 |
+
+#### Consumo de Créditos
+- **Asesor de Estilo/Forma de Cara**: 1 crédito por análisis + 1 por generación
+- **Coach Espartano**: 5 mensajes por crédito
 
 ### 🔐 Panel de Administración
 - Gestión de usuarios y roles
@@ -69,14 +92,14 @@ Inspirado en los principios de los antiguos guerreros espartanos: disciplina, re
 
 | Categoría | Tecnología |
 |-----------|------------|
-| **Frontend** | Next.js 15, React 19, TypeScript, Tailwind CSS 4 |
+| **Frontend** | Next.js 15.3, React 19, TypeScript 5, Tailwind CSS 4 |
 | **Backend** | Next.js API Routes (Serverless) |
-| **Base de Datos** | PostgreSQL + Prisma ORM |
-| **Autenticación** | Firebase Authentication |
-| **IA** | Google Gemini API |
-| **Pagos** | MercadoPago |
-| **Storage** | AWS S3, Cloudinary |
-| **Cache** | Upstash Redis (opcional) |
+| **Base de Datos** | PostgreSQL + Prisma ORM 5.17 |
+| **Autenticación** | Firebase Authentication + Firebase Admin SDK |
+| **IA** | Google Gemini API (gemini-1.5-flash) |
+| **Pagos** | MercadoPago + Stripe |
+| **Storage** | Cloudinary (imágenes) |
+| **Cache** | Upstash Redis |
 | **Deployment** | Vercel |
 
 ---
@@ -86,7 +109,7 @@ Inspirado en los principios de los antiguos guerreros espartanos: disciplina, re
 ### Prerrequisitos
 
 - Node.js 18.17.0 o superior
-- PostgreSQL (local o Supabase/Neon)
+- PostgreSQL (Supabase recomendado)
 - Cuenta de Firebase
 - Cuenta de Google Cloud (para Gemini API)
 
@@ -139,7 +162,7 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="tu-proyecto.appspot.com"
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="123456789"
 NEXT_PUBLIC_FIREBASE_APP_ID="1:123456789:web:abcdef"
 
-# Servidor (privadas)
+# Servidor (privadas) - REQUERIDO para verificación de tokens
 FIREBASE_CLIENT_EMAIL="firebase-adminsdk@tu-proyecto.iam.gserviceaccount.com"
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 
@@ -158,25 +181,25 @@ CLOUDINARY_API_SECRET="tu-api-secret"
 # ============================================
 # PAGOS - REQUERIDO PARA MONETIZACIÓN
 # ============================================
-MERCADOPAGO_ACCESS_TOKEN="tu-access-token"
-MERCADOPAGO_WEBHOOK_SECRET="tu-webhook-secret"  # OBLIGATORIO en producción
+# MercadoPago (LATAM)
 NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY="tu-public-key"
+MERCADOPAGO_ACCESS_TOKEN="tu-access-token"
+MERCADOPAGO_WEBHOOK_SECRET="tu-webhook-secret"
+
+# Stripe (Global)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_..."
+STRIPE_SECRET_KEY="sk_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
 
 # ============================================
 # OPCIONALES
 # ============================================
 # Redis (mejora performance)
-REDIS_URL="redis://..."
 UPSTASH_REDIS_REST_URL="https://..."
 UPSTASH_REDIS_REST_TOKEN="..."
 
-# AWS S3 (storage alternativo)
-AWS_ACCESS_KEY_ID="..."
-AWS_SECRET_ACCESS_KEY="..."
-AWS_S3_BUCKET_NAME="..."
-
 # Seguridad
-ALLOWED_UPLOAD_ORIGINS="https://tudominio.com"  # REQUERIDO en producción
+ALLOWED_UPLOAD_ORIGINS="https://tudominio.com"
 ```
 
 ### Configuración de Firebase
@@ -226,27 +249,21 @@ npm run prisma:studio
    Install Command: npm install
    ```
 
-4. **Desplegar**
-   ```bash
-   git push origin main
-   ```
-   Vercel desplegará automáticamente.
+4. **Configurar Webhooks de Pago**
+   
+   **MercadoPago:**
+   - URL: `https://tu-dominio.vercel.app/api/payments/webhook`
+   - Eventos: payment.created, payment.updated
+   
+   **Stripe:**
+   - URL: `https://tu-dominio.vercel.app/api/payments/stripe/webhook`
+   - Eventos: checkout.session.completed, payment_intent.payment_failed
 
 ### Verificación Post-Deploy
 
 ```bash
 # Verificar health endpoint
 curl https://tu-dominio.vercel.app/api/health
-
-# Respuesta esperada:
-{
-  "status": "healthy",
-  "service": "spartan-club-api",
-  "checks": {
-    "database": { "status": "ok", "latencyMs": 15 },
-    "environment": { "status": "ok" }
-  }
-}
 ```
 
 ---
@@ -260,27 +277,34 @@ Spartan/
 │   │   ├── app/                 # App Router (páginas y APIs)
 │   │   │   ├── api/             # API Routes
 │   │   │   │   ├── admin/       # APIs de administración
-│   │   │   │   ├── asesor-estilo/  # APIs de IA
-│   │   │   │   ├── credits/     # Sistema de créditos
-│   │   │   │   ├── health/      # Health check
-│   │   │   │   ├── payments/    # Webhooks de pago
+│   │   │   │   ├── asesor-estilo/  # APIs de IA (análisis de imagen)
+│   │   │   │   ├── credits/     # Sistema de créditos y compras
+│   │   │   │   ├── payments/    # Webhooks MercadoPago y Stripe
 │   │   │   │   └── users/       # Gestión de usuarios
 │   │   │   ├── admin/           # Panel de administración
-│   │   │   ├── blog/            # Páginas del blog
+│   │   │   ├── blog/            # Sistema de blog
 │   │   │   ├── herramientas/    # Herramientas de IA
+│   │   │   │   ├── asesor-estilo/      # Asesor de vestimenta
+│   │   │   │   ├── asesor-forma-cara/  # Asesor de cortes/barba
+│   │   │   │   └── couch_spartano/     # Coach IA personalizado
 │   │   │   └── perfil/          # Perfil de usuario
 │   │   ├── components/          # Componentes React
 │   │   ├── lib/                 # Utilidades y configuración
-│   │   │   ├── api/             # Error handling centralizado
-│   │   │   ├── asesor-estilo/   # Lógica de IA
-│   │   │   ├── security/        # Autenticación y seguridad
+│   │   │   ├── asesor-estilo/   # Lógica de análisis de imagen
+│   │   │   ├── coach-espartano/ # Lógica del coach IA
+│   │   │   │   ├── config/      # Configuración de coaches
+│   │   │   │   ├── gemini.ts    # Cliente Gemini para chat
+│   │   │   │   └── credits.ts   # Sistema de créditos del coach
 │   │   │   ├── server/          # Utilidades del servidor
+│   │   │   │   ├── prisma.ts    # Cliente Prisma
+│   │   │   │   ├── stripe.ts    # Cliente Stripe
+│   │   │   │   └── mercadopago.ts # Cliente MercadoPago
 │   │   │   └── validation/      # Schemas Zod
 │   │   └── types/               # Tipos TypeScript
 │   ├── prisma/                  # Schema y migraciones
-│   ├── public/                  # Assets estáticos
-│   └── tests/                   # Suite de pruebas
-├── DOCUMENTATION.md             # Documentación técnica completa
+│   └── public/                  # Assets estáticos
+├── blog-posts/                  # Artículos en Markdown
+├── DOCUMENTATION.md             # Documentación técnica
 └── README.md                    # Este archivo
 ```
 
@@ -301,9 +325,14 @@ Spartan/
 | Endpoint | Método | Descripción |
 |----------|--------|-------------|
 | `/api/users/profile` | GET/PUT | Perfil del usuario |
-| `/api/credits/buy` | POST | Iniciar compra de créditos |
+| `/api/credits/packages` | GET | Paquetes de créditos disponibles |
+| `/api/credits/buy` | POST | Iniciar compra (MercadoPago) |
+| `/api/credits/buy-stripe` | POST | Iniciar compra (Stripe) |
 | `/api/asesor-estilo/analyze` | POST | Análisis de imagen con IA |
 | `/api/asesor-estilo/iterate` | POST | Generar variaciones |
+| `/herramientas/couch_spartano/api/chat` | POST | Chat con Coach IA |
+| `/herramientas/couch_spartano/api/profile` | GET/POST | Perfil de coaching |
+| `/herramientas/couch_spartano/api/coaches` | GET | Lista de coaches disponibles |
 
 ### Admin (requieren rol admin)
 
@@ -315,9 +344,10 @@ Spartan/
 
 ### Webhooks
 
-| Endpoint | Método | Descripción |
-|----------|--------|-------------|
-| `/api/payments/webhook` | POST | Webhook de MercadoPago |
+| Endpoint | Método | Pasarela |
+|----------|--------|----------|
+| `/api/payments/webhook` | POST | MercadoPago |
+| `/api/payments/stripe/webhook` | POST | Stripe |
 
 ---
 
@@ -325,29 +355,14 @@ Spartan/
 
 ### Implementaciones
 
-- ✅ **Autenticación**: Firebase ID Token verification
+- ✅ **Autenticación**: Firebase ID Token verification + Admin SDK
 - ✅ **Autorización**: Role-based access control desde BD
 - ✅ **Validación**: Zod schemas en todos los endpoints
 - ✅ **Rate Limiting**: Sliding window con Redis/Memory fallback
-- ✅ **Webhook Security**: HMAC-SHA256 verification obligatoria en producción
+- ✅ **Webhook Security**: HMAC-SHA256 verification (MercadoPago y Stripe)
 - ✅ **CORS**: Origins configurables, restrictivo en producción
 - ✅ **Error Handling**: Sanitización de errores, sin datos sensibles
-
-### Headers de Seguridad (Vercel)
-
-```json
-{
-  "headers": [
-    {
-      "source": "/api/:path*",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Cache-Control", "value": "no-store" }
-      ]
-    }
-  ]
-}
-```
+- ✅ **Encriptación**: Mensajes del coach encriptados en BD
 
 ---
 
@@ -387,38 +402,14 @@ npm run lint
 
 ---
 
-## 🤝 Contribución
-
-1. Fork el repositorio
-2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -m 'Add: nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abrir Pull Request
-
-### Estándares de Código
-
-- TypeScript strict mode
-- ESLint + Prettier
-- Conventional Commits
-- Tests para nuevas funcionalidades
-
----
-
 ## 📄 Licencia
 
 Proyecto privado - Todos los derechos reservados © 2025 Spartan Club
 
 ---
 
-## 📞 Contacto
-
-- **GitHub**: [@Pablo-Cubides](https://github.com/Pablo-Cubides)
-- **Repositorio**: [Spartan](https://github.com/Pablo-Cubides/Spartan)
-
----
-
 <div align="center">
   <strong>🏛️ Forge Your Best Version 🏛️</strong>
   <br/>
-  <sub>Built with Next.js, TypeScript, and AI</sub>
+  <sub>Built with Next.js, TypeScript, Gemini AI, and ❤️</sub>
 </div>

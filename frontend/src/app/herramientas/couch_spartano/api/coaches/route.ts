@@ -63,7 +63,8 @@ const handler = async (request: NextRequest) => {
             icon: coachConfig.icon,
             color: coachConfig.color,
             welcomeVideo: coachConfig.welcomeVideo,
-            welcomeShown: conversation?.welcomeShown ?? false,
+            // For 'general' coach, always mark welcomeShown as true (no video needed)
+            welcomeShown: coachId === 'general' ? true : (conversation?.welcomeShown ?? false),
             messageCount: conversation?.messageCount ?? 0
         };
     });
@@ -71,7 +72,8 @@ const handler = async (request: NextRequest) => {
     return NextResponse.json({
         hasProfile: true,
         onboardingDone: user.spartanProfile.onboardingDone,
-        coaches
+        coaches,
+        credits: user.credits // Include user credits
     });
 };
 

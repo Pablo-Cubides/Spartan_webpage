@@ -10,14 +10,17 @@ interface OnboardingFlowProps {
     onComplete: (response: string, profile: ProfileData) => void;
 }
 
+// Video URL for onboarding welcome
+const ONBOARDING_VIDEO_URL = '/Herramientas/Videos/onboarding-welcome.mp4';
+
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     const [step, setStep] = useState<'video' | 'question' | 'processing'>('video');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async () => {
-        if (message.length < 50) {
-            setError('Por favor, escribe al menos 50 caracteres para que pueda conocerte mejor.');
+        if (message.length < 10) {
+            setError('Por favor, escribe al menos 10 caracteres.');
             return;
         }
 
@@ -51,7 +54,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     if (step === 'video') {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
-                <VideoPlaceholder
+                <WelcomeVideo
                     title="¡Bienvenido a Coach Espartano!"
                     onComplete={() => setStep('question')}
                 />
@@ -84,7 +87,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="w-full h-48 bg-[#1a1a1a] border border-gray-700 rounded-lg p-4 text-white resize-none focus:ring-2 focus:ring-[#D32F2F] focus:border-transparent"
-                placeholder="Escribe aquí tu mensaje... (mínimo 50 caracteres)"
+                placeholder="Escribe aquí tu mensaje... (mínimo 10 caracteres)"
             />
 
             <div className="flex justify-between items-center mt-4">
@@ -94,7 +97,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
             <button
                 onClick={handleSubmit}
-                disabled={message.length < 50}
+                disabled={message.length < 10}
                 className="mt-6 w-full bg-[#D32F2F] hover:bg-red-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg transition-colors"
             >
                 Enviar y conocer mi perfil
@@ -103,26 +106,27 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     );
 }
 
-// Video placeholder component
-function VideoPlaceholder({ title, onComplete }: { title: string; onComplete: () => void }) {
+// Welcome video component with autoplay
+function WelcomeVideo({ onComplete }: { title?: string; onComplete: () => void }) {
     return (
         <div className="relative w-full max-w-3xl aspect-video bg-[#1a1a1a] rounded-2xl overflow-hidden border border-gray-800">
-            {/* Placeholder content */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f]">
-                <div className="w-20 h-20 rounded-full bg-[#D32F2F]/20 flex items-center justify-center mb-6">
-                    <svg className="w-10 h-10 text-[#D32F2F]" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                    </svg>
-                </div>
-                <h3 className="text-white text-xl font-bold mb-2">{title}</h3>
-                <p className="text-gray-500 text-sm mb-6">Video de bienvenida próximamente</p>
-                <button
-                    onClick={onComplete}
-                    className="bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
-                >
-                    Continuar
-                </button>
-            </div>
+            <video
+                src={ONBOARDING_VIDEO_URL}
+                autoPlay
+                controls
+                playsInline
+                className="w-full h-full object-cover"
+                onEnded={onComplete}
+            >
+                Tu navegador no soporta videos HTML5.
+            </video>
+            {/* Skip button overlay */}
+            <button
+                onClick={onComplete}
+                className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+                Saltar video →
+            </button>
         </div>
     );
 }

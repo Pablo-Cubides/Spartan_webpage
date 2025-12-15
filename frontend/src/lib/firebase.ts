@@ -26,14 +26,29 @@ if (isBrowser && hasClientApiKey) {
       // measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
     };
 
+    // Debug: Log Firebase config (without sensitive data)
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔥 Firebase Config:', {
+        projectId: firebaseConfig.projectId,
+        authDomain: firebaseConfig.authDomain,
+        hasApiKey: !!firebaseConfig.apiKey,
+      });
+    }
+
     app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     auth = getAuth(app);
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Firebase initialized successfully');
+    }
   } catch (e) {
     // Keep auth null if initialization fails
-    console.warn('Firebase client initialization warning:', e instanceof Error ? e.message : String(e));
+    console.error('❌ Firebase client initialization error:', e instanceof Error ? e.message : String(e));
     app = null;
     auth = null;
   }
+} else if (isBrowser) {
+  console.warn('⚠️ Firebase: Missing or placeholder API key');
 }
 
 export { auth };

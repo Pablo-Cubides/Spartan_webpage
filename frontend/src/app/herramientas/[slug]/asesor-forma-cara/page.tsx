@@ -360,10 +360,10 @@ export default function Page() {
               onDrop={handleDrop}
               className={`p-8 rounded-lg text-center dropzone-visible ${isDragging ? "border-dashed border-indigo-400 bg-indigo-800/5" : "border-dashed border-transparent"}`}
             >
-              <h2 className="mb-2 text-lg font-semibold">Upload your photo for an advisory</h2>
-              <p className="mb-4 text-sm text-muted-foreground">We recommend a frontal photo with good lighting.</p>
+              <h2 className="mb-2 text-lg font-semibold">Carga tu foto para obtener un análisis</h2>
+              <p className="mb-4 text-sm text-muted-foreground">Recomendamos una foto frontal con buena iluminación.</p>
               <div className="flex items-center justify-center gap-4">
-                <button onClick={handleUploadClick} disabled={loading} className="btn-accent">{loading ? "Processing..." : "Select Image"}</button>
+                <button onClick={handleUploadClick} disabled={loading} className="btn-accent">{loading ? "Procesando..." : "Seleccionar Imagen"}</button>
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               </div>
             </div>

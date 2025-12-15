@@ -151,3 +151,257 @@
   .spinner { border-top-color: rgba(255,255,255,0.2); border-right-color: rgba(255,255,255,0.08); border-bottom-color: rgba(255,255,255,0.08); border-left-color: rgba(255,255,255,0.08); border-radius: 9999px; animation: spin 1s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 }
+
+/* ===== PREMIUM ARTICLE STYLING ===== */
+.article-content {
+  --article-text: #d1d5db;
+  --article-heading: #ffffff;
+  --article-accent: #ef4444;
+  --article-muted: #9ca3af;
+  --article-bg-subtle: rgba(255, 255, 255, 0.03);
+  --article-border: rgba(255, 255, 255, 0.1);
+}
+
+/* First paragraph drop cap */
+.article-content > p:first-of-type::first-letter {
+  float: left;
+  font-size: 4rem;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--article-accent);
+  margin-right: 0.75rem;
+  margin-top: 0.1rem;
+  font-family: 'Anton', sans-serif;
+}
+
+/* Paragraph styling */
+.article-content p {
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: var(--article-text);
+  margin-bottom: 1.5rem;
+}
+
+/* Headings with accent bar */
+.article-content h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--article-heading);
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--article-accent);
+  position: relative;
+}
+
+.article-content h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--article-accent), transparent);
+}
+
+.article-content h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--article-heading);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--article-accent);
+}
+
+.article-content h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--article-heading);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Lists with custom styling */
+.article-content ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 1.5rem 0;
+}
+
+.article-content ul li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--article-text);
+  line-height: 1.7;
+}
+
+.article-content ul li::before {
+  content: '⚔';
+  position: absolute;
+  left: 0;
+  color: var(--article-accent);
+  font-size: 0.9rem;
+}
+
+/* Numbered lists with badge style */
+.article-content ol {
+  list-style: none;
+  counter-reset: spartan-counter;
+  padding-left: 0;
+  margin: 1.5rem 0;
+}
+
+.article-content ol li {
+  counter-increment: spartan-counter;
+  position: relative;
+  padding-left: 3.5rem;
+  margin-bottom: 1.25rem;
+  color: var(--article-text);
+  line-height: 1.7;
+}
+
+.article-content ol li::before {
+  content: counter(spartan-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: linear-gradient(135deg, var(--article-accent), #b91c1c);
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Blockquotes - motivational style */
+.article-content blockquote {
+  position: relative;
+  margin: 2.5rem 0;
+  padding: 2rem 2rem 2rem 3rem;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.02));
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-left: 4px solid var(--article-accent);
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #e5e7eb;
+}
+
+.article-content blockquote::before {
+  content: '"';
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+  font-size: 3rem;
+  font-family: Georgia, serif;
+  color: var(--article-accent);
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.article-content blockquote p {
+  margin-bottom: 0;
+}
+
+/* Strong text emphasis */
+.article-content strong {
+  color: var(--article-heading);
+  font-weight: 700;
+  background: linear-gradient(transparent 60%, rgba(239, 68, 68, 0.2) 60%);
+  padding: 0 0.15rem;
+}
+
+/* Links */
+.article-content a {
+  color: var(--article-accent);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--article-accent);
+  transition: all 0.2s;
+}
+
+.article-content a:hover {
+  color: #f87171;
+  border-bottom-style: solid;
+}
+
+/* Code inline */
+.article-content code {
+  background: var(--article-bg-subtle);
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+  color: #f87171;
+  border: 1px solid var(--article-border);
+}
+
+/* Code blocks */
+.article-content pre {
+  background: #0d0d0d;
+  border: 1px solid var(--article-border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+.article-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #e5e7eb;
+}
+
+/* Horizontal rules as section dividers */
+.article-content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--article-accent), transparent);
+  margin: 3rem 0;
+}
+
+/* Images within content */
+.article-content img {
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Tip/Warning boxes (for text starting with specific patterns) */
+.article-content p:has(strong:first-child) {
+  background: var(--article-bg-subtle);
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--article-accent);
+  margin: 1.5rem 0;
+}
+
+/* Table styling */
+.article-content table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+}
+
+.article-content th,
+.article-content td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--article-border);
+  text-align: left;
+}
+
+.article-content th {
+  background: var(--article-bg-subtle);
+  color: var(--article-heading);
+  font-weight: 600;
+}
+
+.article-content tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}

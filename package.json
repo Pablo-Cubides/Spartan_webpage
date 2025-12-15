@@ -1,9 +1,12 @@
 {
-  "name": "spartan-edge-monorepo",
+  "name": "spartan-club",
+  "version": "1.1.0",
+  "description": "Plataforma de Desarrollo Personal Masculino - Spartan Club",
   "private": true,
   "scripts": {
     "dev": "npm --prefix frontend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
     "install:frontend": "npm --prefix frontend install",
     "install:all": "npm --prefix frontend install"
   },
@@ -13,6 +16,7 @@
   },
   "dependencies": {
     "@prisma/client": "^7.1.0",
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.3",
+    "gray-matter": "^4.0.3"
   }
 }

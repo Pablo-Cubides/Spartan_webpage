@@ -10,25 +10,18 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/favicon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
     },
     {
-      "src": "/favicon-512x512.png",
+      "src": "/Icono spartan club.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/favicon-maskable-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/favicon-maskable-512x512.png",
+      "src": "/icono spartan club - sin fondo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -46,7 +39,10 @@
       "type": "image/png"
     }
   ],
-  "categories": ["lifestyle", "education"],
+  "categories": [
+    "lifestyle",
+    "education"
+  ],
   "share_target": {
     "action": "/share",
     "method": "POST",

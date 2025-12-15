@@ -37,7 +37,7 @@ export default function NewsletterForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Your email"
+        placeholder="Tu correo electrónico"
         className="flex-1 bg-black/50 border border-gray-700 text-white px-5 py-3 rounded-sm focus:outline-none focus:border-spartan-red transition-colors placeholder-gray-500"
         required
       />
@@ -46,9 +46,9 @@ export default function NewsletterForm() {
         disabled={status === 'sending' || !email}
         className="bg-spartan-red hover:bg-red-700 text-white font-display font-bold px-8 py-3 rounded-sm uppercase tracking-wide disabled:opacity-60"
       >
-        {status === 'sending' ? 'Sending...' : status === 'sent' ? 'Thank you!' : 'Subscribe'}
+        {status === 'sending' ? 'Enviando...' : status === 'sent' ? '¡Gracias!' : 'Suscribirse'}
       </button>
-      {status === 'error' && <p className="text-red-400 mt-2 text-sm">An error occurred. Please try again.</p>}
+      {status === 'error' && <p className="text-red-400 mt-2 text-sm">Ocurrió un error. Por favor, intenta de nuevo.</p>}
     </form>
   );
 }

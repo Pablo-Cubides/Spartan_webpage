@@ -56,10 +56,10 @@ export default function ProfileComplete() {
         router.push('/profile');
       } else {
         const data = await response.json();
-        setError(data.detail || 'Error completing profile');
+        setError(data.detail || 'Error al completar el perfil');
       }
     } catch {
-      setError('Connection error');
+      setError('Error de conexión');
     } finally {
       setLoading(false);
     }
@@ -70,7 +70,7 @@ export default function ProfileComplete() {
       <div className="max-w-2xl mx-auto px-4">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">
-            Complete Your Profile
+            Completa tu Perfil
           </h1>
           
           {error && (
@@ -83,14 +83,14 @@ export default function ProfileComplete() {
             {/* Alias */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Unique Alias *
+                Alias Único *
               </label>
               <input
                 type="text"
                 value={profile.alias}
                 onChange={(e) => setProfile({...profile, alias: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="your-unique-alias"
+                placeholder="tu-alias-unico"
                 required
               />
             </div>
@@ -98,14 +98,14 @@ export default function ProfileComplete() {
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name *
+                Nombre Completo *
               </label>
               <input
                 type="text"
                 value={profile.full_name}
                 onChange={(e) => setProfile({...profile, full_name: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Your Full Name"
+                placeholder="Tu Nombre Completo"
                 required
               />
             </div>
@@ -113,21 +113,21 @@ export default function ProfileComplete() {
             {/* Bio */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Biography
+                Biografía
               </label>
               <textarea
                 value={profile.bio}
                 onChange={(e) => setProfile({...profile, bio: e.target.value})}
                 rows={4}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Tell us about yourself..."
+                placeholder="Cuéntanos sobre ti..."
               />
             </div>
 
             {/* Location */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Location *
+                Ubicación *
               </label>
               <select
                 value={profile.location}
@@ -136,15 +136,15 @@ export default function ProfileComplete() {
                 required
               >
                 <option value="Colombia">Colombia</option>
-                <option value="Spain">Spain</option>
-                <option value="Other">Other</option>
+                <option value="Spain">España</option>
+                <option value="Other">Otro</option>
               </select>
             </div>
 
             {/* Gender */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Gender *
+                Género *
               </label>
               <select
                 value={profile.gender}
@@ -152,16 +152,16 @@ export default function ProfileComplete() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option value="Male">Masculino</option>
+                <option value="Female">Femenino</option>
+                <option value="Other">Otro</option>
               </select>
             </div>
 
             {/* Birth Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Birth Date
+                Fecha de Nacimiento
               </label>
               <input
                 type="date"
@@ -174,20 +174,20 @@ export default function ProfileComplete() {
             {/* Website */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Website
+                Página Web
               </label>
               <input
                 type="url"
                 value={profile.website}
                 onChange={(e) => setProfile({...profile, website: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://your-site.com"
+                placeholder="https://tu-sitio.com"
               />
             </div>
 
             {/* Social Media */}
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-900">Social Media</h3>
+              <h3 className="text-lg font-medium text-gray-900">Redes Sociales</h3>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -243,7 +243,7 @@ export default function ProfileComplete() {
               disabled={loading}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? 'Completing...' : 'Complete Profile'}
+              {loading ? 'Completando...' : 'Completar Perfil'}
             </button>
           </form>
         </div>

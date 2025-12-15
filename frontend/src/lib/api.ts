@@ -58,10 +58,14 @@ export const apiCall = async <T = unknown>(
 
 /**
  * Secure cookie configuration for tokens
+ * Note: 'secure' flag only in production (HTTPS), not in localhost (HTTP)
  */
 export const setTokenCookie = (token: string): void => {
   if (typeof document !== 'undefined') {
-    document.cookie = `auth_token=${token}; path=/; secure; samesite=strict; max-age=3600`;
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const secureFlag = isLocalhost ? '' : 'secure;';
+    document.cookie = `auth_token=${token}; path=/; ${secureFlag} samesite=lax; max-age=3600`;
+    console.log('🍪 Cookie guardada:', isLocalhost ? '(modo desarrollo)' : '(modo producción)');
   }
 };
 
@@ -83,6 +87,8 @@ export const getTokenCookie = (): string | null => {
 
 export const removeTokenCookie = (): void => {
   if (typeof document !== 'undefined') {
-    document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; secure; samesite=strict';
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const secureFlag = isLocalhost ? '' : 'secure;';
+    document.cookie = `auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; ${secureFlag} samesite=lax`;
   }
 };

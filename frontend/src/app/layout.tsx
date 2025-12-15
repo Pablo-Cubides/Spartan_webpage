@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import { Inter, Noto_Sans } from 'next/font/google';
 import { assertEnvironment } from '@/lib/config/validate-env';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 // Validate environment at startup time (not during build)
 if (process.env.NODE_ENV === 'production' && typeof window === 'undefined' && !process.env.NEXT_PHASE?.includes('build')) {
@@ -114,19 +114,6 @@ export const metadata: Metadata = {
     title: 'Spartan Club',
   },
   manifest: '/manifest.json',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#141414' },
-  ],
-
-  // ==================== Viewport ====================
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-    viewportFit: 'cover',
-  },
 
   // ==================== Verification ====================
   verification: {
@@ -143,6 +130,19 @@ export const metadata: Metadata = {
   },
 };
 
+// Viewport configuration (separated from metadata in Next.js 14+)
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#141414' },
+  ],
+};
+
 // Organization Schema
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -153,7 +153,7 @@ const organizationSchema = {
   logo: {
     '@type': 'ImageObject',
     '@id': `${BASE_URL}/#logo`,
-    url: `${BASE_URL}/Logo spartan club.png`,
+    url: `${BASE_URL}/Logo%20spartan%20club.png`,
     width: 512,
     height: 512,
     caption: 'Spartan Club',

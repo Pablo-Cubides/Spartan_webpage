@@ -5,7 +5,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/server/prisma';
 import { verifyIdToken } from '@/lib/server/firebaseAdmin';
 import { withErrorHandler, AuthenticationError, NotFoundError } from '@/lib/api/error-handler';
-import { processOnboardingMessage } from '@/lib/coach-espartano/openai';
+import { processOnboardingMessage } from '@/lib/coach-espartano/gemini';
 import { CoachType } from '@/lib/coach-espartano/config/coaches.config';
 
 // GET - Fetch user's Spartan Profile
