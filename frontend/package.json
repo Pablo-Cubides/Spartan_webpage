@@ -44,7 +44,6 @@
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.34.5",
-    "spartan-edge-monorepo": "file:..",
     "streamifier": "^0.1.1",
     "stripe": "^20.0.0",
     "tailwindcss-animate": "^1.0.7",
