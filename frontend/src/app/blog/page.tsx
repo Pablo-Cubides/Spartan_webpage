@@ -3,6 +3,9 @@ import { prisma } from "@/lib/server/prisma";
 import Link from "next/link";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
 
+// Force dynamic rendering to avoid DB queries during Vercel build
+export const dynamic = 'force-dynamic';
+
 const BASE_URL = "https://spartanclub.co";
 
 // Epic category data (fallback if DB not seeded)

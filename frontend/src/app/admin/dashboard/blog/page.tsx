@@ -1,6 +1,9 @@
 
 "use client";
 
+
+// Force dynamic rendering to avoid Vercel lambda issues
+export const dynamic = 'force-dynamic';
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { auth } from "@/lib/firebase";

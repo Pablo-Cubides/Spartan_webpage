@@ -1,6 +1,9 @@
 // app/perfil/edit/page.tsx
 "use client";
 
+// Force dynamic rendering to avoid Vercel lambda issues
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/firebase";
@@ -34,7 +37,7 @@ export default function EditProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       if (authLoading) return;
-      
+
       if (!firebaseUser) {
         router.push("/");
         return;
@@ -126,7 +129,7 @@ export default function EditProfilePage() {
       </div>
     );
   }
-  
+
   if (!profileLoaded) return null;
 
   return (
@@ -138,48 +141,48 @@ export default function EditProfilePage() {
         <div className="flex justify-center flex-1 px-40 py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             <h1 className="text-white text-3xl font-bold mb-5">Editar Perfil</h1>
-            
+
             {error && (
               <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded mb-4">
                 {error}
               </div>
             )}
-            
+
             <form onSubmit={handleUpdate}>
               <div className="flex flex-col gap-4">
                 <div>
                   <label htmlFor="name" className="text-white block mb-1">Nombre</label>
-                  <input 
-                    type="text" 
-                    name="name" 
-                    id="name" 
-                    value={profile.name || ''} 
-                    onChange={handleChange} 
-                    className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none" 
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={profile.name || ''}
+                    onChange={handleChange}
+                    className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none"
                   />
                 </div>
                 <div>
                   <label htmlFor="alias" className="text-white block mb-1">Alias</label>
-                  <input 
-                    type="text" 
-                    name="alias" 
-                    id="alias" 
-                    value={profile.alias || ''} 
-                    onChange={handleChange} 
+                  <input
+                    type="text"
+                    name="alias"
+                    id="alias"
+                    value={profile.alias || ''}
+                    onChange={handleChange}
                     placeholder="mi_alias (minúsculas, números, guión bajo)"
-                    className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none" 
+                    className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none"
                   />
                   <p className="text-gray-500 text-xs mt-1">Solo minúsculas, números y guiones bajos (_)</p>
                 </div>
                 <div>
                   <label htmlFor="email" className="text-white block mb-1">Email</label>
-                  <input 
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    value={profile.email || ''} 
-                    onChange={handleChange} 
-                    className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none" 
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={profile.email || ''}
+                    onChange={handleChange}
+                    className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none"
                   />
                 </div>
                 <div className="flex gap-4 mt-4">

@@ -1,6 +1,9 @@
 
 "use client";
 
+
+// Force dynamic rendering to avoid Vercel lambda issues
+export const dynamic = 'force-dynamic';
 import { useState } from "react";
 
 export default function AdminAnnouncements() {

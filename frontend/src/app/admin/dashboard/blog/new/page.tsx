@@ -1,6 +1,9 @@
 
 "use client";
 
+
+// Force dynamic rendering to avoid Vercel lambda issues
+export const dynamic = 'force-dynamic';
 import BlogEditor from "../editor";
 
 export default function NewPostPage() {

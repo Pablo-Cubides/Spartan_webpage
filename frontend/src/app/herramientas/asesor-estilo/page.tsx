@@ -1,4 +1,8 @@
 "use client";
+
+// Force dynamic rendering to avoid Vercel lambda issues with large client components
+export const dynamic = 'force-dynamic';
+
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { Camera, Upload, X, SwitchCamera } from 'lucide-react';
@@ -53,13 +57,13 @@ export default function Page() {
     let attempt = 0;
     const iterateUrl = getApiUrl('ITERATE');
     const token = getTokenCookie();
-    
+
     while (attempt < maxAttempts) {
       attempt++;
       try {
         const res = await fetch(iterateUrl, {
           method: 'POST',
-          headers: { 
+          headers: {
             'content-type': 'application/json',
             ...(token ? { 'Authorization': `Bearer ${token}` } : {})
           },
@@ -76,17 +80,17 @@ export default function Page() {
 
         // Handle Auth/Credits errors
         if (res.status === 401) {
-           setShowLoginModal(true);
-           return { success: false, error: 'Debes iniciar sesión', status: 401 };
+          setShowLoginModal(true);
+          return { success: false, error: 'Debes iniciar sesión', status: 401 };
         }
         if (res.status === 402 || res.status === 403) {
-           // Check if it's a credit issue
-           const data = await res.json();
-           if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
-             setShowCreditsModal(true);
-             return { success: false, error: 'Créditos insuficientes', status: 402 };
-           }
-           return { success: false, error: data.error || data.message || 'unknown', status: res.status };
+          // Check if it's a credit issue
+          const data = await res.json();
+          if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
+            setShowCreditsModal(true);
+            return { success: false, error: 'Créditos insuficientes', status: 402 };
+          }
+          return { success: false, error: data.error || data.message || 'unknown', status: res.status };
         }
 
         const data = await res.json();
@@ -113,7 +117,7 @@ export default function Page() {
   function handleReset() {
     // abort any ongoing upload
     if (xhrRef.current) {
-      try { xhrRef.current.abort(); } catch {};
+      try { xhrRef.current.abort(); } catch { };
       xhrRef.current = null;
     }
     setStep("upload");
@@ -155,7 +159,7 @@ export default function Page() {
       if (e.key === 'Escape') {
         // cancel any ongoing XHR
         if (xhrRef.current) {
-          try { xhrRef.current.abort(); } catch {}
+          try { xhrRef.current.abort(); } catch { }
           xhrRef.current = null;
           setLoading(false);
           setLoadingPhase('idle');
@@ -209,13 +213,13 @@ export default function Page() {
       const fd = new FormData();
       fd.append("file", file);
       const token = getTokenCookie();
-      
+
       const uploadData: UploadResponse = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhrRef.current = xhr;
         xhr.open('POST', getApiUrl('UPLOAD'));
         if (token) {
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+          xhr.setRequestHeader('Authorization', `Bearer ${token}`);
         }
         xhr.upload.onprogress = (ev) => {
           if (ev.lengthComputable) {
@@ -256,26 +260,26 @@ export default function Page() {
       // Perform analyze first to get the advisory
       const analyzeRes = await fetch(getApiUrl('ANALYZE'), {
         method: "POST",
-        headers: { 
-            "content-type": "application/json",
-            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        headers: {
+          "content-type": "application/json",
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         },
         body: JSON.stringify({ imageUrl: uploadData.imageUrl, locale: "es" }),
       });
-      
+
       if (analyzeRes.status === 401) {
-          setShowLoginModal(true);
-          setLoading(false);
-          return;
+        setShowLoginModal(true);
+        setLoading(false);
+        return;
       }
       if (analyzeRes.status === 402 || analyzeRes.status === 403) {
-           const data = await analyzeRes.json();
-           if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
-             setShowCreditsModal(true);
-             setMessages((m) => [...m, { from: "system", text: "You don't have enough credits to analyze the image." }]);
-             setLoading(false);
-             return;
-           }
+        const data = await analyzeRes.json();
+        if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
+          setShowCreditsModal(true);
+          setMessages((m) => [...m, { from: "system", text: "You don't have enough credits to analyze the image." }]);
+          setLoading(false);
+          return;
+        }
       }
 
       const analyzeData = await analyzeRes.json();
@@ -307,33 +311,33 @@ export default function Page() {
       };
 
       await new Promise((r) => setTimeout(r, 500));
-      
+
       // We use the helper function here to handle retries and auth/credits
       const iterateResult = await performIterateWithRetries(iteratePayload);
 
       if (!iterateResult.success) {
-          if (iterateResult.status === 503) {
-            // Mostrar solo el análisis si no hay servicio de imágenes
-            setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-            setMessages((m) => [...m, {
-              from: 'system',
-              text: 'The image editing service is not available for now.',
-              action: {
-                type: 'retry-iterate',
-                payload: iteratePayload,
-              }
-            }]);
-          } else if (iterateResult.status === 402) {
-              // Already handled by helper (showCreditsModal)
-              setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-              setMessages((m) => [...m, { from: 'system', text: 'Necesitas créditos para generar la imagen.' }]);
-          } else {
-             setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
-             setMessages((m) => [...m, { from: 'system', text: `Error de edición: ${iterateResult.error}` }]);
-          }
-          setLoading(false);
-          setLoadingPhase('idle');
-          return;
+        if (iterateResult.status === 503) {
+          // Mostrar solo el análisis si no hay servicio de imágenes
+          setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
+          setMessages((m) => [...m, {
+            from: 'system',
+            text: 'The image editing service is not available for now.',
+            action: {
+              type: 'retry-iterate',
+              payload: iteratePayload,
+            }
+          }]);
+        } else if (iterateResult.status === 402) {
+          // Already handled by helper (showCreditsModal)
+          setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
+          setMessages((m) => [...m, { from: 'system', text: 'Necesitas créditos para generar la imagen.' }]);
+        } else {
+          setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
+          setMessages((m) => [...m, { from: 'system', text: `Error de edición: ${iterateResult.error}` }]);
+        }
+        setLoading(false);
+        setLoadingPhase('idle');
+        return;
       }
 
       const iterateData = iterateResult.data;
@@ -350,10 +354,10 @@ export default function Page() {
       const msg = err && typeof err === 'object' && 'message' in err ? String((err as Record<string, unknown>).message) : String(err)
       // Check for 402/403 in the catch block if promise rejected with status
       if (typeof err === 'object' && err !== null && 'status' in err && ((err as { status: number }).status === 402 || (err as { status: number }).status === 403)) {
-          setShowCreditsModal(true);
-          setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
+        setShowCreditsModal(true);
+        setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
       } else {
-          setMessages((m) => [...m, { from: "system", text: `Error: ${msg}` }]);
+        setMessages((m) => [...m, { from: "system", text: `Error: ${msg}` }]);
       }
       setStep("upload");
     } finally {
@@ -364,8 +368,8 @@ export default function Page() {
 
   async function handleGenerate(text?: string) {
     if (!user) {
-        setShowLoginModal(true);
-        return;
+      setShowLoginModal(true);
+      return;
     }
 
     const userText = text || prompt;
@@ -373,7 +377,7 @@ export default function Page() {
     // simple client-side rate limit: ignore repeated clicks within 2s
     const now = Date.now();
     if (now - lastGenerateAt.current < 2000) {
-           setMessages((m) => [...m, { from: 'system', text: 'Por favor espera un momento antes de generar otra edición.' }]);
+      setMessages((m) => [...m, { from: 'system', text: 'Por favor espera un momento antes de generar otra edición.' }]);
       return;
     }
     lastGenerateAt.current = now;
@@ -399,10 +403,10 @@ export default function Page() {
             }
           }]);
         } else if (result.status === 402) {
-             // Already handled
-             setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
+          // Already handled
+          setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
         } else {
-            setMessages((m) => [...m, { from: "system", text: `Error: ${result.error || 'unknown'}` }]);
+          setMessages((m) => [...m, { from: "system", text: `Error: ${result.error || 'unknown'}` }]);
         }
         setLoading(false);
         return;
@@ -416,7 +420,7 @@ export default function Page() {
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error: ${err}` }]);
     }
- finally {
+    finally {
       setLoading(false);
       setLoadingPhase('idle');
     }
@@ -425,8 +429,8 @@ export default function Page() {
   async function retryIterate(payload: IteratePayload | undefined) {
     if (!payload) return;
     if (!user) {
-        setShowLoginModal(true);
-        return;
+      setShowLoginModal(true);
+      return;
     }
 
     setLoading(true);
@@ -438,14 +442,14 @@ export default function Page() {
       const result = await performIterateWithRetries(payload);
 
       if (!result.success) {
-          if (result.status === 503) {
-            setMessages((m) => [...m, { from: "system", text: "The editing service is still unavailable. Please try again later." }]);
-          } else if (result.status === 402) {
-             setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
-          } else {
-            setMessages((m) => [...m, { from: "system", text: `Editing error: ${result.error}` }]);
-          }
-          return;
+        if (result.status === 503) {
+          setMessages((m) => [...m, { from: "system", text: "The editing service is still unavailable. Please try again later." }]);
+        } else if (result.status === 402) {
+          setMessages((m) => [...m, { from: "system", text: "Insufficient credits." }]);
+        } else {
+          setMessages((m) => [...m, { from: "system", text: `Editing error: ${result.error}` }]);
+        }
+        return;
       }
 
       const data = result.data;
@@ -456,9 +460,9 @@ export default function Page() {
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error when retrying: ${err}` }]);
     }
- finally {
+    finally {
       setLoading(false);
-       setLoadingPhase('idle');
+      setLoadingPhase('idle');
     }
   }
 
@@ -489,21 +493,21 @@ export default function Page() {
       <main className="app-center" role="main">
         <ModalLogin open={showLoginModal} onClose={() => setShowLoginModal(false)} />
         {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
-        
+
         {showCreditsModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-                <div className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden">
-                    <button 
-                        onClick={() => setShowCreditsModal(false)}
-                        className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10"
-                    >
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                    <div className="max-h-[90vh] overflow-y-auto">
-                        <BuyCredits />
-                    </div>
-                </div>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+            <div className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden">
+              <button
+                onClick={() => setShowCreditsModal(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10"
+              >
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+              <div className="max-h-[90vh] overflow-y-auto">
+                <BuyCredits />
+              </div>
             </div>
+          </div>
         )}
 
         <section className="chat-shell" aria-label="Asesor de estilo">
@@ -520,7 +524,7 @@ export default function Page() {
           </div>
           <header className="chat-header">
             {step === 'upload' ? (
-              <div style={{textAlign: 'center'}}>
+              <div style={{ textAlign: 'center' }}>
                 <div className="relative h-60 w-auto mx-auto mb-4">
                   <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
                 </div>
@@ -528,15 +532,15 @@ export default function Page() {
                 <p className="chat-sub">Get recommendations on garments, combinations, and how to enhance your silhouette.</p>
               </div>
             ) : (
-              <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem'}}>
-                <div style={{flex: '1 1 auto', textAlign: 'center'}}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
+                <div style={{ flex: '1 1 auto', textAlign: 'center' }}>
                   <div className="relative h-60 w-auto mx-auto mb-4">
                     <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
                   </div>
                   <h1 className="chat-title">{UI_CONFIG.APP_NAME}</h1>
                   <p className="chat-sub">Get recommendations on garments, combinations, and how to enhance your silhouette.</p>
                 </div>
-                <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   {/* reset button appears later after edited image */}
                 </div>
               </div>
@@ -554,26 +558,26 @@ export default function Page() {
               <h2 className="mb-2 text-lg font-semibold">Upload your photo for an outfit advisory</h2>
               <p className="mb-4 text-sm text-muted-foreground">We recommend a full-body photo with good lighting for best recommendations.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-                <button 
-                  aria-label="Select image" 
-                  onClick={handleUploadClick} 
-                  disabled={loading} 
+                <button
+                  aria-label="Select image"
+                  onClick={handleUploadClick}
+                  disabled={loading}
                   className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
                 >
                   <Upload size={20} />
                   {loading ? (loadingPhase === 'uploading' ? 'Cargando...' : loadingPhase === 'analyzing' ? 'Analizando...' : 'Generando...') : 'Cargar Foto'}
                 </button>
-                
-                <button 
-                  aria-label="Take photo" 
-                  onClick={() => setShowCamera(true)} 
-                  disabled={loading} 
+
+                <button
+                  aria-label="Take photo"
+                  onClick={() => setShowCamera(true)}
+                  disabled={loading}
                   className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
                 >
                   <Camera size={20} />
                   Tomar Foto
                 </button>
-                
+
                 <input aria-label="Select image file" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               </div>
             </div>
@@ -604,22 +608,22 @@ export default function Page() {
     <main className="app-center" role="main">
       <ModalLogin open={showLoginModal} onClose={() => setShowLoginModal(false)} />
       {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
-      
+
       {showCreditsModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-                <div className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden">
-                    <button 
-                        onClick={() => setShowCreditsModal(false)}
-                        className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10"
-                    >
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                    <div className="max-h-[90vh] overflow-y-auto">
-                        <BuyCredits />
-                    </div>
-                </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden">
+            <button
+              onClick={() => setShowCreditsModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10"
+            >
+              <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div className="max-h-[90vh] overflow-y-auto">
+              <BuyCredits />
             </div>
-        )}
+          </div>
+        </div>
+      )}
 
       <section className="chat-shell" aria-label="Style advisor">
         <header className="chat-header">
@@ -633,23 +637,23 @@ export default function Page() {
           )}
 
           {messages.map((m, i) => (
-            <div key={i} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"} message-wrap`}> 
+            <div key={i} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"} message-wrap`}>
               <div className={`bubble ${m.from === "user" ? "user" : m.from === "assistant" ? "assistant" : "system"} message-anim`}>
                 <p className="whitespace-pre-wrap">{m.text}</p>
                 {m.image && (
-                    <div className="msg-image-container" aria-hidden={false}>
-                    <Image 
-                      src={m.image} 
-                      alt={m.from === 'user' ? 'Uploaded image' : 'Image'} 
-                      className="msg-image" 
-                      width={0} 
-                      height={0} 
-                      sizes="100vw" 
-                      style={{ width: '100%', height: 'auto' }} 
+                  <div className="msg-image-container" aria-hidden={false}>
+                    <Image
+                      src={m.image}
+                      alt={m.from === 'user' ? 'Uploaded image' : 'Image'}
+                      className="msg-image"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
                 )}
-                <div style={{display:'flex', gap:8, marginTop:8}}>
+                <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                   {m.from === 'user' && !m.image && (
                     <>
                       <button aria-label={`Editar mensaje ${i}`} className="btn-ghost" onClick={() => editMessage(i)}>Editar</button>
@@ -676,14 +680,14 @@ export default function Page() {
               <div className="bubble assistant">
                 <p className="whitespace-pre-wrap">¡Aquí está tu imagen editada! 🎨</p>
                 <div className="msg-image-container">
-                  <Image 
-                    src={editedUrl} 
-                    alt="Edited image" 
-                    className="msg-image" 
-                    width={0} 
-                    height={0} 
-                    sizes="100vw" 
-                    style={{ width: '100%', height: 'auto' }} 
+                  <Image
+                    src={editedUrl}
+                    alt="Edited image"
+                    className="msg-image"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    style={{ width: '100%', height: 'auto' }}
                   />
                 </div>
               </div>
@@ -714,10 +718,10 @@ export default function Page() {
           <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleGenerate(); } }} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Carga una imagen primero"} aria-label="Descripción de cambios a generar" className="input-textarea" />
           <div className="flex items-center gap-2">
             <button aria-label="Cargar imagen" onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Cargar imagen">
-                <Upload size={20} />
+              <Upload size={20} />
             </button>
             <button aria-label="Tomar foto" onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
-                <Camera size={20} />
+              <Camera size={20} />
             </button>
             <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
             <button aria-label="Generar cambios" type="submit" disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
@@ -726,7 +730,7 @@ export default function Page() {
         {/* suggestions area (also shown in upload state when edited image exists) */}
         {editedUrl && (
           <div className="suggestions" aria-hidden={!editedUrl}>
-            <div style={{display:'flex', justifyContent:'flex-end', marginBottom: '0.5rem'}}> 
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem' }}>
               <button aria-label="Reiniciar conversación" onClick={handleReset} className="btn-ghost">Comenzar de nuevo</button>
             </div>
             {suggestions.map((s) => (
@@ -766,7 +770,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         }
 
         console.log("[Camera] Checking existing permissions...");
-        
+
         // Check current permission status (if available)
         let permissionStatus = 'prompt';
         try {
@@ -774,7 +778,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
             const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
             permissionStatus = result.state;
             console.log("[Camera] Current permission status:", permissionStatus);
-            
+
             if (permissionStatus === 'denied') {
               throw Object.assign(new Error('Permission previously denied'), { name: 'NotAllowedError' });
             }
@@ -784,7 +788,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         }
 
         console.log("[Camera] Requesting camera access...");
-        
+
         // Strategy 1: Try with specific configuration
         let newStream: MediaStream;
         try {
@@ -798,7 +802,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
           console.log("[Camera] ✓ Camera opened with facingMode:", facingMode);
         } catch (err1) {
           console.warn("[Camera] Failed with facingMode, trying without restrictions...", err1);
-          
+
           // Strategy 2: Minimum configuration
           try {
             newStream = await navigator.mediaDevices.getUserMedia({
@@ -825,11 +829,11 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
       } catch (err: unknown) {
         if (!mounted) return;
         console.error("[Camera] ❌ Final error:", err);
-        
+
         const error = err instanceof Error ? err : new Error(String(err));
         let msg = "";
         const code = error.name || 'Unknown';
-        
+
         if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
           msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para corregir:**\n\n1. Cierra este modal\n2. Haz clic en el ícono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Haz clic en 'Tomar Foto' nuevamente\n\nSi el problema persiste, tu antivirus podría estar bloqueando la cámara.";
         } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
@@ -841,7 +845,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         } else {
           msg = `❌ **Error Desconocido**\n\n${error.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
         }
-        
+
         msg += `\n\n**Technical Code:** ${code}`;
         setError(msg);
       }
@@ -869,15 +873,15 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
     canvas.height = video.videoHeight;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    
+
     // Flip if user facing mode to mirror like a selfie
     if (facingMode === 'user') {
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
     }
-    
+
     ctx.drawImage(video, 0, 0);
-    
+
     canvas.toBlob((blob) => {
       if (blob) {
         const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
@@ -895,40 +899,40 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
       <div className="relative w-full max-w-lg bg-black rounded-xl overflow-hidden flex flex-col items-center border border-white/10 shadow-2xl">
         {error ? (
-            <div className="p-8 text-white text-center max-w-md mx-4">
-                <div className="mb-6 bg-red-500/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-red-500">
-                    <Camera size={32} />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Camera problem</h3>
-                <p className="mb-6 text-gray-300 whitespace-pre-wrap">{error}</p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button onClick={() => setFacingMode(prev => prev)} className="btn-accent px-6 py-2 rounded-lg">Try again</button>
-                    <button onClick={onClose} className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">Cancel</button>
-                </div>
+          <div className="p-8 text-white text-center max-w-md mx-4">
+            <div className="mb-6 bg-red-500/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-red-500">
+              <Camera size={32} />
             </div>
+            <h3 className="text-xl font-bold mb-2">Camera problem</h3>
+            <p className="mb-6 text-gray-300 whitespace-pre-wrap">{error}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button onClick={() => setFacingMode(prev => prev)} className="btn-accent px-6 py-2 rounded-lg">Try again</button>
+              <button onClick={onClose} className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">Cancel</button>
+            </div>
+          </div>
         ) : (
-            <>
-                <video 
-                    ref={videoRef} 
-                    autoPlay 
-                    playsInline 
-                    className={`w-full h-auto max-h-[70vh] object-cover ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`} 
-                />
-                
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex justify-between items-center">
-                    <button onClick={onClose} className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all">
-                        <X size={24} />
-                    </button>
-                    
-                    <button onClick={handleCapture} className="p-1 rounded-full border-4 border-white/30 hover:border-white/50 transition-all transform hover:scale-105">
-                        <div className="w-16 h-16 rounded-full bg-white hover:bg-gray-200 transition-colors"></div>
-                    </button>
-                    
-                    <button onClick={toggleCamera} className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all">
-                        <SwitchCamera size={24} />
-                    </button>
-                </div>
-            </>
+          <>
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              className={`w-full h-auto max-h-[70vh] object-cover ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`}
+            />
+
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex justify-between items-center">
+              <button onClick={onClose} className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all">
+                <X size={24} />
+              </button>
+
+              <button onClick={handleCapture} className="p-1 rounded-full border-4 border-white/30 hover:border-white/50 transition-all transform hover:scale-105">
+                <div className="w-16 h-16 rounded-full bg-white hover:bg-gray-200 transition-colors"></div>
+              </button>
+
+              <button onClick={toggleCamera} className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition-all">
+                <SwitchCamera size={24} />
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>

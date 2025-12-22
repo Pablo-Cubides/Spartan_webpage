@@ -7,6 +7,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Calendar, Clock, User, ArrowLeft, Share2 } from 'lucide-react';
 
+// Force dynamic rendering to avoid DB queries during Vercel build
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{
     category: string;
