@@ -7,11 +7,13 @@ import { uploadImage } from '@/lib/asesor-estilo/api-client'
 import { getTokenCookie } from '@/lib/api';
 import ModalLogin from '@/components/ModalLogin';
 import BuyCredits from '@/components/BuyCredits';
+import { useAuth } from '@/lib/firebase';
 
 type ProcessingPhase = 'upload' | 'analyze' | 'generate';
 type Message = { from: "user" | "assistant" | "system"; text: string; image?: string; processingPhase?: ProcessingPhase; progress?: number; action?: { type: string; payload?: IteratePayload | undefined } };
 
 export default function Page() {
+  const { user } = useAuth();
   const [step, setStep] = useState<"upload" | "ready">("upload");
   const [prompt, setPrompt] = useState("");
   const [originalUrl, setOriginalUrl] = useState<string | null>(null);
@@ -42,7 +44,7 @@ export default function Page() {
       try {
         const res = await fetch('/api/asesor-estilo/iterate', {
           method: 'POST',
-          headers: { 
+          headers: {
             'content-type': 'application/json',
             'Authorization': `Bearer ${getTokenCookie()}`
           },
@@ -95,6 +97,10 @@ export default function Page() {
   }
 
   function handleUploadClick() {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
     fileInputRef.current?.click();
   }
 
@@ -104,6 +110,10 @@ export default function Page() {
   }
 
   async function processUpload(file: File) {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
     setLoading(true);
 
     // helper to upsert a single processing message and update its phase/progress
@@ -147,18 +157,18 @@ export default function Page() {
 
       // uploadData.imageUrl is now the optimized Cloudinary URL (1024px max width)
       // This ensures consistent dimensions for both display and AI processing
-  setOriginalUrl(u.imageUrl);
-  setSessionId(u.sessionId ?? null);
-  setPublicId(u.publicId ?? null);
-  // add uploaded image into the chat and a processing indicator in a single update to avoid duplicates
-  setMessages((m) => [...m, { from: "user", text: "Imagen cargada", image: u.imageUrl }, { from: 'system', text: 'Cargando edición...', processingPhase: 'analyze' }]);
-  // switch to chat/ready view so the analysis message is visible in the conversation
-  setStep('ready');
+      setOriginalUrl(u.imageUrl);
+      setSessionId(u.sessionId ?? null);
+      setPublicId(u.publicId ?? null);
+      // add uploaded image into the chat and a processing indicator in a single update to avoid duplicates
+      setMessages((m) => [...m, { from: "user", text: "Imagen cargada", image: u.imageUrl }, { from: 'system', text: 'Cargando edición...', processingPhase: 'analyze' }]);
+      // switch to chat/ready view so the analysis message is visible in the conversation
+      setStep('ready');
 
       // Perform analyze first to get the advisory
       const analyzeRes = await fetch("/api/asesor-estilo/analyze", {
         method: "POST",
-        headers: { 
+        headers: {
           "content-type": "application/json",
           "Authorization": `Bearer ${getTokenCookie()}`
         },
@@ -179,17 +189,17 @@ export default function Page() {
       const analyzeData = await analyzeRes.json();
 
       if (analyzeData.error || !analyzeData.analysis?.faceOk) {
-  // remove processing indicator and append advisory in a single update
-  setMessages((m) => {
-    const filtered = m.filter(msg => !msg.processingPhase);
-    return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || "No se pudo analizar la imagen correctamente." }];
-  });
+        // remove processing indicator and append advisory in a single update
+        setMessages((m) => {
+          const filtered = m.filter(msg => !msg.processingPhase);
+          return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || "No se pudo analizar la imagen correctamente." }];
+        });
         setStep("upload");
         setLoading(false);
         return;
       }
 
-  const advisory = analyzeData.analysis.advisoryText || "";
+      const advisory = analyzeData.analysis.advisoryText || "";
 
       // Small delay to avoid concurrency issues with analyze
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -216,7 +226,7 @@ export default function Page() {
       await new Promise((r) => setTimeout(r, 500));
       const iterateRes = await fetch('/api/asesor-estilo/iterate', {
         method: 'POST',
-        headers: { 
+        headers: {
           'content-type': 'application/json',
           'Authorization': `Bearer ${getTokenCookie()}`
         },
@@ -256,14 +266,14 @@ export default function Page() {
         return;
       }
 
-    setEditedUrl(iterateData.editedUrl);
-    setPublicId(iterateData.publicId);
+      setEditedUrl(iterateData.editedUrl);
+      setPublicId(iterateData.publicId);
 
-  // remove processing indicator now that editing is complete and append edited image + advisory in one update
-  setMessages((m) => {
-    const filtered = m.filter(msg => !msg.processingPhase);
-    return [...filtered, { from: 'assistant', text: iterateData.note || 'Edición completada', image: iterateData.editedUrl }, { from: 'assistant', text: advisory }];
-  });
+      // remove processing indicator now that editing is complete and append edited image + advisory in one update
+      setMessages((m) => {
+        const filtered = m.filter(msg => !msg.processingPhase);
+        return [...filtered, { from: 'assistant', text: iterateData.note || 'Edición completada', image: iterateData.editedUrl }, { from: 'assistant', text: advisory }];
+      });
       scrollToBottom();
     } catch (err: unknown) {
       const msg = err && typeof err === 'object' && 'message' in err ? String((err as Record<string, unknown>).message) : String(err)
@@ -316,9 +326,9 @@ export default function Page() {
       }
 
       const iterateData2 = result.data;
-  setEditedUrl(iterateData2.editedUrl);
-  setPublicId(iterateData2.publicId);
-    setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Edición completada", image: iterateData2.editedUrl }]);
+      setEditedUrl(iterateData2.editedUrl);
+      setPublicId(iterateData2.publicId);
+      setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Edición completada", image: iterateData2.editedUrl }]);
       scrollToBottom();
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error: ${err}` }]);
@@ -336,7 +346,7 @@ export default function Page() {
     try {
       const res = await fetch("/api/asesor-estilo/iterate", {
         method: "POST",
-        headers: { 
+        headers: {
           "content-type": "application/json",
           "Authorization": `Bearer ${getTokenCookie()}`
         },
@@ -354,9 +364,9 @@ export default function Page() {
         return;
       }
 
-  setEditedUrl(data.editedUrl);
-  setPublicId(data.publicId);
-  setMessages((m) => [...m, { from: "assistant", text: data.note || "Edición completada", image: data.editedUrl }]);
+      setEditedUrl(data.editedUrl);
+      setPublicId(data.publicId);
+      setMessages((m) => [...m, { from: "assistant", text: data.note || "Edición completada", image: data.editedUrl }]);
       scrollToBottom();
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error al reintentar: ${err}` }]);
@@ -386,7 +396,7 @@ export default function Page() {
     return (
       <div className="app-center">
         {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
-        
+
         <div className="chat-shell">
           <div className="chat-header text-center">
             <div className="relative h-60 w-auto mx-auto">
@@ -407,24 +417,24 @@ export default function Page() {
               <h2 className="mb-2 text-lg font-semibold">Carga tu foto para obtener consejos</h2>
               <p className="mb-4 text-sm text-muted-foreground">Recomendamos una foto de frente con buena iluminación.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-                <button 
-                  onClick={handleUploadClick} 
-                  disabled={loading} 
+                <button
+                  onClick={handleUploadClick}
+                  disabled={loading}
                   className="btn-accent flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3"
                 >
                   <Upload size={20} />
                   {loading ? "Procesando..." : "Cargar Foto"}
                 </button>
-                
-                <button 
-                  onClick={() => setShowCamera(true)} 
-                  disabled={loading} 
+
+                <button
+                  onClick={() => setShowCamera(true)}
+                  disabled={loading}
                   className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-lg font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors border border-white/10"
                 >
                   <Camera size={20} />
                   Tomar Foto
                 </button>
-                
+
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
               </div>
             </div>
@@ -442,7 +452,7 @@ export default function Page() {
   return (
     <div className="app-center">
       {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
-      
+
       <div className="chat-shell">
         <div className="chat-header text-center">
           <div className="relative mx-auto mb-4 h-20 md:h-24 lg:h-28 w-auto">
@@ -471,14 +481,14 @@ export default function Page() {
                 )}
                 {m.image && (
                   <div className="msg-image-container">
-                    <Image 
-                      src={m.image} 
-                      alt="uploaded" 
-                      className="msg-image" 
-                      width={0} 
-                      height={0} 
-                      sizes="100vw" 
-                      style={{ width: '100%', height: 'auto' }} 
+                    <Image
+                      src={m.image}
+                      alt="uploaded"
+                      className="msg-image"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{ width: '100%', height: 'auto' }}
                     />
                   </div>
                 )}
@@ -575,14 +585,14 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         }
 
         console.log("[Camera] Verificando permisos existentes...");
-        
+
         let permissionStatus = 'prompt';
         try {
           if (navigator.permissions && navigator.permissions.query) {
             const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
             permissionStatus = result.state;
             console.log("[Camera] Estado de permiso actual:", permissionStatus);
-            
+
             if (permissionStatus === 'denied') {
               throw Object.assign(new Error('Permission previously denied'), { name: 'NotAllowedError' });
             }
@@ -592,7 +602,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         }
 
         console.log("[Camera] Solicitando acceso a cámara...");
-        
+
         let newStream: MediaStream;
         try {
           newStream = await navigator.mediaDevices.getUserMedia({
@@ -605,7 +615,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
           console.log("[Camera] ✓ Cámara abierta con facingMode:", facingMode);
         } catch (err1) {
           console.warn("[Camera] Fallo con facingMode, intentando sin restricciones...", err1);
-          
+
           try {
             newStream = await navigator.mediaDevices.getUserMedia({
               video: true
@@ -631,11 +641,11 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
       } catch (err: unknown) {
         if (!mounted) return;
         console.error("[Camera] ❌ Error final:", err);
-        
+
         const error = err instanceof Error ? err : new Error(String(err));
         let msg = "";
         const code = error.name || 'Unknown';
-        
+
         if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
           msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para corregir:**\n\n1. Cierra este modal\n2. Haz clic en el ícono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Haz clic en 'Tomar Foto' nuevamente\n\nSi el problema persiste, tu antivirus podría estar bloqueando la cámara.";
         } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
@@ -647,7 +657,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         } else {
           msg = `❌ **Error Desconocido**\n\n${error.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
         }
-        
+
         msg += `\n\n**Technical Code:** ${code}`;
         setError(msg);
       }
@@ -673,17 +683,17 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
     const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     ctx.drawImage(video, 0, 0);
-    
+
     canvas.toBlob((blob) => {
       if (!blob) return;
       const file = new File([blob], `foto-${Date.now()}.jpg`, { type: 'image/jpeg' });
       onCapture(file);
-      
+
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
         streamRef.current = null;
@@ -714,7 +724,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
           >
             <X size={24} />
           </button>
-          
+
           <button
             onClick={handleSwitchCamera}
             className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"

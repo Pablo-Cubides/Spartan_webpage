@@ -252,7 +252,7 @@ export default function Page() {
       setPublicId(uploadData.publicId);
 
       // add uploaded image into the chat as a user message so it's always visible
-      setMessages((m) => [...m, { from: "user", text: "Image uploaded", image: uploadData.imageUrl }]);
+      setMessages((m) => [...m, { from: "user", text: "Imagen cargada", image: uploadData.imageUrl }]);
       // switch to chat/ready view so the analysis message is visible in the conversation
       setStep("ready");
 
@@ -276,7 +276,7 @@ export default function Page() {
         const data = await analyzeRes.json();
         if (data.error === 'INSUFFICIENT_CREDITS' || data.message?.includes('credits')) {
           setShowCreditsModal(true);
-          setMessages((m) => [...m, { from: "system", text: "You don't have enough credits to analyze the image." }]);
+          setMessages((m) => [...m, { from: "system", text: "No tienes suficientes créditos para analizar la imagen." }]);
           setLoading(false);
           return;
         }
@@ -289,7 +289,7 @@ export default function Page() {
       const analysisRec = analysis as Record<string, unknown>;
       const ok = (analysisRec['bodyOk'] as boolean | undefined) ?? (analysisRec['faceOk'] as boolean | undefined);
       if (analyzeData.error || !ok) {
-        setMessages((m) => [...m, { from: "system", text: analysis.advisoryText || "Could not analyze the image correctly." }]);
+        setMessages((m) => [...m, { from: "system", text: analysis.advisoryText || "No se pudo analizar la imagen correctamente." }]);
         setStep("upload");
         setLoading(false);
         return;
@@ -321,7 +321,7 @@ export default function Page() {
           setMessages((m) => [...m, { from: 'assistant', text: advisory }]);
           setMessages((m) => [...m, {
             from: 'system',
-            text: 'The image editing service is not available for now.',
+            text: 'El servicio de edición de imágenes no está disponible en este momento.',
             action: {
               type: 'retry-iterate',
               payload: iteratePayload,
@@ -519,7 +519,7 @@ export default function Page() {
             ></div>
             {/* ARIA live region for screen readers to announce progress/phase changes */}
             <div className="sr-only" aria-live="polite" aria-atomic="true">
-              {loading ? (loadingPhase === 'uploading' ? `Uploading ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analyzing the image...' : loadingPhase === 'generating' ? 'Generating the image...' : '') : ''}
+              {loading ? (loadingPhase === 'uploading' ? `Cargando ${uploadProgress}%` : loadingPhase === 'analyzing' ? 'Analizando la imagen...' : loadingPhase === 'generating' ? 'Generando la imagen...' : '') : ''}
             </div>
           </div>
           <header className="chat-header">
@@ -547,7 +547,7 @@ export default function Page() {
             )}
           </header>
 
-          <section className="p-6 upload-container" aria-label="Upload image">
+          <section className="p-6 upload-container" aria-label="Subir imagen">
             <div
               ref={dropZoneRef}
               onDragOver={handleDragOver}
@@ -555,8 +555,8 @@ export default function Page() {
               onDrop={handleDrop}
               className={`drop-zone ${isDragging ? "dragging" : ""}`}
             >
-              <h2 className="mb-2 text-lg font-semibold">Upload your photo for an outfit advisory</h2>
-              <p className="mb-4 text-sm text-muted-foreground">We recommend a full-body photo with good lighting for best recommendations.</p>
+              <h2 className="mb-2 text-lg font-semibold">Sube tu foto para recibir asesoría de estilo</h2>
+              <p className="mb-4 text-sm text-muted-foreground">Recomendamos una foto de cuerpo completo con buena iluminación para mejores recomendaciones.</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
                 <button
                   aria-label="Select image"
@@ -644,7 +644,7 @@ export default function Page() {
                   <div className="msg-image-container" aria-hidden={false}>
                     <Image
                       src={m.image}
-                      alt={m.from === 'user' ? 'Uploaded image' : 'Image'}
+                      alt={m.from === 'user' ? 'Imagen cargada' : 'Imagen'}
                       className="msg-image"
                       width={0}
                       height={0}

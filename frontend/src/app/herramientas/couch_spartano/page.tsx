@@ -23,7 +23,7 @@ import {
     CoachWelcomeModal,
 } from './components';
 
-type PageState = 'loading' | 'login' | 'onboarding' | 'profile-summary' | 'chat';
+type PageState = 'loading' | 'video' | 'login' | 'onboarding' | 'profile-summary' | 'chat';
 
 export default function CoachEspartanoPage() {
     const { user, loading: authLoading } = useAuth();
@@ -40,7 +40,8 @@ export default function CoachEspartanoPage() {
         if (authLoading) return;
 
         if (!user) {
-            setPageState('login');
+            // Si no hay usuario, primero mostrar el video de introducción
+            setPageState('video');
             return;
         }
 
@@ -65,13 +66,13 @@ export default function CoachEspartanoPage() {
                     credits: data.credits || 5,
                     messagesRemaining: (data.credits || 5) * 5
                 });
-                
+
                 // Auto-select the general coach (main coach) if available
                 const generalCoach = coaches.find((c: { id: string }) => c.id === 'general');
                 if (generalCoach) {
                     chatState.selectCoach('general');
                 }
-                
+
                 setPageState('chat');
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -86,15 +87,15 @@ export default function CoachEspartanoPage() {
     // Load first message when coach is selected and welcome flow is complete
     useEffect(() => {
         if (!chatState.selectedCoach || !chatState.currentCoach) return;
-        
+
         // Skip if messages already loaded
         if (chatState.currentMessages.length > 0) return;
-        
+
         // For 'general' coach, no welcome modal needed - load first message immediately
         // For other coaches, wait until welcome has been shown
         const isGeneralCoach = chatState.selectedCoach === 'general';
         const welcomeComplete = isGeneralCoach || chatState.currentCoach.welcomeShown;
-        
+
         if (!welcomeComplete) return;
 
         // Get coach config for first message
@@ -144,6 +145,36 @@ export default function CoachEspartanoPage() {
                 {pageState === 'loading' && (
                     <div className="flex items-center justify-center min-h-[60vh]">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-[#D32F2F]" />
+                    </div>
+                )}
+
+                {/* Video Introduction - Sin requerir login */}
+                {pageState === 'video' && (
+                    <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
+                        <h2 className="text-3xl font-bold text-white mb-6 text-center">
+                            ¡Bienvenido a Coach Espartano!
+                        </h2>
+                        <div className="relative w-full max-w-3xl aspect-video bg-[#1a1a1a] rounded-2xl overflow-hidden border border-gray-800">
+                            <video
+                                src="/Herramientas/Videos/onboarding-welcome.mp4"
+                                autoPlay
+                                controls
+                                playsInline
+                                className="w-full h-full object-cover"
+                                onEnded={() => setPageState('login')}
+                            >
+                                Tu navegador no soporta videos HTML5.
+                            </video>
+                            <button
+                                onClick={() => setPageState('login')}
+                                className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors"
+                            >
+                                Continuar →
+                            </button>
+                        </div>
+                        <p className="mt-4 text-gray-400 text-center">
+                            Después del video, inicia sesión para comenzar tu transformación.
+                        </p>
                     </div>
                 )}
 
