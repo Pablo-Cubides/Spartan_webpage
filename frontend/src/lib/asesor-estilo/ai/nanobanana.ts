@@ -61,44 +61,61 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
     }
   }
 
-  // Helper: call Google Gemini (Imagen 3) via REST API
+  // Helper: call Google Gemini 2.5 Flash Image via REST API for image editing
   async function callGoogleImageEdit(apiKey: string) {
     let lastError: Error | null = null;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
-        await appendLog({ phase: 'nanobanana.request.google_rest', imageUrl, instruction: intent?.instruction, attempt, maxRetries: MAX_RETRIES })
+        await appendLog({ phase: 'nanobanana.request.gemini25', imageUrl, instruction: intent?.instruction, attempt, maxRetries: MAX_RETRIES });
 
-        // Build prompt
+        // Fetch original image and convert to base64
+        const imgRes = await fetch(imageUrl);
+        if (!imgRes.ok) throw new Error(`Failed to fetch original image: ${imgRes.status}`);
+        const imgBuffer = await imgRes.arrayBuffer();
+        const base64Image = Buffer.from(imgBuffer).toString('base64');
+        const mimeType = imgRes.headers.get('content-type') || 'image/jpeg';
+
+        // Build editing prompt
         const instruction = intent && intent.instruction
           ? String(intent.instruction)
-          : 'Generate a professional portrait';
+          : 'Edit this portrait professionally';
 
         // Build structured changes details
         let changeDetails = '';
         if (intent?.change && intent.change.length > 0) {
-          changeDetails = 'with these features:\n';
+          changeDetails = '\nChanges requested:\n';
           for (const change of intent.change) {
             changeDetails += `- ${change.value}\n`;
           }
         }
 
         const prompt = intent.locale === 'es'
-          ? `Retrato profesional de hombre, ${changeDetails}, ${instruction}. Fotorealista, alta calidad, iluminación de estudio, 8k.`
-          : `Professional portrait of a man, ${changeDetails}, ${instruction}. Photorealistic, high quality, studio lighting, 8k.`;
+          ? `Edita esta foto de retrato. ${changeDetails}${instruction}. Mantén la identidad de la persona. Alta calidad, fotorealista.`
+          : `Edit this portrait photo. ${changeDetails}${instruction}. Maintain the person's identity. High quality, photorealistic.`;
 
-        const modelName = GOOGLE_IMAGE_MODEL;
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:predict?key=${apiKey}`;
+        // Use gemini-2.5-flash-image (Nano Banana) - best for identity-preserving portrait editing
+        const modelName = 'gemini-2.5-flash-image';
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
         const payload = {
-          instances: [
-            { prompt: prompt }
-          ],
-          parameters: {
-            sampleCount: 1,
-            aspectRatio: "1:1"
+          contents: [{
+            parts: [
+              { text: prompt },
+              {
+                inlineData: {
+                  mimeType: mimeType,
+                  data: base64Image
+                }
+              }
+            ]
+          }],
+          generationConfig: {
+            responseModalities: ["TEXT", "IMAGE"]
           }
         };
+
+        await appendLog({ phase: 'nanobanana.gemini25.calling', model: modelName, promptLength: prompt.length, attempt });
 
         const resp = await fetch(url, {
           method: 'POST',
@@ -108,33 +125,42 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
 
         if (!resp.ok) {
           const txt = await resp.text().catch(() => '');
-          throw new Error(`Google Imagen API error: ${resp.status} ${txt}`);
+          throw new Error(`Gemini 2.5 API error: ${resp.status} ${txt}`);
         }
 
         const data = await resp.json() as UnknownRecord;
 
-        // Extract image from response (Base64)
-        // Response format: { predictions: [ { bytesBase64Encoded: "..." } ] }
-        const predictions = data.predictions as UnknownRecord[];
-        if (predictions && predictions.length > 0 && predictions[0].bytesBase64Encoded) {
-          const base64 = predictions[0].bytesBase64Encoded as string;
-          const uploaded = await uploadIfNeeded({ base64 }, 'nanobanana_imagen3');
+        // Extract image from response
+        // Response format: { candidates: [{ content: { parts: [{ inlineData: { data, mimeType } }] } }] }
+        const candidates = data.candidates as UnknownRecord[];
+        if (candidates && candidates.length > 0) {
+          const content = candidates[0].content as UnknownRecord;
+          const parts = content?.parts as UnknownRecord[];
+          if (parts && Array.isArray(parts)) {
+            for (const part of parts) {
+              const inlineData = part.inlineData as UnknownRecord | undefined;
+              if (inlineData && inlineData.data) {
+                const base64 = inlineData.data as string;
+                const uploaded = await uploadIfNeeded({ base64 }, 'nanobanana_gemini25');
 
-          const result = {
-            editedUrl: uploaded.url,
-            note: intent.locale === 'es' ? 'Generado con Imagen 3' : 'Generated with Imagen 3',
-            publicId: uploaded.public_id
-          };
+                const result = {
+                  editedUrl: uploaded.url,
+                  note: intent.locale === 'es' ? 'Editado con Gemini 2.5' : 'Edited with Gemini 2.5',
+                  publicId: uploaded.public_id
+                };
 
-          await appendLog({ phase: 'nanobanana.response.google_rest', result, attempt });
-          return result;
+                await appendLog({ phase: 'nanobanana.response.gemini25', result, attempt });
+                return result;
+              }
+            }
+          }
         }
 
-        throw new Error('No image data in Google Imagen response');
+        throw new Error('No image data in Gemini 2.5 response');
 
       } catch (e: unknown) {
         lastError = e as Error;
-        await appendLog({ phase: 'nanobanana.call_error.google_rest', error: String(e), attempt });
+        await appendLog({ phase: 'nanobanana.call_error.gemini25', error: String(e), attempt });
 
         if (attempt === MAX_RETRIES) throw lastError;
 
@@ -142,7 +168,7 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
         await new Promise(resolve => setTimeout(resolve, delayMs));
       }
     }
-    throw lastError || new Error('Google Imagen failed');
+    throw lastError || new Error('Gemini 2.5 image edit failed');
   }
 
   // Try in preferred order: GOOGLE_API_KEY (Gemini), GEMINI_REST_URL (custom proxy), then NANOBANANA_URL
