@@ -11,7 +11,7 @@ const NANOBANANA_KEY = process.env.NANOBANANA_API_KEY || process.env.GEMINI_API_
 // Accept different environment variable names used in this project
 const GEMINI_API_KEY_VAR = process.env.GEMINI_API_KEY || ''
 const GEMINI_REST_URL = process.env.GEMINI_REST_URL || ''
-const GOOGLE_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || process.env.GOOGLE_IMAGE_MODEL || process.env.GEMINI_MODEL || 'imagen-3.0-generate-001'
+const GOOGLE_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || process.env.GOOGLE_IMAGE_MODEL || 'imagen-3.0-generate-001'
 
 // Timeout configurations with progressive timeouts
 const GENERATION_TIMEOUT = parseInt(process.env.AI_GENERATION_TIMEOUT || '120000', 10) // 120s for generation/editing
@@ -36,23 +36,23 @@ async function uploadIfNeeded(result: unknown, filenameBase = 'nanobanana') {
 // Primary exported function used by API routes
 export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): Promise<{ editedUrl: string; note?: string; publicId?: string | null }> {
   await appendLog({ phase: 'nanobanana.start', imageUrl, intent: intent?.instruction || 'N/A' })
-  
+
   // Helper: call a Gemini-style REST editor (expects JSON { imageUrl, intent })
   async function callGeminiEditorViaRest(url: string, apiKey: string | undefined) {
     try {
       await appendLog({ phase: 'nanobanana.request.rest', url, imageUrl, intent })
-  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`
       const resp = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ imageUrl, intent }) })
       if (!resp.ok) {
         const txt = await resp.text().catch(() => '')
         throw new Error(`remote editor error ${resp.status} ${txt}`)
       }
-  const data = await resp.json()
-  const uploaded = await uploadIfNeeded(data, 'nanobanana')
-  const maybeNote = (data as UnknownRecord).note
-  const noteStr = typeof maybeNote === 'string' ? maybeNote : JSON.stringify(maybeNote ?? 'Edited via Gemini editor')
-  const result = { editedUrl: uploaded.url, note: noteStr, publicId: uploaded.public_id }
+      const data = await resp.json()
+      const uploaded = await uploadIfNeeded(data, 'nanobanana')
+      const maybeNote = (data as UnknownRecord).note
+      const noteStr = typeof maybeNote === 'string' ? maybeNote : JSON.stringify(maybeNote ?? 'Edited via Gemini editor')
+      const result = { editedUrl: uploaded.url, note: noteStr, publicId: uploaded.public_id }
       await appendLog({ phase: 'nanobanana.response.rest', request: { url, imageUrl, intent }, result })
       return result
     } catch (e: unknown) {
@@ -61,170 +61,88 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
     }
   }
 
-  // Helper: call Google Gemini with API Key for image editing
+  // Helper: call Google Gemini (Imagen 3) via REST API
   async function callGoogleImageEdit(apiKey: string) {
     let lastError: Error | null = null;
-    
+
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       try {
-        await appendLog({ phase: 'nanobanana.request.google', imageUrl, instruction: intent?.instruction, attempt, maxRetries: MAX_RETRIES })
-        
-        // Try using Gemini SDK for image generation/editing
-        try {
-          const { GoogleGenerativeAI } = await import('@google/generative-ai')
-          const genAI = new GoogleGenerativeAI(apiKey)
-          
-          // Try Imagen model first (if available)
-          const modelName = GOOGLE_IMAGE_MODEL
-          await appendLog({ phase: 'nanobanana.google.sdk_attempt', model: modelName, attempt })
-          
-          try {
-            const model = genAI.getGenerativeModel({ model: modelName })
-            
-            // Fetch the image and convert to base64
-            const imgRes = await fetch(imageUrl)
-            const imgBuffer = await imgRes.arrayBuffer()
-            const base64 = Buffer.from(imgBuffer).toString('base64')
-            const mimeType = imgRes.headers.get('content-type') || 'image/jpeg'
-            
-            // Create the editing prompt from intent
-            const instruction = intent && intent.instruction 
-              ? String(intent.instruction) 
-              : (intent && intent.change ? JSON.stringify(intent.change) : 'Edit image professionally')
-            
-            // Build structured changes details
-            let changeDetails = '';
-            if (intent?.change && intent.change.length > 0) {
-              changeDetails = 'CAMBIOS SOLICITADOS:\n';
-              for (const change of intent.change) {
-                const typeLabel = change.type
-                  .replace(/_/g, ' ')
-                  .split(' ')
-                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ');
-                changeDetails += `- ${typeLabel}: ${change.value}\n`;
-              }
-            }
-            
-            const prompt = intent.locale === 'es'
-              ? `Edita esta foto de retrato de forma profesional.
+        await appendLog({ phase: 'nanobanana.request.google_rest', imageUrl, instruction: intent?.instruction, attempt, maxRetries: MAX_RETRIES })
 
-${changeDetails}
+        // Build prompt
+        const instruction = intent && intent.instruction
+          ? String(intent.instruction)
+          : 'Generate a professional portrait';
 
-Instrucción del usuario: ${instruction}
-
-IMPORTANTE: Mantén la identidad y el rostro de la persona intactos. Aplica SOLO los cambios listados arriba. Conserva la iluminación natural y los tonos de piel. Genera un retrato editado de alta calidad.`
-              : `Edit this portrait photo professionally.
-
-${changeDetails}
-
-User instruction: ${instruction}
-
-IMPORTANT: Maintain the person's identity and face intact. Apply ONLY the listed changes above. Keep natural lighting and skin tones. Generate a high-quality edited portrait.`
-            
-            await appendLog({ phase: 'nanobanana.google.sdk_generating', model: modelName, promptLength: prompt.length, attempt })
-            
-            // Create AbortController for timeout management
-            const controller = new AbortController()
-            const timeoutId = setTimeout(() => controller.abort(), GENERATION_TIMEOUT)
-            
-            try {
-              const result = await model.generateContent([
-                prompt,
-                {
-                  inlineData: {
-                    data: base64,
-                    mimeType: mimeType
-                  }
-                }
-              ])
-              
-              clearTimeout(timeoutId)
-              
-              const response = await result.response
-              await appendLog({ phase: 'nanobanana.google.sdk_response', hasResponse: !!response, hasCandidates: !!response.candidates, attempt })
-              
-              // Try to extract image from response
-              const candidates = response.candidates
-              if (candidates && candidates.length > 0) {
-                const parts = candidates[0].content?.parts
-                if (parts && Array.isArray(parts)) {
-                  for (const part of parts) {
-                    if (part.inlineData && part.inlineData.data && part.inlineData.mimeType?.startsWith('image')) {
-                      await appendLog({ phase: 'nanobanana.google.sdk_image_found', mimeType: part.inlineData.mimeType, attempt })
-                      const uploaded = await uploadIfNeeded({ base64: part.inlineData.data }, 'nanobanana_gemini')
-                      const finalResult = { 
-                        editedUrl: uploaded.url, 
-                        note: intent.locale === 'es' ? 'Editado con Gemini' : 'Edited with Gemini', 
-                        publicId: uploaded.public_id 
-                      }
-                      await appendLog({ phase: 'nanobanana.response.google', result: finalResult, attempt })
-                      return finalResult
-                    }
-                  }
-                }
-              }
-              
-              // If no image in response, log the response structure and retry
-              const responseText = response.text ? await response.text() : 'N/A'
-              await appendLog({ phase: 'nanobanana.google.sdk_no_image', responseText: responseText.substring(0, 300), attempt })
-              lastError = new Error(`No image data in Gemini response (attempt ${attempt}/${MAX_RETRIES})`)
-              
-            } catch (timeoutError: unknown) {
-              clearTimeout(timeoutId)
-              if (controller.signal.aborted) {
-                throw new Error(`Gemini generation timeout after ${GENERATION_TIMEOUT}ms`)
-              }
-              throw timeoutError
-            }
-            
-          } catch (modelError: unknown) {
-            const error = modelError as Error
-            await appendLog({ phase: 'nanobanana.google.sdk_model_error', error: String(modelError), message: error?.message, attempt })
-            
-            // If the specific model doesn't work, the API might not be enabled or model doesn't support image generation
-            const msg = error?.message || String(modelError) || ''
-            if (msg && (
-              msg.includes('not found') || 
-              msg.includes('does not support') ||
-              msg.includes('API has not been used')
-            )) {
-              await appendLog({ phase: 'nanobanana.google.api_not_enabled', note: 'Generative Language API may not be enabled or model does not support image generation', attempt })
-            }
-            
-            lastError = error
+        // Build structured changes details
+        let changeDetails = '';
+        if (intent?.change && intent.change.length > 0) {
+          changeDetails = 'with these features:\n';
+          for (const change of intent.change) {
+            changeDetails += `- ${change.value}\n`;
           }
-        } catch (sdkError: unknown) {
-          const error = sdkError as Error
-          await appendLog({ phase: 'nanobanana.google.sdk_error', error: String(sdkError), message: error?.message, attempt })
-          lastError = error
         }
-        
-        // If we get here, the attempt failed. Calculate exponential backoff delay
-        if (attempt < MAX_RETRIES) {
-          const delayMs = Math.min(BASE_RETRY_DELAY * Math.pow(2, attempt - 1), MAX_RETRY_DELAY)
-          await appendLog({ phase: 'nanobanana.google.retry_scheduled', attempt, maxRetries: MAX_RETRIES, delayMs, reason: 'exponential_backoff' })
-          await new Promise(resolve => setTimeout(resolve, delayMs))
+
+        const prompt = intent.locale === 'es'
+          ? `Retrato profesional de hombre, ${changeDetails}, ${instruction}. Fotorealista, alta calidad, iluminación de estudio, 8k.`
+          : `Professional portrait of a man, ${changeDetails}, ${instruction}. Photorealistic, high quality, studio lighting, 8k.`;
+
+        const modelName = GOOGLE_IMAGE_MODEL;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:predict?key=${apiKey}`;
+
+        const payload = {
+          instances: [
+            { prompt: prompt }
+          ],
+          parameters: {
+            sampleCount: 1,
+            aspectRatio: "1:1"
+          }
+        };
+
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) {
+          const txt = await resp.text().catch(() => '');
+          throw new Error(`Google Imagen API error: ${resp.status} ${txt}`);
         }
-        
+
+        const data = await resp.json() as UnknownRecord;
+
+        // Extract image from response (Base64)
+        // Response format: { predictions: [ { bytesBase64Encoded: "..." } ] }
+        const predictions = data.predictions as UnknownRecord[];
+        if (predictions && predictions.length > 0 && predictions[0].bytesBase64Encoded) {
+          const base64 = predictions[0].bytesBase64Encoded as string;
+          const uploaded = await uploadIfNeeded({ base64 }, 'nanobanana_imagen3');
+
+          const result = {
+            editedUrl: uploaded.url,
+            note: intent.locale === 'es' ? 'Generado con Imagen 3' : 'Generated with Imagen 3',
+            publicId: uploaded.public_id
+          };
+
+          await appendLog({ phase: 'nanobanana.response.google_rest', result, attempt });
+          return result;
+        }
+
+        throw new Error('No image data in Google Imagen response');
+
       } catch (e: unknown) {
-        lastError = e as Error
-        await appendLog({ phase: 'nanobanana.call_error.google', error: String(e), attempt, finalAttempt: attempt === MAX_RETRIES })
-        
-        // If this was the last attempt, throw the error
-        if (attempt === MAX_RETRIES) {
-          throw lastError || new Error('Gemini SDK failed after all retries')
-        }
-        
-        // Calculate exponential backoff delay for general errors
-        const delayMs = Math.min(BASE_RETRY_DELAY * Math.pow(2, attempt - 1), MAX_RETRY_DELAY)
-        await appendLog({ phase: 'nanobanana.google.retry_scheduled', attempt, maxRetries: MAX_RETRIES, delayMs, reason: 'general_error_backoff' })
-        await new Promise(resolve => setTimeout(resolve, delayMs))
+        lastError = e as Error;
+        await appendLog({ phase: 'nanobanana.call_error.google_rest', error: String(e), attempt });
+
+        if (attempt === MAX_RETRIES) throw lastError;
+
+        const delayMs = Math.min(BASE_RETRY_DELAY * Math.pow(2, attempt - 1), MAX_RETRY_DELAY);
+        await new Promise(resolve => setTimeout(resolve, delayMs));
       }
     }
-    
-    // This should never be reached, but TypeScript requires it
-    throw lastError || new Error('Unexpected end of retry loop')
+    throw lastError || new Error('Google Imagen failed');
   }
 
   // Try in preferred order: GOOGLE_API_KEY (Gemini), GEMINI_REST_URL (custom proxy), then NANOBANANA_URL
@@ -233,8 +151,8 @@ IMPORTANT: Maintain the person's identity and face intact. Apply ONLY the listed
       return await callGoogleImageEdit(GEMINI_API_KEY_VAR)
     } catch (geminiError: unknown) {
       const error = geminiError as Error
-      await appendLog({ 
-        phase: 'nanobanana.google_failed', 
+      await appendLog({
+        phase: 'nanobanana.google_failed',
         error: String(geminiError).substring(0, 200),
         errorType: error?.name || 'Unknown',
         message: error?.message || 'No message'
@@ -248,8 +166,8 @@ IMPORTANT: Maintain the person's identity and face intact. Apply ONLY the listed
       return await callGeminiEditorViaRest(GEMINI_REST_URL, undefined)
     } catch (restError: unknown) {
       const error = restError as Error
-      await appendLog({ 
-        phase: 'nanobanana.rest_failed', 
+      await appendLog({
+        phase: 'nanobanana.rest_failed',
         error: String(restError).substring(0, 200),
         errorType: error?.name || 'Unknown',
         message: error?.message || 'No message'
@@ -264,32 +182,32 @@ IMPORTANT: Maintain the person's identity and face intact. Apply ONLY the listed
       const body = { imageUrl, intent }
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), GENERATION_TIMEOUT)
-      
-      const resp = await fetch(NANOBANANA_URL, { 
-        method: 'POST', 
-        headers: { 
-          'Content-Type': 'application/json', 
-          'Authorization': `Bearer ${NANOBANANA_KEY}` 
-        }, 
+
+      const resp = await fetch(NANOBANANA_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${NANOBANANA_KEY}`
+        },
         body: JSON.stringify(body),
         signal: controller.signal
       })
-      
+
       clearTimeout(timeoutId)
-      
+
       if (!resp.ok) {
         const txt = await resp.text().catch(() => '')
         throw new Error(`NanoBanana error: ${resp.status} ${txt}`)
       }
-  const data = await resp.json()
-  const uploaded = await uploadIfNeeded(data, 'nanobanana')
-  const result = { editedUrl: uploaded.url, note: 'Edited with NanoBanana', publicId: uploaded.public_id }
+      const data = await resp.json()
+      const uploaded = await uploadIfNeeded(data, 'nanobanana')
+      const result = { editedUrl: uploaded.url, note: 'Edited with NanoBanana', publicId: uploaded.public_id }
       await appendLog({ phase: 'nanobanana.response.legacy', request: { imageUrl, intent }, result })
       return result
     } catch (legacyError: unknown) {
       const error = legacyError as Error
-      await appendLog({ 
-        phase: 'nanobanana.call_error.legacy', 
+      await appendLog({
+        phase: 'nanobanana.call_error.legacy',
         error: String(legacyError),
         errorType: error?.name || 'Unknown',
         message: error?.message || 'No message'
@@ -303,16 +221,16 @@ IMPORTANT: Maintain the person's identity and face intact. Apply ONLY the listed
   // editors failed (Gemini SDK, REST editor, legacy service), return a
   // clear service-unavailable error so API route handlers can respond with
   // HTTP 503 and a user-friendly message.
-  await appendLog({ 
-    phase: 'nanobanana.service_unavailable', 
-    imageUrl, 
+  await appendLog({
+    phase: 'nanobanana.service_unavailable',
+    imageUrl,
     intent,
     failureReasons: {
       geminiSdk: GEMINI_API_KEY_VAR ? 'Failed after retries with exponential backoff' : 'Not configured',
-      restApi: GEMINI_REST_URL ? 'Failed' : 'Not configured', 
+      restApi: GEMINI_REST_URL ? 'Failed' : 'Not configured',
       legacyService: (NANOBANANA_URL && NANOBANANA_KEY) ? 'Failed with timeout' : 'Not configured'
     },
-    note: 'No remote image editor available (Gemini/REST/legacy all failed)' 
+    note: 'No remote image editor available (Gemini/REST/legacy all failed)'
   })
   const err = new Error('AI image service unavailable. Please try again later.') as Error & { status?: number }
   err.status = 503
