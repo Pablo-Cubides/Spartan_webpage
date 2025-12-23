@@ -7,35 +7,38 @@
 const REQUIRED_ENV_VARS = [
   // Database
   'DATABASE_URL',
-  
+
   // Firebase
   'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
   'FIREBASE_PROJECT_ID',
   'FIREBASE_CLIENT_EMAIL',
   'FIREBASE_PRIVATE_KEY',
-  
-  // AI Services
+
+  // AI Services (core)
   'GEMINI_API_KEY',
-  'CLOUDINARY_CLOUD_NAME',
-  'CLOUDINARY_API_KEY',
-  'CLOUDINARY_API_SECRET',
-  
+
   // Payments
   'MERCADOPAGO_ACCESS_TOKEN',
-  
-  // Storage
-  'R2_ENDPOINT',
-  'R2_ACCESS_KEY_ID',
-  'R2_SECRET_ACCESS_KEY',
-  'R2_BUCKET_NAME',
-  
+
   // Redis/Cache
   'UPSTASH_REDIS_REST_URL',
   'UPSTASH_REDIS_REST_TOKEN',
 ];
 
-// List of optional environment variables with sensible defaults
+// List of optional environment variables - features work in degraded mode without these
 const OPTIONAL_ENV_VARS = [
+  // Image processing - only needed for image tools
+  { name: 'CLOUDINARY_CLOUD_NAME', default: '' },
+  { name: 'CLOUDINARY_API_KEY', default: '' },
+  { name: 'CLOUDINARY_API_SECRET', default: '' },
+
+  // R2 Storage - only needed for file uploads
+  { name: 'R2_ENDPOINT', default: '' },
+  { name: 'R2_ACCESS_KEY_ID', default: '' },
+  { name: 'R2_SECRET_ACCESS_KEY', default: '' },
+  { name: 'R2_BUCKET_NAME', default: '' },
+
+  // Feature flags
   { name: 'CREDIT_COST_ANALYSIS', default: '1' },
   { name: 'CREDIT_COST_GENERATION', default: '1' },
   { name: 'ENFORCE_CREDITS', default: 'true' },
