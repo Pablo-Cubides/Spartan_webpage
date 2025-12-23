@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   try {
     // Parse request body
     const body = await req.json() as Partial<IteratePayload & { sessionId?: string | null }>;
-    
+
     const auth = req.headers.get('authorization') || '';
     let userId: string | undefined;
     if (auth.startsWith('Bearer ')) {
@@ -39,7 +39,8 @@ export async function POST(req: Request) {
     const originalImageUrl = body.originalImageUrl;
     const userText = body.userText;
     const prevPublicId = body.prevPublicId;
-  const analysis = body.analysis as unknown;
+    const analysis = body.analysis as unknown;
+    const analysisType = body.analysisType;  // 'face' or 'clothing' - determines what gets edited
 
     // Get effective session ID
     const effectiveSessionId = body.sessionId || getRequestIdentifier(req);
@@ -143,7 +144,14 @@ export async function POST(req: Request) {
 
     // 7. Map user text to intent - PASS ANALYSIS WITH RECOMMENDED CHANGES (only used on first iteration)
     const intent: EditIntent = mapUserTextToIntent(effectiveText, 'es', analysis as FaceAnalysis | undefined, isFirstIteration);
-    
+
+    // Add analysisType to intent so nanobanana knows which type of edit to perform
+    // 'clothing' = only edit clothing, NEVER face/hair
+    // 'face' or undefined = only edit face/hair, NEVER clothing
+    if (analysisType) {
+      intent.analysisType = analysisType;
+    }
+
     await appendLog({
       phase: 'api.iterate.intent',
       sessionId: effectiveSessionId,
@@ -188,39 +196,39 @@ export async function POST(req: Request) {
       const safeEdited = encodeURI(out.editedUrl);
       const fetchRes = await fetch(safeEdited);
       if (!fetchRes.ok) throw new Error(`failed to fetch edited image ${fetchRes.status}`);
-      
+
       const arrayBuffer = await fetchRes.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      
+
       // Validate the edited image before processing
       if (buffer.length === 0) {
         throw new Error('Edited image is empty - Gemini may have failed to generate');
       }
-      
+
       const withMark = APP_CONFIG.features.WATERMARK_ENABLED
         ? await applyWatermark(buffer)
         : buffer;
-      
+
       const filename = `edited_iter_${Date.now()}`;
       uploaded = await uploadToStorage(withMark, filename);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
-      await appendLog({ 
-        phase: 'api.iterate.fetch_edited_failed', 
-        error: msg, 
-        out, 
-        timestamp: Date.now() 
+      await appendLog({
+        phase: 'api.iterate.fetch_edited_failed',
+        error: msg,
+        out,
+        timestamp: Date.now()
       });
-      
+
       // If it's an empty image error, suggest trying again with simpler changes
       if (msg.includes('empty') || msg.includes('failed to generate')) {
-        return NextResponse.json({ 
-          error: 'GENERATION_FAILED', 
+        return NextResponse.json({
+          error: 'GENERATION_FAILED',
           message: 'Image generation failed. Try requesting fewer changes at once, or simpler modifications.',
           suggestion: 'The AI may have trouble with very extreme edits. Try one change at a time.'
         }, { status: 503 });
       }
-      
+
       return NextResponse.json({ error: 'failed_to_fetch_edited_image', detail: msg }, { status: 502 });
     }
 

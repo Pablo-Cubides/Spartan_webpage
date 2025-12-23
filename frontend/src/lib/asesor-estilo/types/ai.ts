@@ -29,6 +29,7 @@ export type EditIntent = {
   preserveIdentity: boolean
   outputSize?: number
   watermark?: boolean
+  analysisType?: 'face' | 'clothing'  // Determines which tool is calling - face advisor or clothing advisor
 }
 
 export type IteratePayload = {
@@ -37,4 +38,5 @@ export type IteratePayload = {
   userText: string
   prevPublicId?: string | null
   analysis?: FaceAnalysis
+  analysisType?: 'face' | 'clothing'  // Determines which tool is calling
 }

@@ -344,8 +344,8 @@ export default function Page() {
       setStep("ready");
 
       setLoadingPhase('analyzing');
-      // Perform analyze first to get the advisory
-      const analyzeRes = await fetch(getApiUrl('ANALYZE'), {
+      // Perform CLOTHING analysis to get style recommendations
+      const analyzeRes = await fetch(getApiUrl('ANALYZE_CLOTHING'), {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -399,12 +399,14 @@ export default function Page() {
 
       setLoadingPhase('generating');
       // Perform iterate to generate the image with retries for transient 503 errors
+      // IMPORTANT: analysisType tells nanobanana this is CLOTHING only - never touch face/hair
       const iteratePayload = {
         sessionId: uploadData.sessionId,
         originalImageUrl: uploadData.imageUrl,
         userText: analyzeData.analysis.suggestedText || advisory,
         prevPublicId: uploadData.publicId,
         analysis: analyzeData.analysis,
+        analysisType: 'clothing' as const,  // This ensures only clothing is edited, NEVER face/hair
       };
 
       await new Promise((r) => setTimeout(r, 500));

@@ -6,13 +6,13 @@
 export const API_CONFIG = {
   // Base URL for all API calls - can be overridden via environment
   BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || '/api/asesor-estilo',
-  
+
   // API timeout in milliseconds
   TIMEOUT: parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '30000', 10),
-  
+
   // Max retries for failed requests
   MAX_RETRIES: parseInt(process.env.NEXT_PUBLIC_API_MAX_RETRIES || '3', 10),
-  
+
   // Retry delay in milliseconds
   RETRY_DELAY: parseInt(process.env.NEXT_PUBLIC_API_RETRY_DELAY || '300', 10),
 };
@@ -20,16 +20,19 @@ export const API_CONFIG = {
 export const API_ENDPOINTS = {
   // Upload endpoint
   UPLOAD: `${API_CONFIG.BASE_URL}/upload`,
-  
-  // Analysis endpoint
+
+  // Analysis endpoint (face/hair)
   ANALYZE: `${API_CONFIG.BASE_URL}/analyze`,
-  
+
+  // Clothing analysis endpoint
+  ANALYZE_CLOTHING: `${API_CONFIG.BASE_URL}/analyze-clothing`,
+
   // Image iteration/editing endpoint
   ITERATE: `${API_CONFIG.BASE_URL}/iterate`,
-  
+
   // Moderation endpoint
   MODERATE: `${API_CONFIG.BASE_URL}/moderate`,
-  
+
   // Admin/registry endpoints
   REGISTRY: `${API_CONFIG.BASE_URL}/admin/registry`,
 } as const;

@@ -79,7 +79,7 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
         // Build editing prompt
         const instruction = intent && intent.instruction
           ? String(intent.instruction)
-          : 'Edit this portrait professionally';
+          : 'Edit this image professionally';
 
         // Build structured changes details
         let changeDetails = '';
@@ -90,9 +90,43 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
           }
         }
 
-        const prompt = intent.locale === 'es'
-          ? `Edita esta foto de retrato. ${changeDetails}${instruction}. Mantén la identidad de la persona. Alta calidad, fotorealista.`
-          : `Edit this portrait photo. ${changeDetails}${instruction}. Maintain the person's identity. High quality, photorealistic.`;
+        // Check if this is a clothing edit based on analysisType in intent
+        // The analysisType is set by the respective tool (clothing or face)
+        const isClothingEdit = intent?.analysisType === 'clothing';
+
+        // Build context-aware prompt - completely separate for each tool
+        let prompt: string;
+        if (isClothingEdit) {
+          // CLOTHING TOOL: Only change clothes, NEVER touch face/hair/beard
+          prompt = intent.locale === 'es'
+            ? `Edita esta foto cambiando ÚNICAMENTE la ROPA de la persona. ${changeDetails}${instruction}. 
+REGLAS ESTRICTAS:
+- NO cambies el rostro, pelo, barba o cualquier parte de la cara
+- Mantén exactamente la misma pose, expresión y fondo
+- Solo modifica las prendas de vestir
+- Alta calidad, fotorealista.`
+            : `Edit this photo changing ONLY the person's CLOTHING. ${changeDetails}${instruction}. 
+STRICT RULES:
+- DO NOT change face, hair, beard or any facial features
+- Keep exactly the same pose, expression and background
+- Only modify the clothing/outfit
+- High quality, photorealistic.`;
+        } else {
+          // FACE TOOL: Only change face/hair/beard, NEVER touch clothing
+          prompt = intent.locale === 'es'
+            ? `Edita esta foto modificando ÚNICAMENTE el ROSTRO, PELO o BARBA de la persona. ${changeDetails}${instruction}. 
+REGLAS ESTRICTAS:
+- NO cambies la ropa ni el outfit
+- Mantén exactamente la misma pose y fondo
+- Solo modifica pelo, barba o rasgos faciales según las indicaciones
+- Alta calidad, fotorealista.`
+            : `Edit this photo changing ONLY the person's FACE, HAIR or BEARD. ${changeDetails}${instruction}. 
+STRICT RULES:
+- DO NOT change clothing or outfit
+- Keep exactly the same pose and background
+- Only modify hair, beard or facial features as indicated
+- High quality, photorealistic.`;
+        }
 
         // Use gemini-2.5-flash-image (Nano Banana) - best for identity-preserving portrait editing
         const modelName = 'gemini-2.5-flash-image';

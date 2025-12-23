@@ -85,6 +85,226 @@ IMPORTANT: Respond ONLY with valid JSON. MUST include recommendedChanges with ex
   }
 }
 
+// =============================================
+// CLOTHING ANALYSIS PROMPT
+// =============================================
+
+type ClothingAnalysisRaw = {
+  bodyOk?: boolean;
+  bodyType?: string;
+  currentStyle?: string;
+  currentColors?: string[];
+  currentFit?: string;
+  lighting?: string;
+  suggestedActionText?: string;
+  styleRecommendation?: string;
+  colorRecommendation?: string;
+  recommendedOutfit?: {
+    topStyle?: string;
+    bottomStyle?: string;
+    colors?: string[];
+    accessories?: string;
+  };
+};
+
+function getClothingAnalysisPrompt(locale: 'es' | 'en'): string {
+  if (locale === 'es') {
+    return `Analiza esta imagen de una persona enfocándote en su ROPA Y ESTILO. Responde SOLO con JSON válido. Evalúa:
+
+- bodyOk: true si se ve al menos el torso de una persona adulta
+- bodyType: "delgado" | "atlético" | "promedio" | "robusto" | "alto" | "bajo"
+- currentStyle: descripción del estilo actual (ej: "casual relajado", "formal de oficina", "streetwear", "deportivo", etc.)
+- currentColors: array de colores que usa actualmente (ej: ["negro", "blanco", "azul marino"])
+- currentFit: "ajustado" | "normal" | "holgado" - cómo le queda la ropa
+- lighting: "buena" | "regular" | "pobre"
+- suggestedActionText: recomendación corta y directa en español (1-2 oraciones)
+- styleRecommendation: párrafo detallado explicando qué estilo le favorecería más y por qué, considerando su tipo de cuerpo
+- colorRecommendation: párrafo explicando qué paleta de colores le favorece según su tono de piel y complexión
+- recommendedOutfit: EXACTAMENTE esta estructura:
+  {
+    "topStyle": "tipo específico de prenda superior (ej: camisa Oxford slim fit, polo de algodón, camiseta cuello redondo, etc.)",
+    "bottomStyle": "tipo específico de prenda inferior (ej: jeans slim fit oscuros, pantalón chino, joggers entallados, etc.)",
+    "colors": ["color1", "color2"] - colores específicos recomendados,
+    "accessories": "recomendación de accesorios si aplica (reloj, cinturón, gafas, etc.)"
+  }
+
+IMPORTANTE: 
+- Responde SOLO con JSON válido
+- Incluye OBLIGATORIAMENTE recommendedOutfit con la estructura exacta
+- Sé específico en las recomendaciones (no solo "camisa", sino "camisa de lino blanca con cuello mao")
+- Considera el tipo de cuerpo para recomendar cortes y estilos que favorezcan`;
+  } else {
+    return `Analyze this image of a person focusing on their CLOTHING AND STYLE. Respond ONLY with valid JSON. Evaluate:
+
+- bodyOk: true if at least the torso of an adult person is visible
+- bodyType: "slim" | "athletic" | "average" | "stocky" | "tall" | "short"
+- currentStyle: description of current style (e.g: "relaxed casual", "office formal", "streetwear", "sporty", etc.)
+- currentColors: array of colors currently worn (e.g: ["black", "white", "navy blue"])
+- currentFit: "fitted" | "regular" | "loose" - how the clothing fits
+- lighting: "good" | "fair" | "poor"
+- suggestedActionText: short direct recommendation in English (1-2 sentences)
+- styleRecommendation: detailed paragraph explaining what style would suit them best and why, considering their body type
+- colorRecommendation: paragraph explaining what color palette suits them based on skin tone and build
+- recommendedOutfit: EXACTLY this structure:
+  {
+    "topStyle": "specific type of top (e.g: slim fit Oxford shirt, cotton polo, crew neck tee, etc.)",
+    "bottomStyle": "specific type of bottom (e.g: dark slim fit jeans, chinos, tailored joggers, etc.)",
+    "colors": ["color1", "color2"] - specific recommended colors,
+    "accessories": "accessory recommendations if applicable (watch, belt, glasses, etc.)"
+  }
+
+IMPORTANT: 
+- Respond ONLY with valid JSON
+- MUST include recommendedOutfit with exact structure
+- Be specific in recommendations (not just "shirt", but "white linen shirt with mandarin collar")
+- Consider body type when recommending cuts and styles that flatter`;
+  }
+}
+
+export type ClothingAnalysis = {
+  bodyOk: boolean;
+  bodyType?: string;
+  currentStyle?: string;
+  currentColors?: string[];
+  currentFit?: string;
+  lighting?: string;
+  advisoryText?: string;
+  suggestedText?: string;
+  styleRecommendation?: string;
+  colorRecommendation?: string;
+  recommendedOutfit?: {
+    topStyle?: string;
+    bottomStyle?: string;
+    colors?: string[];
+    accessories?: string;
+  };
+};
+
+export async function analyzeClothingWithGemini(
+  imageUrl: string,
+  locale: 'es' | 'en' = getDefaultLocale()
+): Promise<ClothingAnalysis> {
+  await appendLog({ phase: 'gemini.analyzeClothing.start', imageUrl, locale });
+
+  const geminiKey = getEnv('PERSONAL_SHOPPER_GEMINI_KEY') || getEnv('GEMINI_API_KEY') || '';
+
+  if (!geminiKey) {
+    return {
+      bodyOk: false,
+      advisoryText: locale === 'es'
+        ? 'Error: No se pudo conectar con el servicio de análisis.'
+        : 'Error: Could not connect to analysis service.',
+    };
+  }
+
+  try {
+    const { GoogleGenerativeAI } = await import('@google/generative-ai');
+    const genAI = new GoogleGenerativeAI(geminiKey);
+
+    const model = genAI.getGenerativeModel({
+      model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+      generationConfig: {
+        responseMimeType: 'application/json',
+      },
+    });
+
+    await appendLog({ phase: 'gemini.analyzeClothing.fetching_image', imageUrl });
+
+    // Fetch the image and convert to base64
+    const imageResponse = await fetch(imageUrl);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
+    }
+    const imageBuffer = await imageResponse.arrayBuffer();
+    const base64Image = Buffer.from(imageBuffer).toString('base64');
+    const mimeType = imageResponse.headers.get('content-type') || 'image/jpeg';
+
+    const prompt = getClothingAnalysisPrompt(locale);
+
+    await appendLog({
+      phase: 'gemini.analyzeClothing.calling_sdk',
+      model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), ANALYSIS_TIMEOUT);
+
+    try {
+      const result = await model.generateContent([
+        prompt,
+        {
+          inlineData: {
+            data: base64Image,
+            mimeType: mimeType,
+          },
+        },
+      ]);
+
+      clearTimeout(timeoutId);
+
+      const response = await result.response;
+      const text = response.text();
+      await appendLog({ phase: 'gemini.analyzeClothing.response', rawText: text.substring(0, 500) });
+
+      const parsed = JSON.parse(text) as ClothingAnalysisRaw;
+
+      // Build advisory text
+      let advisoryText = '';
+      if (parsed.styleRecommendation) {
+        advisoryText += `**Recomendación de Estilo:**\n${parsed.styleRecommendation}\n\n`;
+      }
+      if (parsed.colorRecommendation) {
+        advisoryText += `**Colores que te favorecen:**\n${parsed.colorRecommendation}\n\n`;
+      }
+      if (parsed.recommendedOutfit) {
+        advisoryText += `**Outfit Recomendado:**\n`;
+        if (parsed.recommendedOutfit.topStyle) {
+          advisoryText += `• Superior: ${parsed.recommendedOutfit.topStyle}\n`;
+        }
+        if (parsed.recommendedOutfit.bottomStyle) {
+          advisoryText += `• Inferior: ${parsed.recommendedOutfit.bottomStyle}\n`;
+        }
+        if (parsed.recommendedOutfit.colors && parsed.recommendedOutfit.colors.length > 0) {
+          advisoryText += `• Colores: ${parsed.recommendedOutfit.colors.join(', ')}\n`;
+        }
+        if (parsed.recommendedOutfit.accessories) {
+          advisoryText += `• Accesorios: ${parsed.recommendedOutfit.accessories}\n`;
+        }
+      }
+
+      // Build suggested text for image generation
+      const suggestedText = parsed.recommendedOutfit
+        ? `${parsed.recommendedOutfit.topStyle || 'camisa'}, ${parsed.recommendedOutfit.bottomStyle || 'pantalón'}, colores: ${(parsed.recommendedOutfit.colors || ['neutros']).join(' y ')}`
+        : parsed.suggestedActionText || '';
+
+      return {
+        bodyOk: parsed.bodyOk ?? false,
+        bodyType: parsed.bodyType,
+        currentStyle: parsed.currentStyle,
+        currentColors: parsed.currentColors,
+        currentFit: parsed.currentFit,
+        lighting: parsed.lighting,
+        advisoryText: advisoryText.trim() || parsed.suggestedActionText || 'Análisis completado.',
+        suggestedText,
+        styleRecommendation: parsed.styleRecommendation,
+        colorRecommendation: parsed.colorRecommendation,
+        recommendedOutfit: parsed.recommendedOutfit,
+      };
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  } catch (error) {
+    await appendLog({ phase: 'gemini.analyzeClothing.error', error: String(error) });
+    return {
+      bodyOk: false,
+      advisoryText: locale === 'es'
+        ? 'Error al analizar la imagen. Por favor, intenta con otra foto.'
+        : 'Error analyzing image. Please try with another photo.',
+    };
+  }
+}
+
+
 export async function analyzeImageWithGemini(
   imageUrl: string,
   locale: 'es' | 'en' = getDefaultLocale()
@@ -96,12 +316,12 @@ export async function analyzeImageWithGemini(
 
   if (geminiKey) {
     try {
-  const { GoogleGenerativeAI } = await import('@google/generative-ai');
-  const genAI = new GoogleGenerativeAI(geminiKey);
+      const { GoogleGenerativeAI } = await import('@google/generative-ai');
+      const genAI = new GoogleGenerativeAI(geminiKey);
 
       // Configure the model to return JSON
       const model = genAI.getGenerativeModel({
-  model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+        model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
         generationConfig: {
           responseMimeType: 'application/json',
         },
@@ -172,11 +392,11 @@ export async function analyzeImageWithGemini(
         // Map recommendedChanges if present
         const recommendedChanges = parsed.recommendedChanges
           ? {
-              hairStyle: parsed.recommendedChanges.hairStyle || 'no change',
-              beardStyle: parsed.recommendedChanges.beardStyle || 'no change',
-              hairLength: (parsed.recommendedChanges.hairLength === 'corto' ? 'short' : parsed.recommendedChanges.hairLength === 'medio' ? 'medium' : parsed.recommendedChanges.hairLength === 'long' ? 'long' : 'medium') as 'short' | 'medium' | 'long',
-              hairColor: parsed.recommendedChanges.hairColor || null,
-            }
+            hairStyle: parsed.recommendedChanges.hairStyle || 'no change',
+            beardStyle: parsed.recommendedChanges.beardStyle || 'no change',
+            hairLength: (parsed.recommendedChanges.hairLength === 'corto' ? 'short' : parsed.recommendedChanges.hairLength === 'medio' ? 'medium' : parsed.recommendedChanges.hairLength === 'long' ? 'long' : 'medium') as 'short' | 'medium' | 'long',
+            hairColor: parsed.recommendedChanges.hairColor || null,
+          }
           : undefined;
 
         // Return the structured analysis, mapping new fields to existing ones
@@ -212,7 +432,7 @@ export async function analyzeImageWithGemini(
   let visionInfo: unknown = null;
   if (visionKey) {
     try {
-  const vUrl = `https://vision.googleapis.com/v1/images:annotate?key=${visionKey}`;
+      const vUrl = `https://vision.googleapis.com/v1/images:annotate?key=${visionKey}`;
       const body = {
         requests: [
           {
@@ -270,36 +490,36 @@ export async function analyzeImageWithGemini(
           safeAdult === 'VERY_LIKELY' ||
           safeAdult === 'POSSIBLE'
         ) {
-        return {
-          ...analysis,
-          faceOk: false,
-          advisoryText:
-            locale === 'es'
-              ? 'Imagen bloqueada por contenido no apropiado.'
-              : 'Blocked for inappropriate content.',
-        };
-      }
+          return {
+            ...analysis,
+            faceOk: false,
+            advisoryText:
+              locale === 'es'
+                ? 'Imagen bloqueada por contenido no apropiado.'
+                : 'Blocked for inappropriate content.',
+          };
+        }
         // faces
         const facesRaw = resAny.faceAnnotations;
         const faces = Array.isArray(facesRaw) ? (facesRaw as unknown[]) : [];
         if (faces.length === 0)
-        return {
-          ...analysis,
-          faceOk: false,
-          advisoryText:
-            locale === 'es'
-              ? 'No se detectó una cara frontal clara.'
-              : 'No clear face detected.',
-        };
+          return {
+            ...analysis,
+            faceOk: false,
+            advisoryText:
+              locale === 'es'
+                ? 'No se detectó una cara frontal clara.'
+                : 'No clear face detected.',
+          };
         if (faces.length > 1)
-        return {
-          ...analysis,
-          faceOk: false,
-          advisoryText:
-            locale === 'es'
-              ? 'Se detectaron varias personas en la imagen.'
-              : 'Multiple people detected.',
-        };
+          return {
+            ...analysis,
+            faceOk: false,
+            advisoryText:
+              locale === 'es'
+                ? 'Se detectaron varias personas en la imagen.'
+                : 'Multiple people detected.',
+          };
         const f = faces[0] as UnknownRecord | undefined;
         // heuristics for pose — read numeric fields defensively via helper
         const readNum = (obj: UnknownRecord | undefined, ...keys: string[]) => {
@@ -312,8 +532,8 @@ export async function analyzeImageWithGemini(
         };
         const yaw = readNum(f, 'panAngle', 'yaw');
         const roll = readNum(f, 'rollAngle', 'roll');
-      analysis.pose = Math.abs(yaw) < 15 && Math.abs(roll) < 12 ? 'frontal' : 'ladeado';
-      analysis.faceOk = true;
+        analysis.pose = Math.abs(yaw) < 15 && Math.abs(roll) < 12 ? 'frontal' : 'ladeado';
+        analysis.faceOk = true;
 
         // image properties: approximate dominant color -> hair color heuristic (best effort)
         const props = resAny.imagePropertiesAnnotation as UnknownRecord | undefined;
@@ -332,19 +552,19 @@ export async function analyzeImageWithGemini(
           }
         }
 
-      // rough beard presence from landmarks (mouth/chin) -> crude heuristic
-      if (f && typeof f === 'object' && 'landmarking' in (f as UnknownRecord)) {
-        // ignore; keep default
-      }
+        // rough beard presence from landmarks (mouth/chin) -> crude heuristic
+        if (f && typeof f === 'object' && 'landmarking' in (f as UnknownRecord)) {
+          // ignore; keep default
+        }
 
-      // advisory base text
-      analysis.advisoryText =
-        locale === 'es'
-          ? 'Análisis automático: la imagen parece adecuada. Recomendamos un corte medio con laterales más cortos y barba tipo stubble para enfatizar la mandíbula. Evita accesorios voluminosos.'
-          : 'Automatic analysis: image looks OK. We recommend a medium cut with shorter sides and a stubble beard to emphasize the jawline. Avoid bulky accessories.';
+        // advisory base text
+        analysis.advisoryText =
+          locale === 'es'
+            ? 'Análisis automático: la imagen parece adecuada. Recomendamos un corte medio con laterales más cortos y barba tipo stubble para enfatizar la mandíbula. Evita accesorios voluminosos.'
+            : 'Automatic analysis: image looks OK. We recommend a medium cut with shorter sides and a stubble beard to emphasize the jawline. Avoid bulky accessories.';
       }
     }
-    
+
   } catch (e: unknown) {
     await appendLog({ phase: 'analysis.error', error: String(e) });
   }
@@ -404,10 +624,10 @@ export async function analyzeImageWithGemini(
   return analysis;
 }
 
-export function mapUserTextToIntent(userText: string, locale: 'es'|'en' = 'es', analysis?: FaceAnalysis, isFirstIteration: boolean = true): EditIntent {
+export function mapUserTextToIntent(userText: string, locale: 'es' | 'en' = 'es', analysis?: FaceAnalysis, isFirstIteration: boolean = true): EditIntent {
   const text = userText.toLowerCase()
   const changes: Array<{ type: string; value: string }> = []
-  
+
   // FIRST PRIORITY: If analysis has recommendedChanges AND this is the FIRST iteration, use them
   // After first iteration, always use user text extraction (ignore Gemini's recommendations)
   if (isFirstIteration && analysis?.recommendedChanges) {
@@ -424,7 +644,7 @@ export function mapUserTextToIntent(userText: string, locale: 'es'|'en' = 'es', 
       changes.push({ type: 'hair_color', value: analysis.recommendedChanges.hairColor })
     }
   }
-  
+
   // SECOND PRIORITY: If no structured changes from analysis (or not first iteration), try extracting from user text
   if (changes.length === 0) {
     // Hair length detection
@@ -435,7 +655,7 @@ export function mapUserTextToIntent(userText: string, locale: 'es'|'en' = 'es', 
     } else if (text.includes('medio') || text.includes('medium')) {
       changes.push({ type: 'hair_length', value: 'medium' })
     }
-    
+
     // Beard style detection
     if (text.includes('stubble') || text.includes('corta')) {
       changes.push({ type: 'beard_style', value: 'stubble' })
@@ -444,29 +664,29 @@ export function mapUserTextToIntent(userText: string, locale: 'es'|'en' = 'es', 
     } else if (text.includes('sin barba') || text.includes('clean shaven')) {
       changes.push({ type: 'beard_style', value: 'clean' })
     }
-    
+
     // Hair style detection (fade, texturizado, etc)
     if (text.includes('fade') || text.includes('degradado')) {
       changes.push({ type: 'hair_style', value: 'fade medio' })
     } else if (text.includes('texturizado') || text.includes('textured')) {
       changes.push({ type: 'hair_style', value: 'texturizado' })
     }
-    
+
     // Hair color detection
     const colorMatch = text.match(/casta[nñ]o|brown|negro|black|rubio|blond|pelirrojo|red|mono|blanco/)
     if (colorMatch) {
       changes.push({ type: 'hair_color', value: colorMatch[0] })
     }
   }
-  
+
   // SAFETY CHECK: If we have too many drastic changes (more than 3), limit to most important ones
   // This prevents AI failure on extremely complex requests like "calvo + barba larga + rubio + sin bigote"
   if (changes.length > 3) {
     // Keep hair length and hair color as priority, drop others
-    const filtered = changes.filter(c => 
+    const filtered = changes.filter(c =>
       c.type === 'hair_length' || c.type === 'hair_color'
     )
-    
+
     // If we still have changes, use the filtered list; otherwise keep original
     if (filtered.length > 0) {
       changes.length = 0
@@ -476,13 +696,13 @@ export function mapUserTextToIntent(userText: string, locale: 'es'|'en' = 'es', 
       changes.length = 2
     }
   }
-  
+
   // FALLBACK: If still no changes detected, provide defaults
   if (changes.length === 0) {
     changes.push({ type: 'beard_style', value: 'stubble' })
     changes.push({ type: 'hair_style', value: 'fade medio' })
   }
-  
+
   return {
     locale,
     change: changes,
