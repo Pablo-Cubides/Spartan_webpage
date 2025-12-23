@@ -59,7 +59,7 @@ export const UpdateUserProfileSchema = z.object({
   alias: z.string()
     .min(3, 'El alias debe tener al menos 3 caracteres')
     .max(50, 'El alias no puede exceder 50 caracteres')
-    .regex(/^[a-z0-9_]+$/, 'El alias solo puede contener minúsculas, números y guiones bajos')
+    .regex(/^[a-zA-Z0-9_]+$/, 'El alias solo puede contener letras, números y guiones bajos')
     .optional(),
   avatar_id: z.string().optional(),
 });
@@ -120,14 +120,14 @@ export type IterateImage = z.infer<typeof IterateImageSchema>;
  */
 export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): T {
   const result = schema.safeParse(data);
-  
+
   if (!result.success) {
     const errors = result.error.errors
       .map(e => `${e.path.join('.')}: ${e.message}`)
       .join(', ');
-    
+
     throw new Error(`Validation error: ${errors}`);
   }
-  
+
   return result.data;
 }
