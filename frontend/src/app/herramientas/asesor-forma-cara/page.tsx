@@ -9,6 +9,66 @@ import ModalLogin from '@/components/ModalLogin';
 import BuyCredits from '@/components/BuyCredits';
 import { useAuth } from '@/lib/firebase';
 
+// Compress image to reduce file size before upload (Vercel has 4.5MB limit)
+async function compressImage(file: File, maxSizeMB: number = 2, maxWidth: number = 1600): Promise<File> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = document.createElement('img');
+      img.onload = () => {
+        // Calculate new dimensions
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(file); // fallback to original
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Start with quality 0.9 and reduce until under maxSize
+        let quality = 0.9;
+        const tryCompress = () => {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file);
+                return;
+              }
+              const sizeMB = blob.size / (1024 * 1024);
+              if (sizeMB > maxSizeMB && quality > 0.3) {
+                quality -= 0.1;
+                tryCompress();
+              } else {
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                console.log(`[Compress] Original: ${(file.size / (1024 * 1024)).toFixed(2)}MB -> Compressed: ${(compressedFile.size / (1024 * 1024)).toFixed(2)}MB`);
+                resolve(compressedFile);
+              }
+            },
+            'image/jpeg',
+            quality
+          );
+        };
+        tryCompress();
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
 type ProcessingPhase = 'upload' | 'analyze' | 'generate';
 type Message = { from: "user" | "assistant" | "system"; text: string; image?: string; processingPhase?: ProcessingPhase; progress?: number; action?: { type: string; payload?: IteratePayload | undefined } };
 
@@ -155,12 +215,23 @@ export default function Page() {
     };
 
     // start with upload phase so users see immediate feedback
-    upsertProcessing('upload', 0, 'Cargando...');
+    upsertProcessing('upload', 0, 'Comprimiendo imagen...');
 
     try {
+      // Compress image to under 2MB to avoid Vercel's 4.5MB body limit
+      let fileToUpload = file;
+      if (file.size > 2 * 1024 * 1024) {
+        try {
+          fileToUpload = await compressImage(file, 2, 1600);
+          upsertProcessing('upload', 0, 'Cargando...');
+        } catch (compressError) {
+          console.warn('[Upload] Compression failed, using original:', compressError);
+        }
+      }
+
       type UploadResult = { imageUrl: string; sessionId?: string; publicId?: string; error?: string; status?: number };
       // Use XHR-based uploader so we can show progress updates - pass auth token
-      const uploadData = await uploadImage(file, (p) => {
+      const uploadData = await uploadImage(fileToUpload, (p) => {
         // update processing message progress
         setMessages(prev => {
           const idx = prev.findIndex(x => x.processingPhase === 'upload');
