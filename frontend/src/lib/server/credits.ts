@@ -1,4 +1,5 @@
 import { prisma } from './prisma'
+import { Prisma } from '@prisma/client'
 
 export async function hasSufficientCredits(userId: number, amount: number): Promise<boolean> {
   const user = await prisma.user.findUnique({
@@ -9,7 +10,12 @@ export async function hasSufficientCredits(userId: number, amount: number): Prom
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function consumeCredits(userId: number, amount: number, _description: string): Promise<boolean> {
+export async function consumeCredits(
+  userId: number,
+  amount: number,
+  operation: string,
+  metadata?: Prisma.InputJsonValue
+): Promise<boolean> {
   try {
     return await prisma.$transaction(async (tx) => {
       const user = await tx.user.findUnique({
@@ -21,13 +27,24 @@ export async function consumeCredits(userId: number, amount: number, _descriptio
         return false
       }
 
-      await tx.user.update({
+      // Decrement credits
+      const updatedUser = await tx.user.update({
         where: { id: userId },
         data: { credits: { decrement: amount } }
       })
 
-      // Future: Log usage to a CreditUsage table if it exists
-      
+      // Log usage to CreditUsage table
+      await tx.creditUsage.create({
+        data: {
+          user_id: userId,
+          amount: amount,
+          operation: operation,
+          description: `Used ${amount} credit(s) for ${operation}`,
+          balance_after: updatedUser.credits,
+          metadata: metadata ?? undefined
+        }
+      })
+
       return true
     })
   } catch (error) {
@@ -35,3 +52,4 @@ export async function consumeCredits(userId: number, amount: number, _descriptio
     return false
   }
 }
+

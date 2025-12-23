@@ -23,6 +23,7 @@ model User {
   purchases       Purchase[]
   posts           BlogPost[]
   spartanProfile  SpartanProfile?
+  creditUsage     CreditUsage[]
 }
 
 model CreditPackage {
@@ -178,3 +179,24 @@ model CoachAnalytics {
   messageCount Int
   created_at   DateTime @default(now())
 }
+
+// =============================================
+// Credit Usage History
+// =============================================
+
+// Tracks every credit consumption for auditing
+model CreditUsage {
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [user_id], references: [id])
+  user_id       Int
+  amount        Int      // Credits consumed (positive) or added (negative for refunds)
+  operation     String   // "analyze", "generate", "edit", "refund", etc.
+  description   String?  // Optional details
+  balance_after Int      // User's balance after this operation
+  metadata      Json?    // Additional context (session_id, tool, etc.)
+  created_at    DateTime @default(now())
+
+  @@index([user_id])
+  @@index([created_at])
+}
+
