@@ -88,6 +88,8 @@ export default function EditProfilePage() {
         email: profile.email,
       };
 
+      console.log('[profile edit] Sending update:', JSON.stringify(updateData));
+
       const res = await fetch('/api/users/profile', {
         method: 'PUT',
         headers: {
@@ -97,12 +99,16 @@ export default function EditProfilePage() {
         body: JSON.stringify(updateData)
       });
 
+      const responseData = await res.json();
+      console.log('[profile edit] Response:', JSON.stringify(responseData));
+
       if (res.ok) {
+        console.log('[profile edit] Update successful, redirecting...');
         router.push("/perfil");
+        router.refresh(); // Force refresh to get updated data
       } else {
-        const errorData = await res.json();
-        setError(errorData.message || 'Error al actualizar perfil');
-        console.error('Error updating profile:', errorData);
+        setError(responseData.message || 'Error al actualizar perfil');
+        console.error('Error updating profile:', responseData);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
