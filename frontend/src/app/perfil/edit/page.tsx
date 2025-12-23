@@ -169,10 +169,10 @@ export default function EditProfilePage() {
                     id="alias"
                     value={profile.alias || ''}
                     onChange={handleChange}
-                    placeholder="mi_alias (minúsculas, números, guión bajo)"
+                    placeholder="Mi_Alias (letras, números, guión bajo)"
                     className="w-full p-2 rounded bg-[#342d2d] text-white border border-gray-600 focus:border-red-500 focus:outline-none"
                   />
-                  <p className="text-gray-500 text-xs mt-1">Solo minúsculas, números y guiones bajos (_)</p>
+                  <p className="text-gray-500 text-xs mt-1">Letras, números y guiones bajos (_)</p>
                 </div>
                 <div>
                   <label htmlFor="email" className="text-white block mb-1">Email</label>

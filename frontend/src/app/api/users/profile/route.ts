@@ -46,17 +46,23 @@ const putHandler = async (request: NextRequest) => {
 
   const body = await parseJsonBody(request, UpdateUserProfileSchema)
 
-  const data = {
-    ...(body.email && { email: body.email }),
-    ...(body.name && { name: body.name }),
-    ...(body.alias && { alias: body.alias }),
-    ...(body.avatar_id && { avatar_id: body.avatar_id }),
-  }
+  console.log('[profile update] body received:', JSON.stringify(body))
+
+  // Build update data - include fields if they are defined (even if empty string for name)
+  const data: Record<string, string | undefined> = {}
+  if (body.email !== undefined) data.email = body.email
+  if (body.name !== undefined) data.name = body.name
+  if (body.alias !== undefined) data.alias = body.alias
+  if (body.avatar_id !== undefined) data.avatar_id = body.avatar_id
+
+  console.log('[profile update] data to update:', JSON.stringify(data))
 
   const user = await prisma.user.update({
     where: { uid },
     data,
   })
+
+  console.log('[profile update] user updated:', user.name, user.alias)
 
   return NextResponse.json({ user })
 }
