@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { useAuth } from '@/lib/firebase';
 import { getTokenCookie } from '@/lib/api';
 
 interface CreditPackage {
@@ -13,24 +15,36 @@ interface CreditPackage {
 
 type PaymentMethod = 'mercadopago' | 'stripe';
 
+// Step indicators
+type CheckoutStep = 'package' | 'payment' | 'confirm';
+
 export default function BuyCredits() {
+  const { user: firebaseUser } = useAuth();
   const [packages, setPackages] = useState<CreditPackage[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<CreditPackage | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('mercadopago');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>('package');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState('');
+  const [userCredits, setUserCredits] = useState<number>(0);
 
-  // USD conversion rate (approximate)
+  // USD conversion rate
   const COP_TO_USD = 4000;
 
   const formatUSD = (copAmount: number) => {
     return (copAmount / COP_TO_USD).toFixed(2);
   };
 
+  const formatCOP = (amount: number) => {
+    return new Intl.NumberFormat('es-CO').format(amount);
+  };
+
+  // Fetch packages and user info
   useEffect(() => {
-    const fetchPackages = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch packages
         const res = await fetch('/api/credits/packages');
         if (res.ok) {
           const data = await res.json();
@@ -38,17 +52,42 @@ export default function BuyCredits() {
         } else {
           setError('Error al cargar los paquetes');
         }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (_) {
+
+        // Fetch user credits if logged in
+        if (firebaseUser) {
+          const token = await firebaseUser.getIdToken();
+          const profileRes = await fetch('/api/users/profile', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (profileRes.ok) {
+            const profileData = await profileRes.json();
+            setUserCredits(profileData.user?.credits || 0);
+          }
+        }
+      } catch {
         setError('Error de conexión al cargar los paquetes');
       } finally {
         setFetching(false);
       }
     };
-    fetchPackages();
-  }, []);
+    fetchData();
+  }, [firebaseUser]);
 
-  const handleBuyCredits = async (pkg: CreditPackage) => {
+  const handleSelectPackage = (pkg: CreditPackage) => {
+    setSelectedPackage(pkg);
+    setCurrentStep('payment');
+    setError('');
+  };
+
+  const handleSelectPayment = (method: PaymentMethod) => {
+    setPaymentMethod(method);
+    setCurrentStep('confirm');
+    setError('');
+  };
+
+  const handleBuyCredits = async () => {
+    if (!selectedPackage || !paymentMethod) return;
+
     setLoading(true);
     setError('');
 
@@ -60,65 +99,38 @@ export default function BuyCredits() {
     };
 
     try {
-      if (paymentMethod === 'stripe') {
-        // Stripe payment
-        const response = await fetch('/api/credits/buy-stripe', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getTokenCookie()}`
-          },
-          body: JSON.stringify({
-            package_id: pkg.id,
-            back_urls: {
-              success: backUrls.success,
-              cancel: backUrls.cancel,
-            }
-          })
-        });
+      const endpoint = paymentMethod === 'stripe' ? '/api/credits/buy-stripe' : '/api/credits/buy';
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.checkout_url) {
-            window.location.href = data.checkout_url;
-          } else {
-            setError('No se pudo obtener la URL de pago de Stripe');
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getTokenCookie()}`
+        },
+        body: JSON.stringify({
+          package_id: selectedPackage.id,
+          back_urls: {
+            success: backUrls.success,
+            failure: backUrls.failure,
+            cancel: backUrls.cancel,
           }
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const paymentUrl = paymentMethod === 'stripe'
+          ? data.checkout_url
+          : (data.preference?.init_point || data.preference?.sandbox_init_point);
+
+        if (paymentUrl) {
+          window.location.href = paymentUrl;
         } else {
-          const errorData = await response.json();
-          setError(errorData.error || 'Error al procesar la compra con Stripe');
+          setError('No se pudo obtener la URL de pago');
         }
       } else {
-        // MercadoPago payment
-        const response = await fetch('/api/credits/buy', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getTokenCookie()}`
-          },
-          body: JSON.stringify({
-            package_id: pkg.id,
-            back_urls: {
-              success: backUrls.success,
-              failure: backUrls.failure,
-            }
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          const preference = data.preference;
-          const paymentUrl = preference?.init_point || preference?.sandbox_init_point;
-          
-          if (paymentUrl) {
-            window.location.href = paymentUrl;
-          } else {
-            setError('No se pudo obtener la URL de pago');
-          }
-        } else {
-          const errorData = await response.json();
-          setError(errorData.error || 'Error al procesar la compra');
-        }
+        const errorData = await response.json();
+        setError(errorData.error || 'Error al procesar la compra');
       }
     } catch {
       setError('Error de conexión');
@@ -127,141 +139,335 @@ export default function BuyCredits() {
     }
   };
 
+  const goBack = () => {
+    if (currentStep === 'confirm') {
+      setCurrentStep('payment');
+    } else if (currentStep === 'payment') {
+      setCurrentStep('package');
+      setSelectedPackage(null);
+    }
+  };
+
+  // Get most popular package (middle one or largest)
+  const popularPackageId = packages.length > 0
+    ? packages[Math.floor(packages.length / 2)]?.id
+    : null;
+
   if (fetching) {
-    return <div className="text-center py-8">Cargando paquetes...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-[#c20909] mb-4"></div>
+        <p className="text-[#b2a4a4]">Cargando paquetes...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      {/* Header with Logo */}
+      <div className="text-center mb-10">
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/Logo spartan club - sin fondo.png"
+            alt="Spartan Club"
+            width={120}
+            height={120}
+            className="object-contain"
+          />
+        </div>
+        <h1 className="text-4xl font-bold text-white mb-3">
           Comprar Créditos
         </h1>
-        <p className="text-gray-600">
-          Selecciona un paquete de créditos para continuar
+        <p className="text-[#b2a4a4] text-lg">
+          Potencia tu experiencia Spartan con créditos premium
         </p>
+
+        {/* Current Credits Display */}
+        {firebaseUser && (
+          <div className="mt-4 inline-flex items-center gap-2 bg-[#342d2d] px-6 py-3 rounded-full">
+            <span className="text-[#b2a4a4]">Tu saldo actual:</span>
+            <span className="text-2xl font-bold text-[#d4af37]">{userCredits}</span>
+            <span className="text-[#b2a4a4]">créditos</span>
+          </div>
+        )}
       </div>
 
-      {/* Payment Method Selector */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
-          Método de Pago
-        </h3>
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => setPaymentMethod('mercadopago')}
-            className={`flex items-center gap-3 px-6 py-4 rounded-lg border-2 transition-all ${
-              paymentMethod === 'mercadopago'
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-blue-300'
-            }`}
-          >
-            <div className="w-10 h-10 bg-[#009ee3] rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">MP</span>
+      {/* Progress Steps */}
+      <div className="flex justify-center mb-10">
+        <div className="flex items-center gap-4">
+          <div className={`flex items-center gap-2 ${currentStep === 'package' ? 'text-white' : 'text-[#b2a4a4]'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${currentStep === 'package' ? 'bg-[#c20909] text-white' :
+                selectedPackage ? 'bg-green-600 text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
+              }`}>
+              {selectedPackage ? '✓' : '1'}
             </div>
-            <div className="text-left">
-              <div className="font-semibold text-gray-900">MercadoPago</div>
-              <div className="text-sm text-gray-500">Pago en COP 🇨🇴</div>
-            </div>
-          </button>
+            <span className="hidden sm:inline font-medium">Paquete</span>
+          </div>
 
-          <button
-            onClick={() => setPaymentMethod('stripe')}
-            className={`flex items-center gap-3 px-6 py-4 rounded-lg border-2 transition-all ${
-              paymentMethod === 'stripe'
-                ? 'border-purple-500 bg-purple-50'
-                : 'border-gray-200 hover:border-purple-300'
-            }`}
-          >
-            <div className="w-10 h-10 bg-[#635bff] rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S</span>
+          <div className="w-12 h-0.5 bg-[#342d2d]"></div>
+
+          <div className={`flex items-center gap-2 ${currentStep === 'payment' ? 'text-white' : 'text-[#b2a4a4]'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${currentStep === 'payment' ? 'bg-[#c20909] text-white' :
+                paymentMethod ? 'bg-green-600 text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
+              }`}>
+              {paymentMethod ? '✓' : '2'}
             </div>
-            <div className="text-left">
-              <div className="font-semibold text-gray-900">Stripe</div>
-              <div className="text-sm text-gray-500">Pago en USD 🌎</div>
+            <span className="hidden sm:inline font-medium">Método</span>
+          </div>
+
+          <div className="w-12 h-0.5 bg-[#342d2d]"></div>
+
+          <div className={`flex items-center gap-2 ${currentStep === 'confirm' ? 'text-white' : 'text-[#b2a4a4]'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${currentStep === 'confirm' ? 'bg-[#c20909] text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
+              }`}>
+              3
             </div>
-          </button>
+            <span className="hidden sm:inline font-medium">Confirmar</span>
+          </div>
         </div>
       </div>
 
+      {/* Error Display */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-red-800">{error}</p>
+        <div className="mb-6 p-4 bg-red-900/30 border border-red-500/50 rounded-xl">
+          <p className="text-red-400 text-center">{error}</p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {packages.map((pkg) => (
-          <div
-            key={pkg.id}
-            className={`bg-white rounded-lg shadow-lg p-6 border-2 transition-all cursor-pointer ${
-              selectedPackage?.id === pkg.id
-                ? paymentMethod === 'stripe' ? 'border-purple-500 bg-purple-50' : 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:border-blue-300'
-            }`}
-            onClick={() => setSelectedPackage(pkg)}
-          >
-            <div className="text-center">
-              <div className="text-lg font-semibold text-gray-700 mb-2">
-                {pkg.name}
-              </div>
-              <div className="text-4xl font-bold text-amber-500 mb-2">
-                {pkg.credits.toLocaleString()}
-              </div>
-              <div className="text-sm text-gray-600 mb-4">créditos</div>
-              
-              {paymentMethod === 'stripe' ? (
-                <>
-                  <div className="text-2xl font-bold text-gray-900 mb-1">
-                    ${formatUSD(pkg.price)} USD
-                  </div>
-                  <div className="text-sm text-gray-500 mb-6">
-                    (~${pkg.price.toLocaleString()} COP)
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="text-2xl font-bold text-gray-900 mb-1">
-                    ${pkg.price.toLocaleString()} COP
-                  </div>
-                  <div className="text-sm text-gray-500 mb-6">
-                    (~${formatUSD(pkg.price)} USD)
-                  </div>
-                </>
-              )}
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleBuyCredits(pkg);
-                }}
-                disabled={loading}
-                className={`w-full text-white py-3 px-4 rounded-md focus:outline-none focus:ring-2 disabled:opacity-50 transition-colors font-semibold ${
-                  paymentMethod === 'stripe'
-                    ? 'bg-[#635bff] hover:bg-[#4f46e5] focus:ring-purple-500'
-                    : 'bg-[#009ee3] hover:bg-[#0081c8] focus:ring-blue-500'
-                }`}
+      {/* Step 1: Package Selection */}
+      {currentStep === 'package' && (
+        <div>
+          <h2 className="text-2xl font-bold text-white text-center mb-6">
+            Elige tu paquete de créditos
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {packages.map((pkg) => (
+              <div
+                key={pkg.id}
+                onClick={() => handleSelectPackage(pkg)}
+                className={`relative bg-[#1e1a1a] rounded-2xl p-6 border-2 transition-all cursor-pointer hover:scale-[1.02] hover:shadow-xl ${selectedPackage?.id === pkg.id
+                    ? 'border-[#c20909] shadow-lg shadow-red-900/20'
+                    : 'border-[#342d2d] hover:border-[#c20909]/50'
+                  }`}
               >
-                {loading ? 'Procesando...' : paymentMethod === 'stripe' ? 'Pagar con Stripe' : 'Pagar con MercadoPago'}
-              </button>
+                {/* Popular Badge */}
+                {pkg.id === popularPackageId && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="bg-[#c20909] text-white text-xs font-bold px-4 py-1 rounded-full">
+                      MÁS POPULAR
+                    </span>
+                  </div>
+                )}
+
+                <div className="text-center pt-2">
+                  <div className="text-lg font-medium text-[#b2a4a4] mb-2">
+                    {pkg.name}
+                  </div>
+
+                  <div className="text-5xl font-bold text-[#d4af37] mb-1">
+                    {pkg.credits.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-[#b2a4a4] mb-6">créditos</div>
+
+                  <div className="text-3xl font-bold text-white mb-1">
+                    ${formatCOP(pkg.price)} COP
+                  </div>
+                  <div className="text-sm text-[#b2a4a4] mb-6">
+                    ~${formatUSD(pkg.price)} USD
+                  </div>
+
+                  <button className="w-full bg-[#c20909] hover:bg-red-700 text-white py-3 px-4 rounded-xl font-bold transition-colors">
+                    Seleccionar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Step 2: Payment Method */}
+      {currentStep === 'payment' && selectedPackage && (
+        <div>
+          <button
+            onClick={goBack}
+            className="flex items-center gap-2 text-[#b2a4a4] hover:text-white mb-6 transition-colors"
+          >
+            ← Volver a paquetes
+          </button>
+
+          <div className="bg-[#1e1a1a] rounded-2xl p-6 border border-[#342d2d] mb-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[#b2a4a4]">Paquete seleccionado:</p>
+                <p className="text-white font-bold text-xl">{selectedPackage.name}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-4xl font-bold text-[#d4af37]">{selectedPackage.credits.toLocaleString()}</p>
+                <p className="text-[#b2a4a4]">créditos</p>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="mt-8 bg-gray-50 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-white text-center mb-6">
+            Elige tu método de pago
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            {/* MercadoPago */}
+            <div
+              onClick={() => handleSelectPayment('mercadopago')}
+              className={`bg-[#1e1a1a] rounded-2xl p-6 border-2 cursor-pointer transition-all hover:scale-[1.02] ${paymentMethod === 'mercadopago'
+                  ? 'border-[#009ee3] shadow-lg shadow-blue-900/20'
+                  : 'border-[#342d2d] hover:border-[#009ee3]/50'
+                }`}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 bg-[#009ee3] rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">MP</span>
+                </div>
+                <div>
+                  <p className="text-white font-bold text-lg">MercadoPago</p>
+                  <p className="text-[#b2a4a4] text-sm">Pago en Colombia 🇨🇴</p>
+                </div>
+              </div>
+              <p className="text-[#b2a4a4] text-sm mb-4">
+                Ideal para usuarios en Colombia. Paga con PSE, tarjeta de crédito, Nequi, Daviplata y más.
+              </p>
+              <div className="text-xl font-bold text-white">
+                ${formatCOP(selectedPackage.price)} COP
+              </div>
+            </div>
+
+            {/* Stripe */}
+            <div
+              onClick={() => handleSelectPayment('stripe')}
+              className={`bg-[#1e1a1a] rounded-2xl p-6 border-2 cursor-pointer transition-all hover:scale-[1.02] ${paymentMethod === 'stripe'
+                  ? 'border-[#635bff] shadow-lg shadow-purple-900/20'
+                  : 'border-[#342d2d] hover:border-[#635bff]/50'
+                }`}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 bg-[#635bff] rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">S</span>
+                </div>
+                <div>
+                  <p className="text-white font-bold text-lg">Stripe</p>
+                  <p className="text-[#b2a4a4] text-sm">Pago Internacional 🌎</p>
+                </div>
+              </div>
+              <p className="text-[#b2a4a4] text-sm mb-4">
+                Para usuarios internacionales. Acepta tarjetas de crédito y débito de cualquier país.
+              </p>
+              <div className="text-xl font-bold text-white">
+                ${formatUSD(selectedPackage.price)} USD
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3: Confirmation */}
+      {currentStep === 'confirm' && selectedPackage && paymentMethod && (
+        <div>
+          <button
+            onClick={goBack}
+            className="flex items-center gap-2 text-[#b2a4a4] hover:text-white mb-6 transition-colors"
+          >
+            ← Volver a método de pago
+          </button>
+
+          <div className="max-w-lg mx-auto">
+            <div className="bg-[#1e1a1a] rounded-2xl p-8 border border-[#342d2d]">
+              <h2 className="text-2xl font-bold text-white text-center mb-6">
+                Confirmar Compra
+              </h2>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between items-center py-3 border-b border-[#342d2d]">
+                  <span className="text-[#b2a4a4]">Paquete</span>
+                  <span className="text-white font-medium">{selectedPackage.name}</span>
+                </div>
+                <div className="flex justify-between items-center py-3 border-b border-[#342d2d]">
+                  <span className="text-[#b2a4a4]">Créditos</span>
+                  <span className="text-[#d4af37] font-bold text-xl">{selectedPackage.credits.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center py-3 border-b border-[#342d2d]">
+                  <span className="text-[#b2a4a4]">Método de pago</span>
+                  <span className="text-white font-medium">
+                    {paymentMethod === 'mercadopago' ? 'MercadoPago' : 'Stripe'}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-[#b2a4a4]">Total a pagar</span>
+                  <span className="text-white font-bold text-2xl">
+                    {paymentMethod === 'stripe'
+                      ? `$${formatUSD(selectedPackage.price)} USD`
+                      : `$${formatCOP(selectedPackage.price)} COP`
+                    }
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={handleBuyCredits}
+                disabled={loading}
+                className="w-full bg-[#c20909] hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 px-6 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2"
+              >
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white"></div>
+                    Procesando...
+                  </>
+                ) : (
+                  <>
+                    Proceder al Pago
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </>
+                )}
+              </button>
+
+              <p className="text-[#b2a4a4] text-sm text-center mt-4">
+                Serás redirigido a {paymentMethod === 'mercadopago' ? 'MercadoPago' : 'Stripe'} para completar el pago de forma segura.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Info Section */}
+      <div className="mt-12 bg-[#1e1a1a] rounded-2xl p-6 border border-[#342d2d]">
+        <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <svg className="w-5 h-5 text-[#d4af37]" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+          </svg>
           Información Importante
         </h3>
-        <ul className="space-y-2 text-sm text-gray-600">
-          <li>• Los créditos se acreditan automáticamente después del pago</li>
-          <li>• Puedes usar créditos en todas las herramientas de Spartan Club</li>
-          <li>• <strong>MercadoPago:</strong> Ideal para pagos en Colombia (COP)</li>
-          <li>• <strong>Stripe:</strong> Ideal para pagos internacionales (USD, tarjetas de cualquier país)</li>
-          <li>• Si tienes problemas, contacta con soporte</li>
+        <ul className="space-y-2 text-sm text-[#b2a4a4]">
+          <li className="flex items-start gap-2">
+            <span className="text-[#c20909]">•</span>
+            Los créditos se acreditan automáticamente después del pago
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#c20909]">•</span>
+            Puedes usar créditos en todas las herramientas de Spartan Club
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#c20909]">•</span>
+            <strong className="text-white">MercadoPago:</strong> Ideal para pagos en Colombia (COP)
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#c20909]">•</span>
+            <strong className="text-white">Stripe:</strong> Ideal para pagos internacionales (USD)
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-[#c20909]">•</span>
+            Si tienes problemas, contacta con soporte
+          </li>
         </ul>
       </div>
     </div>
   );
 }
- 
