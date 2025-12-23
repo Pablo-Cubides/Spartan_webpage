@@ -170,8 +170,8 @@ export default function BuyCredits() {
           <Image
             src="/Logo spartan club - sin fondo.png"
             alt="Spartan Club"
-            width={120}
-            height={120}
+            width={240}
+            height={240}
             className="object-contain"
           />
         </div>
@@ -197,7 +197,7 @@ export default function BuyCredits() {
         <div className="flex items-center gap-4">
           <div className={`flex items-center gap-2 ${currentStep === 'package' ? 'text-white' : 'text-[#b2a4a4]'}`}>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${currentStep === 'package' ? 'bg-[#c20909] text-white' :
-                selectedPackage ? 'bg-green-600 text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
+              selectedPackage ? 'bg-green-600 text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
               }`}>
               {selectedPackage ? '✓' : '1'}
             </div>
@@ -208,7 +208,7 @@ export default function BuyCredits() {
 
           <div className={`flex items-center gap-2 ${currentStep === 'payment' ? 'text-white' : 'text-[#b2a4a4]'}`}>
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${currentStep === 'payment' ? 'bg-[#c20909] text-white' :
-                paymentMethod ? 'bg-green-600 text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
+              paymentMethod ? 'bg-green-600 text-white' : 'bg-[#342d2d] text-[#b2a4a4]'
               }`}>
               {paymentMethod ? '✓' : '2'}
             </div>
@@ -246,8 +246,8 @@ export default function BuyCredits() {
                 key={pkg.id}
                 onClick={() => handleSelectPackage(pkg)}
                 className={`relative bg-[#1e1a1a] rounded-2xl p-6 border-2 transition-all cursor-pointer hover:scale-[1.02] hover:shadow-xl ${selectedPackage?.id === pkg.id
-                    ? 'border-[#c20909] shadow-lg shadow-red-900/20'
-                    : 'border-[#342d2d] hover:border-[#c20909]/50'
+                  ? 'border-[#c20909] shadow-lg shadow-red-900/20'
+                  : 'border-[#342d2d] hover:border-[#c20909]/50'
                   }`}
               >
                 {/* Popular Badge */}
@@ -318,8 +318,8 @@ export default function BuyCredits() {
             <div
               onClick={() => handleSelectPayment('mercadopago')}
               className={`bg-[#1e1a1a] rounded-2xl p-6 border-2 cursor-pointer transition-all hover:scale-[1.02] ${paymentMethod === 'mercadopago'
-                  ? 'border-[#009ee3] shadow-lg shadow-blue-900/20'
-                  : 'border-[#342d2d] hover:border-[#009ee3]/50'
+                ? 'border-[#009ee3] shadow-lg shadow-blue-900/20'
+                : 'border-[#342d2d] hover:border-[#009ee3]/50'
                 }`}
             >
               <div className="flex items-center gap-4 mb-4">
@@ -343,8 +343,8 @@ export default function BuyCredits() {
             <div
               onClick={() => handleSelectPayment('stripe')}
               className={`bg-[#1e1a1a] rounded-2xl p-6 border-2 cursor-pointer transition-all hover:scale-[1.02] ${paymentMethod === 'stripe'
-                  ? 'border-[#635bff] shadow-lg shadow-purple-900/20'
-                  : 'border-[#342d2d] hover:border-[#635bff]/50'
+                ? 'border-[#635bff] shadow-lg shadow-purple-900/20'
+                : 'border-[#342d2d] hover:border-[#635bff]/50'
                 }`}
             >
               <div className="flex items-center gap-4 mb-4">
