@@ -23,7 +23,7 @@ class InMemoryRateLimiter {
     const entries = Array.from(this.requests.entries());
     for (const [key, timestamps] of entries) {
       const validTimestamps = timestamps.filter((t: number) => now - t < windowMs);
-      
+
       if (validTimestamps.length === 0) {
         this.requests.delete(key);
       } else {
@@ -130,8 +130,22 @@ class RedisRateLimiter {
     resetTime: number;
     limit: number;
   }> {
+    // Fail open if Redis not initialized - allow the request
     if (!this.redis) {
-      throw new Error('Redis not initialized');
+      const now = Date.now();
+      const windowMs = APP_CONFIG.rateLimit.WINDOW_DURATION_SECONDS * 1000;
+      const limit = APP_CONFIG.rateLimit.MAX_REQUESTS_PER_WINDOW;
+      appendLog({
+        phase: 'rate_limiter.redis_not_ready',
+        message: 'Redis not initialized, failing open',
+        timestamp: Date.now(),
+      });
+      return {
+        allowed: true,
+        remaining: limit - 1,
+        resetTime: now + windowMs,
+        limit,
+      };
     }
 
     const now = Date.now();
@@ -139,7 +153,7 @@ class RedisRateLimiter {
     const limit = APP_CONFIG.rateLimit.MAX_REQUESTS_PER_WINDOW;
     const key = `ratelimit:${identifier}`;
 
-      try {
+    try {
       // Narrow client to a minimal shape we actually use and guard each call.
       const r = this.redis as unknown as Record<string, unknown> | null;
       // Remove old timestamps outside the window
@@ -261,7 +275,7 @@ export async function checkRateLimit(identifier: string, type: 'analyze' | 'iter
       limit: 999,
     };
   }
-  
+
   // Add type prefix to identifier
   const identifierWithType = `${type}:${identifier}`;
 
