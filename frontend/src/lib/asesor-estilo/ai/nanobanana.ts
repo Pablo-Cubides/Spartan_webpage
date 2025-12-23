@@ -217,26 +217,25 @@ export async function editWithNanoBanana(imageUrl: string, intent: EditIntent): 
     }
   }
 
-  // If all attempts fail, FAIL GRACEFULLY by returning the original image
-  // This ensures the user flow is not broken even if image generation service is down/unauthorized
-  console.warn('[NanoBanana] All image generation methods failed, falling back to original image');
+  // No local image-editing fallback is supported anymore. If all external
+  // editors failed (Gemini SDK, REST editor, legacy service), return a
+  // clear service-unavailable error by throwing.
+
+  const failureInfo = {
+    geminiSdk: GEMINI_API_KEY_VAR ? 'Failed or unauthorized' : 'Not configured',
+    restApi: GEMINI_REST_URL ? 'Failed' : 'Not configured',
+    legacyService: (NANOBANANA_URL && NANOBANANA_KEY) ? 'Failed' : 'Not configured'
+  };
 
   await appendLog({
-    phase: 'nanobanana.fallback_original',
+    phase: 'nanobanana.service_unavailable',
     imageUrl,
-    note: 'Image generation unavailable, using original',
-    failureReasons: {
-      geminiSdk: GEMINI_API_KEY_VAR ? 'Failed or unauthorized' : 'Not configured',
-      restApi: GEMINI_REST_URL ? 'Failed' : 'Not configured',
-      legacyService: (NANOBANANA_URL && NANOBANANA_KEY) ? 'Failed' : 'Not configured'
-    }
+    intent,
+    failureReasons: failureInfo,
+    note: 'No remote image editor available'
   });
 
-  return {
-    editedUrl: imageUrl, // Return original URL
-    note: intent.locale === 'es'
-      ? 'Nota: Servicio de edición no disponible actualmente. Se muestra la imagen original.'
-      : 'Note: Editing service currently unavailable. Showing original image.',
-    publicId: null // No new upload
-  };
+  const err = new Error('AI image service unavailable (Imagen 3/Gemini failed). Verify API permissions.') as Error & { status?: number };
+  err.status = 503;
+  throw err;
 }
