@@ -281,13 +281,26 @@ export default function Page() {
         return;
       }
 
+      // Handle 500 or other server errors
+      if (!analyzeRes.ok) {
+        const errData = await analyzeRes.json().catch(() => ({}));
+        const errorMessage = errData.message || errData.error || `Error del servidor (${analyzeRes.status})`;
+        console.error('[Analyze] Server error:', analyzeRes.status, errData);
+        setMessages((m) => {
+          const filtered = m.filter(msg => !msg.processingPhase);
+          return [...filtered, { from: "system", text: `Error al analizar: ${errorMessage}. Por favor intenta de nuevo.` }];
+        });
+        setLoading(false);
+        return;
+      }
+
       const analyzeData = await analyzeRes.json();
 
       if (analyzeData.error || !analyzeData.analysis?.faceOk) {
         // remove processing indicator and append advisory in a single update
         setMessages((m) => {
           const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || "No se pudo analizar la imagen correctamente." }];
+          return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || analyzeData.error || "No se pudo analizar la imagen correctamente." }];
         });
         setStep("upload");
         setLoading(false);
