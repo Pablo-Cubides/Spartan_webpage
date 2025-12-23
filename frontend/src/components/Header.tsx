@@ -9,6 +9,8 @@ import { removeTokenCookie, setTokenCookie } from "@/lib/api";
 
 interface UserProfile {
   role?: string;
+  alias?: string;
+  name?: string;
 }
 
 export default function Header() {
@@ -34,7 +36,7 @@ export default function Header() {
       try {
         const token = await user.getIdToken();
         setTokenCookie(token);
-        
+
         const res = await fetch('/api/users/profile', {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -102,7 +104,7 @@ export default function Header() {
                   onClick={() => setMenuOpen(!menuOpen)}
                   className="flex items-center gap-2 cursor-pointer overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#404040] transition-colors"
                 >
-                  <span className="truncate max-w-[150px]">{user.displayName || user.email?.split('@')[0] || 'Usuario'}</span>
+                  <span className="truncate max-w-[150px]">{userProfile?.alias || userProfile?.name || user.displayName || user.email?.split('@')[0] || 'Usuario'}</span>
                   <svg className={`w-4 h-4 transition-transform ${menuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>

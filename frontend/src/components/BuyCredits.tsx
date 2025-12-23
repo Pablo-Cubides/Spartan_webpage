@@ -29,11 +29,15 @@ export default function BuyCredits() {
   const [error, setError] = useState('');
   const [userCredits, setUserCredits] = useState<number>(0);
 
-  // USD conversion rate
-  const COP_TO_USD = 4000;
+  // Fixed USD prices
+  const usdPriceMap: Record<string, number> = {
+    'Paquete Iniciación': 3,
+    'Paquete Guerrero': 8,
+    'Paquete Leónidas': 30,
+  };
 
-  const formatUSD = (copAmount: number) => {
-    return (copAmount / COP_TO_USD).toFixed(2);
+  const getUSDPrice = (pkgName: string) => {
+    return usdPriceMap[pkgName] || Math.round(10000 / 4000); // fallback
   };
 
   const formatCOP = (amount: number) => {
@@ -273,7 +277,7 @@ export default function BuyCredits() {
                     ${formatCOP(pkg.price)} COP
                   </div>
                   <div className="text-sm text-[#b2a4a4] mb-6">
-                    ~${formatUSD(pkg.price)} USD
+                    ~${getUSDPrice(pkg.name)} USD
                   </div>
 
                   <button className="w-full bg-[#c20909] hover:bg-red-700 text-white py-3 px-4 rounded-xl font-bold transition-colors">
@@ -360,7 +364,7 @@ export default function BuyCredits() {
                 Para usuarios internacionales. Acepta tarjetas de crédito y débito de cualquier país.
               </p>
               <div className="text-xl font-bold text-white">
-                ${formatUSD(selectedPackage.price)} USD
+                ${getUSDPrice(selectedPackage.name)} USD
               </div>
             </div>
           </div>
@@ -402,7 +406,7 @@ export default function BuyCredits() {
                   <span className="text-[#b2a4a4]">Total a pagar</span>
                   <span className="text-white font-bold text-2xl">
                     {paymentMethod === 'stripe'
-                      ? `$${formatUSD(selectedPackage.price)} USD`
+                      ? `$${getUSDPrice(selectedPackage.name)} USD`
                       : `$${formatCOP(selectedPackage.price)} COP`
                     }
                   </span>
