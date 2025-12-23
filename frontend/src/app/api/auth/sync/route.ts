@@ -29,13 +29,13 @@ const postHandler = async (request: NextRequest) => {
     throw new AuthenticationError('Invalid token: missing uid or email')
   }
 
-  // Upsert: crear si no existe, actualizar si existe
+  // Upsert: crear si no existe, actualizar SOLO email si existe
+  // NO sobrescribir name ni avatar_id - el usuario puede haberlos editado
   const user = await prisma.user.upsert({
     where: { uid },
     update: {
       email: email,
-      name: name || undefined,
-      avatar_id: picture || undefined,
+      // NO actualizamos name ni avatar_id aquí - respetamos los cambios del usuario
       updated_at: new Date(),
     },
     create: {
@@ -51,8 +51,8 @@ const postHandler = async (request: NextRequest) => {
 
   console.log(`✅ User synced: ${user.email} (uid: ${user.uid})`)
 
-  return NextResponse.json({ 
-    success: true, 
+  return NextResponse.json({
+    success: true,
     user: {
       id: user.id,
       uid: user.uid,
