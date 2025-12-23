@@ -13,6 +13,67 @@ import BuyCredits from '@/components/BuyCredits';
 import { useAuth } from '@/lib/firebase';
 import { getTokenCookie } from '@/lib/api';
 
+// Compress image to reduce file size before upload (Vercel has 4.5MB limit)
+async function compressImage(file: File, maxSizeMB: number = 2, maxWidth: number = 1600): Promise<File> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = document.createElement('img');
+      img.onload = () => {
+        // Calculate new dimensions
+        let { width, height } = img;
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(file); // fallback to original
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Start with quality 0.9 and reduce until under maxSize
+        let quality = 0.9;
+        const tryCompress = () => {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                resolve(file);
+                return;
+              }
+              const sizeMB = blob.size / (1024 * 1024);
+              if (sizeMB > maxSizeMB && quality > 0.3) {
+                quality -= 0.1;
+                tryCompress();
+              } else {
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                console.log(`[Compress] Original: ${(file.size / (1024 * 1024)).toFixed(2)}MB -> Compressed: ${(compressedFile.size / (1024 * 1024)).toFixed(2)}MB`);
+                resolve(compressedFile);
+              }
+            },
+            'image/jpeg',
+            quality
+          );
+        };
+        tryCompress();
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
+
 type UploadResponse = {
   imageUrl: string;
   sessionId: string;
@@ -196,9 +257,36 @@ export default function Page() {
       return;
     }
 
+    // Check credits BEFORE upload (so users don't waste time uploading if they can't use the tool)
+    const token = getTokenCookie();
+    try {
+      const profileRes = await fetch('/api/users/profile', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (profileRes.ok) {
+        const profileData = await profileRes.json();
+        if (profileData.credits < 1) {
+          setShowCreditsModal(true);
+          setMessages((m) => [...m, { from: 'system', text: 'Necesitas al menos 1 crédito para usar esta herramienta.' }]);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('Could not check credits before upload:', e);
+      // Continue anyway, server will validate
+    }
+
+    // Compress image before upload (Vercel has 4.5MB limit)
+    let processedFile = file;
+    try {
+      processedFile = await compressImage(file, 2, 1600);
+    } catch (e) {
+      console.warn('Image compression failed, using original:', e);
+    }
+
     // client-side size validation before starting upload
     const maxBytes = UPLOAD_CONFIG.MAX_SIZE_MB * 1024 * 1024;
-    if (file.size > maxBytes) {
+    if (processedFile.size > maxBytes) {
       setMessages((m) => [...m, { from: 'system', text: `La imagen excede el límite de ${UPLOAD_CONFIG.MAX_SIZE_MB}MB. Reduce el tamaño o elige otra imagen.` }]);
       return;
     }
@@ -211,8 +299,7 @@ export default function Page() {
     try {
       // Use XHR to obtain upload progress events (fetch has no upload progress in browsers)
       const fd = new FormData();
-      fd.append("file", file);
-      const token = getTokenCookie();
+      fd.append("file", processedFile);
 
       const uploadData: UploadResponse = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -280,6 +367,16 @@ export default function Page() {
           setLoading(false);
           return;
         }
+      }
+
+      // Handle 500 or other server errors explicitly
+      if (!analyzeRes.ok) {
+        const errData = await analyzeRes.json().catch(() => ({}));
+        const errorMessage = errData.message || errData.error || `Error del servidor (${analyzeRes.status})`;
+        console.error('[Analyze] Server error:', analyzeRes.status, errData);
+        setMessages((m) => [...m, { from: 'system', text: `Error al analizar: ${errorMessage}. Por favor intenta de nuevo.` }]);
+        setLoading(false);
+        return;
       }
 
       const analyzeData = await analyzeRes.json();
