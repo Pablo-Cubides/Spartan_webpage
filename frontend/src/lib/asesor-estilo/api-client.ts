@@ -22,9 +22,9 @@ export type AnalyzeResponse = {
 
 // Type for the successful iteration response
 export type IterateResponse = {
-    editedUrl: string;
-    publicId: string;
-    note: string;
+  editedUrl: string;
+  publicId: string;
+  note: string;
 };
 
 
@@ -44,7 +44,7 @@ async function apiFetch<T>(url: string, options: RequestInit): Promise<T> {
   return data as T;
 }
 
-export async function uploadImage(file: File, onProgress?: (percent: number) => void): Promise<UploadResponse> {
+export async function uploadImage(file: File, onProgress?: (percent: number) => void, authToken?: string): Promise<UploadResponse> {
   // uploadImage uses XMLHttpRequest to get upload progress events which fetch doesn't provide.
   if (typeof window === 'undefined') {
     // Prevent accidental usage on the server / during SSR
@@ -56,10 +56,19 @@ export async function uploadImage(file: File, onProgress?: (percent: number) => 
     xhr.open('POST', '/api/asesor-estilo/upload');
     xhr.responseType = 'json';
 
+    // Set auth header if token provided
+    if (authToken) {
+      xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
+    }
+
     xhr.onload = () => {
       const resp = xhr.response as UploadResponse | { error?: string } | null;
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve((resp || {}) as UploadResponse);
+      } else if (xhr.status === 401) {
+        reject({ error: 'Unauthorized', status: 401 });
+      } else if (xhr.status === 402) {
+        reject({ error: 'Insufficient credits', status: 402 });
       } else {
         reject((resp as { error?: string }) || new Error('Upload failed'));
       }
@@ -92,9 +101,9 @@ export async function analyzeImage(imageUrl: string, locale: string = 'es'): Pro
 }
 
 export async function iterateEdit(payload: IteratePayload): Promise<IterateResponse> {
-    return apiFetch<IterateResponse>('/api/asesor-estilo/iterate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-    });
+  return apiFetch<IterateResponse>('/api/asesor-estilo/iterate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
 }

@@ -114,6 +114,30 @@ export default function Page() {
       setShowLoginModal(true);
       return;
     }
+
+    // Get auth token
+    const token = getTokenCookie();
+    if (!token) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    // Check credits before starting upload
+    try {
+      const creditsRes = await fetch('/api/users/profile', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (creditsRes.ok) {
+        const { user: profile } = await creditsRes.json();
+        if (profile.credits < 1) {
+          setShowCreditsModal(true);
+          return;
+        }
+      }
+    } catch {
+      // Continue even if credit check fails - API will handle it
+    }
+
     setLoading(true);
 
     // helper to upsert a single processing message and update its phase/progress
@@ -134,8 +158,8 @@ export default function Page() {
     upsertProcessing('upload', 0, 'Cargando...');
 
     try {
-      type UploadResult = { imageUrl: string; sessionId?: string; publicId?: string; error?: string };
-      // Use XHR-based uploader so we can show progress updates
+      type UploadResult = { imageUrl: string; sessionId?: string; publicId?: string; error?: string; status?: number };
+      // Use XHR-based uploader so we can show progress updates - pass auth token
       const uploadData = await uploadImage(file, (p) => {
         // update processing message progress
         setMessages(prev => {
@@ -145,7 +169,7 @@ export default function Page() {
           copy[idx] = { ...copy[idx], progress: p, text: `Cargando... ${p}%` };
           return copy;
         });
-      });
+      }, token);
 
       const u = uploadData as UploadResult;
       if (u.error) {
@@ -276,6 +300,18 @@ export default function Page() {
       });
       scrollToBottom();
     } catch (err: unknown) {
+      // Handle auth/credit errors from upload
+      const errObj = err as { status?: number; error?: string; message?: string };
+      if (errObj.status === 401) {
+        setShowLoginModal(true);
+        setLoading(false);
+        return;
+      }
+      if (errObj.status === 402) {
+        setShowCreditsModal(true);
+        setLoading(false);
+        return;
+      }
       const msg = err && typeof err === 'object' && 'message' in err ? String((err as Record<string, unknown>).message) : String(err)
       setMessages((m) => [...m, { from: "system", text: `Error: ${msg}` }]);
       setStep("upload");
