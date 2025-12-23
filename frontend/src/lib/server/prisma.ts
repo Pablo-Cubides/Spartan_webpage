@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 declare global {
+  // Using var is required for global augmentation in TypeScript
   // eslint-disable-next-line no-var
   var __prisma: PrismaClient | undefined
 }
