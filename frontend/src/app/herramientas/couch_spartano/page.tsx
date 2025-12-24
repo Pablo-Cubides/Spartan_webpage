@@ -258,6 +258,14 @@ export default function CoachEspartanoPage() {
                         </div>
                     </div>
                 )}
+
+                {/* Login Modal - shows when session expires */}
+                {chatState.showLoginModal && (
+                    <ModalLogin
+                        open={chatState.showLoginModal}
+                        onClose={() => chatState.setShowLoginModal(false)}
+                    />
+                )}
             </div>
         </main>
     );

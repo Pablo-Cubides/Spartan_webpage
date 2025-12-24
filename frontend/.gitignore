@@ -48,5 +48,10 @@ next-env.d.ts
 # local data
 data/
 
+# test scripts (may contain API keys)
+scripts/test-*.js
+scripts/list-*.js
+scripts/*_env.cjs
+
 .vercel
 .env*.local

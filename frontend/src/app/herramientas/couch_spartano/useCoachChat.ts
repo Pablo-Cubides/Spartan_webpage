@@ -16,6 +16,7 @@ interface UseCoachChatReturn {
     messagesRemaining: number;
     showWelcomeModal: boolean;
     showCreditsModal: boolean;
+    showLoginModal: boolean;
 
     // Actions
     setCoaches: (coaches: Coach[]) => void;
@@ -23,6 +24,7 @@ interface UseCoachChatReturn {
     closeWelcomeModal: () => void;
     sendMessage: (content: string) => Promise<void>;
     setShowCreditsModal: (show: boolean) => void;
+    setShowLoginModal: (show: boolean) => void;
     updateCredits: (info: CreditInfo) => void;
     addFirstMessage: (coachId: string, message: string) => void;
 
@@ -40,6 +42,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const [messagesRemaining, setMessagesRemaining] = useState(0);
     const [showWelcomeModal, setShowWelcomeModal] = useState(false);
     const [showCreditsModal, setShowCreditsModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     const currentCoach = coaches.find(c => c.id === selectedCoach);
     const currentMessages = selectedCoach ? (messages[selectedCoach] || []) : [];
@@ -47,7 +50,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const selectCoach = useCallback((id: string) => {
         setSelectedCoach(id);
         const coach = coaches.find(c => c.id === id);
-        
+
         // For 'general' coach: no welcome video needed, mark as shown immediately
         if (id === 'general') {
             // Auto-mark as shown for general coach
@@ -58,7 +61,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
             }
             return;
         }
-        
+
         // For other coaches: show welcome modal if not already shown
         if (coach && !coach.welcomeShown) {
             setShowWelcomeModal(true);
@@ -117,6 +120,18 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
 
             const data = await res.json();
 
+            // Handle 401 - session expired, show login modal
+            if (res.status === 401) {
+                setShowLoginModal(true);
+                // Remove the user message since it wasn't processed
+                setMessages(prev => ({
+                    ...prev,
+                    [selectedCoach]: (prev[selectedCoach] || []).slice(0, -1)
+                }));
+                return;
+            }
+
+            // Handle 402 - no credits, show credits modal
             if (res.status === 402) {
                 setShowCreditsModal(true);
                 // Remove the user message since it wasn't processed
@@ -178,6 +193,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
         messagesRemaining,
         showWelcomeModal,
         showCreditsModal,
+        showLoginModal,
 
         // Actions
         setCoaches,
@@ -185,6 +201,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
         closeWelcomeModal,
         sendMessage,
         setShowCreditsModal,
+        setShowLoginModal,
         updateCredits,
         addFirstMessage,
 
