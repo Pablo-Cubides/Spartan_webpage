@@ -23,7 +23,7 @@ import {
     CoachWelcomeModal,
 } from './components';
 
-type PageState = 'loading' | 'video' | 'login' | 'onboarding' | 'profile-summary' | 'chat';
+type PageState = 'loading' | 'video' | 'onboarding' | 'profile-summary' | 'chat';
 
 export default function CoachEspartanoPage() {
     const { user, loading: authLoading } = useAuth();
@@ -40,8 +40,24 @@ export default function CoachEspartanoPage() {
         if (authLoading) return;
 
         if (!user) {
-            // Si no hay usuario, primero mostrar el video de introducción
+            // Usuario no autenticado: mostrar video de intro, luego ir al chat
+            // La verificación de login se hará cuando intenten enviar mensaje
             setPageState('video');
+
+            // Initialize with default coach for unauthenticated users
+            const defaultCoaches = [{
+                id: 'general',
+                name: 'Coach Espartano',
+                title: 'Coach General',
+                description: 'Tu coach personal para transformación integral',
+                icon: '⚔️',
+                color: '#D32F2F',
+                welcomeVideo: '/Herramientas/Videos/onboarding-welcome.mp4',
+                welcomeShown: true,
+                messageCount: 0
+            }];
+            chatState.setCoaches(defaultCoaches);
+            chatState.selectCoach('general');
             return;
         }
 
@@ -148,7 +164,7 @@ export default function CoachEspartanoPage() {
                     </div>
                 )}
 
-                {/* Video Introduction - Sin requerir login */}
+                {/* Video Introduction - Sin requerir login, luego va al chat */}
                 {pageState === 'video' && (
                     <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
                         <h2 className="text-3xl font-bold text-white mb-6 text-center">
@@ -161,37 +177,24 @@ export default function CoachEspartanoPage() {
                                 controls
                                 playsInline
                                 className="w-full h-full object-cover"
-                                onEnded={() => setPageState('login')}
+                                onEnded={() => setPageState('chat')}
                             >
                                 Tu navegador no soporta videos HTML5.
                             </video>
                             <button
-                                onClick={() => setPageState('login')}
+                                onClick={() => setPageState('chat')}
                                 className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors"
                             >
                                 Continuar →
                             </button>
                         </div>
                         <p className="mt-4 text-gray-400 text-center">
-                            Después del video, inicia sesión para comenzar tu transformación.
+                            Puedes escribir tu primer mensaje después del video.
                         </p>
                     </div>
                 )}
 
-                {/* Login Required */}
-                {pageState === 'login' && (
-                    <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                        <h2 className="text-2xl font-bold text-white mb-4">Inicia sesión para continuar</h2>
-                        <p className="text-gray-400 mb-8">Necesitas una cuenta para usar Coach Espartano</p>
-                        <button
-                            onClick={() => setShowLoginModal(true)}
-                            className="bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
-                        >
-                            Iniciar Sesión
-                        </button>
-                        <ModalLogin open={showLoginModal} onClose={() => setShowLoginModal(false)} />
-                    </div>
-                )}
+
 
                 {/* Onboarding */}
                 {pageState === 'onboarding' && (
