@@ -6,10 +6,10 @@ import type { EditIntent } from '../types/ai'
 type UnknownRecord = Record<string, unknown>
 
 const NANOBANANA_URL = process.env.NANOBANANA_URL || ''
-const NANOBANANA_KEY = process.env.NANOBANANA_API_KEY || process.env.GEMINI_API_KEY || ''
+const NANOBANANA_KEY = process.env.NANOBANANA_API_KEY || process.env.GEMINI_API_KEY_CLOTHING || process.env.GEMINI_API_KEY || ''
 
 // Accept different environment variable names used in this project
-const GEMINI_API_KEY_VAR = process.env.GEMINI_API_KEY || ''
+const GEMINI_API_KEY_VAR = process.env.GEMINI_API_KEY_CLOTHING || process.env.GEMINI_API_KEY || ''
 const GEMINI_REST_URL = process.env.GEMINI_REST_URL || ''
 const GOOGLE_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || process.env.GOOGLE_IMAGE_MODEL || 'imagen-3.0-generate-001'
 

@@ -3,10 +3,11 @@ import fetch from 'node-fetch';
 import { appendLog } from './logger';
 import type { EditIntent } from '../types/ai'
 
-const API_KEY = process.env.GEMINI_API_KEY;
+// Use clothing-specific API key with fallback
+const API_KEY = process.env.GEMINI_API_KEY_CLOTHING || process.env.GEMINI_API_KEY;
 
 if (!API_KEY) {
-  console.warn("GEMINI_API_KEY environment variable not set. The image editing API will not work.");
+  console.warn("GEMINI_API_KEY_CLOTHING or GEMINI_API_KEY environment variable not set. The image editing API will not work.");
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY || '');
@@ -59,10 +60,10 @@ export async function editImageWithGemini(imageUrl: string, intent: EditIntent):
     await appendLog({ phase: 'gemini.edit.no_image_response', response: textResponse });
     throw new Error(`The AI model responded with text but did not return an edited image: "${textResponse}"`);
 
-    } catch (error: unknown) {
-      console.error('Error calling Gemini API for image editing:', error);
-      await appendLog({ phase: 'gemini.edit.error', error: String(error) });
-      const msg = error && typeof error === 'object' && 'message' in error ? String((error as Record<string, unknown>).message) : String(error)
-      return { editedImageBuffer: null, note: `Error during AI editing: ${msg}` };
-    }
+  } catch (error: unknown) {
+    console.error('Error calling Gemini API for image editing:', error);
+    await appendLog({ phase: 'gemini.edit.error', error: String(error) });
+    const msg = error && typeof error === 'object' && 'message' in error ? String((error as Record<string, unknown>).message) : String(error)
+    return { editedImageBuffer: null, note: `Error during AI editing: ${msg}` };
+  }
 }

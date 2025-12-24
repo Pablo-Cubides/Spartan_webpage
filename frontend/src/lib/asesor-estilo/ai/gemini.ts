@@ -186,7 +186,7 @@ export async function analyzeClothingWithGemini(
 ): Promise<ClothingAnalysis> {
   await appendLog({ phase: 'gemini.analyzeClothing.start', imageUrl, locale });
 
-  const geminiKey = getEnv('PERSONAL_SHOPPER_GEMINI_KEY') || getEnv('GEMINI_API_KEY') || '';
+  const geminiKey = getEnv('GEMINI_API_KEY_CLOTHING') || getEnv('GEMINI_API_KEY') || '';
 
   if (!geminiKey) {
     return {
@@ -311,7 +311,7 @@ export async function analyzeImageWithGemini(
 ): Promise<FaceAnalysis> {
   await appendLog({ phase: 'gemini.analyze.start', imageUrl, locale });
 
-  const geminiKey = getEnv('PERSONAL_SHOPPER_GEMINI_KEY') || getEnv('GEMINI_API_KEY') || '';
+  const geminiKey = getEnv('GEMINI_API_KEY_FACE') || getEnv('GEMINI_API_KEY') || '';
   const visionKey = getEnv('GOOGLE_VISION_API_KEY') || '';
 
   if (geminiKey) {

@@ -8,9 +8,10 @@ let geminiClient: GoogleGenerativeAI | null = null;
 
 function getGeminiClient(): GoogleGenerativeAI {
     if (!geminiClient) {
-        const apiKey = process.env.GEMINI_API_KEY;
+        // Use dedicated coach key, fallback to general key
+        const apiKey = process.env.GEMINI_API_KEY_COACH || process.env.GEMINI_API_KEY;
         if (!apiKey) {
-            throw new Error('GEMINI_API_KEY environment variable is required');
+            throw new Error('GEMINI_API_KEY_COACH or GEMINI_API_KEY environment variable is required');
         }
         geminiClient = new GoogleGenerativeAI(apiKey);
     }
