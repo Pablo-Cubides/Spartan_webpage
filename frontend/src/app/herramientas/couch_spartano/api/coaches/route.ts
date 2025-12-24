@@ -50,9 +50,15 @@ const handler = async (request: NextRequest) => {
     }
 
     // Build list of coaches with their status
-    const enabledCoachIds = user.spartanProfile.enabledCoaches as CoachType[];
+    // Always include 'general' coach even if enabledCoaches is empty
+    const rawEnabled = user.spartanProfile.enabledCoaches as CoachType[];
+    const enabledCoachIds: CoachType[] = rawEnabled && rawEnabled.length > 0
+        ? (rawEnabled.includes('general') ? rawEnabled : ['general', ...rawEnabled])
+        : ['general'];
+
     const coaches = enabledCoachIds.map(coachId => {
         const coachConfig = COACHES[coachId];
+        if (!coachConfig) return null; // Skip invalid coach IDs
         const conversation = user.spartanProfile!.conversations.find(c => c.coachType === coachId);
 
         return {
@@ -67,7 +73,7 @@ const handler = async (request: NextRequest) => {
             welcomeShown: coachId === 'general' ? true : (conversation?.welcomeShown ?? false),
             messageCount: conversation?.messageCount ?? 0
         };
-    });
+    }).filter(Boolean); // Remove nulls
 
     return NextResponse.json({
         hasProfile: true,
