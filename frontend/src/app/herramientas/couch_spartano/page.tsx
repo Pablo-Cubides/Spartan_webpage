@@ -40,9 +40,13 @@ export default function CoachEspartanoPage() {
         if (authLoading) return;
 
         if (!user) {
-            // Usuario no autenticado: mostrar video de intro, luego ir al chat
-            // La verificación de login se hará cuando intenten enviar mensaje
-            setPageState('video');
+            // Video skipping logic: check localStorage
+            const videoWatched = localStorage.getItem('coach_video_watched');
+            if (videoWatched) {
+                setPageState('chat');
+            } else {
+                setPageState('video');
+            }
 
             // Initialize with default coach for unauthenticated users
             const defaultCoaches = [{
@@ -147,6 +151,33 @@ export default function CoachEspartanoPage() {
         }
     };
 
+    // Handle handling video completion
+    const handleVideoComplete = () => {
+        localStorage.setItem('coach_video_watched', 'true');
+        setPageState('chat');
+    };
+
+    // Handle edit profile from sidebar
+    const handleEditProfile = async () => {
+        // Fetch latest profile data
+        try {
+            const token = getTokenCookie();
+            const res = await fetch('/api/users/profile', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data.spartanProfile) {
+                // Use a specialized edit mode or reuse onboarding with pre-filled?
+                // For now, simple re-onboarding. Better would be a dedicated settings modal.
+                // Retrigger onboarding flow but we need to populate it. 
+                // Given the complexity, let's just go to onboarding state, ensuring the API handles updates correctly.
+                setPageState('onboarding');
+            }
+        } catch (e) {
+            console.error('Error fetching profile for edit:', e);
+        }
+    };
+
     // Render based on page state
     return (
         <main className="flex-1 bg-[#0a0a0a] min-h-screen">
@@ -177,12 +208,12 @@ export default function CoachEspartanoPage() {
                                 controls
                                 playsInline
                                 className="w-full h-full object-cover"
-                                onEnded={() => setPageState('chat')}
+                                onEnded={handleVideoComplete}
                             >
                                 Tu navegador no soporta videos HTML5.
                             </video>
                             <button
-                                onClick={() => setPageState('chat')}
+                                onClick={handleVideoComplete}
                                 className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors"
                             >
                                 Continuar →
@@ -219,6 +250,7 @@ export default function CoachEspartanoPage() {
                                 coaches={chatState.coaches}
                                 selectedCoach={chatState.selectedCoach}
                                 onSelectCoach={chatState.selectCoach}
+                                onEditProfile={handleEditProfile}
                             />
                             <CreditStatus
                                 credits={chatState.credits}
@@ -230,7 +262,7 @@ export default function CoachEspartanoPage() {
                         <ChatInterface
                             coach={chatState.currentCoach}
                             messages={chatState.currentMessages}
-                            loading={chatState.loading}
+                            loading={chatState.loading} // Pass general loading
                             onSendMessage={chatState.sendMessage}
                             disabled={chatState.loading}
                         />

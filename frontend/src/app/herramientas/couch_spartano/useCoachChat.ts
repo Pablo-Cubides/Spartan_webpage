@@ -44,12 +44,51 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const [showCreditsModal, setShowCreditsModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
 
+    const [historyLoading, setHistoryLoading] = useState(false);
+
     const currentCoach = coaches.find(c => c.id === selectedCoach);
     const currentMessages = selectedCoach ? (messages[selectedCoach] || []) : [];
+
+    // Helper to fetch history
+    const fetchHistory = useCallback(async (coachId: string) => {
+        // Don't fetch if we already have messages (except the first welcome message)
+        if (messages[coachId] && messages[coachId].length > 1) return;
+
+        setHistoryLoading(true);
+        try {
+            const token = getTokenCookie();
+            // Validar que el token exista antes de hacer la petición
+            if (!token) {
+                console.log("No auth token, skipping history fetch");
+                return;
+            }
+
+            const res = await fetch(`/herramientas/couch_spartano/api/chat/history?coachType=${coachId}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.messages && data.messages.length > 0) {
+                    setMessages(prev => ({
+                        ...prev,
+                        [coachId]: data.messages
+                    }));
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching history:', error);
+        } finally {
+            setHistoryLoading(false);
+        }
+    }, [messages]);
 
     const selectCoach = useCallback((id: string) => {
         setSelectedCoach(id);
         const coach = coaches.find(c => c.id === id);
+
+        // Fetch history immediately
+        fetchHistory(id);
 
         // For 'general' coach: no welcome video needed, mark as shown immediately
         if (id === 'general') {
@@ -66,7 +105,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
         if (coach && !coach.welcomeShown) {
             setShowWelcomeModal(true);
         }
-    }, [coaches]);
+    }, [coaches, fetchHistory]);
 
     const closeWelcomeModal = useCallback(async () => {
         if (!selectedCoach) return;
