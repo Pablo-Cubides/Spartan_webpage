@@ -3,46 +3,21 @@ import { prisma } from "@/lib/server/prisma";
 import Link from "next/link";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
 
-// Force dynamic rendering to avoid DB queries during Vercel build
+// Forcing dynamic to ensure we always get fresh data from DB on request
 export const dynamic = 'force-dynamic';
 
 const BASE_URL = "https://spartanclub.co";
 
-// Epic category data (fallback if DB not seeded)
-const CATEGORY_DATA = [
-  {
-    slug: 'entrenamiento-y-energia-fisica',
-    epicName: 'Cuerpo Espartano',
-    description: 'Rutinas, fuerza, resistencia y energía para hombres.',
-    icon: Dumbbell,
-    gradient: 'from-red-600 to-orange-600',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&h=600',
-  },
-  {
-    slug: 'estilo-y-presencia',
-    epicName: 'Estilo Espartano',
-    description: 'Moda, cuidado personal y presencia masculina.',
-    icon: Shirt,
-    gradient: 'from-blue-600 to-indigo-600',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=600',
-  },
-  {
-    slug: 'mentalidad-y-disciplina',
-    epicName: 'Mentalidad Espartana',
-    description: 'Disciplina, hábitos y resiliencia masculina.',
-    icon: Brain,
-    gradient: 'from-purple-600 to-pink-600',
-    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&h=600',
-  },
-  {
-    slug: 'productividad-y-gestion-del-tiempo',
-    epicName: 'Productividad Espartana',
-    description: 'Gestión del tiempo y máximo rendimiento.',
-    icon: Clock,
-    gradient: 'from-green-600 to-teal-600',
-    image: 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&h=600',
-  },
-];
+// Helper to map icon string names back to components
+const getIconComponent = (iconName: string | null) => {
+  switch (iconName) {
+    case 'Dumbbell': return Dumbbell;
+    case 'Shirt': return Shirt;
+    case 'Brain': return Brain;
+    case 'Clock': return Clock;
+    default: return Dumbbell;
+  }
+};
 
 export const metadata: Metadata = {
   title: "Blog Spartan Club | Desarrollo Masculino, Entrenamiento y Estilo",
@@ -73,6 +48,27 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
+  // Define Category type
+  type Category = {
+    slug: string;
+    epic_name: string;
+    description: string;
+    icon: string | null;
+    gradient: string | null;
+    cover_image: string | null;
+  };
+
+  // Fetch categories from database
+  let categories: Category[] = [];
+  try {
+    categories = await prisma.blogCategory.findMany({
+      where: { is_active: true },
+      orderBy: { order: 'asc' },
+    });
+  } catch (error) {
+    console.error("Error fetching blog categories:", error);
+  }
+
   type PostPreview = {
     slug: string;
     category_slug: string | null;
@@ -80,6 +76,7 @@ export default async function BlogPage() {
     excerpt: string | null;
     cover_image: string | null;
     published_at: Date | null;
+    category: { epic_name: string } | null;
   };
 
   let latestPosts: PostPreview[] = [];
@@ -94,6 +91,9 @@ export default async function BlogPage() {
         excerpt: true,
         cover_image: true,
         published_at: true,
+        category: {
+          select: { epic_name: true }
+        }
       },
       orderBy: { published_at: "desc" },
       take: 6,
@@ -159,8 +159,8 @@ export default async function BlogPage() {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {CATEGORY_DATA.map((cat) => {
-                const Icon = cat.icon;
+              {categories.map((cat) => {
+                const Icon = getIconComponent(cat.icon);
                 return (
                   <Link
                     key={cat.slug}
@@ -170,7 +170,7 @@ export default async function BlogPage() {
                     {/* Background Image */}
                     <div className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity duration-500">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={cat.image} alt="" className="w-full h-full object-cover" />
+                      <img src={cat.cover_image || ''} alt="" className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
                     </div>
 
@@ -181,7 +181,7 @@ export default async function BlogPage() {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors">
-                          {cat.epicName}
+                          {cat.epic_name}
                         </h3>
                         <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
                           {cat.description}
@@ -240,7 +240,7 @@ export default async function BlogPage() {
                       {/* Category badge */}
                       {post.category_slug && (
                         <span className="inline-block px-3 py-1 text-xs font-semibold text-red-400 bg-red-500/10 rounded-full mb-3">
-                          {CATEGORY_DATA.find(c => c.slug === post.category_slug)?.epicName || post.category_slug}
+                          {post.category?.epic_name || post.category_slug}
                         </span>
                       )}
 

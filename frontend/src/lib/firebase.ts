@@ -37,7 +37,7 @@ if (isBrowser && hasClientApiKey) {
 
     app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
     auth = getAuth(app);
-    
+
     if (process.env.NODE_ENV === 'development') {
       console.log('✅ Firebase initialized successfully');
     }
@@ -63,10 +63,32 @@ export function useAuth() {
       return;
     }
 
-    const unsub = onAuthStateChanged(auth, (u) => {
+    const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u as User | null);
       setLoading(false);
+
+      // Manage session cookie
+      if (u) {
+        try {
+          const idToken = await u.getIdToken();
+          await fetch('/api/auth/session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken }),
+          });
+        } catch (error) {
+          console.error('Failed to create session:', error);
+        }
+      } else {
+        // Clear session on logout
+        try {
+          await fetch('/api/auth/session', { method: 'DELETE' });
+        } catch (error) {
+          console.error('Failed to clear session:', error);
+        }
+      }
     });
+
     return () => unsub();
   }, []);
 

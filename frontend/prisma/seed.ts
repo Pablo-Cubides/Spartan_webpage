@@ -7,62 +7,66 @@ async function seedBlogCategories() {
 
   const categories = [
     {
-      name_display: "Cuerpo Espartano",
-      slug: "entrenamiento-y-energia-fisica",
-      description:
-        "Artículos sobre entrenamiento físico, fuerza, resistencia y energía para hombres. Rutinas en casa, gimnasio, cardio inteligente y consejos para ganar músculo y salud sin vivir en el gym.",
-      meta_title:
-        "Cuerpo Espartano – Entrenamiento y energía física | Spartan Club",
-      meta_description:
-        "Artículos sobre entrenamiento físico, fuerza, resistencia y energía para hombres. Rutinas en casa, gimnasio, cardio inteligente y consejos para ganar músculo.",
-      sort_order: 0,
+      slug: 'entrenamiento-y-energia-fisica',
+      epic_name: 'Cuerpo Espartano',
+      description: 'Rutinas, fuerza, resistencia y energía para hombres.',
+      icon: 'Dumbbell',
+      gradient: 'from-red-600 to-orange-600',
+      cover_image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&h=600',
+      order: 1,
     },
     {
-      name_display: "Estilo Espartano",
-      slug: "estilo-y-presencia",
-      description:
-        "Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen sin perder tu esencia.",
-      meta_title:
-        "Estilo Espartano – Guías de estilo y presencia masculina | Spartan Club",
-      meta_description:
-        "Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen.",
-      sort_order: 1,
+      slug: 'estilo-y-presencia',
+      epic_name: 'Estilo Espartano',
+      description: 'Moda, cuidado personal y presencia masculina.',
+      icon: 'Shirt',
+      gradient: 'from-blue-600 to-indigo-600',
+      cover_image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&h=600',
+      order: 2,
     },
     {
-      name_display: "Mentalidad Espartana",
-      slug: "mentalidad-y-disciplina",
-      description:
-        "Contenidos sobre mentalidad, disciplina, hábitos y resiliencia masculina. Cómo construir carácter, superar excusas y sostener hábitos que te llevan a tus metas.",
-      meta_title:
-        "Mentalidad Espartana – Disciplina y hábitos para hombres | Spartan Club",
-      meta_description:
-        "Contenidos sobre mentalidad, disciplina, hábitos y resiliencia masculina. Cómo construir carácter, superar excusas y sostener hábitos.",
-      sort_order: 2,
+      slug: 'mentalidad-y-disciplina',
+      epic_name: 'Mentalidad Espartana',
+      description: 'Disciplina, hábitos y resiliencia masculina.',
+      icon: 'Brain',
+      gradient: 'from-purple-600 to-pink-600',
+      cover_image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&h=600',
+      order: 3,
     },
     {
-      name_display: "Productividad Espartana",
-      slug: "productividad-y-gestion-del-tiempo",
-      description:
-        "Estrategias y herramientas para que los hombres organicen mejor su tiempo, sean más productivos y consigan resultados en estudio, trabajo y proyectos personales.",
-      meta_title:
-        "Productividad Espartana – Gestión de tiempo y rendimiento | Spartan Club",
-      meta_description:
-        "Estrategias y herramientas para que los hombres organicen mejor su tiempo, sean más productivos y consigan resultados en estudio, trabajo y proyectos.",
-      sort_order: 3,
+      slug: 'productividad-y-gestion-del-tiempo',
+      epic_name: 'Productividad Espartana',
+      description: 'Gestión del tiempo y máximo rendimiento.',
+      icon: 'Clock',
+      gradient: 'from-green-600 to-teal-600',
+      cover_image: 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&h=600',
+      order: 4,
     },
   ];
 
   for (const category of categories) {
-    const existing = await (prisma as any).blogCategory.findUnique({
+    const upserted = await prisma.blogCategory.upsert({
       where: { slug: category.slug },
+      update: {
+        epic_name: category.epic_name,
+        description: category.description,
+        icon: category.icon,
+        gradient: category.gradient,
+        cover_image: category.cover_image,
+        order: category.order,
+      },
+      create: {
+        slug: category.slug,
+        epic_name: category.epic_name,
+        description: category.description,
+        icon: category.icon,
+        gradient: category.gradient,
+        cover_image: category.cover_image,
+        order: category.order,
+        is_active: true,
+      },
     });
-
-    if (!existing) {
-      await (prisma as any).blogCategory.create({ data: category });
-      console.log(`✅ Created category: ${category.name_display}`);
-    } else {
-      console.log(`⏭️  Category already exists: ${category.name_display}`);
-    }
+    console.log(`✅ Upserted category: ${upserted.epic_name}`);
   }
 
   console.log("✅ Blog categories seeded successfully!\n");

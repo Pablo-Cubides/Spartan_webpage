@@ -75,22 +75,22 @@ model Announcement {
 // Blog Models
 // =============================================
 
-// Note: Run `npx prisma db push` to create this table
-// model BlogCategory {
-//   id              Int        @id @default(autoincrement())
-//   slug            String     @unique
-//   epic_name       String
-//   description     String
-//   meta_title      String?
-//   meta_description String?
-//   icon            String?
-//   cover_image     String?
-//   order           Int        @default(0)
-//   is_active       Boolean    @default(true)
-//   created_at      DateTime   @default(now())
-//   updated_at      DateTime   @updatedAt
-//   posts           BlogPost[]
-// }
+model BlogCategory {
+  id              Int        @id @default(autoincrement())
+  slug            String     @unique
+  epic_name       String
+  description     String
+  meta_title      String?
+  meta_description String?
+  icon            String?
+  cover_image     String?
+  gradient        String?    // Added for UI styling (e.g. "from-red-600 to-orange-600")
+  order           Int        @default(0)
+  is_active       Boolean    @default(true)
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
+  posts           BlogPost[]
+}
 
 model BlogPost {
   id              Int       @id @default(autoincrement())
@@ -99,7 +99,11 @@ model BlogPost {
   content         String
   excerpt         String?
   cover_image     String?
+  
+  // Relation to Category
   category_slug   String?
+  category        BlogCategory? @relation(fields: [category_slug], references: [slug])
+  
   meta_title      String?
   meta_description String?
   keywords        String[]
