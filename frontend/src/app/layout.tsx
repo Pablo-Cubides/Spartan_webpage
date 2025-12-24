@@ -2,6 +2,7 @@
 import './globals.css';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import CookieConsent from '@/components/CookieConsent';
 import { Inter, Noto_Sans } from 'next/font/google';
 import { assertEnvironment } from '@/lib/config/validate-env';
 import type { Metadata, Viewport } from 'next';
@@ -226,6 +227,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <CookieConsent />
       </body>
     </html>
   );
