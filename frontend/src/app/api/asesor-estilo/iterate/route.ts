@@ -247,21 +247,23 @@ export async function POST(req: Request) {
     };
     await setCached(cacheKey, result, 3600); // Cache for 1 hour
 
-    // 11. Register generated image
-    try {
-      const registryPath = path.join(process.cwd(), 'data', 'generated_images.json');
-      const txt = await fs.readFile(registryPath, 'utf8').catch(() => '[]');
-      const arr = JSON.parse(txt || '[]');
-      arr.push({
-        publicId: uploaded.public_id,
-        url: uploaded.url,
-        createdAt: Date.now(),
-        sessionId: effectiveSessionId,
-      });
-      await fs.writeFile(registryPath, JSON.stringify(arr, null, 2), 'utf8');
-    } catch (e) {
-      // best-effort
-      console.error('register-generated-image error', e);
+    // 11. Register generated image (only in development - serverless has read-only filesystem)
+    if (process.env.NODE_ENV === 'development') {
+      try {
+        const registryPath = path.join(process.cwd(), 'data', 'generated_images.json');
+        const txt = await fs.readFile(registryPath, 'utf8').catch(() => '[]');
+        const arr = JSON.parse(txt || '[]');
+        arr.push({
+          publicId: uploaded.public_id,
+          url: uploaded.url,
+          createdAt: Date.now(),
+          sessionId: effectiveSessionId,
+        });
+        await fs.writeFile(registryPath, JSON.stringify(arr, null, 2), 'utf8');
+      } catch (e) {
+        // best-effort logging in dev only
+        console.error('register-generated-image error', e);
+      }
     }
 
     // 12. Try delete previous generated image (best-effort)
