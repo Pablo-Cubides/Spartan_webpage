@@ -1,0 +1,63 @@
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Ejecutar a las 00:00 UTC cada 3 días
+    - cron: '0 0 */3 * *'
+  # Permitir ejecución manual desde la pestaña Actions para probar
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Supabase Client
+        # Instalamos solo el cliente de supabase para este script ligero
+        run: npm install @supabase/supabase-js
+
+      - name: Run Keep-Alive Script
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          node -e "
+          const { createClient } = require('@supabase/supabase-js');
+          
+          const supabaseUrl = process.env.SUPABASE_URL;
+          const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+          
+          if (!supabaseUrl || !supabaseKey) {
+            console.error('❌ Error: Missing environment variables SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
+            process.exit(1);
+          }
+
+          const supabase = createClient(supabaseUrl, supabaseKey);
+
+          async function ping() {
+            try {
+              // Realizamos una consulta mínima a la tabla de usuarios de auth o una tabla pública
+              // Usamos auth.users.list porque requiere service_role y es muy ligera (limit 1)
+              const { data, error } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1 });
+              
+              if (error) {
+                console.error('❌ Error pinging Supabase:', error.message);
+                process.exit(1);
+              }
+              
+              console.log('✅ Supabase keep-alive success');
+              console.log('Activity registered at:', new Date().toISOString());
+            } catch (err) {
+              console.error('❌ Unexpected error:', err);
+              process.exit(1);
+            }
+          }
+
+          ping();
+          "
