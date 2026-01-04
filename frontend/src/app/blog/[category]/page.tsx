@@ -1,11 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/server/prisma';
 import Link from 'next/link';
 import { Dumbbell, Shirt, Brain, Clock } from 'lucide-react';
-
-// Force dynamic rendering to avoid DB queries during Vercel build
-export const dynamic = 'force-dynamic';
+import { getPostsByCategory } from '@/lib/blog/static-data';
 
 interface PageProps {
   params: Promise<{
@@ -102,29 +99,14 @@ export default async function BlogCategoryPage({ params }: PageProps) {
 
   const Icon = cat.icon;
 
-  let posts: Array<{
-    slug: string;
-    title: string;
-    excerpt: string | null;
-    cover_image: string | null;
-    published_at: Date | null;
-  }> = [];
-
-  try {
-    posts = await prisma.blogPost.findMany({
-      where: { category_slug: categorySlug, is_published: true },
-      select: {
-        slug: true,
-        title: true,
-        excerpt: true,
-        cover_image: true,
-        published_at: true,
-      },
-      orderBy: { published_at: 'desc' },
-    });
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-  }
+  // Use static data instead of database
+  const posts = getPostsByCategory(categorySlug).map(post => ({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    cover_image: post.cover_image,
+    published_at: new Date(post.published_at),
+  }));
 
   // Schema.org
   const breadcrumbSchema = {

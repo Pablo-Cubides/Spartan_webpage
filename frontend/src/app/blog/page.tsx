@@ -1,20 +1,17 @@
 import { Metadata } from "next";
-import { prisma } from "@/lib/server/prisma";
 import Link from "next/link";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
-
-// Forcing dynamic to ensure we always get fresh data from DB on request
-export const dynamic = 'force-dynamic';
+import { categories as staticCategories, getAllPosts, getPostsByCategory } from "@/lib/blog/static-data";
 
 const BASE_URL = "https://spartanclub.co";
 
 // Helper to map icon string names back to components
-const getIconComponent = (iconName: string | null) => {
-  switch (iconName) {
-    case 'Dumbbell': return Dumbbell;
-    case 'Shirt': return Shirt;
-    case 'Brain': return Brain;
-    case 'Clock': return Clock;
+const getIconComponent = (categorySlug: string) => {
+  switch (categorySlug) {
+    case 'entrenamiento-y-energia-fisica': return Dumbbell;
+    case 'estilo-y-presencia': return Shirt;
+    case 'mentalidad-y-disciplina': return Brain;
+    case 'productividad-y-gestion-del-tiempo': return Clock;
     default: return Dumbbell;
   }
 };
@@ -48,59 +45,25 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-  // Define Category type
-  type Category = {
-    slug: string;
-    epic_name: string;
-    description: string;
-    icon: string | null;
-    gradient: string | null;
-    cover_image: string | null;
-  };
+  // Use static data instead of database
+  const categories = staticCategories.map(cat => ({
+    slug: cat.slug,
+    epic_name: cat.name,
+    description: cat.description,
+    icon: null,
+    gradient: cat.gradient,
+    cover_image: cat.cover_image,
+  }));
 
-  // Fetch categories from database
-  let categories: Category[] = [];
-  try {
-    categories = await prisma.blogCategory.findMany({
-      where: { is_active: true },
-      orderBy: { order: 'asc' },
-    });
-  } catch (error) {
-    console.error("Error fetching blog categories:", error);
-  }
-
-  type PostPreview = {
-    slug: string;
-    category_slug: string | null;
-    title: string;
-    excerpt: string | null;
-    cover_image: string | null;
-    published_at: Date | null;
-    category: { epic_name: string } | null;
-  };
-
-  let latestPosts: PostPreview[] = [];
-
-  try {
-    latestPosts = await prisma.blogPost.findMany({
-      where: { is_published: true },
-      select: {
-        slug: true,
-        category_slug: true,
-        title: true,
-        excerpt: true,
-        cover_image: true,
-        published_at: true,
-        category: {
-          select: { epic_name: true }
-        }
-      },
-      orderBy: { published_at: "desc" },
-      take: 6,
-    });
-  } catch (error) {
-    console.error("Error fetching blog posts:", error);
-  }
+  const latestPosts = getAllPosts().slice(0, 6).map(post => ({
+    slug: post.slug,
+    category_slug: post.category_slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    cover_image: post.cover_image,
+    published_at: new Date(post.published_at),
+    category: { epic_name: staticCategories.find(c => c.slug === post.category_slug)?.name || '' }
+  }));
 
   // Schema.org
   const blogSchema = {
@@ -160,7 +123,7 @@ export default async function BlogPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {categories.map((cat) => {
-                const Icon = getIconComponent(cat.icon);
+                const Icon = getIconComponent(cat.slug);
                 return (
                   <Link
                     key={cat.slug}

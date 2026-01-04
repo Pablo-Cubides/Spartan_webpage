@@ -1,14 +1,11 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { prisma } from '@/lib/server/prisma';
 import { generateBlogPostingSchema } from '@/lib/blog/schema-generator';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Calendar, Clock, User, ArrowLeft, Share2 } from 'lucide-react';
-
-// Force dynamic rendering to avoid DB queries during Vercel build
-export const dynamic = 'force-dynamic';
+import { getPostBySlug, getPostsByCategory } from '@/lib/blog/static-data';
 
 interface PageProps {
   params: Promise<{
@@ -28,73 +25,65 @@ const EPIC_NAMES: Record<string, string> = {
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  try {
-    const { category, slug } = await params;
-    const post = await prisma.blogPost.findFirst({
-      where: { slug, category_slug: category, is_published: true },
-      include: { author: true },
-    });
+  const { category, slug } = await params;
+  const post = getPostBySlug(slug);
 
-    if (!post) {
-      return { title: 'Artículo no encontrado | Spartan Club' };
-    }
-
-    const postUrl = `${BASE_URL}/blog/${category}/${slug}`;
-
-    return {
-      title: post.meta_title || `${post.title} | Spartan Club`,
-      description: post.meta_description || post.excerpt || undefined,
-      keywords: post.keywords || [],
-      authors: [{ name: post.author?.name || 'Spartan Club' }],
-      openGraph: {
-        title: post.meta_title || post.title,
-        description: post.meta_description || post.excerpt || undefined,
-        url: postUrl,
-        type: 'article',
-        publishedTime: post.published_at?.toISOString(),
-        modifiedTime: post.updated_at?.toISOString(),
-        authors: [post.author?.name || 'Spartan Club'],
-        images: post.cover_image ? [{ url: post.cover_image, alt: post.title }] : [],
-        siteName: 'Spartan Club',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: post.meta_title || post.title,
-        description: post.meta_description || post.excerpt || undefined,
-        images: post.cover_image ? [post.cover_image] : [],
-      },
-      alternates: { canonical: postUrl },
-    };
-  } catch {
-    return { title: 'Error | Spartan Club' };
+  if (!post || post.category_slug !== category) {
+    return { title: 'Artículo no encontrado | Spartan Club' };
   }
+
+  const postUrl = `${BASE_URL}/blog/${category}/${slug}`;
+
+  return {
+    title: `${post.title} | Spartan Club`,
+    description: post.excerpt || undefined,
+    keywords: post.keywords || [],
+    authors: [{ name: post.author?.name || 'Spartan Club' }],
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || undefined,
+      url: postUrl,
+      type: 'article',
+      publishedTime: post.published_at,
+      authors: [post.author?.name || 'Spartan Club'],
+      images: post.cover_image ? [{ url: post.cover_image, alt: post.title }] : [],
+      siteName: 'Spartan Club',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || undefined,
+      images: post.cover_image ? [post.cover_image] : [],
+    },
+    alternates: { canonical: postUrl },
+  };
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { category, slug } = await params;
 
-  const post = await prisma.blogPost.findFirst({
-    where: { slug, category_slug: category, is_published: true },
-    include: { author: true },
-  });
+  const staticPost = getPostBySlug(slug);
 
-  if (!post) {
+  if (!staticPost || staticPost.category_slug !== category) {
     notFound();
   }
 
+  // Transform to expected format
+  const post = {
+    ...staticPost,
+    meta_title: staticPost.title,
+    meta_description: staticPost.excerpt,
+    published_at: new Date(staticPost.published_at),
+    updated_at: new Date(staticPost.published_at),
+    is_published: true,
+    author: { name: staticPost.author.name, avatar_id: null },
+  };
+
   // Get related posts
-  let relatedPosts: Array<{ slug: string; title: string; cover_image: string | null }> = [];
-  try {
-    relatedPosts = await prisma.blogPost.findMany({
-      where: {
-        category_slug: category,
-        is_published: true,
-        slug: { not: slug },
-      },
-      select: { slug: true, title: true, cover_image: true },
-      take: 3,
-    });
-  } catch { }
+  const relatedPosts = getPostsByCategory(category)
+    .filter(p => p.slug !== slug)
+    .slice(0, 3)
+    .map(p => ({ slug: p.slug, title: p.title, cover_image: p.cover_image }));
 
   // Generate schema
   const schema = generateBlogPostingSchema(post, {
