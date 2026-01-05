@@ -247,11 +247,23 @@
 8. Click **Save**
 9. **Copia el Template ID** (aparece en la URL o en la lista)
 
-### Paso 3: Crear Template Purchase
+### Paso 3: Crear Template Purchase y Configurar Variables
 1. Repite el proceso anterior
 2. Nombre: `Spartan Club - Purchase`
 3. Usa el HTML del Template 2
-4. Guarda y copia el ID
+4. **IMPORTANTE**: Click en **Settings** (⚙️) del template
+5. En **Variables**, agrega estas 4 variables:
+   - `NAME` (tipo: text)
+   - `PACKAGE_NAME` (tipo: text)
+   - `CREDITS` (tipo: text)
+   - `AMOUNT` (tipo: text)
+6. En **Test variables**, pon valores de ejemplo:
+   - NAME: `Juan Pérez`
+   - PACKAGE_NAME: `Paquete Básico`
+   - CREDITS: `100`
+   - AMOUNT: `50000`
+7. Click **Send test** para enviar a tu email y ver cómo queda
+8. Si se ve bien, guarda y **copia el Template ID**
 
 ### Paso 4: Configurar Variables de Entorno
 Agrega a tu `.env.local`:
@@ -263,11 +275,59 @@ BREVO_TEMPLATE_WELCOME=ID_del_template_welcome
 BREVO_TEMPLATE_PURCHASE=ID_del_template_purchase
 ```
 
-### Paso 5: Probar
+### Paso 5: Probar el Email de Compra
 ```bash
 cd frontend
-node test-brevo.js tu-email@ejemplo.com
+node test-purchase-email.js tu-email@ejemplo.com
 ```
+
+**¿Qué verás en el email?**
+- Nombre: Juan Pérez
+- Paquete: Paquete Básico  
+- Créditos: 100 créditos
+- Monto: $50000 COP
+
+Si estos datos se ven correctamente (sin las llaves `{{ }}`), el template está bien configurado.
+
+---
+
+## 🔧 Solución de Problemas
+
+### Las variables no se reemplazan (aparecen como `{{ params.NAME }}`)
+
+**Causa**: El template no tiene las variables configuradas en Brevo.
+
+**Solución**:
+1. Ve al template en Brevo
+2. Click en **Settings** (⚙️)
+3. Busca la sección **Variables** o **Parameters**
+4. Agrega manualmente:
+   - `NAME`
+   - `PACKAGE_NAME`
+   - `CREDITS`
+   - `AMOUNT`
+5. Guarda y envía un test email desde Brevo con valores de prueba
+
+### El email de prueba no llega
+
+**Checklist**:
+- [ ] API Key correcta en `.env.local`
+- [ ] IP autorizada en Brevo (181.59.2.174/32)
+- [ ] Sender verificado (spartanmarketcol@gmail.com)
+- [ ] Revisar carpeta de spam
+- [ ] Template ID correcto
+
+### Las variables salen en inglés o sin formato
+
+En el HTML del template, asegúrate que las variables usen esta sintaxis:
+```html
+{{ params.NAME }}
+{{ params.PACKAGE_NAME }}
+{{ params.CREDITS }}
+{{ params.AMOUNT }}
+```
+
+---
 
 ## ✅ Checklist
 
