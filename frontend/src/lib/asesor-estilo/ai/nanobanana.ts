@@ -11,7 +11,7 @@ const NANOBANANA_KEY = process.env.NANOBANANA_API_KEY || process.env.GEMINI_API_
 // Accept different environment variable names used in this project
 const GEMINI_API_KEY_VAR = process.env.GEMINI_API_KEY_CLOTHING || process.env.GEMINI_API_KEY || ''
 const GEMINI_REST_URL = process.env.GEMINI_REST_URL || ''
-const GOOGLE_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || process.env.GOOGLE_IMAGE_MODEL || 'imagen-3.0-generate-001'
+// const GOOGLE_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || process.env.GOOGLE_IMAGE_MODEL || 'imagen-3.0-generate-001'
 
 // Timeout configurations with progressive timeouts
 const GENERATION_TIMEOUT = parseInt(process.env.AI_GENERATION_TIMEOUT || '120000', 10) // 120s for generation/editing

@@ -44,7 +44,7 @@ export function useCoachChat(initialCoaches: Coach[]): UseCoachChatReturn {
     const [showCreditsModal, setShowCreditsModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
 
-    const [historyLoading, setHistoryLoading] = useState(false);
+    const [_historyLoading, setHistoryLoading] = useState(false);
 
     const currentCoach = coaches.find(c => c.id === selectedCoach);
     const currentMessages = selectedCoach ? (messages[selectedCoach] || []) : [];

@@ -9,7 +9,6 @@ export async function hasSufficientCredits(userId: number, amount: number): Prom
   return (user?.credits ?? 0) >= amount
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function consumeCredits(
   userId: number,
   amount: number,

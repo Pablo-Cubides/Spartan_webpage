@@ -90,7 +90,7 @@ class BrevoClient {
    * Send a transactional email
    */
   async sendTransactionalEmail(params: BrevoEmailParams) {
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       to: params.to,
       sender: params.sender || BREVO_CONFIG.sender,
     };
