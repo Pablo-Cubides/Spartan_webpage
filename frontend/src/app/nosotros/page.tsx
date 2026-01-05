@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import ContactForm from '@/components/ContactForm';
 import type { Metadata } from 'next';
 
 const BASE_URL = 'https://spartanclub.co';
@@ -219,27 +220,7 @@ export default function NosotrosPage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-6">
-              <div className="space-y-2">
-                <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">Contáctanos</h3>
-                <p className="text-[#9CA3AF]">Envíanos tu mensaje y te responderemos pronto</p>
-              </div>
-              <form className="flex flex-col gap-5" action="/api/contact" method="POST">
-                <textarea
-                  name="message"
-                  className="w-full rounded-xl bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#D32F2F] focus:border-transparent transition-all resize-none"
-                  placeholder="Escribe tu mensaje aquí..."
-                  rows={6}
-                  required
-                />
-                <button
-                  type="submit"
-                  className="flex items-center justify-center self-start rounded-xl px-8 py-4 bg-[#D32F2F] text-white font-bold uppercase tracking-wide hover:bg-red-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-red-900/50"
-                >
-                  Enviar Mensaje
-                </button>
-              </form>
-            </div>
+            <ContactForm />
           </section>
 
           {/* CTA final */}

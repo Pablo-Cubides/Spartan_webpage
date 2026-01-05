@@ -26,7 +26,7 @@ export default function CookieConsent() {
                     <p className="text-gray-300 text-sm">
                         Utilizamos cookies para mejorar tu experiencia y analizar el uso de nuestra plataforma.
                         Al continuar navegando, aceptas nuestra{' '}
-                        <a href="/politica-privacidad" className="text-[#D32F2F] hover:underline font-medium">
+                        <a href="/politica-de-privacidad" className="text-[#D32F2F] hover:underline font-medium">
                             Política de Privacidad
                         </a> y el uso de cookies.
                     </p>
