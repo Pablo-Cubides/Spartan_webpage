@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { brevoClient } from '@/lib/brevo/client';
+import { isBrevoConfigured } from '@/lib/brevo/config';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -50,24 +52,55 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const email = (body?.email || '').toString().trim().toLowerCase();
-    if (!email || !validEmail(email)) return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
+    const name = (body?.name || '').toString().trim();
+    
+    if (!email || !validEmail(email)) {
+      return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
+    }
 
+    // Save locally first (fallback)
     const data = readFile();
-    if (data.subscribers.find((s) => s.email === email)) {
-      return NextResponse.json({ ok: true, already: true });
+    const existingSubscriber = data.subscribers.find((s) => s.email === email);
+    
+    if (existingSubscriber) {
+      return NextResponse.json({ ok: true, already: true, message: 'Ya estás suscrito' });
     }
 
     const sub: Subscriber = { id: uuidv4(), email, createdAt: new Date().toISOString() };
     data.subscribers.unshift(sub);
     writeFile(data);
-    return NextResponse.json({ ok: true, subscriber: sub });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+    // Try to add to Brevo if configured
+    if (isBrevoConfigured()) {
+      try {
+        await brevoClient.subscribeToNewsletter(email, name || undefined);
+        console.log('✅ Subscriber added to Brevo:', email);
+      } catch (brevoError) {
+        console.error('⚠️ Brevo subscription failed (saved locally):', brevoError);
+        // Don't fail the request if Brevo fails - we have local backup
+      }
+    } else {
+      console.log('ℹ️ Brevo not configured, subscriber saved locally only');
+    }
+
+    return NextResponse.json({ 
+      ok: true, 
+      subscriber: sub,
+      message: '¡Gracias por unirte a la legión!' 
+    });
   } catch (e) {
+    console.error('Newsletter subscription error:', e);
     return NextResponse.json({ error: 'Bad request' }, { status: 400 });
   }
 }
 
 export async function GET() {
   const data = readFile();
-  return NextResponse.json({ subscribers: data.subscribers.map((s) => ({ email: s.email, createdAt: s.createdAt })) });
+  return NextResponse.json({ 
+    subscribers: data.subscribers.map((s) => ({ 
+      email: s.email, 
+      createdAt: s.createdAt 
+    })),
+    count: data.subscribers.length
+  });
 }
