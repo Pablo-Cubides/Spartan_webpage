@@ -111,7 +111,7 @@ export async function POST(request: Request) {
     if (externalReference) {
       purchase = await prisma.purchase.findUnique({
         where: { id: Number(externalReference) },
-        include: { user: true }
+        include: { user: true, package: true }
       })
     }
 
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
     if (!purchase) {
       purchase = await prisma.purchase.findFirst({
         where: { payment_id: String(paymentId) },
-        include: { user: true }
+        include: { user: true, package: true }
       })
     }
 
@@ -161,14 +161,23 @@ export async function POST(request: Request) {
 
     // Reload purchase to get latest data for email
     if (purchase) {
-       purchase = await prisma.purchase.findUnique({ where: { id: purchase.id }, include: { user: true } })
+       purchase = await prisma.purchase.findUnique({ where: { id: purchase.id }, include: { user: true, package: true } })
     }
 
+    // Send confirmation email for approved purchases
     if (purchase && purchase.user?.email && (status === 'approved' || status === 'paid')) {
       try {
-        await sendTemplateEmail(purchase.user.email, 1, { name: purchase.user.name || 'Usuario', amount: purchase.amount_paid })
-      } catch {
-        // ignore send email errors
+        const templateId = Number(process.env.BREVO_TEMPLATE_PURCHASE) || 2;
+        await sendTemplateEmail(purchase.user.email, templateId, { 
+          NAME: purchase.user.name || 'Espartano',
+          PACKAGE_NAME: purchase.package?.name || 'Paquete de Créditos',
+          CREDITS: String(purchase.credits_received),
+          AMOUNT: String(purchase.amount_paid)
+        })
+        console.log('[Webhook] Purchase confirmation email sent to:', purchase.user.email)
+      } catch (emailErr) {
+        console.error('[Webhook] Failed to send email:', emailErr)
+        // Don't fail the webhook for email errors
       }
     }
 
