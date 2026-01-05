@@ -52,7 +52,7 @@
           <tr>
             <td style="padding: 40px;">
               <h2 style="margin: 0 0 20px; color: #ffffff; font-size: 28px; font-weight: bold;">
-                ¡Bienvenido a la Legión, {{ NAME }}!
+                ¡Bienvenido a la Legión, {{ params.NAME }}!
               </h2>
               
               <p style="margin: 0 0 20px; color: #D1D5DB; font-size: 16px; line-height: 1.8;">
@@ -158,7 +158,7 @@
           <tr>
             <td style="padding: 40px;">
               <h2 style="margin: 0 0 20px; color: #ffffff; font-size: 28px; font-weight: bold;">
-                ¡Compra Confirmada, {{ NAME }}!
+                ¡Compra Confirmada, {{ params.NAME }}!
               </h2>
               
               <p style="margin: 0 0 30px; color: #D1D5DB; font-size: 16px; line-height: 1.8;">
@@ -174,19 +174,19 @@
                       <tr>
                         <td style="padding: 10px 0; border-bottom: 1px solid #303030;">
                           <p style="margin: 0; color: #9CA3AF; font-size: 14px;">Paquete:</p>
-                          <p style="margin: 5px 0 0; color: #ffffff; font-size: 18px; font-weight: bold;">{{ PACKAGE_NAME }}</p>
+                          <p style="margin: 5px 0 0; color: #ffffff; font-size: 18px; font-weight: bold;">{{ params.PACKAGE_NAME }}</p>
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 10px 0; border-bottom: 1px solid #303030;">
                           <p style="margin: 0; color: #9CA3AF; font-size: 14px;">Créditos añadidos:</p>
-                          <p style="margin: 5px 0 0; color: #C62828; font-size: 24px; font-weight: bold;">{{ CREDITS }} créditos</p>
+                          <p style="margin: 5px 0 0; color: #C62828; font-size: 24px; font-weight: bold;">{{ params.CREDITS }} créditos</p>
                         </td>
                       </tr>
                       <tr>
                         <td style="padding: 10px 0;">
                           <p style="margin: 0; color: #9CA3AF; font-size: 14px;">Total pagado:</p>
-                          <p style="margin: 5px 0 0; color: #ffffff; font-size: 18px; font-weight: bold;">${{ AMOUNT }} COP</p>
+                          <p style="margin: 5px 0 0; color: #ffffff; font-size: 18px; font-weight: bold;">${{ params.AMOUNT }} COP</p>
                         </td>
                       </tr>
                     </table>
