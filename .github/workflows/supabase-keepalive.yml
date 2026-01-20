@@ -25,37 +25,41 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run: npm install pg
+        run: npm install @supabase/supabase-js
 
       - name: Run Keep-Alive Script
         env:
-          # Prefer database connection as we have these credentials
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           node -e "
-          const { Client } = require('pg');
+          const { createClient } = require('@supabase/supabase-js');
           
+          const supabaseUrl = process.env.SUPABASE_URL;
+          const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+          
+          if (!supabaseUrl || !supabaseKey) {
+            console.error('❌ Error: Missing environment variables SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
+            process.exit(1);
+          }
+
+          console.log('Connecting to Supabase...');
+          const supabase = createClient(supabaseUrl, supabaseKey);
+
           async function ping() {
-            const connectionString = process.env.DATABASE_URL;
-            if (!connectionString) {
-              console.error('❌ Error: Missing DATABASE_URL environment variable');
-              process.exit(1);
-            }
-
-            console.log('Connecting to database...');
-            const client = new Client({
-              connectionString: connectionString,
-              ssl: { rejectUnauthorized: false }
-            });
-
             try {
-              await client.connect();
-              const res = await client.query('SELECT NOW() as now');
+              // Simple query to wake up the project
+              const { data, error } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1 });
+              
+              if (error) {
+                console.error('❌ Error pinging Supabase:', error.message);
+                process.exit(1);
+              }
+              
               console.log('✅ Supabase keep-alive success');
-              console.log('Database time:', res.rows[0].now);
-              await client.end();
+              console.log('Activity registered at:', new Date().toISOString());
             } catch (err) {
-              console.error('❌ Error pinging database:', err);
+              console.error('❌ Unexpected error:', err);
               process.exit(1);
             }
           }
