@@ -71,10 +71,6 @@ const nextConfig: NextConfig = {
           key: "Permissions-Policy",
           value: "camera=(self), microphone=(), geolocation=()",
         },
-        {
-          key: "Cache-Control",
-          value: "public, max-age=31536000, immutable",
-        },
       ],
     },
     {
