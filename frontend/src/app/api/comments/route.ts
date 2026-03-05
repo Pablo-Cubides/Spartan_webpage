@@ -1,92 +1,146 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { v4 as uuidv4 } from "uuid";
+import { verifyAdmin } from '@/lib/server/auth';
+import { enforceSimpleRateLimit } from '@/lib/security/requestRateLimit';
+import { prisma } from '@/lib/server/prisma';
 
-const COMMENTS_PATHS = [
-  path.resolve(process.cwd(), "data", "comments.json"),
-  path.resolve(process.cwd(), "frontend", "data", "comments.json"),
-  path.resolve(process.cwd(), "../frontend", "data", "comments.json"),
-];
-
-function findWritablePath() {
-  for (const p of COMMENTS_PATHS) {
-    const dir = path.dirname(p);
-    try {
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      if (!fs.existsSync(p)) fs.writeFileSync(p, JSON.stringify({ comments: [] }, null, 2));
-      return p;
-    } catch {
-      // continue
-    }
-  }
-  // fallback to temp
-  return path.resolve(process.cwd(), "comments.json");
-}
-
-const COMMENTS_FILE = findWritablePath();
-
-type Comment = {
-  id: string;
-  postSlug: string;
-  name?: string;
-  content: string;
-  createdAt: string;
-  status: "pending" | "approved" | "rejected";
-};
-
-function readComments(): { comments: Comment[] } {
-  try {
-    const raw = fs.readFileSync(COMMENTS_FILE, "utf8");
-    return JSON.parse(raw);
-  } catch {
-    return { comments: [] };
-  }
-}
-
-function writeComments(data: { comments: Comment[] }) {
-  fs.writeFileSync(COMMENTS_FILE, JSON.stringify(data, null, 2));
+function sanitizeText(value: string, maxLength: number): string {
+  return value
+    .replace(/[\x00-\x1F\x7F-\x9F]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxLength);
 }
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const post = url.searchParams.get("post");
-  const data = readComments();
-  const approved = data.comments.filter((c) => c.status === "approved" && (!post || c.postSlug === post));
-  return NextResponse.json({ comments: approved });
+
+  const comments = await prisma.blogComment.findMany({
+    where: {
+      status: 'approved',
+      ...(post ? { post_slug: post } : {}),
+    },
+    orderBy: { created_at: 'desc' },
+    select: {
+      id: true,
+      post_slug: true,
+      name: true,
+      content: true,
+      created_at: true,
+      status: true,
+    },
+  });
+
+  return NextResponse.json({
+    comments: comments.map((c) => ({
+      id: c.id,
+      postSlug: c.post_slug,
+      name: c.name || undefined,
+      content: c.content,
+      createdAt: c.created_at.toISOString(),
+      status: c.status,
+    })),
+  });
 }
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { postSlug, name, content } = body;
-    if (!postSlug || !content) return NextResponse.json({ error: "Invalid" }, { status: 400 });
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const ip = forwardedFor?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+    const postRate = enforceSimpleRateLimit(`comments:post:${ip}`, 20, 10 * 60 * 1000);
+    if (!postRate.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
 
-    const data = readComments();
-    const comment: Comment = { id: uuidv4(), postSlug, name: name || undefined, content, createdAt: new Date().toISOString(), status: "pending" };
-    data.comments.unshift(comment);
-    writeComments(data);
-    return NextResponse.json({ ok: true, comment });
+    const body = await request.json();
+    const postSlug = sanitizeText((body?.postSlug || '').toString(), 160);
+    const name = sanitizeText((body?.name || '').toString(), 80);
+    const content = sanitizeText((body?.content || '').toString(), 1500);
+
+    if (!postSlug || !content) {
+      return NextResponse.json({ error: "Invalid" }, { status: 400 });
+    }
+
+    if (!/^[a-z0-9-]+$/.test(postSlug)) {
+      return NextResponse.json({ error: "Invalid postSlug" }, { status: 400 });
+    }
+
+    const comment = await prisma.blogComment.create({
+      data: {
+        post_slug: postSlug,
+        name: name || null,
+        content,
+        status: 'pending',
+      },
+      select: {
+        id: true,
+        post_slug: true,
+        name: true,
+        content: true,
+        created_at: true,
+        status: true,
+      },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      comment: {
+        id: comment.id,
+        postSlug: comment.post_slug,
+        name: comment.name || undefined,
+        content: comment.content,
+        createdAt: comment.created_at.toISOString(),
+        status: comment.status,
+      },
+    });
   } catch {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
 }
 
 export async function PATCH(request: Request) {
-  // moderation action: expects { id, action: 'approve'|'reject' } and header x-admin-token
-  const adminToken = process.env.COMMENTS_ADMIN_TOKEN || "";
-  const provided = request.headers.get("x-admin-token") || "";
-  if (!adminToken || provided !== adminToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const admin = await verifyAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  const ip = forwardedFor?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+  const modRate = enforceSimpleRateLimit(`comments:moderation:${ip}`, 60, 10 * 60 * 1000);
+  if (!modRate.allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
   try {
     const body = await request.json();
     const { id, action } = body;
     if (!id || !["approve", "reject"].includes(action)) return NextResponse.json({ error: "Invalid" }, { status: 400 });
-    const data = readComments();
-    const idx = data.comments.findIndex((c) => c.id === id);
-    if (idx === -1) return NextResponse.json({ error: "Not found" }, { status: 404 });
-    data.comments[idx].status = action === "approve" ? "approved" : "rejected";
-    writeComments(data);
-    return NextResponse.json({ ok: true, comment: data.comments[idx] });
+
+    const existing = await prisma.blogComment.findUnique({ where: { id: String(id) } });
+    if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    const updated = await prisma.blogComment.update({
+      where: { id: String(id) },
+      data: { status: action === 'approve' ? 'approved' : 'rejected' },
+      select: {
+        id: true,
+        post_slug: true,
+        name: true,
+        content: true,
+        created_at: true,
+        status: true,
+      },
+    });
+
+    return NextResponse.json({
+      ok: true,
+      comment: {
+        id: updated.id,
+        postSlug: updated.post_slug,
+        name: updated.name || undefined,
+        content: updated.content,
+        createdAt: updated.created_at.toISOString(),
+        status: updated.status,
+      },
+    });
   } catch {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }

@@ -2,6 +2,35 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+async function verifyFirebaseIdToken(idToken: string): Promise<boolean> {
+    const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+    if (!apiKey || !idToken) return false;
+
+    try {
+        const response = await fetch(
+            `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${apiKey}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken }),
+            }
+        );
+
+        if (!response.ok) return false;
+        const data = await response.json();
+        return Array.isArray(data?.users) && data.users.length > 0;
+    } catch {
+        return false;
+    }
+}
+
+function redirectToLogin(request: NextRequest) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    url.searchParams.set('auth', 'required');
+    return NextResponse.redirect(url);
+}
+
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
@@ -16,15 +45,14 @@ export async function middleware(request: NextRequest) {
         const session = request.cookies.get('__session')?.value;
 
         if (!session) {
-            // Redirect to login if no session
-            // For now, redirect to home with a login paramenter or just home
-            // ideally /login if it exists, or open the auth modal.
-            // Current app seems to use modal login on home/header. 
-            // Redirecting to root for now.
-            const url = request.nextUrl.clone();
-            url.pathname = '/';
-            url.searchParams.set('auth', 'required'); // Optional: Client can read this to open modal
-            return NextResponse.redirect(url);
+            return redirectToLogin(request);
+        }
+
+        const validToken = await verifyFirebaseIdToken(session);
+        if (!validToken) {
+            const response = redirectToLogin(request);
+            response.cookies.delete('__session');
+            return response;
         }
     }
 

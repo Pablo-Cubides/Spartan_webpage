@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -16,7 +18,13 @@ if (process.env.DATABASE_URL) {
 
 dotenv.config({ path: envPath });
 
-const prisma = new PrismaClient();
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL is required');
+}
+const prisma = new PrismaClient({
+  adapter: new PrismaPg(new Pool({ connectionString: databaseUrl })),
+});
 
 async function main() {
   console.log('Actualizando paquetes de créditos...');

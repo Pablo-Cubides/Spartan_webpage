@@ -42,8 +42,8 @@ export async function POST(req: Request) {
     const analysis = body.analysis as unknown;
     const analysisType = body.analysisType;  // 'face' or 'clothing' - determines what gets edited
 
-    // Get effective session ID
-    const effectiveSessionId = body.sessionId || getRequestIdentifier(req);
+    // Get server-derived identifier to prevent client-side bypass
+    const effectiveSessionId = userId || getRequestIdentifier(req);
 
     // Temporary debug: capture the sanitized incoming body so we can inspect payloads that cause 503s.
     // We redact the originalImageUrl when privacy mode is enabled to avoid leaking images into logs.

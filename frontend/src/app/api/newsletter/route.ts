@@ -1,55 +1,30 @@
 import { NextResponse } from 'next/server';
 import { brevoClient } from '@/lib/brevo/client';
 import { isBrevoConfigured } from '@/lib/brevo/config';
-import fs from 'fs';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
-
-const PATHS = [
-  path.resolve(process.cwd(), 'data', 'newsletter.json'),
-  path.resolve(process.cwd(), 'frontend', 'data', 'newsletter.json'),
-  path.resolve(process.cwd(), '../frontend', 'data', 'newsletter.json'),
-];
-
-function findWritablePath() {
-  for (const p of PATHS) {
-    const dir = path.dirname(p);
-    try {
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      if (!fs.existsSync(p)) fs.writeFileSync(p, JSON.stringify({ subscribers: [] }, null, 2));
-      return p;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (e) {
-      // continue
-    }
-  }
-  return path.resolve(process.cwd(), 'newsletter.json');
-}
-
-const FILE = findWritablePath();
-
-type Subscriber = { id: string; email: string; createdAt: string };
-
-function readFile(): { subscribers: Subscriber[] } {
-  try {
-    const raw = fs.readFileSync(FILE, 'utf8');
-    return JSON.parse(raw);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (e) {
-    return { subscribers: [] };
-  }
-}
-
-function writeFile(data: { subscribers: Subscriber[] }) {
-  fs.writeFileSync(FILE, JSON.stringify(data, null, 2));
-}
+import { verifyAdmin } from '@/lib/server/auth';
+import { prisma } from '@/lib/server/prisma';
+import { enforceSimpleRateLimit } from '@/lib/security/requestRateLimit';
 
 function validEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function maskEmail(email: string): string {
+  const [local, domain] = email.split('@');
+  if (!local || !domain) return '***';
+  const visible = local.slice(0, 2);
+  return `${visible}${'*'.repeat(Math.max(1, local.length - 2))}@${domain}`;
+}
+
 export async function POST(request: Request) {
   try {
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const ip = forwardedFor?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
+    const postRate = enforceSimpleRateLimit(`newsletter:post:${ip}`, 15, 10 * 60 * 1000);
+    if (!postRate.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const body = await request.json();
     const email = (body?.email || '').toString().trim().toLowerCase();
     const name = (body?.name || '').toString().trim();
@@ -58,34 +33,31 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
 
-    // Save locally first (fallback)
-    const data = readFile();
-    const existingSubscriber = data.subscribers.find((s) => s.email === email);
-    
-    if (existingSubscriber) {
+    const existing = await prisma.newsletterSubscriber.findUnique({ where: { email } });
+    if (existing) {
       return NextResponse.json({ ok: true, already: true, message: 'Ya estás suscrito' });
     }
 
-    const sub: Subscriber = { id: uuidv4(), email, createdAt: new Date().toISOString() };
-    data.subscribers.unshift(sub);
-    writeFile(data);
-
-    // Try to add to Brevo if configured
     if (isBrevoConfigured()) {
       try {
         await brevoClient.subscribeToNewsletter(email, name || undefined);
         console.log('✅ Subscriber added to Brevo:', email);
       } catch (brevoError) {
-        console.error('⚠️ Brevo subscription failed (saved locally):', brevoError);
-        // Don't fail the request if Brevo fails - we have local backup
+        console.error('⚠️ Brevo subscription failed:', brevoError);
+        return NextResponse.json({ error: 'Subscription failed' }, { status: 502 });
       }
-    } else {
-      console.log('ℹ️ Brevo not configured, subscriber saved locally only');
     }
+
+    await prisma.newsletterSubscriber.create({
+      data: {
+        email,
+        name: name || null,
+        source: 'web',
+      },
+    });
 
     return NextResponse.json({ 
       ok: true, 
-      subscriber: sub,
       message: '¡Gracias por unirte a la legión!' 
     });
   } catch (e) {
@@ -94,13 +66,25 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
-  const data = readFile();
+export async function GET(request: Request) {
+  const admin = await verifyAdmin(request);
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const data = await prisma.newsletterSubscriber.findMany({
+    orderBy: { created_at: 'desc' },
+    select: {
+      email: true,
+      created_at: true,
+    },
+  });
+
   return NextResponse.json({ 
-    subscribers: data.subscribers.map((s) => ({ 
-      email: s.email, 
-      createdAt: s.createdAt 
+    subscribers: data.map((s) => ({ 
+      email: maskEmail(s.email),
+      createdAt: s.created_at.toISOString() 
     })),
-    count: data.subscribers.length
+    count: data.length
   });
 }

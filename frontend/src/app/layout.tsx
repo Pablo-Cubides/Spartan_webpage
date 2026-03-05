@@ -118,7 +118,7 @@ export const metadata: Metadata = {
 
   // ==================== Verification ====================
   verification: {
-    google: 'YOUR-GOOGLE-SITE-VERIFICATION-CODE',
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
 
   // ==================== Alternates ====================

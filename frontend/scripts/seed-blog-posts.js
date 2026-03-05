@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -11,7 +13,13 @@ const __dirname = path.dirname(__filename);
 const envPath = path.resolve(__dirname, '../.env.local');
 dotenv.config({ path: envPath });
 
-const prisma = new PrismaClient();
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+    throw new Error('DATABASE_URL is required');
+}
+const prisma = new PrismaClient({
+    adapter: new PrismaPg(new Pool({ connectionString: databaseUrl })),
+});
 
 async function main() {
     const postsDir = path.resolve(__dirname, '../../blog-posts');

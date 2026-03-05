@@ -130,19 +130,22 @@ class RedisRateLimiter {
     resetTime: number;
     limit: number;
   }> {
-    // Fail open if Redis not initialized - allow the request
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    // If Redis not initialized in production, fail closed.
+    // In non-production, allow to avoid blocking local development.
     if (!this.redis) {
       const now = Date.now();
       const windowMs = APP_CONFIG.rateLimit.WINDOW_DURATION_SECONDS * 1000;
       const limit = APP_CONFIG.rateLimit.MAX_REQUESTS_PER_WINDOW;
       appendLog({
         phase: 'rate_limiter.redis_not_ready',
-        message: 'Redis not initialized, failing open',
+        message: isProduction ? 'Redis not initialized, failing closed' : 'Redis not initialized, failing open in non-production',
         timestamp: Date.now(),
       });
       return {
-        allowed: true,
-        remaining: limit - 1,
+        allowed: !isProduction,
+        remaining: isProduction ? 0 : limit - 1,
         resetTime: now + windowMs,
         limit,
       };
@@ -200,7 +203,7 @@ class RedisRateLimiter {
         limit,
       };
     } catch (error) {
-      // On Redis errors, fail open (allow the request)
+      // On Redis errors, fail closed in production and open in non-production.
       appendLog({
         phase: 'rate_limiter.redis_error',
         error: error instanceof Error ? error.message : String(error),
@@ -208,8 +211,8 @@ class RedisRateLimiter {
       });
 
       return {
-        allowed: true,
-        remaining: limit - 1,
+        allowed: !isProduction,
+        remaining: isProduction ? 0 : limit - 1,
         resetTime: now + windowMs,
         limit,
       };
@@ -323,8 +326,5 @@ export function getRequestIdentifier(req: Request): string {
 
   const ip = cfConnectingIp || realIp || forwardedFor?.split(',')[0].trim() || 'unknown';
 
-  // Also consider session ID if available
-  const sessionId = req.headers.get('x-session-id');
-
-  return sessionId || ip;
+  return ip;
 }

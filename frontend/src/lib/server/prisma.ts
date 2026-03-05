@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 import { config } from 'dotenv'
 import path from 'path'
 
@@ -24,9 +26,9 @@ function getPrismaClient(): PrismaClient {
   }
 
   if (!prismaInstance) {
-    prismaInstance = global.__prisma ?? new PrismaClient({
-      datasourceUrl: databaseUrl,
-    })
+    const pool = new Pool({ connectionString: databaseUrl })
+    const adapter = new PrismaPg(pool)
+    prismaInstance = global.__prisma ?? new PrismaClient({ adapter })
 
     if (process.env.NODE_ENV !== 'production') {
       global.__prisma = prismaInstance

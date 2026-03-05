@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -202,5 +201,31 @@ model CreditUsage {
 
   @@index([user_id])
   @@index([created_at])
+}
+
+// =============================================
+// Public Engagement
+// =============================================
+
+model BlogComment {
+  id         String   @id @default(cuid())
+  post_slug  String
+  name       String?
+  content    String
+  status     String   @default("pending") // pending | approved | rejected
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([post_slug, status])
+  @@index([created_at])
+}
+
+model NewsletterSubscriber {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String?
+  source     String?  @default("web")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 

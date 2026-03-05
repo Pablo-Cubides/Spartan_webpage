@@ -15,7 +15,7 @@ export async function POST(req: Request): Promise<Response> {
 
     try {
         // Parse request body
-        const { imageUrl, locale, sessionId } = await req.json();
+        const { imageUrl, locale } = await req.json();
 
         const auth = req.headers.get('authorization') || '';
         let userId: string | undefined;
@@ -40,7 +40,7 @@ export async function POST(req: Request): Promise<Response> {
         }
 
         const effectiveLocale = locale || 'es';
-        const effectiveSessionId = sessionId || getRequestIdentifier(req);
+        const effectiveSessionId = userId || getRequestIdentifier(req);
 
         await appendLog({
             phase: 'api.analyze-clothing.received',

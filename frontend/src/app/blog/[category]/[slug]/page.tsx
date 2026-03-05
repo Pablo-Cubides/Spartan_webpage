@@ -111,7 +111,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      <main className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
+      <main className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           {/* Background Image */}
@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="absolute inset-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={post.cover_image} alt="" className="w-full h-full object-cover opacity-40" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-[#0a0a0a]" />
+              <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/70 to-[#0a0a0a]" />
             </div>
           )}
 
@@ -177,7 +177,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <article className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-10 lg:p-12 shadow-2xl">
             {/* Table of Contents indicator */}
             <div className="flex items-center gap-3 mb-8 pb-6 border-b border-white/10">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-linear-to-br from-red-500 to-red-700 flex items-center justify-center">
                 <span className="text-xl">📖</span>
               </div>
               <div>
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             {/* End CTA */}
             <div className="mt-12 pt-8 border-t border-white/10">
-              <div className="bg-gradient-to-r from-red-900/30 to-transparent p-6 rounded-xl border border-red-500/20">
+              <div className="bg-linear-to-r from-red-900/30 to-transparent p-6 rounded-xl border border-red-500/20">
                 <p className="text-white font-bold text-lg mb-2">¿Te gustó este artículo?</p>
                 <p className="text-gray-400 mb-4">Compártelo con otros espartanos y sigue explorando más contenido.</p>
                 <Link
@@ -252,7 +252,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-red-900/50 to-gray-900" />
+                      <div className="w-full h-full bg-linear-to-br from-red-900/50 to-gray-900" />
                     )}
                   </div>
                   <div className="p-4">

@@ -14,19 +14,17 @@ export async function POST(request: NextRequest) {
         // Verify the token
         const decodedToken = await verifyIdToken(idToken);
 
-        // In a full implementation, you might use createSessionCookie from firebase-admin
-        // For now, we'll set a custom secure cookie that middleware can read
-        // Expiration: 5 days
-        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+        // Expiration: 12 hours (reduce stolen-token blast radius)
+        const expiresIn = 60 * 60 * 12 * 1000;
 
         // Set cookie
         const cookieStore = await cookies();
-        cookieStore.set("__session", idToken, { // Storing ID token as session for simplicity in this step. Ideally use createSessionCookie()
+        cookieStore.set("__session", idToken, {
             maxAge: expiresIn / 1000,
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             path: "/",
-            sameSite: "lax",
+            sameSite: "strict",
         });
 
         return NextResponse.json({ status: "success", uid: decodedToken.uid });
