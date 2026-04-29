@@ -406,6 +406,13 @@ Antes de implementar un cambio nuevo:
 4. Ejecutar `npm run qa:prepush`
 5. Actualizar documentacion operativa si cambia el comportamiento
 
+## SSD Quickstart
+
+1. Copia una de las plantillas de `docs/specs/templates/` para crear el spec.
+2. Completa `plan.template.md` y `tasks.template.md` en la carpeta del feature.
+3. Añade tests/fixtures relevantes y ejecuta `npm run qa:images:validate` y `npm run qa:content:validate`.
+4. Ejecuta `npm run qa:prepush` localmente antes de abrir el PR.
+
 ### Documentacion clave
 - `docs/specs/` - flujo Spec-Driven Development
 - `docs/design/` - sistema de diseno
