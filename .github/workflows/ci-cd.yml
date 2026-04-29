@@ -101,6 +101,10 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: npx prisma generate
 
+      - name: Validate Prisma schema
+        working-directory: ${{ env.WORKING_DIR }}
+        run: npx prisma validate
+
       - name: Run TypeScript check
         working-directory: ${{ env.WORKING_DIR }}
         run: npm run type-check
@@ -165,6 +169,17 @@ jobs:
       - name: Generate Prisma Client
         working-directory: ${{ env.WORKING_DIR }}
         run: npx prisma generate
+
+      - name: Validate content and images
+        run: |
+          node scripts/validate-blog-content.js
+          node scripts/validate-image-urls.js
+
+      - name: Secret scan
+        run: node scripts/scan-secrets.js
+
+      - name: Dependency audit
+        run: node scripts/security-audit.js
 
       - name: Build Next.js
         working-directory: ${{ env.WORKING_DIR }}

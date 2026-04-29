@@ -378,6 +378,9 @@ npm run test
 npm run test:payments    # Flujo de pagos
 npm run test:users       # Gestión de usuarios
 npm run test:asesor-estilo  # Configuración de IA
+
+# Gate SSD completo
+npm run qa:prepush
 ```
 
 ### Type Checking
@@ -391,6 +394,25 @@ npm run type-check
 ```bash
 npm run lint
 ```
+
+---
+
+## 🧭 SSD Workflow
+
+Antes de implementar un cambio nuevo:
+1. Crear o actualizar `docs/specs/<feature>/spec.md`
+2. Definir el plan tecnico y las tareas
+3. Revisar el impacto de diseno si toca UI
+4. Ejecutar `npm run qa:prepush`
+5. Actualizar documentacion operativa si cambia el comportamiento
+
+### Documentacion clave
+- `docs/specs/` - flujo Spec-Driven Development
+- `docs/design/` - sistema de diseno
+- `docs/runbooks/` - operaciones de contenido, imagenes y releases
+- `docs/security/` - controles y rotacion de secretos
+- `.github/skills/` - skills para articulos e imagenes
+- `.github/instructions/` - instrucciones de agente por dominio
 
 ---
 

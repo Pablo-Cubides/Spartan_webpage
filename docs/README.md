@@ -18,6 +18,36 @@
 
 ---
 
+## SSD y Operacion
+
+### Spec-Driven Development
+- `specs/README.md` - proceso SSD del repositorio
+- `specs/000-constitution.md` - principios base
+
+### Sistema de Diseno
+- `design/design-principles.md`
+- `design/design-tokens.md`
+- `design/component-specs.md`
+- `design/accessibility-spec.md`
+- `design/content-style-guide.md`
+- `design/responsive-spec.md`
+
+### Runbooks
+- `runbooks/content-runbook.md`
+- `runbooks/images-runbook.md`
+- `runbooks/release-runbook.md`
+
+### Seguridad
+- `security/security-controls.md`
+- `security/secret-rotation.md`
+
+### Contribucion
+- `CONTRIBUTING_SSD.md`
+- `.github/instructions/`
+- `.github/skills/`
+
+---
+
 ## Archivo Histórico (docs/archive/)
 
 Estos documentos son de implementaciones completadas y se mantienen como referencia histórica:
