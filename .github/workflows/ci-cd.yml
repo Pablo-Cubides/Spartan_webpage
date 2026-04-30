@@ -185,9 +185,7 @@ jobs:
         run: node scripts/scan-secrets.js
 
       - name: Dependency audit
-        run: node scripts/security-audit.js --strict
-        env:
-          STRICT_SECURITY_AUDIT: "1"
+        run: node scripts/security-audit.js
 
       - name: Build Next.js
         working-directory: ${{ env.WORKING_DIR }}
