@@ -12,7 +12,11 @@
       "Bash(git -C D:/Empresas/Spartan/webpage log origin/main --oneline -3)",
       "Bash(grep -r \"console\\\\\\\\.log\\\\|console\\\\\\\\.error\\\\|console\\\\\\\\.warn\" /d/Empresas/Spartan/webpage/.claude/worktrees/keen-williams-732f34/frontend/src --include=\"*.ts\" --include=\"*.tsx\")",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(node scripts/qa-spec-completeness.js)",
+      "Bash(node scripts/qa-spec-traceability.js)",
+      "Bash(node scripts/qa-spec-completeness.js --strict)",
+      "Bash(node scripts/qa-spec-traceability.js --strict)"
     ]
   }
 }

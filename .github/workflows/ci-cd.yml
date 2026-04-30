@@ -175,6 +175,12 @@ jobs:
           node scripts/validate-blog-content.js
           node scripts/validate-image-urls.js
 
+      - name: Spec completeness check
+        run: node scripts/qa-spec-completeness.js --strict
+
+      - name: Spec traceability check
+        run: node scripts/qa-spec-traceability.js --strict
+
       - name: Secret scan
         run: node scripts/scan-secrets.js
 

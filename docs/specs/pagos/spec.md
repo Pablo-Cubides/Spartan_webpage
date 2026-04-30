@@ -81,5 +81,5 @@ failed    ──── (no transitions — terminal)
 
 - [x] Tests para webhook processing (MP y Stripe) — `frontend/tests/payments/flow.test.ts`
 - [x] Runbook para debugging de webhooks y reconciliación — `docs/runbooks/pagos-runbook.md` (pendiente de crear)
-- [x] Contratos de webhook documentados — `docs/specs/api-contracts/payments-*.md`
+- [x] Contratos de webhook documentados — `docs/specs/api-contracts/payments-mercadopago-webhook.md` y `docs/specs/api-contracts/payments-stripe-webhook.md`
 - [x] ADR sobre decisión de dual gateway — `docs/adr/002-dual-payment-gateway.md`
