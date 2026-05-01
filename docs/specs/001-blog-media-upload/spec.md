@@ -1,3 +1,10 @@
+---
+version: "1.1"
+status: active
+owner: engineering
+last_changed: "2026-04-29"
+---
+
 # Blog Media Upload
 
 ## Problem
@@ -34,3 +41,13 @@ Provide a secure admin-only upload flow that returns a canonical image URL for b
 - Must preserve existing article publishing flow
 - Must not expose secrets or raw upload credentials
 - Must remain compatible with Cloudinary and local fallback storage
+
+
+## Definition of Done
+
+- [ ] Upload endpoint returns canonical URL and storage identifier
+- [ ] Invalid file types (non-image) rejected with 400
+- [ ] Files > 10 MB rejected with 413
+- [ ] No raw credentials or secrets returned in API response
+- [ ] Compatible with existing blog publish flow
+- [ ] Tests passing for happy path and validation errors
