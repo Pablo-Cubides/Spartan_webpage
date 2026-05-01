@@ -1,3 +1,10 @@
+---
+version: "1.1"
+status: active
+owner: engineering
+last_changed: "2026-04-29"
+---
+
 # Spec: IA Tools — Coach Espartano y Asesor de Estilo
 
 ## Problem

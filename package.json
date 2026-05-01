@@ -20,6 +20,7 @@
     "qa:security:secrets": "node scripts/scan-secrets.js",
     "qa:spec:completeness": "node scripts/qa-spec-completeness.js --strict",
     "qa:spec:traceability": "node scripts/qa-spec-traceability.js --strict",
+    "qa:spec:structure": "node scripts/qa-spec-structure.js --strict",
     "qa:prepush": "node scripts/validate-push.js"
   },
   "devDependencies": {
