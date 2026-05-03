@@ -1,5 +1,5 @@
 ---
-version: "1.0"
+version: "1.1"
 status: draft
 owner: engineering
 last_changed: "YYYY-MM-DD"
@@ -17,6 +17,11 @@ last_changed: "YYYY-MM-DD"
 
 ## Scope
 
+<!-- 
+AI-READABILITY HINT: Define clear boundaries. 
+Use 'In Scope' for what MUST be built and 'Out of Scope' for what MUST NOT be built.
+-->
+
 ### In
 - Feature A
 - Feature B
@@ -24,7 +29,25 @@ last_changed: "YYYY-MM-DD"
 ### Out
 - Out-of-scope item
 
+## Constraints
+
+<!-- 
+AI-READABILITY HINT: Non-negotiable technical or business rules.
+Examples: 
+- Must use existing Prisma schema
+- No external APIs allowed
+- Response time must be < 200ms
+-->
+
+- Constraint 1
+- Constraint 2
+
 ## Acceptance Criteria
+
+<!-- 
+AI-READABILITY HINT: Used for automated verification.
+Format: Given [context], when [action], then [result].
+-->
 
 - Given X, when Y, then Z.
 - User can do A.

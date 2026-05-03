@@ -7,10 +7,11 @@ Implementation: `frontend/src/app/api/blog/route.ts`
 ## GET /api/blog — List posts
 
 ```
-Method: GET
-Path:   /api/blog
-Auth:   None (public)
-```
+Method:   POST | GET | PUT | DELETE
+Path:     /api/blog[/<id>] | /api/admin/blog[/<id>]
+Schema:   `CreateBlogPostSchema` / `UpdateBlogPostSchema`
+Auth:     None (GET) | Admin (Mutation)
+Idempotent: yes
 
 ### Query Parameters
 

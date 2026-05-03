@@ -103,7 +103,7 @@ jobs:
 
       - name: Validate Prisma schema
         working-directory: ${{ env.WORKING_DIR }}
-        run: npx prisma validate
+        run: npm run prisma:validate
 
       - name: Run TypeScript check
         working-directory: ${{ env.WORKING_DIR }}
@@ -183,6 +183,12 @@ jobs:
 
       - name: Spec structure check
         run: node scripts/qa-spec-structure.js --strict
+
+      - name: Spec artifact check
+        run: node scripts/qa-spec-artifacts.js --strict
+
+      - name: Spec acceptance test traceability check
+        run: node scripts/qa-spec-verifier.js --strict
 
       - name: Secret scan
         run: node scripts/scan-secrets.js

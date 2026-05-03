@@ -37,24 +37,24 @@ Proveer herramientas IA especializadas que:
 
 ## Coach Espartano — Acceptance Criteria
 
-- Un usuario nuevo no puede acceder a ningún coach hasta completar el onboarding de perfil.
-- El onboarding captura: `mainGoal`, `subGoals`, `levels` (cuerpo/estilo/mentalidad/productividad), `restrictions` (tiempo, presupuesto), `preferences` (gym, home, etc.).
-- Al completar onboarding, se habilita el coach `general` por defecto. Los demás coaches se habilitan progresivamente en `enabledCoaches`.
-- Cada coach mantiene su propio hilo de conversación (`CoachConversation` único por `[profile_id, coachType]`).
-- El sistema verifica la cuota gratuita mensual antes de cada mensaje. Si se agota, descuenta 1 crédito.
-- Si el usuario no tiene créditos ni cuota gratuita, el mensaje es rechazado con `402`.
-- Todos los mensajes se almacenan cifrados. El contenido nunca se persiste en texto plano.
-- El "Estratega" (Layer 2) analiza el perfil periódicamente y actualiza `strategistPlan` para orientar a los coaches de Layer 1.
-- Los mensajes que violen las reglas de seguridad son rechazados antes de llegar al modelo IA.
+- Un usuario nuevo no puede acceder a ningún coach hasta completar el onboarding de perfil. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El onboarding captura: `mainGoal`, `subGoals`, `levels` (cuerpo/estilo/mentalidad/productividad), `restrictions` (tiempo, presupuesto), `preferences` (gym, home, etc.). {@test: frontend/tests/asesor-estilo/config.test.ts}
+- Al completar onboarding, se habilita el coach `general` por defecto. Los demás coaches se habilitan progresivamente en `enabledCoaches`. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- Cada coach mantiene su propio hilo de conversación (`CoachConversation` único por `[profile_id, coachType]`). {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El sistema verifica la cuota gratuita mensual antes de cada mensaje. Si se agota, descuenta 1 crédito. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- Si el usuario no tiene créditos ni cuota gratuita, el mensaje es rechazado con `402`. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- Todos los mensajes se almacenan cifrados. El contenido nunca se persiste en texto plano. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El "Estratega" (Layer 2) analiza el perfil periódicamente y actualiza `strategistPlan` para orientar a los coaches de Layer 1. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- Los mensajes que violen las reglas de seguridad son rechazados antes de llegar al modelo IA. {@test: frontend/tests/asesor-estilo/config.test.ts}
 
 ## Asesor de Estilo — Acceptance Criteria
 
-- El usuario puede subir una imagen de ropa/outfit (JPEG, PNG, WEBP, max 10 MB).
-- El sistema analiza la imagen con IA visual y devuelve recomendaciones de estilo.
-- El análisis cuesta créditos (N créditos por análisis).
-- El usuario puede iterar sobre el análisis con texto adicional.
-- Las imágenes se almacenan en Cloudinary con fallback local.
-- El análisis respeta moderación de contenido (no imágenes inapropiadas).
+- El usuario puede subir una imagen de ropa/outfit (JPEG, PNG, WEBP, max 10 MB). {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El sistema analiza la imagen con IA visual y devuelve recomendaciones de estilo. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El análisis cuesta créditos (N créditos por análisis). {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El usuario puede iterar sobre el análisis con texto adicional. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- Las imágenes se almacenan en Cloudinary con fallback local. {@test: frontend/tests/asesor-estilo/config.test.ts}
+- El análisis respeta moderación de contenido (no imágenes inapropiadas). {@test: frontend/tests/asesor-estilo/config.test.ts}
 
 ## Coach Types
 
@@ -111,13 +111,18 @@ Asesor:      N créditos por análisis de imagen (configurable)
 | Image validation | `frontend/src/lib/asesor-estilo/validation/image.ts` |
 | Asesor AI (Gemini) | `frontend/src/lib/asesor-estilo/ai/gemini.ts` |
 
-## Non-Functional Requirements
-
+## Constraints
 - Privacidad: mensajes cifrados AES-256 en reposo. Clave via `COACH_ENCRYPTION_KEY`.
-- Latencia: respuestas de chat < 5s p95. Asesor análisis < 10s p95.
 - Costo: cada mensaje de chat consume inferencia Gemini — el credit gate es la primera línea de control de costos.
 - Moderación: todos los mensajes de usuario pasan por `checkMessageSafety()` antes de llegar al modelo.
 - Escalabilidad: `CoachFreeMessages.monthYear` permite escalar sin crons de reset.
+
+## Non-Functional Requirements
+- Latencia: respuestas de chat < 5s p95. Asesor análisis < 10s p95.
+
+## Test Scenarios
+
+See `docs/specs/ia-tools/test-scenarios.md`.
 
 ## Definition of Done
 

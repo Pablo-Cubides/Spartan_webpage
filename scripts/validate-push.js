@@ -3,6 +3,11 @@
 const { spawnSync } = require("child_process");
 
 const steps = [
+  ["qa:spec:structure", "Spec structure validation"],
+  ["qa:spec:artifacts", "Spec artifact validation"],
+  ["qa:spec:completeness", "Spec API contract completeness"],
+  ["qa:spec:traceability", "Spec file traceability"],
+  ["qa:spec:verify", "Spec acceptance test traceability"],
   ["qa:content:validate", "Blog content validation"],
   ["qa:images:validate", "Image URL validation"],
   ["qa:security:secrets", "Secret scan"],
@@ -16,9 +21,9 @@ const steps = [
 
 function run(command, description) {
   console.log(`\n🚀 ${description}...`);
-  const result = spawnSync("npm", ["run", command], {
+  const result = spawnSync(process.execPath, ["scripts/run-npm-script.js", command], {
     stdio: "inherit",
-    shell: true,
+    shell: false,
     env: { ...process.env, SKIP_ENV_VALIDATION: "1" },
   });
 

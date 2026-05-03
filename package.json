@@ -13,7 +13,7 @@
     "qa:typecheck": "npm --prefix frontend run type-check",
     "qa:test": "npm --prefix frontend run test",
     "qa:build": "npm --prefix frontend run build",
-    "qa:prisma:validate": "npm --prefix frontend exec prisma validate",
+    "qa:prisma:validate": "npm --prefix frontend run prisma:validate",
     "qa:content:validate": "node scripts/validate-blog-content.js",
     "qa:images:validate": "node scripts/validate-image-urls.js",
     "qa:security:deps": "node scripts/security-audit.js",
@@ -21,6 +21,9 @@
     "qa:spec:completeness": "node scripts/qa-spec-completeness.js --strict",
     "qa:spec:traceability": "node scripts/qa-spec-traceability.js --strict",
     "qa:spec:structure": "node scripts/qa-spec-structure.js --strict",
+    "qa:spec:artifacts": "node scripts/qa-spec-artifacts.js --strict",
+    "qa:spec:verify": "node scripts/qa-spec-verifier.js --strict",
+    "qa:spec:report": "node scripts/qa-spec-report.js",
     "qa:prepush": "node scripts/validate-push.js"
   },
   "devDependencies": {

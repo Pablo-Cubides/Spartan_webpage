@@ -76,9 +76,11 @@ Status: 200
 ## POST /api/credits/buy-stripe — Initiate Stripe checkout
 
 ```
-Method: POST
-Path:   /api/credits/buy-stripe
-Auth:   Bearer <Firebase ID Token>
+Method:   POST
+Path:     /api/credits/buy | /api/credits/buy-stripe
+Schema:   `BuyCreditSchema`
+Auth:     Authenticated user
+Idempotent: yes
 ```
 
 ### Request

@@ -1,0 +1,100 @@
+pipeline:
+  name: Spartan Main Integration
+  identifier: spartan_main_integration
+  orgIdentifier: <+input>
+  projectIdentifier: <+input>
+  tags:
+    sdd: "true"
+    deployment: disabled-in-phase-1
+  properties:
+    ci:
+      codebase:
+        connectorRef: <+input>
+        repoName: <+input>
+        build: <+input>
+  stages:
+    - stage:
+        name: Main Quality Gate
+        identifier: main_quality_gate
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: <+input>
+              namespace: <+input>
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install all
+                  identifier: install_all
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: |
+                      npm ci
+                      npm --prefix frontend ci
+              - step:
+                  type: Run
+                  name: SDD gate
+                  identifier: sdd_gate
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: |
+                      node scripts/qa-spec-structure.js --strict
+                      node scripts/qa-spec-artifacts.js --strict
+                      node scripts/qa-spec-completeness.js --strict
+                      node scripts/qa-spec-traceability.js --strict
+                      node scripts/qa-spec-verifier.js --strict
+              - step:
+                  type: Run
+                  name: Quality and security
+                  identifier: quality_security
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      SKIP_ENV_VALIDATION: "1"
+                      STRICT_SECURITY_AUDIT: "1"
+                    command: |
+                      node scripts/validate-blog-content.js
+                      node scripts/validate-image-urls.js
+                      node scripts/scan-secrets.js
+                      node scripts/security-audit.js --strict
+                      npm --prefix frontend run lint
+                      npm --prefix frontend run type-check
+                      npm --prefix frontend run test
+                      npm --prefix frontend run prisma:validate
+              - step:
+                  type: Run
+                  name: Build only
+                  identifier: build_only
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      SKIP_ENV_VALIDATION: "1"
+                      NEXT_PUBLIC_API_URL: https://spartan-club.vercel.app
+                      NEXT_PUBLIC_APP_NAME: Spartan Club
+                      NEXT_PUBLIC_FIREBASE_API_KEY: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_API_KEY")>
+                      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN")>
+                      NEXT_PUBLIC_FIREBASE_PROJECT_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_PROJECT_ID")>
+                      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET")>
+                      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID")>
+                      NEXT_PUBLIC_FIREBASE_APP_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_APP_ID")>
+                      NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: <+secrets.getValue("NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY")>
+                    command: npm --prefix frontend run build
+              - step:
+                  type: Run
+                  name: Deployment disabled
+                  identifier: deployment_disabled
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: echo "Phase 1 runs validation only. Vercel remains the deployment path."

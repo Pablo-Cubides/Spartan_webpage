@@ -1,0 +1,42 @@
+scorecard:
+  name: Spartan SDD Maturity
+  identifier: spartan_sdd_maturity
+  owner: engineering
+  component: spartan-club-web
+  thresholds:
+    warning: 70
+    production_required: 85
+  checks:
+    - id: specs_complete
+      name: Feature specs have required structure
+      command: node scripts/qa-spec-structure.js --strict
+      weight: 15
+    - id: sdd_artifacts_complete
+      name: Feature specs include SDD artifacts
+      command: node scripts/qa-spec-artifacts.js --strict
+      weight: 15
+    - id: api_contracts_current
+      name: App routes have API contracts
+      command: node scripts/qa-spec-completeness.js --strict
+      weight: 15
+    - id: acceptance_criteria_linked
+      name: Acceptance criteria link to tests
+      command: node scripts/qa-spec-verifier.js --strict
+      weight: 15
+    - id: file_traceability_valid
+      name: Documentation file references are valid
+      command: node scripts/qa-spec-traceability.js --strict
+      weight: 10
+    - id: secret_scan_active
+      name: Secret scan is active
+      command: node scripts/scan-secrets.js
+      weight: 10
+    - id: dependency_audit_active
+      name: Dependency audit is active
+      command: node scripts/security-audit.js --strict
+      weight: 10
+    - id: branch_protection_enabled
+      name: Branch protection is enabled
+      data_source: GitHub branch protection
+      expected: required status checks include "Spartan SDD Quality Gate"
+      weight: 10

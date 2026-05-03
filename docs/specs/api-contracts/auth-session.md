@@ -3,6 +3,7 @@
 ```
 Method:     POST
 Path:       /api/auth/session
+Schema:     `none` (validated manually)
 Auth:       Firebase ID Token (body) → sets __session cookie
 Idempotent: yes
 ```

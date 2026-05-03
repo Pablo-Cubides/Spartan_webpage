@@ -3,6 +3,7 @@
 ```
 Method:     POST
 Path:       /api/auth/sync
+Schema:     `None`
 Auth:       Bearer <Firebase ID Token>
 Idempotent: yes — upsert is safe to call multiple times
 ```

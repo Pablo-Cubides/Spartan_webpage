@@ -1,0 +1,42 @@
+template:
+  name: SDD Quality Stage
+  identifier: sdd_quality_stage
+  versionLabel: v1
+  type: Stage
+  tags:
+    sdd: "true"
+  spec:
+    type: CI
+    spec:
+      cloneCodebase: <+input>
+      caching:
+        enabled: true
+      infrastructure:
+        type: KubernetesDirect
+        spec:
+          connectorRef: <+input>
+          namespace: <+input>
+          os: Linux
+      execution:
+        steps:
+          - step:
+              type: Run
+              name: SDD gate
+              identifier: sdd_gate
+              spec:
+                shell: Sh
+                image: node:24
+                command: |
+                  node scripts/qa-spec-structure.js --strict
+                  node scripts/qa-spec-artifacts.js --strict
+                  node scripts/qa-spec-completeness.js --strict
+                  node scripts/qa-spec-traceability.js --strict
+                  node scripts/qa-spec-verifier.js --strict
+          - step:
+              type: Run
+              name: SDD report
+              identifier: sdd_report
+              spec:
+                shell: Sh
+                image: node:24
+                command: node scripts/qa-spec-report.js

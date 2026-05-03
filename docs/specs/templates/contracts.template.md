@@ -10,6 +10,7 @@ Copy the relevant section(s) into your feature spec or into `docs/specs/api-cont
 ```
 Method:   POST | GET | PUT | PATCH | DELETE
 Path:     /api/<resource>[/<id>]
+Schema:   `NameOfZodSchema` (defined in frontend/src/lib/validation/schemas.ts)
 Auth:     Bearer <Firebase ID Token> | None | Admin only
 Rate:     N req/min per IP | per user
 Idempotent: yes | no

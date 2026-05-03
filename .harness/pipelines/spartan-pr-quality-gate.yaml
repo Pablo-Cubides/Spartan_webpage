@@ -1,0 +1,230 @@
+pipeline:
+  name: Spartan PR Quality Gate
+  identifier: spartan_pr_quality_gate
+  orgIdentifier: <+input>
+  projectIdentifier: <+input>
+  tags:
+    sdd: "true"
+    adoption: parallel-first
+  properties:
+    ci:
+      codebase:
+        connectorRef: <+input>
+        repoName: <+input>
+        build: <+input>
+  stages:
+    - stage:
+        name: Install
+        identifier: install
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: <+input>
+              namespace: <+input>
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install root dependencies
+                  identifier: install_root
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: npm ci
+              - step:
+                  type: Run
+                  name: Install frontend dependencies
+                  identifier: install_frontend
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: npm --prefix frontend ci
+    - stage:
+        name: SDD Gate
+        identifier: sdd_gate
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: <+input>
+              namespace: <+input>
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Structure
+                  identifier: spec_structure
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: node scripts/qa-spec-structure.js --strict
+              - step:
+                  type: Run
+                  name: Artifacts
+                  identifier: spec_artifacts
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: node scripts/qa-spec-artifacts.js --strict
+              - step:
+                  type: Run
+                  name: API Contracts
+                  identifier: spec_completeness
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: node scripts/qa-spec-completeness.js --strict
+              - step:
+                  type: Run
+                  name: File Traceability
+                  identifier: spec_traceability
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: node scripts/qa-spec-traceability.js --strict
+              - step:
+                  type: Run
+                  name: Acceptance Test Traceability
+                  identifier: spec_verify
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: node scripts/qa-spec-verifier.js --strict
+    - stage:
+        name: Quality
+        identifier: quality
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: <+input>
+              namespace: <+input>
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Lint
+                  identifier: lint
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: npm --prefix frontend run lint
+              - step:
+                  type: Run
+                  name: Typecheck
+                  identifier: typecheck
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: npm --prefix frontend run type-check
+              - step:
+                  type: Run
+                  name: Tests
+                  identifier: tests
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: npm --prefix frontend run test
+              - step:
+                  type: Run
+                  name: Prisma validate
+                  identifier: prisma_validate
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: npm --prefix frontend run prisma:validate
+    - stage:
+        name: Security
+        identifier: security
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: <+input>
+              namespace: <+input>
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Secret scan
+                  identifier: secret_scan
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: node scripts/scan-secrets.js
+              - step:
+                  type: Run
+                  name: Dependency audit
+                  identifier: dependency_audit
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: STRICT_SECURITY_AUDIT=1 node scripts/security-audit.js --strict
+              - step:
+                  type: Run
+                  name: STO placeholder
+                  identifier: sto_placeholder
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: echo "Enable Harness STO scanner step here when the STO module is licensed."
+    - stage:
+        name: Build
+        identifier: build
+        type: CI
+        spec:
+          cloneCodebase: false
+          caching:
+            enabled: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: <+input>
+              namespace: <+input>
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Next build
+                  identifier: next_build
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      SKIP_ENV_VALIDATION: "1"
+                      NEXT_PUBLIC_API_URL: https://spartan-club.vercel.app
+                      NEXT_PUBLIC_APP_NAME: Spartan Club
+                      NEXT_PUBLIC_FIREBASE_API_KEY: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_API_KEY")>
+                      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN")>
+                      NEXT_PUBLIC_FIREBASE_PROJECT_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_PROJECT_ID")>
+                      NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET")>
+                      NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID")>
+                      NEXT_PUBLIC_FIREBASE_APP_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_APP_ID")>
+                      NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: <+secrets.getValue("NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY")>
+                    command: npm --prefix frontend run build
+        advanced:
+          sendGitStatus:
+            enabled: true
+            name: Spartan SDD Quality Gate

@@ -53,9 +53,11 @@ Status: 200
 ## PUT /api/admin/users/[id]/role — Update user role
 
 ```
-Method: PUT
-Path:   /api/admin/users/[id]/role
-Auth:   Admin Bearer token
+Method:   GET | PUT
+Path:     /api/admin/users[/id/role]
+Schema:   `UpdateUserRoleSchema` (for PUT)
+Auth:     Admin only
+Idempotent: yes
 ```
 
 ### Request

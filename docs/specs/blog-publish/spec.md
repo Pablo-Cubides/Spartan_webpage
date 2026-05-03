@@ -33,12 +33,12 @@ Definir un flujo de publicación de posts que garantice: metadata completa y vá
 
 ## Acceptance Criteria
 
-- Un post con frontmatter incompleto (sin `title`, `slug`, `date` o `category`) falla la validación en CI y no llega a producción.
-- Un post con slug duplicado falla la validación.
-- Un post con `cover_image` que devuelve 4xx/5xx falla la validación de imágenes en CI.
-- Un post marcado como `is_published: true` en el panel admin aparece en `GET /api/blog` y en el sitemap.
-- Los datos estáticos del blog (`static-data.ts`) se regeneran en cada build.
-- `qa:content:validate` y `qa:images:validate` pasan sin errores en main.
+- Un post con frontmatter incompleto (sin `title`, `slug`, `date` o `category`) falla la validación en CI y no llega a producción. {@test: frontend/tests/production-checklist.ts}
+- Un post con slug duplicado falla la validación. {@test: frontend/tests/production-checklist.ts}
+- Un post con `cover_image` que devuelve 4xx/5xx falla la validación de imágenes en CI. {@test: frontend/tests/production-checklist.ts}
+- Un post marcado como `is_published: true` en el panel admin aparece en `GET /api/blog` y en el sitemap. {@test: frontend/tests/production-checklist.ts}
+- Los datos estáticos del blog (`static-data.ts`) se regeneran en cada build. {@test: frontend/tests/production-checklist.ts}
+- `qa:content:validate` y `qa:images:validate` pasan sin errores en main. {@test: frontend/tests/production-checklist.ts}
 
 ## Frontmatter Required Fields
 
@@ -87,12 +87,14 @@ author: string (optional, defaults to "Spartan Club")
 | Panel admin blog | `frontend/src/app/api/admin/blog/route.ts` |
 | Edición de post | `frontend/src/app/api/admin/blog/[id]/route.ts` |
 
-## Non-Functional Requirements
-
-- La validación de URLs de imágenes corre en CI pero NO bloquea el dev server local (demasiado lento para uso diario).
+## Constraints
+- La validación de URLs de imágenes corre en CI pero NO bloquea el dev server local.
 - Los datos estáticos se generan en build — el sitio no necesita DB para servir el blog al público.
 - El parser de Markdown usa `gray-matter` para extraer frontmatter.
 - El sitemap referencia solo posts con `is_published: true`.
+
+## Non-Functional Requirements
+- SEO: sitemap actualizado y metadata válida en cada build.
 
 ## Test Scenarios
 

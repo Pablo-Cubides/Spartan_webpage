@@ -18,12 +18,7 @@ const ROOT = path.resolve(__dirname, '..');
 const strict = process.argv.includes('--strict');
 
 const SCAN_DIRS = [
-  'docs/specs/api-contracts',
-  'docs/specs/001-blog-media-upload',
-  'docs/specs/pagos',
-  'docs/specs/ia-tools',
-  'docs/specs/auth-admin',
-  'docs/specs/blog-publish',
+  'docs/specs',
   'docs/adr',
 ];
 
@@ -59,12 +54,22 @@ function extractReferences(content, filePath) {
 
 function scanDir(dir) {
   const files = [];
-  if (!fs.existsSync(path.join(ROOT, dir))) return files;
-  for (const entry of fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })) {
-    if (entry.isFile() && entry.name.endsWith('.md')) {
-      files.push(path.join(dir, entry.name));
+  const fullRoot = path.join(ROOT, dir);
+  if (!fs.existsSync(fullRoot)) return files;
+
+  function walk(current) {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const full = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === 'templates') continue;
+        walk(full);
+      } else if (entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'TUTORIAL-FIRST-SPEC.md') {
+        files.push(path.relative(ROOT, full));
+      }
     }
   }
+
+  walk(fullRoot);
   return files;
 }
 

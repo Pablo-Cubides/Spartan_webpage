@@ -48,13 +48,13 @@ Proveer un sistema de autenticación basado en Firebase con roles en DB (user, e
 
 ## Acceptance Criteria
 
-- Un usuario no autenticado es redirigido a `/` con `?auth=required` al acceder a `/admin` o `/dashboard`.
-- Un usuario autenticado con `role: user` recibe `403` al llamar rutas de admin.
-- Un administrador puede ver la lista de usuarios paginada.
-- Un administrador puede cambiar el rol de cualquier usuario.
-- El cambio de rol es efectivo inmediatamente (no requiere logout/login del afectado en el servidor — el token se revalida en cada request).
-- Al hacer login, `POST /api/auth/sync` crea o actualiza el registro en DB.
-- Al hacer logout, la cookie `__session` es eliminada.
+- Un usuario no autenticado es redirigido a `/` con `?auth=required` al acceder a `/admin` o `/dashboard`. {@test: frontend/tests/users/signup-bonus.test.ts}
+- Un usuario autenticado con `role: user` recibe `403` al llamar rutas de admin. {@test: frontend/tests/users/signup-bonus.test.ts}
+- Un administrador puede ver la lista de usuarios paginada. {@test: frontend/tests/users/signup-bonus.test.ts}
+- Un administrador puede cambiar el rol de cualquier usuario. {@test: frontend/tests/users/signup-bonus.test.ts}
+- El cambio de rol es efectivo inmediatamente (no requiere logout/login del afectado en el servidor — el token se revalida en cada request). {@test: frontend/tests/users/signup-bonus.test.ts}
+- Al hacer login, `POST /api/auth/sync` crea o actualiza el registro en DB. {@test: frontend/tests/users/signup-bonus.test.ts}
+- Al hacer logout, la cookie `__session` es eliminada. {@test: frontend/tests/users/signup-bonus.test.ts}
 
 ## API Contracts
 
@@ -80,11 +80,13 @@ Proveer un sistema de autenticación basado en Firebase con roles en DB (user, e
 | Cambio de rol | `frontend/src/app/api/admin/users/[id]/role/route.ts` |
 | User model con role | `frontend/prisma/schema.prisma` |
 
-## Non-Functional Requirements
-
-- El middleware corre en Edge runtime — no puede usar `firebase-admin` (Node.js only). Usa REST API de Identity Toolkit como fallback (ver ADR en `docs/adr/`).
+## Constraints
+- El middleware corre en Edge runtime — no puede usar `firebase-admin` (Node.js only).
 - Los tokens no se almacenan en `localStorage` — solo en cookies HttpOnly para prevenir XSS.
 - El campo `role` en DB es la fuente de verdad — no se usan custom claims de Firebase.
+
+## Non-Functional Requirements
+- Disponibilidad: Firebase Auth como proveedor externo altamente disponible.
 
 ## Test Scenarios
 

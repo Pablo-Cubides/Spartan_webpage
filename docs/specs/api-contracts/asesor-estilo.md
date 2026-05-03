@@ -112,6 +112,7 @@ Same request/response shape as `/analyze` but uses a clothing-specific prompt.
 ```
 Method:     POST
 Path:       /api/asesor-estilo/iterate
+Schema:     IterateImageSchema
 Auth:       Bearer <Firebase ID Token>
 Idempotent: no (consumes credits)
 ```

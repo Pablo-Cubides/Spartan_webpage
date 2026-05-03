@@ -3,6 +3,7 @@
 Implementation: `frontend/src/app/api/admin/settings/route.ts`
 
 ```
+Schema: `None`
 Auth: Admin Bearer token (all routes)
 ```
 

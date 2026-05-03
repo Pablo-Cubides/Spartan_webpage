@@ -3,44 +3,32 @@
  * qa-spec-structure.js
  *
  * Validates that every spec.md file has the required sections.
- * Required sections: Problem, Goal, Acceptance Criteria, Definition of Done
- * Recommended sections (warn only): Scope, Implementation, Test Scenarios
+ * Required sections: Problem, Goal, Scope, Constraints, Acceptance Criteria, Definition of Done
+ * Recommended sections (warn only): Implementation, Test Scenarios
  *
  * Usage: node scripts/qa-spec-structure.js [--strict]
  */
 
 const fs = require('fs');
 const path = require('path');
+const matter = require('gray-matter');
 
 const ROOT = path.resolve(__dirname, '..');
 const strict = process.argv.includes('--strict');
-
-const SPEC_DIRS = [
-  'docs/specs/001-blog-media-upload',
-  'docs/specs/pagos',
-  'docs/specs/ia-tools',
-  'docs/specs/auth-admin',
-  'docs/specs/blog-publish',
-];
+const SPECS_ROOT = path.join(ROOT, 'docs/specs');
 
 // Sections that MUST be present (case-insensitive heading match)
 const REQUIRED_SECTIONS = [
-  /^##\s+problem/i,
-  /^##\s+goal/i,
-  /^##\s+.*acceptance criteria/i,
-  /^##\s+definition of done/i,
-];
-
-const REQUIRED_LABELS = [
-  'Problem',
-  'Goal',
-  'Acceptance Criteria',
-  'Definition of Done',
+  { re: /^##\s+problem/i, label: 'Problem' },
+  { re: /^##\s+goal/i, label: 'Goal' },
+  { re: /^##\s+scope/i, label: 'Scope' },
+  { re: /^##\s+constraints/i, label: 'Constraints' },
+  { re: /^##\s+.*acceptance criteria/i, label: 'Acceptance Criteria' },
+  { re: /^##\s+definition of done/i, label: 'Definition of Done' },
 ];
 
 // Sections that are recommended but not required
 const RECOMMENDED_SECTIONS = [
-  { re: /^##\s+scope/i, label: 'Scope' },
   { re: /^##\s+(implementation|impl)/i, label: 'Implementation' },
   { re: /^##\s+test scenarios/i, label: 'Test Scenarios' },
 ];
@@ -48,30 +36,17 @@ const RECOMMENDED_SECTIONS = [
 // Frontmatter fields required
 const REQUIRED_FRONTMATTER = ['version', 'status', 'owner'];
 
-function parseFrontmatter(content) {
-  // Support both LF and CRLF line endings
-  const normalized = content.replace(/\r\n/g, '\n');
-  const match = normalized.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return null;
-  const fields = {};
-  for (const line of match[1].split('\n')) {
-    const m = line.match(/^(\w+):\s*"?([^"]+)"?/);
-    if (m) fields[m[1].trim()] = m[2].trim();
-  }
-  return fields;
-}
-
 function checkSpec(relPath) {
   const fullPath = path.join(ROOT, relPath);
-  const content = fs.readFileSync(fullPath, 'utf8');
+  const fileContent = fs.readFileSync(fullPath, 'utf8');
+  const { data: fm, content } = matter(fileContent);
   const lines = content.replace(/\r\n/g, '\n').split('\n');
   const errors = [];
   const warnings = [];
 
   // Frontmatter check
-  const fm = parseFrontmatter(content);
-  if (!fm) {
-    errors.push('Missing YAML frontmatter (---version/status/owner---');
+  if (!Object.keys(fm).length) {
+    errors.push('Missing or empty YAML frontmatter (---version/status/owner---)');
   } else {
     for (const field of REQUIRED_FRONTMATTER) {
       if (!fm[field]) errors.push(`Frontmatter missing field: ${field}`);
@@ -79,11 +54,10 @@ function checkSpec(relPath) {
   }
 
   // Required sections
-  for (let i = 0; i < REQUIRED_SECTIONS.length; i++) {
-    const re = REQUIRED_SECTIONS[i];
+  for (const { re, label } of REQUIRED_SECTIONS) {
     const found = lines.some(l => re.test(l));
     if (!found) {
-      errors.push(`Missing required section: ## ${REQUIRED_LABELS[i]}`);
+      errors.push(`Missing required section: ## ${label}`);
     }
   }
 
@@ -100,16 +74,22 @@ function checkSpec(relPath) {
 
 function findSpecs() {
   const specs = [];
-  for (const dir of SPEC_DIRS) {
-    const fullDir = path.join(ROOT, dir);
-    if (!fs.existsSync(fullDir)) continue;
-    for (const entry of fs.readdirSync(fullDir, { withFileTypes: true })) {
-      if (entry.isFile() && entry.name === 'spec.md') {
-        specs.push(path.join(dir, entry.name));
+
+  function walk(dir) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === 'templates' || entry.name === 'api-contracts') continue;
+        walk(full);
+      } else if (entry.isFile() && entry.name === 'spec.md') {
+        specs.push(path.relative(ROOT, full));
       }
     }
   }
-  return specs;
+
+  walk(SPECS_ROOT);
+  return specs.sort();
 }
 
 const specs = findSpecs();
@@ -118,13 +98,18 @@ const allErrors = [];
 const allWarnings = [];
 
 for (const spec of specs) {
-  const { errors, warnings } = checkSpec(spec);
-  if (errors.length > 0) {
-    allErrors.push({ spec, errors });
+  try {
+    const { errors, warnings } = checkSpec(spec);
+    if (errors.length > 0) {
+      allErrors.push({ spec, errors });
+      failed = true;
+    }
+    if (warnings.length > 0) {
+      allWarnings.push({ spec, warnings });
+    }
+  } catch (err) {
+    allErrors.push({ spec, errors: [`Parse error: ${err.message}`] });
     failed = true;
-  }
-  if (warnings.length > 0) {
-    allWarnings.push({ spec, warnings });
   }
 }
 
@@ -137,12 +122,12 @@ if (allWarnings.length > 0) {
 }
 
 if (allErrors.length > 0) {
-  console.error('\n❌ Spec structure check FAILED — required sections missing:\n');
+  console.error('\n❌ Spec structure check FAILED — required sections missing or invalid frontmatter:\n');
   for (const { spec, errors } of allErrors) {
     console.error(`  ${spec}:`);
     errors.forEach(e => console.error(`    • ${e}`));
   }
-  console.error('\nFix: add the missing sections. See docs/specs/templates/spec.template.md\n');
+  console.error('\nFix: add the missing sections or fix frontmatter. See docs/specs/templates/spec.template.md\n');
 }
 
 if (!failed) {
@@ -156,3 +141,4 @@ if (strict) {
 
 console.warn('⚠ Continuing because --strict not set.');
 process.exit(0);
+

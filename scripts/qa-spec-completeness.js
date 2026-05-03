@@ -6,6 +6,7 @@
  * Fails if:
  *   1. A route.ts exists with no entry in MANIFEST.json
  *   2. A MANIFEST entry points to a contract file that doesn't exist on disk
+ *   3. A contract file doesn't reference a validation schema (Zod) for mutations
  *
  * Usage: node scripts/qa-spec-completeness.js [--strict]
  */
@@ -14,25 +15,27 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const ROUTES_DIR = path.join(ROOT, 'frontend/src/app/api');
+const APP_DIR = path.join(ROOT, 'frontend/src/app');
 const MANIFEST_PATH = path.join(ROOT, 'docs/specs/api-contracts/MANIFEST.json');
+const SCHEMAS_PATH = path.join(ROOT, 'frontend/src/lib/validation/schemas.ts');
 const strict = process.argv.includes('--strict');
 
-function discoverRoutes(dir, base = '/api') {
+function discoverRoutes(dir) {
   const routes = [];
+  if (!fs.existsSync(dir)) return routes;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      routes.push(...discoverRoutes(full, `${base}/${entry.name}`));
+      routes.push(...discoverRoutes(full));
     } else if (entry.name === 'route.ts' || entry.name === 'route.js') {
-      routes.push(base);
+      const relDir = path.relative(APP_DIR, dir).replace(/\\/g, '/');
+      routes.push(`/${relDir}`);
     }
   }
   return routes;
 }
 
 function normalizeRoute(route) {
-  // Normalize dynamic segments: [id] stays as-is for MANIFEST matching
   return route.replace(/\\/g, '/');
 }
 
@@ -49,8 +52,11 @@ if (!fs.existsSync(MANIFEST_PATH)) {
 const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
 const manifestRoutes = manifest.routes || {};
 
+// Load schemas to check for presence
+const schemasContent = fs.existsSync(SCHEMAS_PATH) ? fs.readFileSync(SCHEMAS_PATH, 'utf8') : '';
+
 // 1. Check all discovered routes are in the manifest
-const discoveredRoutes = discoverRoutes(ROUTES_DIR);
+const discoveredRoutes = discoverRoutes(APP_DIR).sort();
 for (const route of discoveredRoutes) {
   const normalized = normalizeRoute(route);
   if (!manifestRoutes[normalized]) {
@@ -59,7 +65,7 @@ for (const route of discoveredRoutes) {
   }
 }
 
-// 2. Check all manifest contract files exist on disk
+// 2. Check all manifest contract files exist and have schema refs
 const seenContracts = new Set();
 for (const [route, contractPath] of Object.entries(manifestRoutes)) {
   const fullPath = path.join(ROOT, contractPath);
@@ -68,6 +74,22 @@ for (const [route, contractPath] of Object.entries(manifestRoutes)) {
     if (!fs.existsSync(fullPath)) {
       errors.push(`Contract file missing for route "${route}": ${contractPath}`);
       failed = true;
+    } else {
+      // 3. Check for Zod schema reference in the contract
+      const contractContent = fs.readFileSync(fullPath, 'utf8');
+      const schemaRefMatch = contractContent.match(/Schema:\s*`(\w+)`/);
+      
+      if (schemaRefMatch) {
+        const schemaName = schemaRefMatch[1];
+        // Verify the schema actually exists in schemas.ts (allow 'none' for manual validation)
+        if (schemaName.toLowerCase() !== 'none' && !schemasContent.includes(`export const ${schemaName}`) && !schemasContent.includes(`export type ${schemaName}`)) {
+          errors.push(`Contract "${contractPath}" references unknown schema "${schemaName}"`);
+          failed = true;
+        }
+      } else if (route.includes('/api/admin/') || route.includes('/api/auth/') || route.includes('/api/credits/')) {
+        // Warning for missing schemas on important routes
+        warnings.push(`Contract "${contractPath}" (route: ${route}) missing Zod schema reference (Schema: \`Name\`)`);
+      }
     }
   }
 }
@@ -76,11 +98,12 @@ for (const [route, contractPath] of Object.entries(manifestRoutes)) {
 if (errors.length > 0) {
   console.error('\n❌ Spec completeness check FAILED:\n');
   errors.forEach(e => console.error(`   • ${e}`));
-  console.error('\nFix: add the route to MANIFEST.json and create the contract file.');
+  console.error('\nFix: add the route to MANIFEST.json, create/fix the contract file, or link the Zod schema.');
   console.error('Template: docs/specs/templates/contracts.template.md\n');
 }
 
 if (warnings.length > 0) {
+  console.warn('\n⚠ Spec completeness warnings:\n');
   warnings.forEach(w => console.warn(`   ⚠ ${w}`));
 }
 
@@ -95,3 +118,4 @@ if (strict) {
 
 console.warn('⚠ Continuing because --strict not set.');
 process.exit(0);
+

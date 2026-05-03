@@ -9,6 +9,7 @@ See: `docs/specs/api-contracts/blog.md` (admin blog section) and `docs/specs/001
 ```
 Method:      POST
 Path:        /api/admin/blog/media
+Schema:      `None`
 Auth:        Admin Bearer token
 Body:        multipart/form-data
 Max size:    10 MB

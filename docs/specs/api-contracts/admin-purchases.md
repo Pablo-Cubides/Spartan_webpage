@@ -9,6 +9,7 @@ Implementation: `frontend/src/app/api/admin/purchases/route.ts`
 ```
 Method: GET
 Path:   /api/admin/purchases
+Schema: `None`
 Auth:   Admin Bearer token
 ```
 

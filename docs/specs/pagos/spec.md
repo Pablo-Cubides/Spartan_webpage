@@ -32,13 +32,13 @@ Proveer un sistema de pagos dual (MercadoPago + Stripe) que: crea una `Purchase`
 
 ## Acceptance Criteria
 
-- Un usuario autenticado puede ver los paquetes de créditos disponibles.
-- Al seleccionar un paquete, el sistema crea una `Purchase` con `status: pending` y redirige al checkout del proveedor.
-- Cuando MercadoPago o Stripe notifica el pago aprobado, los créditos se otorgan **exactamente una vez** (idempotencia garantizada).
-- El webhook retorna `200` aunque el email falle — el pago no se revierte por errores de email.
-- El usuario recibe un email de confirmación con el nombre del paquete y los créditos comprados.
-- Los webhooks con firma inválida son rechazados con `401/403` (no procesados).
-- En admin, un administrador puede ver todas las `Purchase` con su estado y proveedor.
+- Un usuario autenticado puede ver los paquetes de créditos disponibles. {@test: frontend/tests/payments/flow.test.ts}
+- Al seleccionar un paquete, el sistema crea una `Purchase` con `status: pending` y redirige al checkout del proveedor. {@test: frontend/tests/payments/flow.test.ts}
+- Cuando MercadoPago o Stripe notifica el pago aprobado, los créditos se otorgan **exactamente una vez** (idempotencia garantizada). {@test: frontend/tests/payments/flow.test.ts}
+- El webhook retorna `200` aunque el email falle — el pago no se revierte por errores de email. {@test: frontend/tests/payments/flow.test.ts}
+- El usuario recibe un email de confirmación con el nombre del paquete y los créditos comprados. {@test: frontend/tests/payments/flow.test.ts}
+- Los webhooks con firma inválida son rechazados con `401/403` (no procesados). {@test: frontend/tests/payments/flow.test.ts}
+- En admin, un administrador puede ver todas las `Purchase` con su estado y proveedor. {@test: frontend/tests/payments/flow.test.ts}
 
 ## Payment State Machine
 
@@ -77,12 +77,17 @@ failed    ──── (no transitions — terminal)
 | Email confirmación | `frontend/src/lib/server/email.ts` |
 | Modelo Purchase | `frontend/prisma/schema.prisma:~60` |
 
-## Non-Functional Requirements
-
+## Constraints
 - Idempotencia: verificar `purchase.status !== 'completed'` antes de otorgar créditos.
 - Seguridad: validar firma de webhook antes de procesar payload (timing-safe comparison).
-- Resiliencia: errores de email no deben fallar el webhook — proveedores reintentarán en 5xx.
 - Trazabilidad: el campo `gateway` en `Purchase` identifica qué proveedor procesó el pago.
+
+## Non-Functional Requirements
+- Resiliencia: errores de email no deben fallar el webhook — proveedores reintentarán en 5xx.
+
+## Test Scenarios
+
+See `docs/specs/pagos/test-scenarios.md`.
 
 ## Definition of Done
 
