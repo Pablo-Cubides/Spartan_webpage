@@ -20,18 +20,30 @@ type Target = {
   attributes?: Record<string, string | number | boolean>;
 };
 
+interface FFClient {
+  waitForInitialization(): Promise<void>;
+  boolVariation(key: string, target: unknown, fallback: boolean): Promise<boolean>;
+}
+
+interface FFModule {
+  Client: new (key: string, opts: { enableStream?: boolean }) => FFClient;
+}
+
 const SDK_KEY = process.env.HARNESS_FF_SDK_KEY;
 
-let clientPromise: Promise<unknown> | null = null;
+let clientPromise: Promise<FFClient | null> | null = null;
 
-async function getClient(): Promise<unknown | null> {
+async function getClient(): Promise<FFClient | null> {
   if (!SDK_KEY) return null;
   if (clientPromise) return clientPromise;
 
   clientPromise = (async () => {
     try {
-      // Dynamic import so the dependency isn't required when FF is disabled.
-      const mod = await import('@harnessio/ff-nodejs-server-sdk').catch(() => null);
+      // Dynamic import via variable so TypeScript doesn't try to resolve
+      // the package at compile time when it's not installed.
+      const pkg = '@harnessio/ff-nodejs-server-sdk';
+      const dynImport = new Function('p', 'return import(p)') as (p: string) => Promise<FFModule>;
+      const mod = await dynImport(pkg).catch(() => null);
       if (!mod) {
         console.warn('[feature-flags] @harnessio/ff-nodejs-server-sdk not installed');
         return null;
@@ -58,7 +70,6 @@ export async function isFlagEnabled(flag: FlagKey, target: Target = {}): Promise
       name: target.userId || 'anonymous',
       attributes: { email: target.email || '', ...target.attributes },
     };
-    // @ts-expect-error — dynamic SDK
     return await client.boolVariation(flag, t, fallback);
   } catch (err) {
     console.error('[feature-flags] evaluation failed for', flag, err);

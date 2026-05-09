@@ -15,16 +15,28 @@ import { defaults, type FlagKey } from './flags';
 
 const SDK_KEY = process.env.NEXT_PUBLIC_HARNESS_FF_SDK_KEY;
 
-let clientInitPromise: Promise<unknown> | null = null;
+interface FFClient {
+  variation: (flag: string, fallback: boolean) => boolean;
+  on: (event: string, cb: () => void) => void;
+}
 
-async function ensureClient(): Promise<unknown | null> {
+interface FFModule {
+  initialize: (key: string, target: { identifier: string }, opts: { baseUrl?: string }) => FFClient;
+  Event: { READY: string };
+}
+
+let clientInitPromise: Promise<FFClient | null> | null = null;
+
+async function ensureClient(): Promise<FFClient | null> {
   if (typeof window === 'undefined') return null;
   if (!SDK_KEY) return null;
   if (clientInitPromise) return clientInitPromise;
 
   clientInitPromise = (async () => {
     try {
-      const mod = await import('@harnessio/ff-javascript-client-sdk').catch(() => null);
+      const pkg = '@harnessio/ff-javascript-client-sdk';
+      const dynImport = new Function('p', 'return import(p)') as (p: string) => Promise<FFModule>;
+      const mod = await dynImport(pkg).catch(() => null);
       if (!mod) {
         console.warn('[feature-flags] @harnessio/ff-javascript-client-sdk not installed');
         return null;
@@ -51,7 +63,6 @@ export function useFeatureFlag(flag: FlagKey): boolean {
     ensureClient().then(client => {
       if (!client || cancelled) return;
       try {
-        // @ts-expect-error — dynamic SDK
         const value = client.variation(flag, defaults[flag]);
         setEnabled(Boolean(value));
       } catch (err) {
