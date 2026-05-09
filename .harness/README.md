@@ -15,6 +15,11 @@ This directory holds the Harness-first delivery governance for Spartan Club.
 | `scorecards/spartan-sdd-maturity.yaml` | IDP scorecard (8 weighted checks, threshold 85) |
 | `notifications/slack-channel.yaml` | Reference for `#spartan-deploys` Slack integration |
 | `sto/dependency-scan.yaml` | Reference for the Security Test Orchestration scanners |
+| `pipelines/spartan-prod-deploy.yaml` | CD pipeline: pre-deploy → staging → approval → prod → smoke + rollback |
+| `pipelines/spartan-staging-deploy.yaml` | Lightweight staging-only deploy pipeline |
+| `pipelines/spartan-rollback-drill.yaml` | Monthly drill: rollback to N-1, verify, restore |
+| `triggers/hourly-health-check.yaml` | Cron trigger for production smoke tests |
+| `srm/spartan-slos.yaml` | SLO + monitored service definitions (Availability, Latency, Error Rate) |
 
 ## Adoption Status
 
@@ -22,9 +27,9 @@ This directory holds the Harness-first delivery governance for Spartan Club.
 |-------|-------|----------------|
 | **0 — Account setup** | manual, see runbook | Connectors, secrets, environments, monitored services |
 | **1 — Quality gates** | ✅ implemented | PR gate, main gate, Approval stage, Slack/email, gitleaks + OWASP DC |
-| 2 — CD with verification | 🚧 planned | Vercel deploy stage, smoke tests, post-deploy rollback |
-| 3 — Observability + SLOs | 🚧 planned | Sentry, SLO definitions, Lighthouse CI, bundle budget |
-| 4 — Feature flags + drills | 🚧 planned | Harness FF wired into coaches/payments, monthly rollback drill, husky |
+| **2 — CD with verification** | ✅ implemented | Vercel deploy pipelines, smoke tests, migration safety, auto-rollback, hourly health check |
+| **3 — Observability + SLOs** | ✅ implemented (configs ready, requires Sentry account + Harness SRM setup) | Sentry configs (client/server/edge), SLO definitions, Lighthouse CI |
+| **4 — Feature flags + drills** | ✅ implemented (lib + drill pipeline + husky) | Feature flag lib, monthly rollback drill, husky pre-commit/pre-push |
 
 The PR pipeline runs in parallel with the lightweight `.github/workflows/ci-cd.yml`. GitHub Actions is the **fast-feedback** path for forks and external contributors; Harness is the **authoritative** gate.
 

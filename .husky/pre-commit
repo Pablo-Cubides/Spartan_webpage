@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# Spartan pre-commit hook — runs lint-staged on staged files only.
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx lint-staged

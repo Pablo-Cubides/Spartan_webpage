@@ -1,22 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(gh pr *)",
-      "Bash(echo \"EXIT=$?\")",
-      "Bash(git fetch *)",
-      "Bash(git push *)",
-      "Bash(npm run *)",
-      "Bash(git -C D:/Empresas/Spartan/webpage fetch --all --prune)",
-      "Bash(git -C D:/Empresas/Spartan/webpage status -sb)",
-      "Bash(git -C D:/Empresas/Spartan/webpage log --oneline -3)",
-      "Bash(git -C D:/Empresas/Spartan/webpage log origin/main --oneline -3)",
-      "Bash(grep -r \"console\\\\\\\\.log\\\\|console\\\\\\\\.error\\\\|console\\\\\\\\.warn\" /d/Empresas/Spartan/webpage/.claude/worktrees/keen-williams-732f34/frontend/src --include=\"*.ts\" --include=\"*.tsx\")",
+      "Bash(git -C \"D:/Empresas/Spartan/webpage\" remote set-url origin https://github.com/Pablo-Cubides/Spartan_webpage.git)",
+      "Bash(git -C \"D:/Empresas/Spartan/webpage\" fetch --prune)",
+      "Bash(git -C \"D:/Empresas/Spartan/webpage\" ls-remote --heads origin)",
+      "Bash(git -C \"D:/Empresas/Spartan/webpage\" branch -a)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(node scripts/qa-spec-completeness.js)",
-      "Bash(node scripts/qa-spec-traceability.js)",
-      "Bash(node scripts/qa-spec-completeness.js --strict)",
-      "Bash(node scripts/qa-spec-traceability.js --strict)"
+      "Bash(git push *)"
     ]
   }
 }

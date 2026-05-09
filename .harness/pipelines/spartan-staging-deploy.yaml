@@ -1,0 +1,95 @@
+pipeline:
+  name: Spartan Staging Deploy
+  identifier: spartan_staging_deploy
+  orgIdentifier: <+pipeline.variables.org>
+  projectIdentifier: <+pipeline.variables.project>
+  tags:
+    deployment: staging
+    target: vercel-preview
+  variables:
+    - name: org
+      type: String
+      default: default
+      value: <+input>
+    - name: project
+      type: String
+      default: Spartan
+      value: <+input>
+    - name: git_connector
+      type: String
+      default: github_spartan
+      value: <+input>
+    - name: repo
+      type: String
+      default: Pablo-Cubides/Spartan_webpage
+      value: <+input>
+    - name: staging_url
+      type: String
+      default: https://spartan-club-staging.vercel.app
+      value: <+input>
+  properties:
+    ci:
+      codebase:
+        connectorRef: <+pipeline.variables.git_connector>
+        repoName: <+pipeline.variables.repo>
+        build: <+input>
+  stages:
+    - stage:
+        name: Deploy and Verify
+        identifier: deploy_verify
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install
+                  identifier: install
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: |
+                      npm ci
+                      npm --prefix frontend ci
+              - step:
+                  type: Run
+                  name: Vercel preview deploy
+                  identifier: vercel_preview
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+                    command: |
+                      npm i -g vercel@latest
+                      cd frontend
+                      vercel deploy --token=$VERCEL_TOKEN --yes
+              - step:
+                  type: Run
+                  name: Smoke tests
+                  identifier: smoke
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      BASE_URL: <+pipeline.variables.staging_url>
+                    command: |
+                      sleep 60
+                      node scripts/smoke-tests.js
+  notificationRules:
+    - name: Slack on failure
+      identifier: slack_failure
+      pipelineEvents:
+        - type: PipelineFailed
+      notificationMethod:
+        type: Slack
+        spec:
+          webhookUrl: <+secrets.getValue("slack_deploys_webhook")>
+      enabled: true

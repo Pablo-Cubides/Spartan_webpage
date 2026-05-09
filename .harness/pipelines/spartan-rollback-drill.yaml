@@ -1,0 +1,166 @@
+pipeline:
+  name: Spartan Rollback Drill
+  identifier: spartan_rollback_drill
+  orgIdentifier: <+pipeline.variables.org>
+  projectIdentifier: <+pipeline.variables.project>
+  description: |
+    Monthly drill to validate that production rollback works in <5 minutes.
+    Promotes the previous Vercel deployment to production, runs smoke tests,
+    then re-promotes the original deployment to restore state.
+  tags:
+    type: drill
+    cadence: monthly
+  variables:
+    - name: org
+      type: String
+      default: default
+      value: <+input>
+    - name: project
+      type: String
+      default: Spartan
+      value: <+input>
+    - name: prod_url
+      type: String
+      default: https://spartan-club.vercel.app
+      value: <+input>
+  stages:
+    - stage:
+        name: Capture Current Deploy
+        identifier: capture_current
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Record current production deploy URL
+                  identifier: record_current
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+                    command: |
+                      npm i -g vercel@latest
+                      cd frontend
+                      CURRENT=$(vercel ls --token=$VERCEL_TOKEN --limit=1 --json | jq -r '.[0].url')
+                      echo "Current: $CURRENT"
+                      export DRILL_START=$(date +%s)
+                      echo "Drill started at $DRILL_START"
+                  outputVariables:
+                    - name: original_deploy
+                      type: String
+                      value: CURRENT
+                    - name: drill_start
+                      type: String
+                      value: DRILL_START
+    - stage:
+        name: Rollback to N-1
+        identifier: rollback
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Promote previous deploy
+                  identifier: promote_prev
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+                    command: |
+                      npm i -g vercel@latest
+                      cd frontend
+                      PREV=$(vercel ls --token=$VERCEL_TOKEN --limit=2 --json | jq -r '.[1].url')
+                      echo "Promoting $PREV to production"
+                      vercel promote "$PREV" --token=$VERCEL_TOKEN --yes
+              - step:
+                  type: Run
+                  name: Wait for promotion
+                  identifier: wait
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: sleep 60
+              - step:
+                  type: Run
+                  name: Smoke test the rolled-back state
+                  identifier: smoke
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      BASE_URL: <+pipeline.variables.prod_url>
+                    command: node scripts/smoke-tests.js
+    - stage:
+        name: Restore Original
+        identifier: restore_original
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Promote original deploy back to production
+                  identifier: restore
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+                      ORIGINAL: <+execution.steps.record_current.output.outputVariables.original_deploy>
+                    command: |
+                      npm i -g vercel@latest
+                      cd frontend
+                      vercel promote "$ORIGINAL" --token=$VERCEL_TOKEN --yes
+              - step:
+                  type: Run
+                  name: Final smoke test
+                  identifier: final_smoke
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      BASE_URL: <+pipeline.variables.prod_url>
+                    command: |
+                      sleep 60
+                      node scripts/smoke-tests.js
+              - step:
+                  type: Run
+                  name: Drill report to Slack
+                  identifier: drill_report
+                  spec:
+                    shell: Sh
+                    image: curlimages/curl:8.10.1
+                    envVariables:
+                      WEBHOOK: <+secrets.getValue("slack_deploys_webhook")>
+                      START: <+execution.steps.record_current.output.outputVariables.drill_start>
+                    command: |
+                      NOW=$(date +%s)
+                      ELAPSED=$((NOW - START))
+                      curl -sS -X POST -H 'Content-Type: application/json' \
+                        --data "{\"text\":\":dart: *Rollback drill complete* — total time ${ELAPSED}s (target: <300s).\"}" \
+                        "$WEBHOOK"

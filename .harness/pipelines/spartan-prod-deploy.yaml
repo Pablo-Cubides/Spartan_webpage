@@ -1,0 +1,304 @@
+pipeline:
+  name: Spartan Production Deploy
+  identifier: spartan_prod_deploy
+  orgIdentifier: <+pipeline.variables.org>
+  projectIdentifier: <+pipeline.variables.project>
+  tags:
+    deployment: production
+    target: vercel
+  variables:
+    - name: org
+      type: String
+      default: default
+      value: <+input>
+    - name: project
+      type: String
+      default: Spartan
+      value: <+input>
+    - name: git_connector
+      type: String
+      default: github_spartan
+      value: <+input>
+    - name: repo
+      type: String
+      default: Pablo-Cubides/Spartan_webpage
+      value: <+input>
+    - name: prod_url
+      type: String
+      default: https://spartan-club.vercel.app
+      value: <+input>
+    - name: staging_url
+      type: String
+      default: https://spartan-club-staging.vercel.app
+      value: <+input>
+  properties:
+    ci:
+      codebase:
+        connectorRef: <+pipeline.variables.git_connector>
+        repoName: <+pipeline.variables.repo>
+        build: <+input>
+  stages:
+    - stage:
+        name: Pre-deploy Verification
+        identifier: pre_deploy
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install
+                  identifier: install
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: |
+                      npm ci
+                      npm --prefix frontend ci
+              - step:
+                  type: Run
+                  name: Migration safety check
+                  identifier: migration_safety
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      DATABASE_URL: <+secrets.getValue("database_url")>
+                      DIRECT_URL: <+secrets.getValue("direct_url")>
+                    command: node scripts/migration-safety-check.js
+              - step:
+                  type: Run
+                  name: Re-run security audit
+                  identifier: rerun_security
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      STRICT_SECURITY_AUDIT: "1"
+                    command: |
+                      node scripts/scan-secrets.js
+                      node scripts/security-audit.js --strict
+    - stage:
+        name: Deploy Staging
+        identifier: deploy_staging
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Vercel deploy preview
+                  identifier: vercel_deploy_preview
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+                    command: |
+                      npm i -g vercel@latest
+                      cd frontend
+                      DEPLOY_URL=$(vercel deploy --token=$VERCEL_TOKEN --yes)
+                      echo "Staging deploy: $DEPLOY_URL"
+                      echo "$DEPLOY_URL" > /tmp/staging-url.txt
+                  outputVariables:
+                    - name: staging_deploy_url
+                      type: String
+                      value: STAGING_DEPLOY_URL
+    - stage:
+        name: Smoke Tests Staging
+        identifier: smoke_staging
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run smoke tests against staging
+                  identifier: smoke_test_staging
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      BASE_URL: <+pipeline.variables.staging_url>
+                    command: node scripts/smoke-tests.js
+    - stage:
+        name: Production Approval
+        identifier: prod_approval
+        type: Approval
+        spec:
+          approvalType: HarnessApproval
+          isAutoRejectEnabled: true
+          approvalMessage: |
+            Staging deploy succeeded.
+            Smoke tests passed against <+pipeline.variables.staging_url>.
+
+            Branch: <+codebase.branch>
+            Commit: <+codebase.commitSha>
+
+            Approve to deploy to production: <+pipeline.variables.prod_url>
+          includePipelineExecutionHistory: true
+          approvers:
+            userGroups:
+              - account._account_all_users
+            minimumCount: 1
+            disallowPipelineExecutor: false
+        timeout: 24h
+    - stage:
+        name: Deploy Production
+        identifier: deploy_prod
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Vercel deploy production
+                  identifier: vercel_deploy_prod
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+                    command: |
+                      npm i -g vercel@latest
+                      cd frontend
+                      vercel deploy --prod --token=$VERCEL_TOKEN --yes
+              - step:
+                  type: Run
+                  name: Wait 2 min for warmup
+                  identifier: warmup_wait
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: sleep 120
+              - step:
+                  type: Run
+                  name: Smoke tests against production
+                  identifier: smoke_test_prod
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      BASE_URL: <+pipeline.variables.prod_url>
+                    command: node scripts/smoke-tests.js
+    - stage:
+        name: Post-deploy Verification
+        identifier: post_deploy
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Wait 5 min for metrics
+                  identifier: post_warmup
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    command: sleep 300
+              - step:
+                  type: Run
+                  name: Re-check smoke tests
+                  identifier: post_smoke
+                  spec:
+                    shell: Sh
+                    image: node:24
+                    envVariables:
+                      BASE_URL: <+pipeline.variables.prod_url>
+                    command: node scripts/smoke-tests.js
+              - step:
+                  type: Run
+                  name: Notify Slack success
+                  identifier: notify_success
+                  spec:
+                    shell: Sh
+                    image: curlimages/curl:8.10.1
+                    envVariables:
+                      WEBHOOK: <+secrets.getValue("slack_deploys_webhook")>
+                    command: |
+                      curl -sS -X POST -H 'Content-Type: application/json' \
+                        --data "{\"text\":\":white_check_mark: *Spartan production deploy succeeded* — <+codebase.commitSha> → <+pipeline.variables.prod_url>\"}" \
+                        "$WEBHOOK"
+        # Failure strategy: roll back via Vercel API if smoke tests fail
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+  rollbackSteps:
+    - step:
+        type: Run
+        name: Rollback to previous Vercel deploy
+        identifier: rollback_vercel
+        spec:
+          shell: Sh
+          image: node:24
+          envVariables:
+            VERCEL_TOKEN: <+secrets.getValue("vercel_token")>
+          command: |
+            npm i -g vercel@latest
+            cd frontend
+            # Promote the previous production deployment.
+            PREV_DEPLOY=$(vercel ls --token=$VERCEL_TOKEN --limit=2 --json | jq -r '.[1].url')
+            vercel promote "$PREV_DEPLOY" --token=$VERCEL_TOKEN --yes
+            echo "Rolled back to $PREV_DEPLOY"
+    - step:
+        type: Run
+        name: Notify Slack rollback
+        identifier: notify_rollback
+        spec:
+          shell: Sh
+          image: curlimages/curl:8.10.1
+          envVariables:
+            WEBHOOK: <+secrets.getValue("slack_deploys_webhook")>
+          command: |
+            curl -sS -X POST -H 'Content-Type: application/json' \
+              --data "{\"text\":\":rotating_light: *Spartan production deploy ROLLED BACK* — smoke tests failed for <+codebase.commitSha>. Previous deploy promoted.\"}" \
+              "$WEBHOOK"
+  notificationRules:
+    - name: Slack on any failure
+      identifier: slack_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Slack
+        spec:
+          webhookUrl: <+secrets.getValue("slack_deploys_webhook")>
+      enabled: true

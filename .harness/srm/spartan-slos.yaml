@@ -1,0 +1,94 @@
+# =====================================================================
+# Service Reliability Management — SLO Definitions for Spartan
+# =====================================================================
+# Reference document. The actual SLO objects must be created in the
+# Harness UI (SRM → SLOs) because Harness 2024 doesn't support SLO
+# definitions as Git-managed YAML in the Free tier.
+# =====================================================================
+
+monitored_service:
+  identifier: spartan_production
+  name: Spartan Production
+  type: Application
+  environment: production
+  service: spartan-club
+  health_sources:
+    - name: Vercel Health Endpoint
+      type: HTTP
+      url: https://spartan-club.vercel.app/api/health
+      method: GET
+      interval_seconds: 60
+      success_criteria:
+        status_codes: [200]
+        response_body_contains: '"status":"healthy"'
+    - name: Sentry
+      type: Sentry
+      project: spartan-club
+      api_key_secret: sentry_api_key
+
+slos:
+  - name: API Availability
+    identifier: api_availability
+    description: Health endpoint returns 200 ≥ 99.9% of the time
+    type: SimpleServiceLevelObjective
+    target: 99.9
+    period: Rolling
+    period_length_days: 28
+    indicator:
+      type: ratio
+      good_query: status_code:200
+      total_query: "*"
+      source: Vercel Health Endpoint
+    error_budget_minutes_per_period: 40   # 0.1% of 28 days
+
+  - name: API Latency
+    identifier: api_latency
+    description: P95 of all API routes ≤ 500ms ≥ 99% of the time
+    type: SimpleServiceLevelObjective
+    target: 99
+    period: Rolling
+    period_length_days: 28
+    indicator:
+      type: threshold
+      metric: response_time_p95
+      operator: less_than_equal
+      threshold_ms: 500
+      source: Vercel Health Endpoint
+
+  - name: Error Rate
+    identifier: error_rate
+    description: Server errors (5xx) < 1% of requests ≥ 99.5% of the time
+    type: SimpleServiceLevelObjective
+    target: 99.5
+    period: Rolling
+    period_length_days: 28
+    indicator:
+      type: ratio
+      good_query: status_code:[200 TO 499]
+      total_query: "*"
+      source: Sentry
+
+burn_rate_alerts:
+  - name: Fast burn — 2% in 1h
+    slo: api_availability
+    threshold_percent: 2
+    window_hours: 1
+    severity: warning
+    notification:
+      type: Slack
+      webhook_secret: slack_deploys_webhook
+  - name: Page-worthy burn — 10% in 6h
+    slo: api_availability
+    threshold_percent: 10
+    window_hours: 6
+    severity: page
+    notification:
+      type: PagerDuty
+      integration_key_secret: pagerduty_integration_key
+
+setup_steps:
+  - "Create the Monitored Service in Harness UI: SRM → Monitored Services → New"
+  - "Connect health source as documented above"
+  - "Create the 3 SLOs"
+  - "Configure burn rate alerts"
+  - "Verify the SLO dashboard populates with data after 1h of traffic"

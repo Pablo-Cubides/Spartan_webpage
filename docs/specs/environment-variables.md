@@ -201,6 +201,21 @@ Documentar cada variable de entorno: a qué feature pertenece, su nivel de criti
 |----------|-------------|------------|--------------|-------|
 | `MONITORING_ENABLED` | `low` | server | — | |
 | `LOG_LEVEL` | `low` | server | — | Default: info |
+| `SENTRY_DSN` | `medium` | server | — | Server-side error tracking. See `frontend/sentry.server.config.ts` |
+| `NEXT_PUBLIC_SENTRY_DSN` | `medium` | public | — | Browser error tracking. See `frontend/sentry.client.config.ts` |
+| `SENTRY_AUTH_TOKEN` | `low` | server (build only) | — | Used by Sentry CLI to upload sourcemaps at build time |
+| `SENTRY_ENABLE_DEV` | `low` | server | — | `1` to send Sentry events from local dev |
+| `NEXT_PUBLIC_SENTRY_ENABLE_DEV` | `low` | public | — | `1` to send client Sentry events from local dev |
+| `NEXT_PUBLIC_ENV` | `low` | public | — | Environment label (e.g. `staging`, `production`) for Sentry tagging |
+
+---
+
+## Feature Flags (Harness FF)
+
+| Variable | Criticality | Visibility | Feature Spec | Notes |
+|----------|-------------|------------|--------------|-------|
+| `HARNESS_FF_SDK_KEY` | `medium` | server | — | Server-side SDK key. See `frontend/src/lib/feature-flags/server.ts` |
+| `NEXT_PUBLIC_HARNESS_FF_SDK_KEY` | `medium` | public | — | Client SDK key. See `frontend/src/lib/feature-flags/client.ts` |
 
 ---
 

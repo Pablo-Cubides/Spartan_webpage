@@ -9,6 +9,9 @@
     "build": "npm --prefix frontend run build",
     "install:frontend": "npm --prefix frontend install",
     "install:all": "npm --prefix frontend install",
+    "prepare": "husky install",
+    "smoke": "node scripts/smoke-tests.js",
+    "migration:safety": "node scripts/migration-safety-check.js",
     "qa:lint": "npm --prefix frontend run lint",
     "qa:typecheck": "npm --prefix frontend run type-check",
     "qa:test": "npm --prefix frontend run test",
@@ -28,7 +31,17 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.7",
-    "autoprefixer": "^10.4.21"
+    "autoprefixer": "^10.4.21",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "frontend/src/**/*.{ts,tsx,js,jsx}": [
+      "prettier --write"
+    ],
+    "frontend/src/**/*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@prisma/client": "^7.1.0",

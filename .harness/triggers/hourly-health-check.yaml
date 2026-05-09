@@ -1,0 +1,84 @@
+# =====================================================================
+# Hourly Health Check Trigger
+# =====================================================================
+# Runs scripts/smoke-tests.js against production every hour. Two
+# consecutive failures produce a Slack/PagerDuty alert.
+#
+# Note: this YAML describes the Trigger that should be created in the
+# Harness UI on a separate "spartan-prod-monitoring" pipeline. The
+# pipeline itself is a single-stage CI pipeline that runs smoke tests.
+# =====================================================================
+
+trigger:
+  name: Hourly Health Check
+  identifier: hourly_health_check
+  enabled: true
+  description: Runs smoke tests against production every hour
+  tags:
+    type: monitoring
+    target: production
+  source:
+    type: Scheduled
+    spec:
+      type: Cron
+      spec:
+        expression: "0 * * * *"   # every hour, on the hour
+  pipelineIdentifier: spartan_prod_monitoring
+  inputYaml: |
+    pipeline:
+      identifier: spartan_prod_monitoring
+      variables:
+        - name: target_url
+          type: String
+          value: https://spartan-club.vercel.app
+
+# Companion pipeline definition (create separately in Harness UI):
+#
+# pipeline:
+#   name: Spartan Production Monitoring
+#   identifier: spartan_prod_monitoring
+#   stages:
+#     - stage:
+#         name: Smoke Test
+#         type: CI
+#         spec:
+#           cloneCodebase: true
+#           infrastructure:
+#             type: HostedVm
+#             spec:
+#               type: harness
+#               poolName: linux-amd64
+#               os: Linux
+#           execution:
+#             steps:
+#               - step:
+#                   type: Run
+#                   name: Run smoke tests
+#                   identifier: smoke
+#                   spec:
+#                     shell: Sh
+#                     image: node:24
+#                     envVariables:
+#                       BASE_URL: <+pipeline.variables.target_url>
+#                     command: node scripts/smoke-tests.js
+#         failureStrategies:
+#           - onFailure:
+#               errors:
+#                 - AllErrors
+#               action:
+#                 type: ManualIntervention
+#                 spec:
+#                   timeout: 1h
+#                   onTimeout:
+#                     action:
+#                       type: Abort
+#   notificationRules:
+#     - name: PagerDuty on 2nd consecutive failure
+#       identifier: pd_on_failure
+#       pipelineEvents:
+#         - type: PipelineFailed
+#       notificationMethod:
+#         type: PagerDuty
+#         spec:
+#           integrationKey: <+secrets.getValue("pagerduty_integration_key")>
+#       enabled: true

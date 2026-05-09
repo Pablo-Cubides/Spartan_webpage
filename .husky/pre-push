@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# Spartan pre-push gate — runs the same checks as Harness Quality Gate.
+# To bypass (use sparingly), commit with --no-verify.
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "▶ Running pre-push validation..."
+node scripts/validate-push.js
