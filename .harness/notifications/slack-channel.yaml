@@ -1,0 +1,56 @@
+# =====================================================================
+# Slack Notification Configuration — Spartan
+# =====================================================================
+# This file documents the Slack channel and notification rules used by
+# the Harness pipelines. The actual notificationRules block lives inline
+# in each pipeline YAML (.harness/pipelines/*.yaml).
+#
+# Why not centralize? Harness Pipeline Notifications are scoped to the
+# pipeline they belong to. There is no global "shared notification rule"
+# resource at the project level (as of Harness 2024 GA features).
+# =====================================================================
+
+slack_integration:
+  channel: "#spartan-deploys"
+  webhook_secret: slack_deploys_webhook
+  webhook_owner: project_admin
+  setup_steps:
+    - "In Slack: Apps → Incoming Webhooks → Add to #spartan-deploys"
+    - "Copy webhook URL"
+    - "In Harness: Project Settings → Secrets → New Text Secret"
+    - "Identifier: slack_deploys_webhook"
+    - "Value: paste webhook URL"
+    - "Save"
+
+notification_rules:
+  # PR Quality Gate pipeline
+  - pipeline: spartan_pr_quality_gate
+    events:
+      - PipelineFailed
+      - StageFailed
+    method: Slack
+    webhook_ref: slack_deploys_webhook
+    purpose: "Alert when a PR fails quality gates"
+
+  # Main Integration pipeline
+  - pipeline: spartan_main_integration
+    events:
+      - PipelineFailed
+      - StageFailed
+      - PipelineSuccess
+    method: Slack
+    webhook_ref: slack_deploys_webhook
+    purpose: "Track every main pipeline run end state"
+
+  # SDD score regression (email to owner)
+  - pipeline: spartan_pr_quality_gate
+    events:
+      - PipelineFailed
+    method: Email
+    recipients_secret: owner_email
+    purpose: "Email owner when SDD score drops below threshold"
+
+testing:
+  - "Trigger a known-failing build (introduce a lint error)"
+  - "Verify Slack channel #spartan-deploys receives the failure message"
+  - "Verify message includes pipeline name, branch, and link to run"

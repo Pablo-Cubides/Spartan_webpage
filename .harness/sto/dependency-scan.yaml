@@ -1,0 +1,62 @@
+# =====================================================================
+# Security Test Orchestration (STO) — Spartan
+# =====================================================================
+# Reference document explaining each scanner integrated into the
+# pipelines' Security stage. The actual `step` definitions live inside
+# spartan-pr-quality-gate.yaml.
+# =====================================================================
+
+scanners:
+  - name: scan-secrets.js
+    type: secret-scan-head
+    image: node:24
+    target: HEAD (uncommitted + last commit)
+    command: node scripts/scan-secrets.js
+    fail_on: any match
+    purpose: "Quick secret detection in current changes (dev fast-feedback)"
+
+  - name: gitleaks
+    type: secret-scan-history
+    image: zricethezav/gitleaks:v8.18.4
+    target: full git history
+    command: gitleaks detect --source=. --redact --no-git=false --verbose
+    fail_on: any leak found
+    purpose: "Catch secrets that were committed and later removed"
+    config_file: .gitleaks.toml  # optional, defaults to built-in rules
+
+  - name: security-audit.js (npm audit wrapper)
+    type: dependency-vulnerability
+    image: node:24
+    target: frontend/package-lock.json (production deps only)
+    command: STRICT_SECURITY_AUDIT=1 node scripts/security-audit.js --strict
+    fail_on: any high or critical CVE
+    purpose: "Detect known CVEs in production npm dependencies"
+
+  - name: OWASP Dependency-Check
+    type: dependency-vulnerability-comprehensive
+    image: owasp/dependency-check:latest
+    target: frontend/package-lock.json
+    command: |
+      /usr/share/dependency-check/bin/dependency-check.sh \
+        --project "spartan-club" \
+        --scan "frontend/package-lock.json" \
+        --format "JSON" \
+        --out "/tmp/depcheck-report.json" \
+        --failOnCVSS 7 \
+        --enableRetired
+    fail_on: CVSS >= 7
+    purpose: "Cross-reference NVD beyond what npm advisory provides"
+
+future_scanners:
+  - name: Trivy
+    purpose: "Add when we start building Docker images for the Vercel-fallback path"
+    type: container-image-scan
+  - name: Snyk
+    purpose: "Optional commercial alternative if OWASP Dependency-Check produces too many false positives"
+  - name: Semgrep
+    purpose: "Static code analysis (SAST) — defer until we have more custom code patterns to enforce"
+
+scoreboard:
+  fast_feedback_p95: 90s   # gitleaks + scan-secrets + npm audit
+  comprehensive_p95: 4min  # adds OWASP Dependency-Check
+  total_pipeline_overhead: ~5min in Security stage

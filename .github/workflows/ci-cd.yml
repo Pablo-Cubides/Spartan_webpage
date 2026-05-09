@@ -1,4 +1,21 @@
-name: CI/CD Pipeline
+# =====================================================================
+# GitHub Actions — Lightweight Fast Feedback
+# =====================================================================
+# This workflow is the FAST FEEDBACK path:
+#   - Runs in ~2 min on every PR
+#   - Covers: lint, typecheck, unit tests
+#   - Useful for fork PRs / contributors without Harness access
+#
+# The AUTHORITATIVE QUALITY GATE is in .harness/pipelines/:
+#   - SDD spec validation (structure, traceability, completeness, artifacts, verifier)
+#   - Security: gitleaks (full history), OWASP Dependency-Check, npm audit
+#   - Build with full env (Firebase, MercadoPago)
+#   - Production approval stage
+#
+# See: docs/runbooks/harness-setup.md for the full Harness setup.
+# =====================================================================
+
+name: CI Fast Feedback
 
 on:
   push:
@@ -14,24 +31,18 @@ env:
   DIRECT_URL: ${{ secrets.DIRECT_URL }}
 
 jobs:
-  # ====================================================================
-  # STAGE 1: INSTALL & CACHE
-  # ====================================================================
   install:
     name: 📦 Install Dependencies
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-
       - name: Cache node_modules
         id: cache-modules
         uses: actions/cache@v4
@@ -40,37 +51,29 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
       - name: Install dependencies
         if: steps.cache-modules.outputs.cache-hit != 'true'
         working-directory: ${{ env.WORKING_DIR }}
         run: npm ci
 
-  # ====================================================================
-  # STAGE 2: CODE QUALITY (parallel)
-  # ====================================================================
   lint:
     name: 🔍 Lint
     runs-on: ubuntu-latest
     needs: install
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-
       - name: Restore node_modules cache
         uses: actions/cache@v4
         with:
           path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
-
       - name: Run ESLint
         working-directory: ${{ env.WORKING_DIR }}
         run: npm run lint
@@ -79,32 +82,23 @@ jobs:
     name: 🔷 TypeScript
     runs-on: ubuntu-latest
     needs: install
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-
       - name: Restore node_modules cache
         uses: actions/cache@v4
         with:
           path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
-
       - name: Generate Prisma Client
         working-directory: ${{ env.WORKING_DIR }}
         run: npx prisma generate
-
-      - name: Validate Prisma schema
-        working-directory: ${{ env.WORKING_DIR }}
-        run: npm run prisma:validate
-
       - name: Run TypeScript check
         working-directory: ${{ env.WORKING_DIR }}
         run: npm run type-check
@@ -113,124 +107,39 @@ jobs:
     name: 🧪 Tests
     runs-on: ubuntu-latest
     needs: install
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-
       - name: Restore node_modules cache
         uses: actions/cache@v4
         with:
           path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
-
       - name: Generate Prisma Client
         working-directory: ${{ env.WORKING_DIR }}
         run: npx prisma generate
-
       - name: Run Tests
         working-directory: ${{ env.WORKING_DIR }}
         run: npm run test
         env:
           NODE_ENV: test
 
-  # ====================================================================
-  # STAGE 3: BUILD
-  # ====================================================================
-  build:
-    name: 🏗️ Build
+  fast-feedback-summary:
+    name: ✅ Fast Feedback Summary
     runs-on: ubuntu-latest
     needs: [lint, typecheck, test]
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Restore node_modules cache
-        uses: actions/cache@v4
-        with:
-          path: frontend/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
-
-      - name: Generate Prisma Client
-        working-directory: ${{ env.WORKING_DIR }}
-        run: npx prisma generate
-
-      - name: Validate content and images
+      - name: Summary
         run: |
-          node scripts/validate-blog-content.js
-          node scripts/validate-image-urls.js
-
-      - name: Spec completeness check
-        run: node scripts/qa-spec-completeness.js --strict
-
-      - name: Spec traceability check
-        run: node scripts/qa-spec-traceability.js --strict
-
-      - name: Spec structure check
-        run: node scripts/qa-spec-structure.js --strict
-
-      - name: Spec artifact check
-        run: node scripts/qa-spec-artifacts.js --strict
-
-      - name: Spec acceptance test traceability check
-        run: node scripts/qa-spec-verifier.js --strict
-
-      - name: Secret scan
-        run: node scripts/scan-secrets.js
-
-      - name: Dependency audit
-        run: node scripts/security-audit.js --strict
-        env:
-          STRICT_SECURITY_AUDIT: "1"
-
-      - name: Build Next.js
-        working-directory: ${{ env.WORKING_DIR }}
-        run: npm run build
-        env:
-          # Variables mínimas para build (sin secretos reales)
-          NEXT_PUBLIC_API_URL: https://spartan-club.vercel.app
-          NEXT_PUBLIC_APP_NAME: Spartan Club
-          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
-          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
-          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
-          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
-          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
-          NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY }}
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: nextjs-build
-          path: frontend/.next
-          retention-days: 7
-
-      - name: Build Summary
-        run: |
-          echo "## ✅ Build Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "## ✅ Fast Feedback Passed" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Stage | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 📦 Install | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🔍 Lint | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🔷 TypeScript | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🧪 Tests | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🏗️ Build | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "Lint, typecheck, and tests succeeded." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** the authoritative quality gate (SDD, security, build) runs in Harness." >> $GITHUB_STEP_SUMMARY
+          echo "See \`docs/runbooks/harness-setup.md\` for details." >> $GITHUB_STEP_SUMMARY

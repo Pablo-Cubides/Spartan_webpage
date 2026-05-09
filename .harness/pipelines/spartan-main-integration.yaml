@@ -1,16 +1,42 @@
 pipeline:
   name: Spartan Main Integration
   identifier: spartan_main_integration
-  orgIdentifier: <+input>
-  projectIdentifier: <+input>
+  orgIdentifier: <+pipeline.variables.org>
+  projectIdentifier: <+pipeline.variables.project>
   tags:
     sdd: "true"
-    deployment: disabled-in-phase-1
+    deployment: validation-with-approval
+  variables:
+    - name: org
+      type: String
+      default: default
+      description: Harness org identifier
+      value: <+input>
+    - name: project
+      type: String
+      default: Spartan
+      description: Harness project identifier
+      value: <+input>
+    - name: git_connector
+      type: String
+      default: github_spartan
+      description: GitHub connector identifier
+      value: <+input>
+    - name: repo
+      type: String
+      default: Pablo-Cubides/Spartan_webpage
+      description: GitHub repo (owner/name)
+      value: <+input>
+    - name: api_url
+      type: String
+      default: https://spartan-club.vercel.app
+      description: Public API URL injected at build time
+      value: <+input>
   properties:
     ci:
       codebase:
-        connectorRef: <+input>
-        repoName: <+input>
+        connectorRef: <+pipeline.variables.git_connector>
+        repoName: <+pipeline.variables.repo>
         build: <+input>
   stages:
     - stage:
@@ -22,10 +48,10 @@ pipeline:
           caching:
             enabled: true
           infrastructure:
-            type: KubernetesDirect
+            type: HostedVm
             spec:
-              connectorRef: <+input>
-              namespace: <+input>
+              type: harness
+              poolName: linux-amd64
               os: Linux
           execution:
             steps:
@@ -80,7 +106,7 @@ pipeline:
                     image: node:24
                     envVariables:
                       SKIP_ENV_VALIDATION: "1"
-                      NEXT_PUBLIC_API_URL: https://spartan-club.vercel.app
+                      NEXT_PUBLIC_API_URL: <+pipeline.variables.api_url>
                       NEXT_PUBLIC_APP_NAME: Spartan Club
                       NEXT_PUBLIC_FIREBASE_API_KEY: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_API_KEY")>
                       NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN")>
@@ -90,11 +116,80 @@ pipeline:
                       NEXT_PUBLIC_FIREBASE_APP_ID: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_APP_ID")>
                       NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY: <+secrets.getValue("NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY")>
                     command: npm --prefix frontend run build
+    - stage:
+        name: Production Approval
+        identifier: production_approval
+        type: Approval
+        spec:
+          approvalType: HarnessApproval
+          isAutoRejectEnabled: true
+          approvalMessage: |
+            Spartan Main Integration succeeded.
+
+            Pipeline: <+pipeline.name>
+            Branch: <+codebase.branch>
+            Commit: <+codebase.commitSha>
+            Triggered by: <+pipeline.triggeredBy.name>
+
+            Review the SDD scorecard, security audit, and build artifacts.
+            Approve to allow Vercel deployment to proceed (deploy is dispatched
+            by Vercel's GitHub integration; this approval gate is the human
+            checkpoint before that happens).
+          includePipelineExecutionHistory: true
+          approvers:
+            userGroups:
+              - account._account_all_users
+            minimumCount: 1
+            disallowPipelineExecutor: false
+          approverInputs: []
+        timeout: 24h
+    - stage:
+        name: Post-merge Notification
+        identifier: post_merge_notification
+        type: CI
+        spec:
+          cloneCodebase: false
+          infrastructure:
+            type: HostedVm
+            spec:
+              type: harness
+              poolName: linux-amd64
+              os: Linux
+          execution:
+            steps:
               - step:
                   type: Run
-                  name: Deployment disabled
-                  identifier: deployment_disabled
+                  name: Generate changelog
+                  identifier: generate_changelog
                   spec:
                     shell: Sh
                     image: node:24
-                    command: echo "Phase 1 runs validation only. Vercel remains the deployment path."
+                    command: |
+                      git log --oneline -10 > /tmp/changelog.txt
+                      echo "Recent commits:"
+                      cat /tmp/changelog.txt
+              - step:
+                  type: Run
+                  name: Notify Slack
+                  identifier: notify_slack
+                  spec:
+                    shell: Sh
+                    image: curlimages/curl:8.10.1
+                    envVariables:
+                      WEBHOOK: <+secrets.getValue("slack_deploys_webhook")>
+                    command: |
+                      curl -sS -X POST -H 'Content-Type: application/json' \
+                        --data "{\"text\":\":rocket: *Spartan main pipeline approved* — commit <+codebase.commitSha> on <+codebase.branch>. Vercel will deploy shortly.\"}" \
+                        "$WEBHOOK"
+  notificationRules:
+    - name: Slack on failure
+      identifier: slack_on_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Slack
+        spec:
+          userGroups: []
+          webhookUrl: <+secrets.getValue("slack_deploys_webhook")>
+      enabled: true

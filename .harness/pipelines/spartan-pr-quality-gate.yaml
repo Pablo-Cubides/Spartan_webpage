@@ -1,16 +1,42 @@
 pipeline:
   name: Spartan PR Quality Gate
   identifier: spartan_pr_quality_gate
-  orgIdentifier: <+input>
-  projectIdentifier: <+input>
+  orgIdentifier: <+pipeline.variables.org>
+  projectIdentifier: <+pipeline.variables.project>
   tags:
     sdd: "true"
     adoption: parallel-first
+  variables:
+    - name: org
+      type: String
+      default: default
+      description: Harness org identifier
+      value: <+input>
+    - name: project
+      type: String
+      default: Spartan
+      description: Harness project identifier
+      value: <+input>
+    - name: git_connector
+      type: String
+      default: github_spartan
+      description: GitHub connector identifier (see harness-setup.md)
+      value: <+input>
+    - name: repo
+      type: String
+      default: Pablo-Cubides/Spartan_webpage
+      description: GitHub repo (owner/name)
+      value: <+input>
+    - name: api_url
+      type: String
+      default: https://spartan-club.vercel.app
+      description: Public API URL injected at build time
+      value: <+input>
   properties:
     ci:
       codebase:
-        connectorRef: <+input>
-        repoName: <+input>
+        connectorRef: <+pipeline.variables.git_connector>
+        repoName: <+pipeline.variables.repo>
         build: <+input>
   stages:
     - stage:
@@ -22,10 +48,10 @@ pipeline:
           caching:
             enabled: true
           infrastructure:
-            type: KubernetesDirect
+            type: HostedVm
             spec:
-              connectorRef: <+input>
-              namespace: <+input>
+              type: harness
+              poolName: linux-amd64
               os: Linux
           execution:
             steps:
@@ -54,10 +80,10 @@ pipeline:
           caching:
             enabled: true
           infrastructure:
-            type: KubernetesDirect
+            type: HostedVm
             spec:
-              connectorRef: <+input>
-              namespace: <+input>
+              type: harness
+              poolName: linux-amd64
               os: Linux
           execution:
             steps:
@@ -110,10 +136,10 @@ pipeline:
           caching:
             enabled: true
           infrastructure:
-            type: KubernetesDirect
+            type: HostedVm
             spec:
-              connectorRef: <+input>
-              namespace: <+input>
+              type: harness
+              poolName: linux-amd64
               os: Linux
           execution:
             steps:
@@ -158,16 +184,16 @@ pipeline:
           caching:
             enabled: true
           infrastructure:
-            type: KubernetesDirect
+            type: HostedVm
             spec:
-              connectorRef: <+input>
-              namespace: <+input>
+              type: harness
+              poolName: linux-amd64
               os: Linux
           execution:
             steps:
               - step:
                   type: Run
-                  name: Secret scan
+                  name: Secret scan (HEAD)
                   identifier: secret_scan
                   spec:
                     shell: Sh
@@ -175,20 +201,38 @@ pipeline:
                     command: node scripts/scan-secrets.js
               - step:
                   type: Run
-                  name: Dependency audit
+                  name: Gitleaks (full history)
+                  identifier: gitleaks
+                  spec:
+                    shell: Sh
+                    image: zricethezav/gitleaks:v8.18.4
+                    command: |
+                      gitleaks detect --source=. --redact --no-git=false --verbose
+              - step:
+                  type: Run
+                  name: Dependency audit (npm)
                   identifier: dependency_audit
                   spec:
                     shell: Sh
                     image: node:24
-                    command: STRICT_SECURITY_AUDIT=1 node scripts/security-audit.js --strict
+                    envVariables:
+                      STRICT_SECURITY_AUDIT: "1"
+                    command: node scripts/security-audit.js --strict
               - step:
                   type: Run
-                  name: STO placeholder
-                  identifier: sto_placeholder
+                  name: OWASP Dependency-Check
+                  identifier: owasp_dep_check
                   spec:
                     shell: Sh
-                    image: node:24
-                    command: echo "Enable Harness STO scanner step here when the STO module is licensed."
+                    image: owasp/dependency-check:latest
+                    command: |
+                      /usr/share/dependency-check/bin/dependency-check.sh \
+                        --project "spartan-club" \
+                        --scan "frontend/package-lock.json" \
+                        --format "JSON" \
+                        --out "/tmp/depcheck-report.json" \
+                        --failOnCVSS 7 \
+                        --enableRetired
     - stage:
         name: Build
         identifier: build
@@ -198,10 +242,10 @@ pipeline:
           caching:
             enabled: true
           infrastructure:
-            type: KubernetesDirect
+            type: HostedVm
             spec:
-              connectorRef: <+input>
-              namespace: <+input>
+              type: harness
+              poolName: linux-amd64
               os: Linux
           execution:
             steps:
@@ -214,7 +258,7 @@ pipeline:
                     image: node:24
                     envVariables:
                       SKIP_ENV_VALIDATION: "1"
-                      NEXT_PUBLIC_API_URL: https://spartan-club.vercel.app
+                      NEXT_PUBLIC_API_URL: <+pipeline.variables.api_url>
                       NEXT_PUBLIC_APP_NAME: Spartan Club
                       NEXT_PUBLIC_FIREBASE_API_KEY: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_API_KEY")>
                       NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: <+secrets.getValue("NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN")>
@@ -228,3 +272,26 @@ pipeline:
           sendGitStatus:
             enabled: true
             name: Spartan SDD Quality Gate
+  notificationRules:
+    - name: Slack on failure
+      identifier: slack_on_failure
+      pipelineEvents:
+        - type: PipelineFailed
+        - type: StageFailed
+      notificationMethod:
+        type: Slack
+        spec:
+          userGroups: []
+          webhookUrl: <+secrets.getValue("slack_deploys_webhook")>
+      enabled: true
+    - name: Email on SDD score regression
+      identifier: email_on_sdd_regression
+      pipelineEvents:
+        - type: PipelineFailed
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups: []
+          recipients:
+            - <+secrets.getValue("owner_email")>
+      enabled: true
