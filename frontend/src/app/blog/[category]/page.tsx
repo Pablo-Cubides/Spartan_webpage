@@ -10,7 +10,7 @@ interface PageProps {
   }>;
 }
 
-const BASE_URL = 'https://spartanclub.co';
+const BASE_URL = 'https://spartanclub.vercel.app';
 
 // Category configuration with epic names and metadata
 const CATEGORIES: Record<string, {
@@ -25,7 +25,7 @@ const CATEGORIES: Record<string, {
 }> = {
   'entrenamiento-y-energia-fisica': {
     epicName: 'Cuerpo Espartano',
-    description: 'Artículos sobre entrenamiento físico, fuerza, resistencia y energía para hombres. Rutinas en casa, gimnasio, cardio inteligente y consejos para ganar músculo y salud sin vivir en el gym.',
+    description: 'Artículos sobre entrenamiento físico, fuerza, resistencia and energía para hombres. Rutinas en casa, gimnasio, cardio inteligente y consejos para ganar músculo y salud sin vivir en el gym.',
     metaTitle: 'Cuerpo Espartano – Entrenamiento y Energía Física | Spartan Club',
     metaDescription: 'Artículos sobre entrenamiento físico, fuerza, resistencia y energía para hombres. Rutinas en casa, gimnasio, cardio y consejos para ganar músculo.',
     keywords: ['entrenamiento hombres', 'rutinas gimnasio', 'ganar músculo', 'fuerza', 'cardio'],
@@ -38,7 +38,17 @@ const CATEGORIES: Record<string, {
     description: 'Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen sin perder tu esencia.',
     metaTitle: 'Estilo Espartano – Estilo y Presencia Masculina | Spartan Club',
     metaDescription: 'Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen.',
-    keywords: ['estilo masculino', 'moda hombre', 'grooming', 'presencia', 'cuidado personal'],
+    keywords: [
+      'estilo masculino', 
+      'moda hombre', 
+      'grooming', 
+      'presencia', 
+      'cuidado personal',
+      'moda masculina Colombia',
+      'estilo masculino Bogota',
+      'asesoria de estilo masculina',
+      'ropa masculina premium Colombia'
+    ],
     icon: Shirt,
     gradient: 'from-blue-600 to-indigo-600',
     coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1920&h=600',

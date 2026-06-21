@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const BASE_URL = 'https://spartanclub.co';
+const BASE_URL = 'https://spartanclub.vercel.app';
 
 export const metadata: Metadata = {
   title: 'Herramientas | Spartan Club - Asesor de Estilo y Análisis',

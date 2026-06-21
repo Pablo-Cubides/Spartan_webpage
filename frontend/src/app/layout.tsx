@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'production' && typeof window === 'undefined' && !p
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-noto-sans' });
 
-const BASE_URL = 'https://spartanclub.co';
+const BASE_URL = 'https://spartanclub.vercel.app';
 
 export const metadata: Metadata = {
   // ==================== Basic ====================

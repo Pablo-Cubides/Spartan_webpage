@@ -14,7 +14,7 @@ interface PageProps {
   }>;
 }
 
-const BASE_URL = 'https://spartanclub.co';
+const BASE_URL = 'https://spartanclub.vercel.app';
 
 // Category epic names lookup
 const EPIC_NAMES: Record<string, string> = {

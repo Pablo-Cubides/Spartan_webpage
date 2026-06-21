@@ -60,9 +60,9 @@ const mockBreadcrumbs = [
 console.log("✅ Testing BlogPosting schema generation...");
 try {
   const postingSchema = generateBlogPostingSchema(mockPost, {
-    baseUrl: "https://spartanclub.co",
+    baseUrl: "https://spartanclub.vercel.app",
     siteName: "Spartan Club",
-    siteImage: "https://spartanclub.co/og-image.png",
+    siteImage: "https://spartanclub.vercel.app/og-image.png",
   });
   console.log("✓ BlogPosting schema valid");
   console.log(JSON.stringify(postingSchema, null, 2).substring(0, 200) + "...\n");
@@ -76,7 +76,7 @@ try {
     mockPost.category,
     [mockPost],
     {
-      baseUrl: "https://spartanclub.co",
+      baseUrl: "https://spartanclub.vercel.app",
       siteName: "Spartan Club",
     }
   );
@@ -89,7 +89,7 @@ try {
 console.log("✅ Testing Breadcrumb schema generation...");
 try {
   const breadcrumbSchema = generateBreadcrumbSchema(mockBreadcrumbs, {
-    baseUrl: "https://spartanclub.co",
+    baseUrl: "https://spartanclub.vercel.app",
   });
   console.log("✓ Breadcrumb schema valid");
   console.log(JSON.stringify(breadcrumbSchema, null, 2).substring(0, 200) + "...\n");

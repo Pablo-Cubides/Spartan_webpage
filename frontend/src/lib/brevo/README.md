@@ -28,7 +28,7 @@ Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de
 
 ### 3. Configurar Dominio de Envío (Opcional pero recomendado)
 1. Ve a **Senders & IP** > **Domains**
-2. Agrega tu dominio `spartanclub.co`
+2. Agrega tu dominio `spartanclub.vercel.app`
 3. Configura los registros DNS (SPF, DKIM)
 4. Verifica el dominio
 

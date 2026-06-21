@@ -1,12 +1,12 @@
 // Server component: fetches home content server-side
 import Link from 'next/link';
 import Image from 'next/image';
-import POSTS from '@/lib/blog/posts';
+import { getRecentPosts } from '@/lib/blog/static-data';
 import NewsletterForm from '@/components/NewsletterForm';
 
 export default async function Home() {
-  // Use real posts for articles section
-  const posts = POSTS || [];
+  // Use real posts from static data for articles section (ADR 003)
+  const posts = getRecentPosts(3);
 
   return (
     <div className="bg-spartan-dark text-spartan-text font-sans selection:bg-spartan-red selection:text-white">
@@ -76,16 +76,18 @@ export default async function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {posts.slice(0, 3).map((p) => (
+              {posts.map((p) => (
                 <article key={p.slug} className="bg-spartan-dark rounded-md overflow-hidden border border-gray-800 hover:border-spartan-red/50 transition-all duration-300 group hover:-translate-y-2 shadow-lg">
                   <div className="h-48 overflow-hidden relative">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all z-10"></div>
-                    <Image src={p.cover} alt={p.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" className="transform group-hover:scale-110 transition-transform duration-500" />
+                    {p.cover_image && (
+                      <Image src={p.cover_image} alt={p.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" className="transform group-hover:scale-110 transition-transform duration-500" />
+                    )}
                   </div>
                   <div className="p-6">
                     <h3 className="font-display text-xl font-bold text-white uppercase mb-3 leading-snug min-h-[3.5rem]">{p.title}</h3>
                     <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">{p.excerpt}</p>
-                    <Link href={`/blog/${p.slug}`} className="inline-block text-spartan-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">Leer Más &rarr;</Link>
+                    <Link href={`/blog/${p.category_slug}/${p.slug}`} className="inline-block text-spartan-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">Leer Más &rarr;</Link>
                   </div>
                 </article>
               ))}

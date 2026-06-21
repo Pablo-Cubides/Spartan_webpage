@@ -18,7 +18,7 @@ Allow: /politica-de-privacidad/
 Allow: /terminos-y-condiciones/
 
 # Sitemaps
-Sitemap: https://spartanclub.co/sitemap.xml
+Sitemap: https://spartanclub.vercel.app/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 0.5

@@ -20,7 +20,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
       url: item.href,
       active: index === items.length - 1,
     })),
-    { baseUrl: 'https://spartanclub.co' }
+    { baseUrl: 'https://spartanclub.vercel.app' }
   );
 
   return (

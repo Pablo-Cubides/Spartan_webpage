@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 
-const BASE_URL = 'https://spartanclub.co';
+const BASE_URL = 'https://spartanclub.vercel.app';
 
 export const metadata: Metadata = {
     title: 'Coach Espartano con IA | Coaching Personal Masculino 24/7 | Spartan Club',
@@ -92,7 +92,7 @@ export default function CoachEspartanoLayout({ children }: { children: React.Rea
         publisher: {
             '@type': 'Organization',
             name: 'Spartan Club',
-            url: 'https://spartanclub.co'
+            url: 'https://spartanclub.vercel.app'
         }
     };
 

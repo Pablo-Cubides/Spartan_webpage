@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from 'next';
 
-const BASE_URL = 'https://spartanclub.co';
+const BASE_URL = 'https://spartanclub.vercel.app';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidad | Spartan Club',

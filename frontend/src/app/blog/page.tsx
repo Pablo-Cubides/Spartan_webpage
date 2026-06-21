@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
-import { categories as staticCategories, getAllPosts, getPostsByCategory } from "@/lib/blog/static-data";
+import { categories as staticCategories, getAllPosts } from "@/lib/blog/static-data";
 
-const BASE_URL = "https://spartanclub.co";
+const BASE_URL = "https://spartanclub.vercel.app";
 
 // Helper to map icon string names back to components
 const getIconComponent = (categorySlug: string) => {
