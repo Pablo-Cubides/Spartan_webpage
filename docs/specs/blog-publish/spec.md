@@ -80,7 +80,7 @@ author: string (optional, defaults to "Spartan Club")
 | Validación de frontmatter | `scripts/validate-blog-content.js` |
 | Validación de imágenes | `scripts/validate-image-urls.js` |
 | Datos estáticos del blog | `frontend/src/lib/blog/static-data.ts` |
-| Parser de Markdown | `frontend/src/lib/blog/posts.ts` |
+| Parser de Markdown | `frontend/src/lib/blog/utils.ts` |
 | Sitemap dinámico | `frontend/src/app/sitemap.ts` |
 | Schema Markdown a JSON | `frontend/src/lib/blog/utils.ts` |
 | Schema de blog (Prisma) | `frontend/prisma/schema.prisma` |
