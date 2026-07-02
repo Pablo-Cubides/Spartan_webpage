@@ -1,11 +1,11 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { generateBlogPostingSchema } from '@/lib/blog/schema-generator';
-import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { Calendar, Clock, User, ArrowLeft, Share2 } from 'lucide-react';
-import { getPostBySlug, getPostsByCategory } from '@/lib/blog/static-data';
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { generateBlogPostingSchema } from "@/lib/blog/schema-generator";
+import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Calendar, Clock, User, ArrowLeft, Share2 } from "lucide-react";
+import { getPostBySlug, getPostsByCategory } from "@/lib/blog/static-data";
 
 interface PageProps {
   params: Promise<{
@@ -14,22 +14,24 @@ interface PageProps {
   }>;
 }
 
-const BASE_URL = 'https://spartanclub.vercel.app';
+const BASE_URL = "https://spartanclub.vercel.app";
 
 // Category epic names lookup
 const EPIC_NAMES: Record<string, string> = {
-  'entrenamiento-y-energia-fisica': 'Cuerpo Espartano',
-  'estilo-y-presencia': 'Estilo Espartano',
-  'mentalidad-y-disciplina': 'Mentalidad Espartana',
-  'productividad-y-gestion-del-tiempo': 'Productividad Espartana',
+  "entrenamiento-y-energia-fisica": "Cuerpo Espartano",
+  "estilo-y-presencia": "Estilo Espartano",
+  "mentalidad-y-disciplina": "Mentalidad Espartana",
+  "productividad-y-gestion-del-tiempo": "Productividad Espartana",
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { category, slug } = await params;
   const post = getPostBySlug(slug);
 
   if (!post || post.category_slug !== category) {
-    return { title: 'Artículo no encontrado | Spartan Club' };
+    return { title: "Artículo no encontrado | Spartan Club" };
   }
 
   const postUrl = `${BASE_URL}/blog/${category}/${slug}`;
@@ -38,19 +40,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${post.title} | Spartan Club`,
     description: post.excerpt || undefined,
     keywords: post.keywords || [],
-    authors: [{ name: post.author?.name || 'Spartan Club' }],
+    authors: [{ name: post.author?.name || "Spartan Club" }],
     openGraph: {
       title: post.title,
       description: post.excerpt || undefined,
       url: postUrl,
-      type: 'article',
+      type: "article",
       publishedTime: post.published_at,
-      authors: [post.author?.name || 'Spartan Club'],
-      images: post.cover_image ? [{ url: post.cover_image, alt: post.title }] : [],
-      siteName: 'Spartan Club',
+      authors: [post.author?.name || "Spartan Club"],
+      images: post.cover_image
+        ? [{ url: post.cover_image, alt: post.title }]
+        : [],
+      siteName: "Spartan Club",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: post.title,
       description: post.excerpt || undefined,
       images: post.cover_image ? [post.cover_image] : [],
@@ -81,14 +85,14 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   // Get related posts
   const relatedPosts = getPostsByCategory(category)
-    .filter(p => p.slug !== slug)
+    .filter((p) => p.slug !== slug)
     .slice(0, 3)
-    .map(p => ({ slug: p.slug, title: p.title, cover_image: p.cover_image }));
+    .map((p) => ({ slug: p.slug, title: p.title, cover_image: p.cover_image }));
 
   // Generate schema
   const schema = generateBlogPostingSchema(post, {
     baseUrl: BASE_URL,
-    siteName: 'Spartan Club',
+    siteName: "Spartan Club",
     siteImage: `${BASE_URL}/logo.png`,
   });
 
@@ -97,19 +101,40 @@ export default async function BlogPostPage({ params }: PageProps) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${BASE_URL}/blog` },
-      { "@type": "ListItem", position: 3, name: EPIC_NAMES[category] || category, item: `${BASE_URL}/blog/${category}` },
-      { "@type": "ListItem", position: 4, name: post.title, item: `${BASE_URL}/blog/${category}/${slug}` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${BASE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: EPIC_NAMES[category] || category,
+        item: `${BASE_URL}/blog/${category}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: post.title,
+        item: `${BASE_URL}/blog/${category}/${slug}`,
+      },
     ],
   };
 
   const epicName = EPIC_NAMES[category] || category;
-  const readingTime = Math.ceil(post.content.split(' ').length / 200);
+  const readingTime = Math.ceil(post.content.split(" ").length / 200);
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <main className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
@@ -118,7 +143,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           {post.cover_image && (
             <div className="absolute inset-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={post.cover_image} alt="" className="w-full h-full object-cover opacity-40" />
+              <img
+                src={post.cover_image || ""}
+                alt={post.title}
+                className="w-full h-full object-cover opacity-60"
+              />
               <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/70 to-[#0a0a0a]" />
             </div>
           )}
@@ -126,11 +155,20 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="relative max-w-4xl mx-auto px-4 pt-12 pb-16">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-gray-400 mb-8 flex-wrap">
-              <Link href="/" className="hover:text-white transition">Inicio</Link>
+              <Link href="/" className="hover:text-white transition">
+                Inicio
+              </Link>
               <span>/</span>
-              <Link href="/blog" className="hover:text-white transition">Blog</Link>
+              <Link href="/blog" className="hover:text-white transition">
+                Blog
+              </Link>
               <span>/</span>
-              <Link href={`/blog/${category}`} className="hover:text-white transition">{epicName}</Link>
+              <Link
+                href={`/blog/${category}`}
+                className="hover:text-white transition"
+              >
+                {epicName}
+              </Link>
             </nav>
 
             {/* Category Badge */}
@@ -150,7 +188,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="flex flex-wrap items-center gap-6 text-gray-400">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                <span>{post.author?.name || 'Spartan Club'}</span>
+                <span>{post.author?.name || "Spartan Club"}</span>
               </div>
               {post.published_at && (
                 <div className="flex items-center gap-2">
@@ -182,13 +220,20 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
               <div>
                 <p className="text-white font-semibold">Artículo completo</p>
-                <p className="text-sm text-gray-400">{readingTime} minutos de lectura • Contenido de calidad</p>
+                <p className="text-sm text-gray-400">
+                  {readingTime} minutos de lectura • Contenido de calidad
+                </p>
               </div>
             </div>
 
             {/* Article body with premium styling */}
             <div className="article-content">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: "h2",
+                }}
+              >
                 {post.content}
               </ReactMarkdown>
             </div>
@@ -196,8 +241,13 @@ export default async function BlogPostPage({ params }: PageProps) {
             {/* End CTA */}
             <div className="mt-12 pt-8 border-t border-white/10">
               <div className="bg-linear-to-r from-red-900/30 to-transparent p-6 rounded-xl border border-red-500/20">
-                <p className="text-white font-bold text-lg mb-2">¿Te gustó este artículo?</p>
-                <p className="text-gray-400 mb-4">Compártelo con otros espartanos y sigue explorando más contenido.</p>
+                <p className="text-white font-bold text-lg mb-2">
+                  ¿Te gustó este artículo?
+                </p>
+                <p className="text-gray-400 mb-4">
+                  Compártelo con otros espartanos y sigue explorando más
+                  contenido.
+                </p>
                 <Link
                   href={`/blog/${category}`}
                   className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors"

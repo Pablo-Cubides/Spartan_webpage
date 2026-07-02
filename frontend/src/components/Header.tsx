@@ -1,5 +1,5 @@
 // components/Header.tsx
-'use client';
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -37,10 +37,10 @@ export default function Header() {
         const token = await user.getIdToken();
         setTokenCookie(token);
 
-        const res = await fetch('/api/users/profile', {
+        const res = await fetch("/api/users/profile", {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (res.ok) {
@@ -48,7 +48,7 @@ export default function Header() {
           setUserProfile(data.user);
         }
       } catch (err) {
-        console.error('Error fetching user role:', err);
+        console.error("Error fetching user role:", err);
       }
     };
 
@@ -79,19 +79,36 @@ export default function Header() {
       <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#303030] px-10 py-3">
         <div className="flex items-center gap-4 text-white">
           <Link href="/" className="flex items-center gap-3 text-white">
-            <Image width={32} height={32} src="/Icono spartan club.png" alt="Spartan helmet" className="object-contain" />
-            <span className="hidden sm:inline-block font-display font-bold tracking-wider">SPARTAN CLUB</span>
+            <Image
+              width={32}
+              height={32}
+              src="/Icono spartan club.webp"
+              alt="Spartan helmet"
+              className="object-contain"
+            />
+            <span className="hidden sm:inline-block font-display font-bold tracking-wider">
+              SPARTAN CLUB
+            </span>
           </Link>
         </div>
         <div className="flex justify-end flex-1 gap-8">
           <div className="flex items-center gap-9">
-            <Link href="/blog" className="text-sm font-medium leading-normal text-white">
+            <Link
+              href="/blog"
+              className="text-sm font-medium leading-normal text-white"
+            >
               Blog
             </Link>
-            <Link href="/herramientas" className="text-sm font-medium leading-normal text-white">
+            <Link
+              href="/herramientas"
+              className="text-sm font-medium leading-normal text-white"
+            >
               Herramientas
             </Link>
-            <Link href="/nosotros" className="text-sm font-medium leading-normal text-white">
+            <Link
+              href="/nosotros"
+              className="text-sm font-medium leading-normal text-white"
+            >
               Nosotros
             </Link>
           </div>
@@ -104,9 +121,25 @@ export default function Header() {
                   onClick={() => setMenuOpen(!menuOpen)}
                   className="flex items-center gap-2 cursor-pointer overflow-hidden rounded-lg h-10 px-4 bg-[#303030] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#404040] transition-colors"
                 >
-                  <span className="truncate max-w-[150px]">{userProfile?.alias || userProfile?.name || user.displayName || user.email?.split('@')[0] || 'Usuario'}</span>
-                  <svg className={`w-4 h-4 transition-transform ${menuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <span className="truncate max-w-[150px]">
+                    {userProfile?.alias ||
+                      userProfile?.name ||
+                      user.displayName ||
+                      user.email?.split("@")[0] ||
+                      "Usuario"}
+                  </span>
+                  <svg
+                    className={`w-4 h-4 transition-transform ${menuOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
                 {menuOpen && (
@@ -118,7 +151,7 @@ export default function Header() {
                     >
                       Mi Perfil
                     </Link>
-                    {userProfile?.role === 'admin' && (
+                    {userProfile?.role === "admin" && (
                       <Link
                         href="/admin"
                         onClick={() => setMenuOpen(false)}

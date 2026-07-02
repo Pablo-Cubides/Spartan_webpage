@@ -1,20 +1,24 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { Camera, Upload, X, SwitchCamera } from 'lucide-react';
-import type { IteratePayload } from '@/lib/asesor-estilo/types/ai'
-import { uploadImage } from '@/lib/asesor-estilo/api-client'
-import { getTokenCookie } from '@/lib/api';
-import ModalLogin from '@/components/ModalLogin';
-import BuyCredits from '@/components/BuyCredits';
-import { useAuth } from '@/lib/firebase';
+import { Camera, Upload, X, SwitchCamera } from "lucide-react";
+import type { IteratePayload } from "@/lib/asesor-estilo/types/ai";
+import { uploadImage } from "@/lib/asesor-estilo/api-client";
+import { getTokenCookie } from "@/lib/api";
+import ModalLogin from "@/components/ModalLogin";
+import BuyCredits from "@/components/BuyCredits";
+import { useAuth } from "@/lib/firebase";
 
 // Compress image to reduce file size before upload (Vercel has 4.5MB limit)
-async function compressImage(file: File, maxSizeMB: number = 2, maxWidth: number = 1600): Promise<File> {
+async function compressImage(
+  file: File,
+  maxSizeMB: number = 2,
+  maxWidth: number = 1600,
+): Promise<File> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.onload = () => {
         // Calculate new dimensions
         let { width, height } = img;
@@ -23,10 +27,10 @@ async function compressImage(file: File, maxSizeMB: number = 2, maxWidth: number
           width = maxWidth;
         }
 
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         if (!ctx) {
           resolve(file); // fallback to original
           return;
@@ -48,29 +52,38 @@ async function compressImage(file: File, maxSizeMB: number = 2, maxWidth: number
                 tryCompress();
               } else {
                 const compressedFile = new File([blob], file.name, {
-                  type: 'image/jpeg',
+                  type: "image/jpeg",
                   lastModified: Date.now(),
                 });
-                console.log(`[Compress] Original: ${(file.size / (1024 * 1024)).toFixed(2)}MB -> Compressed: ${(compressedFile.size / (1024 * 1024)).toFixed(2)}MB`);
+                console.log(
+                  `[Compress] Original: ${(file.size / (1024 * 1024)).toFixed(2)}MB -> Compressed: ${(compressedFile.size / (1024 * 1024)).toFixed(2)}MB`,
+                );
                 resolve(compressedFile);
               }
             },
-            'image/jpeg',
-            quality
+            "image/jpeg",
+            quality,
           );
         };
         tryCompress();
       };
-      img.onerror = () => reject(new Error('Failed to load image'));
+      img.onerror = () => reject(new Error("Failed to load image"));
       img.src = e.target?.result as string;
     };
-    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.onerror = () => reject(new Error("Failed to read file"));
     reader.readAsDataURL(file);
   });
 }
 
-type ProcessingPhase = 'upload' | 'analyze' | 'generate';
-type Message = { from: "user" | "assistant" | "system"; text: string; image?: string; processingPhase?: ProcessingPhase; progress?: number; action?: { type: string; payload?: IteratePayload | undefined } };
+type ProcessingPhase = "upload" | "analyze" | "generate";
+type Message = {
+  from: "user" | "assistant" | "system";
+  text: string;
+  image?: string;
+  processingPhase?: ProcessingPhase;
+  progress?: number;
+  action?: { type: string; payload?: IteratePayload | undefined };
+};
 
 export default function Page() {
   const { user } = useAuth();
@@ -97,16 +110,20 @@ export default function Page() {
   ];
 
   // Helper: perform /api/asesor-estilo/iterate with retries for transient 503 errors
-  async function performIterateWithRetries(payload: IteratePayload, maxAttempts = 3, baseDelay = 300) {
+  async function performIterateWithRetries(
+    payload: IteratePayload,
+    maxAttempts = 3,
+    baseDelay = 300,
+  ) {
     let attempt = 0;
     while (attempt < maxAttempts) {
       attempt++;
       try {
-        const res = await fetch('/api/asesor-estilo/iterate', {
-          method: 'POST',
+        const res = await fetch("/api/asesor-estilo/iterate", {
+          method: "POST",
           headers: {
-            'content-type': 'application/json',
-            'Authorization': `Bearer ${getTokenCookie()}`
+            "content-type": "application/json",
+            Authorization: `Bearer ${getTokenCookie()}`,
           },
           body: JSON.stringify(payload),
         });
@@ -121,22 +138,32 @@ export default function Page() {
 
         const data = await res.json();
         if (res.ok) return { success: true, data, status: res.status };
-        return { success: false, error: data.error || data.message || 'unknown', status: res.status };
+        return {
+          success: false,
+          error: data.error || data.message || "unknown",
+          status: res.status,
+        };
       } catch (err: unknown) {
         // network or other error - retry
         if (attempt >= maxAttempts) {
-          const msg = err && typeof err === 'object' && 'message' in err ? String((err as Record<string, unknown>).message) : String(err)
+          const msg =
+            err && typeof err === "object" && "message" in err
+              ? String((err as Record<string, unknown>).message)
+              : String(err);
           return { success: false, error: msg };
         }
         const delay = baseDelay * Math.pow(2, attempt - 1);
         await new Promise((r) => setTimeout(r, delay));
       }
     }
-    return { success: false, error: 'max_attempts_reached' };
+    return { success: false, error: "max_attempts_reached" };
   }
 
   const scrollToBottom = () => {
-    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+    setTimeout(
+      () => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }),
+      100,
+    );
   };
 
   // When an edited image is produced, ensure the chat scrolls so the user sees it
@@ -184,8 +211,8 @@ export default function Page() {
 
     // Check credits before starting upload
     try {
-      const creditsRes = await fetch('/api/users/profile', {
-        headers: { 'Authorization': `Bearer ${token}` }
+      const creditsRes = await fetch("/api/users/profile", {
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (creditsRes.ok) {
         const { user: profile } = await creditsRes.json();
@@ -201,21 +228,47 @@ export default function Page() {
     setLoading(true);
 
     // helper to upsert a single processing message and update its phase/progress
-    const upsertProcessing = (phase: ProcessingPhase, progress?: number, text?: string) => {
-      setMessages(prev => {
-        const idx = prev.findIndex(x => x.processingPhase);
+    const upsertProcessing = (
+      phase: ProcessingPhase,
+      progress?: number,
+      text?: string,
+    ) => {
+      setMessages((prev) => {
+        const idx = prev.findIndex((x) => x.processingPhase);
         if (idx === -1) {
-          const msg = { from: 'system' as const, text: text || (phase === 'upload' ? 'Subiendo...' : phase === 'analyze' ? 'Analizando...' : 'Generando...'), processingPhase: phase, progress };
+          const msg = {
+            from: "system" as const,
+            text:
+              text ||
+              (phase === "upload"
+                ? "Subiendo..."
+                : phase === "analyze"
+                  ? "Analizando..."
+                  : "Generando..."),
+            processingPhase: phase,
+            progress,
+          };
           return [...prev, msg];
         }
         const copy = [...prev];
-        copy[idx] = { ...copy[idx], processingPhase: phase, progress, text: text || (phase === 'upload' ? 'Subiendo...' : phase === 'analyze' ? 'Analizando...' : 'Generando...') };
+        copy[idx] = {
+          ...copy[idx],
+          processingPhase: phase,
+          progress,
+          text:
+            text ||
+            (phase === "upload"
+              ? "Subiendo..."
+              : phase === "analyze"
+                ? "Analizando..."
+                : "Generando..."),
+        };
         return copy;
       });
     };
 
     // start with upload phase so users see immediate feedback
-    upsertProcessing('upload', 0, 'Comprimiendo imagen...');
+    upsertProcessing("upload", 0, "Comprimiendo imagen...");
 
     try {
       // Compress image to under 2MB to avoid Vercel's 4.5MB body limit
@@ -223,24 +276,41 @@ export default function Page() {
       if (file.size > 2 * 1024 * 1024) {
         try {
           fileToUpload = await compressImage(file, 2, 1600);
-          upsertProcessing('upload', 0, 'Cargando...');
+          upsertProcessing("upload", 0, "Cargando...");
         } catch (compressError) {
-          console.warn('[Upload] Compression failed, using original:', compressError);
+          console.warn(
+            "[Upload] Compression failed, using original:",
+            compressError,
+          );
         }
       }
 
-      type UploadResult = { imageUrl: string; sessionId?: string; publicId?: string; error?: string; status?: number };
+      type UploadResult = {
+        imageUrl: string;
+        sessionId?: string;
+        publicId?: string;
+        error?: string;
+        status?: number;
+      };
       // Use XHR-based uploader so we can show progress updates - pass auth token
-      const uploadData = await uploadImage(fileToUpload, (p) => {
-        // update processing message progress
-        setMessages(prev => {
-          const idx = prev.findIndex(x => x.processingPhase === 'upload');
-          if (idx === -1) return prev;
-          const copy = [...prev];
-          copy[idx] = { ...copy[idx], progress: p, text: `Cargando... ${p}%` };
-          return copy;
-        });
-      }, token);
+      const uploadData = await uploadImage(
+        fileToUpload,
+        (p) => {
+          // update processing message progress
+          setMessages((prev) => {
+            const idx = prev.findIndex((x) => x.processingPhase === "upload");
+            if (idx === -1) return prev;
+            const copy = [...prev];
+            copy[idx] = {
+              ...copy[idx],
+              progress: p,
+              text: `Cargando... ${p}%`,
+            };
+            return copy;
+          });
+        },
+        token,
+      );
 
       const u = uploadData as UploadResult;
       if (u.error) {
@@ -256,16 +326,24 @@ export default function Page() {
       setSessionId(u.sessionId ?? null);
       setPublicId(u.publicId ?? null);
       // add uploaded image into the chat and a processing indicator in a single update to avoid duplicates
-      setMessages((m) => [...m, { from: "user", text: "Imagen cargada", image: u.imageUrl }, { from: 'system', text: 'Cargando edición...', processingPhase: 'analyze' }]);
+      setMessages((m) => [
+        ...m,
+        { from: "user", text: "Imagen cargada", image: u.imageUrl },
+        {
+          from: "system",
+          text: "Cargando edición...",
+          processingPhase: "analyze",
+        },
+      ]);
       // switch to chat/ready view so the analysis message is visible in the conversation
-      setStep('ready');
+      setStep("ready");
 
       // Perform analyze first to get the advisory
       const analyzeRes = await fetch("/api/asesor-estilo/analyze", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "Authorization": `Bearer ${getTokenCookie()}`
+          Authorization: `Bearer ${getTokenCookie()}`,
         },
         body: JSON.stringify({ imageUrl: u.imageUrl, locale: "es" }),
       });
@@ -284,11 +362,20 @@ export default function Page() {
       // Handle 500 or other server errors
       if (!analyzeRes.ok) {
         const errData = await analyzeRes.json().catch(() => ({}));
-        const errorMessage = errData.message || errData.error || `Error del servidor (${analyzeRes.status})`;
-        console.error('[Analyze] Server error:', analyzeRes.status, errData);
+        const errorMessage =
+          errData.message ||
+          errData.error ||
+          `Error del servidor (${analyzeRes.status})`;
+        console.error("[Analyze] Server error:", analyzeRes.status, errData);
         setMessages((m) => {
-          const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: "system", text: `Error al analizar: ${errorMessage}. Por favor intenta de nuevo.` }];
+          const filtered = m.filter((msg) => !msg.processingPhase);
+          return [
+            ...filtered,
+            {
+              from: "system",
+              text: `Error al analizar: ${errorMessage}. Por favor intenta de nuevo.`,
+            },
+          ];
         });
         setLoading(false);
         return;
@@ -299,8 +386,17 @@ export default function Page() {
       if (analyzeData.error || !analyzeData.analysis?.faceOk) {
         // remove processing indicator and append advisory in a single update
         setMessages((m) => {
-          const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: "system", text: analyzeData.analysis?.advisoryText || analyzeData.error || "No se pudo analizar la imagen correctamente." }];
+          const filtered = m.filter((msg) => !msg.processingPhase);
+          return [
+            ...filtered,
+            {
+              from: "system",
+              text:
+                analyzeData.analysis?.advisoryText ||
+                analyzeData.error ||
+                "No se pudo analizar la imagen correctamente.",
+            },
+          ];
         });
         setStep("upload");
         setLoading(false);
@@ -310,7 +406,7 @@ export default function Page() {
       const advisory = analyzeData.analysis.advisoryText || "";
 
       // Small delay to avoid concurrency issues with analyze
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Perform iterate to generate the image with retries for transient 503 errors
       const iteratePayload2 = {
@@ -332,11 +428,11 @@ export default function Page() {
       };
 
       await new Promise((r) => setTimeout(r, 500));
-      const iterateRes = await fetch('/api/asesor-estilo/iterate', {
-        method: 'POST',
+      const iterateRes = await fetch("/api/asesor-estilo/iterate", {
+        method: "POST",
         headers: {
-          'content-type': 'application/json',
-          'Authorization': `Bearer ${getTokenCookie()}`
+          "content-type": "application/json",
+          Authorization: `Bearer ${getTokenCookie()}`,
         },
         body: JSON.stringify(iteratePayload2),
       });
@@ -355,8 +451,16 @@ export default function Page() {
       if (iterateRes.status === 503) {
         // remove processing indicator and append assistant advisory + system retry message in one update
         setMessages((m) => {
-          const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: 'assistant', text: advisory }, { from: 'system', text: 'El servicio de edición de imágenes no está disponible por ahora.', action: { type: 'retry-iterate', payload: iteratePayload } }];
+          const filtered = m.filter((msg) => !msg.processingPhase);
+          return [
+            ...filtered,
+            { from: "assistant", text: advisory },
+            {
+              from: "system",
+              text: "El servicio de edición de imágenes no está disponible por ahora.",
+              action: { type: "retry-iterate", payload: iteratePayload },
+            },
+          ];
         });
         setLoading(false);
         return;
@@ -367,8 +471,12 @@ export default function Page() {
       if (iterateData.error) {
         // remove processing indicator and append advisory + error in single update
         setMessages((m) => {
-          const filtered = m.filter(msg => !msg.processingPhase);
-          return [...filtered, { from: 'assistant', text: advisory }, { from: 'system', text: `Error de edición: ${iterateData.error}` }];
+          const filtered = m.filter((msg) => !msg.processingPhase);
+          return [
+            ...filtered,
+            { from: "assistant", text: advisory },
+            { from: "system", text: `Error de edición: ${iterateData.error}` },
+          ];
         });
         setLoading(false);
         return;
@@ -379,13 +487,25 @@ export default function Page() {
 
       // remove processing indicator now that editing is complete and append edited image + advisory in one update
       setMessages((m) => {
-        const filtered = m.filter(msg => !msg.processingPhase);
-        return [...filtered, { from: 'assistant', text: iterateData.note || 'Edición completada', image: iterateData.editedUrl }, { from: 'assistant', text: advisory }];
+        const filtered = m.filter((msg) => !msg.processingPhase);
+        return [
+          ...filtered,
+          {
+            from: "assistant",
+            text: iterateData.note || "Edición completada",
+            image: iterateData.editedUrl,
+          },
+          { from: "assistant", text: advisory },
+        ];
       });
       scrollToBottom();
     } catch (err: unknown) {
       // Handle auth/credit errors from upload
-      const errObj = err as { status?: number; error?: string; message?: string };
+      const errObj = err as {
+        status?: number;
+        error?: string;
+        message?: string;
+      };
       if (errObj.status === 401) {
         setShowLoginModal(true);
         setLoading(false);
@@ -396,7 +516,10 @@ export default function Page() {
         setLoading(false);
         return;
       }
-      const msg = err && typeof err === 'object' && 'message' in err ? String((err as Record<string, unknown>).message) : String(err)
+      const msg =
+        err && typeof err === "object" && "message" in err
+          ? String((err as Record<string, unknown>).message)
+          : String(err);
       setMessages((m) => [...m, { from: "system", text: `Error: ${msg}` }]);
       setStep("upload");
     } finally {
@@ -415,7 +538,12 @@ export default function Page() {
 
     try {
       // use helper with retries
-      const payload = { sessionId, originalImageUrl: originalUrl, userText, prevPublicId: publicId };
+      const payload = {
+        sessionId,
+        originalImageUrl: originalUrl,
+        userText,
+        prevPublicId: publicId,
+      };
       const result = await performIterateWithRetries(payload);
       if (!result.success) {
         if (result.status === 401) {
@@ -429,18 +557,24 @@ export default function Page() {
           return;
         }
         if (result.status === 503) {
-          setMessages((m) => [...m, {
-            from: "system",
-            text: "El servicio de edición de imágenes no está disponible por ahora.",
-            action: {
-              type: "retry-iterate",
-              payload,
-            }
-          }]);
+          setMessages((m) => [
+            ...m,
+            {
+              from: "system",
+              text: "El servicio de edición de imágenes no está disponible por ahora.",
+              action: {
+                type: "retry-iterate",
+                payload,
+              },
+            },
+          ]);
           setLoading(false);
           return;
         }
-        setMessages((m) => [...m, { from: "system", text: `Error: ${result.error || 'unknown'}` }]);
+        setMessages((m) => [
+          ...m,
+          { from: "system", text: `Error: ${result.error || "unknown"}` },
+        ]);
         setLoading(false);
         return;
       }
@@ -448,7 +582,14 @@ export default function Page() {
       const iterateData2 = result.data;
       setEditedUrl(iterateData2.editedUrl);
       setPublicId(iterateData2.publicId);
-      setMessages((m) => [...m, { from: "assistant", text: iterateData2.note || "Edición completada", image: iterateData2.editedUrl }]);
+      setMessages((m) => [
+        ...m,
+        {
+          from: "assistant",
+          text: iterateData2.note || "Edición completada",
+          image: iterateData2.editedUrl,
+        },
+      ]);
       scrollToBottom();
     } catch (err) {
       setMessages((m) => [...m, { from: "system", text: `Error: ${err}` }]);
@@ -461,35 +602,57 @@ export default function Page() {
     if (!payload) return;
     setLoading(true);
     // show a small system message indicating retry started
-    setMessages((m) => [...m, { from: "system", text: "Reintentando la edición..." }]);
+    setMessages((m) => [
+      ...m,
+      { from: "system", text: "Reintentando la edición..." },
+    ]);
 
     try {
       const res = await fetch("/api/asesor-estilo/iterate", {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "Authorization": `Bearer ${getTokenCookie()}`
+          Authorization: `Bearer ${getTokenCookie()}`,
         },
         body: JSON.stringify(payload),
       });
 
       if (res.status === 503) {
-        setMessages((m) => [...m, { from: "system", text: "El servicio de edición sigue sin estar disponible. Por favor, intenta más tarde." }]);
+        setMessages((m) => [
+          ...m,
+          {
+            from: "system",
+            text: "El servicio de edición sigue sin estar disponible. Por favor, intenta más tarde.",
+          },
+        ]);
         return;
       }
 
       const data = await res.json();
       if (data.error) {
-        setMessages((m) => [...m, { from: "system", text: `Error de edición: ${data.error}` }]);
+        setMessages((m) => [
+          ...m,
+          { from: "system", text: `Error de edición: ${data.error}` },
+        ]);
         return;
       }
 
       setEditedUrl(data.editedUrl);
       setPublicId(data.publicId);
-      setMessages((m) => [...m, { from: "assistant", text: data.note || "Edición completada", image: data.editedUrl }]);
+      setMessages((m) => [
+        ...m,
+        {
+          from: "assistant",
+          text: data.note || "Edición completada",
+          image: data.editedUrl,
+        },
+      ]);
       scrollToBottom();
     } catch (err) {
-      setMessages((m) => [...m, { from: "system", text: `Error al reintentar: ${err}` }]);
+      setMessages((m) => [
+        ...m,
+        { from: "system", text: `Error al reintentar: ${err}` },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -514,16 +677,31 @@ export default function Page() {
 
   if (step === "upload") {
     return (
-      <div className="app-center">
-        {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
+      <main className="min-h-screen bg-[#0a0a0a] text-white">
+        {showCamera && (
+          <CameraModal
+            onCapture={handleCameraCapture}
+            onClose={() => setShowCamera(false)}
+          />
+        )}
 
         <div className="chat-shell">
           <div className="chat-header text-center">
             <div className="relative h-60 w-auto mx-auto">
-              <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+              <Image
+                fill
+                src="/Logo spartan club - sin fondo.webp"
+                alt="Spartan Club"
+                className="object-contain"
+              />
             </div>
-            <h1 className="chat-title">Asesor de Forma de Rostro</h1>
-            <p className="chat-sub">Obtén consejos sobre cortes de barba, peinados y más adaptados a tu forma de rostro.</p>
+            <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tight text-center">
+              Asesor de Forma de Rostro
+            </h1>
+            <p className="chat-sub">
+              Obtén consejos sobre cortes de barba, peinados y más adaptados a
+              tu forma de rostro.
+            </p>
           </div>
 
           <div className="p-6">
@@ -534,8 +712,12 @@ export default function Page() {
               onDrop={handleDrop}
               className={`p-8 rounded-lg text-center dropzone-visible ${isDragging ? "border-dashed border-indigo-400 bg-indigo-800/5" : "border-dashed border-transparent"}`}
             >
-              <h2 className="mb-2 text-lg font-semibold">Carga tu foto para obtener consejos</h2>
-              <p className="mb-4 text-sm text-muted-foreground">Recomendamos una foto de frente con buena iluminación.</p>
+              <h1 className="mb-2 text-lg font-semibold">
+                Carga tu foto para obtener consejos
+              </h1>
+              <p className="mb-4 text-sm text-muted-foreground">
+                Recomendamos una foto de frente con buena iluminación.
+              </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
                 <button
                   onClick={handleUploadClick}
@@ -555,14 +737,21 @@ export default function Page() {
                   Tomar Foto
                 </button>
 
-                <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+                <input
+                  aria-label="Subir foto para análisis"
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </div>
             </div>
 
             {/* suggestions are hidden during initial upload; they'll appear in the chat area after the first edit */}
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -570,26 +759,46 @@ export default function Page() {
 
   // Ready/chat view
   return (
-    <div className="app-center">
-      {showCamera && <CameraModal onCapture={handleCameraCapture} onClose={() => setShowCamera(false)} />}
+    <main className="min-h-screen bg-[#0a0a0a] text-white">
+      {showCamera && (
+        <CameraModal
+          onCapture={handleCameraCapture}
+          onClose={() => setShowCamera(false)}
+        />
+      )}
 
       <div className="chat-shell">
         <div className="chat-header text-center">
           <div className="relative mx-auto mb-4 h-20 md:h-24 lg:h-28 w-auto">
-            <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+            <Image
+              fill
+              src="/Logo spartan club - sin fondo.png"
+              alt="Spartan Club"
+              className="object-contain"
+            />
           </div>
           <h1 className="chat-title">Asesor de Forma de Rostro</h1>
-          <p className="chat-sub">Obtén consejos sobre cortes de barba, peinados y más adaptados a tu forma de rostro.</p>
+          <p className="chat-sub">
+            Obtén consejos sobre cortes de barba, peinados y más adaptados a tu
+            forma de rostro.
+          </p>
         </div>
 
         <div className="messages">
           {messages.length === 0 && (
-            <div className="py-12 text-center text-gray-400">Carga una imagen para comenzar la consulta.</div>
+            <div className="py-12 text-center text-gray-400">
+              Carga una imagen para comenzar la consulta.
+            </div>
           )}
 
           {messages.map((m, i) => (
-            <div key={i} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`bubble ${m.from === "user" ? "user" : m.from === "assistant" ? "assistant" : "system"}`}>
+            <div
+              key={i}
+              className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`bubble ${m.from === "user" ? "user" : m.from === "assistant" ? "assistant" : "system"}`}
+              >
                 <p className="whitespace-pre-wrap">{m.text}</p>
                 {m.processingPhase && (
                   <div className="flex items-center gap-2 mt-2">
@@ -608,16 +817,22 @@ export default function Page() {
                       width={0}
                       height={0}
                       sizes="100vw"
-                      style={{ width: '100%', height: 'auto' }}
+                      style={{ width: "100%", height: "auto" }}
                     />
                   </div>
                 )}
-                {m.action?.type === 'retry-iterate' && (
+                {m.action?.type === "retry-iterate" && (
                   <div className="mt-2">
                     {(() => {
                       const payload = m.action?.payload;
                       return (
-                        <button onClick={() => payload && retryIterate(payload)} disabled={loading} className="btn-ghost">{loading ? 'Procesando...' : 'Reintentar'}</button>
+                        <button
+                          onClick={() => payload && retryIterate(payload)}
+                          disabled={loading}
+                          className="btn-ghost"
+                        >
+                          {loading ? "Procesando..." : "Reintentar"}
+                        </button>
                       );
                     })()}
                   </div>
@@ -632,16 +847,46 @@ export default function Page() {
         </div>
 
         <div className="input-bar">
-          <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder={originalUrl ? "Describe los cambios que quieres..." : "Carga una imagen primero"} className="input-textarea" />
+          <textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            placeholder={
+              originalUrl
+                ? "Describe los cambios que quieres..."
+                : "Carga una imagen primero"
+            }
+            className="input-textarea"
+          />
           <div className="flex items-center gap-2">
-            <button onClick={handleUploadClick} className="p-2 text-gray-400 hover:text-white transition-colors" title="Cargar imagen">
+            <button
+              onClick={handleUploadClick}
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+              title="Cargar imagen"
+            >
               <Upload size={20} />
             </button>
-            <button onClick={() => setShowCamera(true)} className="p-2 text-gray-400 hover:text-white transition-colors" title="Tomar foto">
+            <button
+              onClick={() => setShowCamera(true)}
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+              title="Tomar foto"
+            >
               <Camera size={20} />
             </button>
-            <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
-            <button onClick={() => handleGenerate()} disabled={!originalUrl || loading || !prompt.trim()} className="btn-accent ml-2">{loading ? "Procesando..." : "Generar"}</button>
+            <input
+              aria-label="Subir foto para análisis"
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <button
+              onClick={() => handleGenerate()}
+              disabled={!originalUrl || loading || !prompt.trim()}
+              className="btn-accent ml-2"
+            >
+              {loading ? "Procesando..." : "Generar"}
+            </button>
           </div>
         </div>
 
@@ -649,17 +894,27 @@ export default function Page() {
           {/* Show suggestions once an original image is present to avoid early noise */}
           {originalUrl ? (
             suggestions.map((s) => (
-              <button key={s} onClick={() => handleSuggestionClick(s)} disabled={loading} className={`suggestion ${loading ? 'disabled' : ''}`}>
+              <button
+                key={s}
+                onClick={() => handleSuggestionClick(s)}
+                disabled={loading}
+                className={`suggestion ${loading ? "disabled" : ""}`}
+              >
                 {s}
               </button>
             ))
           ) : (
-            <div className="text-sm text-muted-foreground">Carga una imagen para ver sugerencias.</div>
+            <div className="text-sm text-muted-foreground">
+              Carga una imagen para ver sugerencias.
+            </div>
           )}
         </div>
       </div>
 
-      <ModalLogin open={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      <ModalLogin
+        open={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
 
       {showCreditsModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
@@ -668,8 +923,18 @@ export default function Page() {
               className="absolute right-5 top-5 z-10 text-[#ba9c9c] hover:text-white bg-black/20 rounded-full p-1"
               onClick={() => setShowCreditsModal(false)}
             >
-              <svg width={24} height={24} fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 6l12 12M18 6l-12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <svg
+                width={24}
+                height={24}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M6 6l12 12M18 6l-12 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
             <div className="p-4">
@@ -678,11 +943,17 @@ export default function Page() {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }
 
-function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; onClose: () => void }) {
+function CameraModal({
+  onCapture,
+  onClose,
+}: {
+  onCapture: (file: File) => void;
+  onClose: () => void;
+}) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [facingMode, setFacingMode] = useState<"user" | "environment">("user");
@@ -694,31 +965,40 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
     async function initCamera() {
       try {
         if (streamRef.current) {
-          streamRef.current.getTracks().forEach(track => track.stop());
+          streamRef.current.getTracks().forEach((track) => track.stop());
           streamRef.current = null;
         }
 
         setError(null);
 
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error("Tu navegador no admite acceso a la cámara. Actualiza tu navegador o usa Chrome/Edge.");
+          throw new Error(
+            "Tu navegador no admite acceso a la cámara. Actualiza tu navegador o usa Chrome/Edge.",
+          );
         }
 
         console.log("[Camera] Verificando permisos existentes...");
 
-        let permissionStatus = 'prompt';
+        let permissionStatus = "prompt";
         try {
           if (navigator.permissions && navigator.permissions.query) {
-            const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
+            const result = await navigator.permissions.query({
+              name: "camera" as PermissionName,
+            });
             permissionStatus = result.state;
             console.log("[Camera] Estado de permiso actual:", permissionStatus);
 
-            if (permissionStatus === 'denied') {
-              throw Object.assign(new Error('Permission previously denied'), { name: 'NotAllowedError' });
+            if (permissionStatus === "denied") {
+              throw Object.assign(new Error("Permission previously denied"), {
+                name: "NotAllowedError",
+              });
             }
           }
         } catch (permErr) {
-          console.warn("[Camera] No se pudo verificar permisos (puede ser normal):", permErr);
+          console.warn(
+            "[Camera] No se pudo verificar permisos (puede ser normal):",
+            permErr,
+          );
         }
 
         console.log("[Camera] Solicitando acceso a cámara...");
@@ -729,16 +1009,19 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
             video: {
               facingMode: facingMode,
               width: { ideal: 1280 },
-              height: { ideal: 720 }
-            }
+              height: { ideal: 720 },
+            },
           });
           console.log("[Camera] ✓ Cámara abierta con facingMode:", facingMode);
         } catch (err1) {
-          console.warn("[Camera] Fallo con facingMode, intentando sin restricciones...", err1);
+          console.warn(
+            "[Camera] Fallo con facingMode, intentando sin restricciones...",
+            err1,
+          );
 
           try {
             newStream = await navigator.mediaDevices.getUserMedia({
-              video: true
+              video: true,
             });
             console.log("[Camera] ✓ Cámara abierta con video:true");
           } catch (err2) {
@@ -749,7 +1032,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
 
         if (!mounted) {
           console.log("[Camera] Componente desmontado, cerrando stream");
-          newStream.getTracks().forEach(track => track.stop());
+          newStream.getTracks().forEach((track) => track.stop());
           return;
         }
 
@@ -764,16 +1047,26 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
 
         const error = err instanceof Error ? err : new Error(String(err));
         let msg = "";
-        const code = error.name || 'Unknown';
+        const code = error.name || "Unknown";
 
-        if (code === 'NotAllowedError' || code === 'PermissionDeniedError') {
-          msg = "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para corregir:**\n\n1. Cierra este modal\n2. Haz clic en el ícono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Haz clic en 'Tomar Foto' nuevamente\n\nSi el problema persiste, tu antivirus podría estar bloqueando la cámara.";
-        } else if (code === 'NotFoundError' || code === 'DevicesNotFoundError') {
-          msg = "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
-        } else if (code === 'NotReadableError' || code === 'TrackStartError') {
-          msg = "⚠️ **Cámara en Uso**\n\nOtra aplicación está usando la cámara.\n\nCierra estas aplicaciones si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
-        } else if (code === 'OverconstrainedError' || code === 'ConstraintNotSatisfiedError') {
-          msg = "⚙️ **Configuración Incompatible**\n\nLa cámara no admite la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
+        if (code === "NotAllowedError" || code === "PermissionDeniedError") {
+          msg =
+            "🚫 **Permiso Denegado**\n\nEL NAVEGADOR BLOQUEÓ LA CÁMARA.\n\n**Pasos para corregir:**\n\n1. Cierra este modal\n2. Haz clic en el ícono 🔒 o ⓘ junto a la URL\n3. En 'Cámara', selecciona 'Permitir'\n4. Recarga la página (F5)\n5. Haz clic en 'Tomar Foto' nuevamente\n\nSi el problema persiste, tu antivirus podría estar bloqueando la cámara.";
+        } else if (
+          code === "NotFoundError" ||
+          code === "DevicesNotFoundError"
+        ) {
+          msg =
+            "📷 **Sin Cámara**\n\nNo se detectó ninguna cámara conectada.\n\nVerifica que:\n• La cámara esté conectada\n• Los drivers estén instalados\n• Windows la reconozca (Configuración > Cámara)";
+        } else if (code === "NotReadableError" || code === "TrackStartError") {
+          msg =
+            "⚠️ **Cámara en Uso**\n\nOtra aplicación está usando la cámara.\n\nCierra estas aplicaciones si están abiertas:\n• Zoom\n• Teams\n• Meet\n• Skype\n• OBS Studio";
+        } else if (
+          code === "OverconstrainedError" ||
+          code === "ConstraintNotSatisfiedError"
+        ) {
+          msg =
+            "⚙️ **Configuración Incompatible**\n\nLa cámara no admite la configuración solicitada.\n\nEsto es raro - intenta con otro navegador.";
         } else {
           msg = `❌ **Error Desconocido**\n\n${error.message || String(err)}\n\nIntenta:\n• Reiniciar el navegador\n• Actualizar el navegador\n• Usar Chrome o Edge`;
         }
@@ -790,7 +1083,7 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
       mounted = false;
       if (streamRef.current) {
         console.log("[Camera] Limpiando stream en cleanup");
-        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current.getTracks().forEach((track) => track.stop());
         streamRef.current = null;
       }
     };
@@ -800,34 +1093,40 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
     if (!videoRef.current || !streamRef.current) return;
 
     const video = videoRef.current;
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     ctx.drawImage(video, 0, 0);
 
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const file = new File([blob], `foto-${Date.now()}.jpg`, { type: 'image/jpeg' });
-      onCapture(file);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+        const file = new File([blob], `foto-${Date.now()}.jpg`, {
+          type: "image/jpeg",
+        });
+        onCapture(file);
 
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-        streamRef.current = null;
-      }
-    }, 'image/jpeg', 0.95);
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach((track) => track.stop());
+          streamRef.current = null;
+        }
+      },
+      "image/jpeg",
+      0.95,
+    );
   }
 
   function handleSwitchCamera() {
-    setFacingMode(prev => prev === "user" ? "environment" : "user");
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user"));
   }
 
   function handleClose() {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
     onClose();
@@ -857,7 +1156,9 @@ function CameraModal({ onCapture, onClose }: { onCapture: (file: File) => void; 
         <div className="flex-1 flex items-center justify-center overflow-hidden">
           {error ? (
             <div className="max-w-md mx-4 p-6 bg-red-900/20 border border-red-500/30 rounded-lg text-white">
-              <pre className="whitespace-pre-wrap text-sm font-sans">{error}</pre>
+              <pre className="whitespace-pre-wrap text-sm font-sans">
+                {error}
+              </pre>
               <button
                 onClick={handleClose}
                 className="mt-4 w-full px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors"

@@ -37,10 +37,10 @@
   },
   "lint-staged": {
     "frontend/src/**/*.{ts,tsx,js,jsx}": [
-      "prettier --write"
+      "npx prettier --write"
     ],
     "frontend/src/**/*.{json,md}": [
-      "prettier --write"
+      "npx prettier --write"
     ]
   },
   "dependencies": {

@@ -1,18 +1,26 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
-import { categories as staticCategories, getAllPosts } from "@/lib/blog/static-data";
+import {
+  categories as staticCategories,
+  getAllPosts,
+} from "@/lib/blog/static-data";
 
 const BASE_URL = "https://spartanclub.vercel.app";
 
 // Helper to map icon string names back to components
 const getIconComponent = (categorySlug: string) => {
   switch (categorySlug) {
-    case 'entrenamiento-y-energia-fisica': return Dumbbell;
-    case 'estilo-y-presencia': return Shirt;
-    case 'mentalidad-y-disciplina': return Brain;
-    case 'productividad-y-gestion-del-tiempo': return Clock;
-    default: return Dumbbell;
+    case "entrenamiento-y-energia-fisica":
+      return Dumbbell;
+    case "estilo-y-presencia":
+      return Shirt;
+    case "mentalidad-y-disciplina":
+      return Brain;
+    case "productividad-y-gestion-del-tiempo":
+      return Clock;
+    default:
+      return Dumbbell;
   }
 };
 
@@ -30,10 +38,18 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Blog Spartan Club | Desarrollo Masculino",
-    description: "Artículos sobre entrenamiento, estilo, mentalidad y productividad para hombres.",
+    description:
+      "Artículos sobre entrenamiento, estilo, mentalidad y productividad para hombres.",
     type: "website",
     url: `${BASE_URL}/blog`,
-    images: [{ url: `${BASE_URL}/Hero.png`, width: 1200, height: 630, alt: "Spartan Club Blog" }],
+    images: [
+      {
+        url: `${BASE_URL}/Hero.png`,
+        width: 1200,
+        height: 630,
+        alt: "Spartan Club Blog",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -46,7 +62,7 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   // Use static data instead of database
-  const categories = staticCategories.map(cat => ({
+  const categories = staticCategories.map((cat) => ({
     slug: cat.slug,
     epic_name: cat.name,
     description: cat.description,
@@ -55,15 +71,21 @@ export default async function BlogPage() {
     cover_image: cat.cover_image,
   }));
 
-  const latestPosts = getAllPosts().slice(0, 6).map(post => ({
-    slug: post.slug,
-    category_slug: post.category_slug,
-    title: post.title,
-    excerpt: post.excerpt,
-    cover_image: post.cover_image,
-    published_at: new Date(post.published_at),
-    category: { epic_name: staticCategories.find(c => c.slug === post.category_slug)?.name || '' }
-  }));
+  const latestPosts = getAllPosts()
+    .slice(0, 6)
+    .map((post) => ({
+      slug: post.slug,
+      category_slug: post.category_slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      cover_image: post.cover_image,
+      published_at: new Date(post.published_at),
+      category: {
+        epic_name:
+          staticCategories.find((c) => c.slug === post.category_slug)?.name ||
+          "",
+      },
+    }));
 
   // Schema.org
   const blogSchema = {
@@ -79,14 +101,25 @@ export default async function BlogPage() {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${BASE_URL}/blog` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${BASE_URL}/blog`,
+      },
     ],
   };
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <main className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
@@ -98,17 +131,26 @@ export default async function BlogPage() {
           <div className="relative max-w-6xl mx-auto text-center">
             {/* Breadcrumb */}
             <nav className="flex justify-center items-center gap-2 text-sm text-gray-500 mb-8">
-              <Link href="/" className="hover:text-white transition">Inicio</Link>
+              <Link href="/" className="hover:text-white transition">
+                Inicio
+              </Link>
               <span>/</span>
               <span className="text-red-500">Blog</span>
             </nav>
 
             <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-              Blog <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">Spartan</span>
+              Blog{" "}
+              <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+                Spartan
+              </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Artículos sobre <strong className="text-white">entrenamiento</strong>, <strong className="text-white">estilo</strong>,
-              <strong className="text-white"> mentalidad</strong> y <strong className="text-white">productividad</strong> para hombres que buscan la excelencia.
+              Artículos sobre{" "}
+              <strong className="text-white">entrenamiento</strong>,{" "}
+              <strong className="text-white">estilo</strong>,
+              <strong className="text-white"> mentalidad</strong> y{" "}
+              <strong className="text-white">productividad</strong> para hombres
+              que buscan la excelencia.
             </p>
           </div>
         </section>
@@ -133,13 +175,19 @@ export default async function BlogPage() {
                     {/* Background Image */}
                     <div className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity duration-500">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={cat.cover_image || ''} alt="" className="w-full h-full object-cover" />
+                      <img
+                        src={cat.cover_image || ""}
+                        alt={cat.epic_name}
+                        className="w-full h-full object-cover"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
                     </div>
 
                     {/* Content */}
                     <div className="relative p-8 flex items-center gap-6">
-                      <div className={`flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br ${cat.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <div
+                        className={`flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br ${cat.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                      >
                         <Icon className="w-8 h-8 text-white" />
                       </div>
                       <div className="flex-1">
@@ -151,8 +199,18 @@ export default async function BlogPage() {
                         </p>
                       </div>
                       <div className="flex-shrink-0 text-gray-500 group-hover:text-red-500 group-hover:translate-x-2 transition-all duration-300">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
                         </svg>
                       </div>
                     </div>
@@ -219,11 +277,14 @@ export default async function BlogPage() {
 
                       {post.published_at && (
                         <time className="text-xs text-gray-500">
-                          {new Date(post.published_at).toLocaleDateString("es-ES", {
-                            day: "numeric",
-                            month: "long",
-                            year: "numeric",
-                          })}
+                          {new Date(post.published_at).toLocaleDateString(
+                            "es-ES",
+                            {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            },
+                          )}
                         </time>
                       )}
                     </div>
