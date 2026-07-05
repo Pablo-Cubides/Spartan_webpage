@@ -5,7 +5,11 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Calendar, Clock, User, ArrowLeft, Share2 } from "lucide-react";
-import { getPostBySlug, getPostsByCategory } from "@/lib/blog/static-data";
+import {
+  getAllPosts,
+  getPostBySlug,
+  getPostsByCategory,
+} from "@/lib/blog/static-data";
 
 interface PageProps {
   params: Promise<{
@@ -61,6 +65,14 @@ export async function generateMetadata({
     },
     alternates: { canonical: postUrl },
   };
+}
+
+export async function generateStaticParams() {
+  const posts = getAllPosts();
+  return posts.map((post) => ({
+    category: post.category_slug,
+    slug: post.slug,
+  }));
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
