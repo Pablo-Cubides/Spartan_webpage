@@ -51,8 +51,8 @@ Focos actuales: ${profile.currentFocuses?.join(', ') || 'No definidos'}
     return systemPrompt;
 }
 
-// Model configuration - using gemini-2.0-flash-exp (free tier, stable)
-const GEMINI_MODEL = process.env.GEMINI_COACH_MODEL || 'gemini-2.0-flash-exp';
+// Model configuration - using gemini-2.5-flash (stable, high performance)
+const GEMINI_MODEL = process.env.GEMINI_COACH_MODEL || 'gemini-2.5-flash';
 const MAX_OUTPUT_TOKENS = 500;
 const STRATEGIST_MAX_TOKENS = 2000;
 

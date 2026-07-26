@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import { uploadToStorage } from '../storage'
 import { appendLog } from './logger'
 import type { EditIntent } from '../types/ai'
@@ -8,10 +7,10 @@ type UnknownRecord = Record<string, unknown>
 const NANOBANANA_URL = process.env.NANOBANANA_URL || ''
 const NANOBANANA_KEY = process.env.NANOBANANA_API_KEY || process.env.GEMINI_API_KEY_CLOTHING || process.env.GEMINI_API_KEY || ''
 
-// Accept different environment variable names used in this project
+const GEMINI_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image'
+const FALLBACK_IMAGE_MODEL = 'gemini-2.5-flash-image'
 const GEMINI_API_KEY_VAR = process.env.GEMINI_API_KEY_CLOTHING || process.env.GEMINI_API_KEY || ''
 const GEMINI_REST_URL = process.env.GEMINI_REST_URL || ''
-// const GOOGLE_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || process.env.GOOGLE_IMAGE_MODEL || 'imagen-3.0-generate-001'
 
 // Timeout configurations with progressive timeouts
 const GENERATION_TIMEOUT = parseInt(process.env.AI_GENERATION_TIMEOUT || '120000', 10) // 120s for generation/editing
@@ -128,73 +127,87 @@ STRICT RULES:
 - High quality, photorealistic.`;
         }
 
-        // Use gemini-2.5-flash-image (Nano Banana) - best for identity-preserving portrait editing
-        const modelName = 'gemini-2.5-flash-image';
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
-
-        const payload = {
-          contents: [{
-            parts: [
-              { text: prompt },
-              {
-                inlineData: {
-                  mimeType: mimeType,
-                  data: base64Image
-                }
-              }
-            ]
-          }],
-          generationConfig: {
-            responseModalities: ["TEXT", "IMAGE"]
-          }
-        };
-
-        await appendLog({ phase: 'nanobanana.gemini25.calling', model: modelName, promptLength: prompt.length, attempt });
-
-        const resp = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        if (!resp.ok) {
-          const txt = await resp.text().catch(() => '');
-          throw new Error(`Gemini 2.5 API error: ${resp.status} ${txt}`);
+        // Use GEMINI_IMAGE_MODEL (gemini-3.1-flash-image) with fallback to gemini-2.5-flash-image
+        const primaryModel = GEMINI_IMAGE_MODEL;
+        const modelsToTry = [primaryModel];
+        if (primaryModel !== FALLBACK_IMAGE_MODEL) {
+          modelsToTry.push(FALLBACK_IMAGE_MODEL);
         }
 
-        const data = await resp.json() as UnknownRecord;
+        for (const modelName of modelsToTry) {
+          try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-        // Extract image from response
-        // Response format: { candidates: [{ content: { parts: [{ inlineData: { data, mimeType } }] } }] }
-        const candidates = data.candidates as UnknownRecord[];
-        if (candidates && candidates.length > 0) {
-          const content = candidates[0].content as UnknownRecord;
-          const parts = content?.parts as UnknownRecord[];
-          if (parts && Array.isArray(parts)) {
-            for (const part of parts) {
-              const inlineData = part.inlineData as UnknownRecord | undefined;
-              if (inlineData && inlineData.data) {
-                const base64 = inlineData.data as string;
-                const uploaded = await uploadIfNeeded({ base64 }, 'nanobanana_gemini25');
-
-                const result = {
-                  editedUrl: uploaded.url,
-                  note: intent.locale === 'es' ? 'Editado con Gemini 2.5' : 'Edited with Gemini 2.5',
-                  publicId: uploaded.public_id
-                };
-
-                await appendLog({ phase: 'nanobanana.response.gemini25', result, attempt });
-                return result;
+            const payload = {
+              contents: [{
+                parts: [
+                  { text: prompt },
+                  {
+                    inlineData: {
+                      mimeType: mimeType,
+                      data: base64Image
+                    }
+                  }
+                ]
+              }],
+              generationConfig: {
+                responseModalities: ["TEXT", "IMAGE"]
               }
+            };
+
+            await appendLog({ phase: 'nanobanana.gemini_image.calling', model: modelName, promptLength: prompt.length, attempt });
+
+            const resp = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (!resp.ok) {
+              const txt = await resp.text().catch(() => '');
+              throw new Error(`Gemini Image API (${modelName}) error: ${resp.status} ${txt}`);
+            }
+
+            const data = await resp.json() as UnknownRecord;
+
+            // Extract image from response
+            const candidates = data.candidates as UnknownRecord[];
+            if (candidates && candidates.length > 0) {
+              const content = candidates[0].content as UnknownRecord;
+              const parts = content?.parts as UnknownRecord[];
+              if (parts && Array.isArray(parts)) {
+                for (const part of parts) {
+                  const inlineData = part.inlineData as UnknownRecord | undefined;
+                  if (inlineData && inlineData.data) {
+                    const base64 = inlineData.data as string;
+                    const uploaded = await uploadIfNeeded({ base64 }, `nanobanana_${modelName.replace(/[^a-zA-Z0-9]/g, '_')}`);
+
+                    const result = {
+                      editedUrl: uploaded.url,
+                      note: intent.locale === 'es' ? `Editado con ${modelName}` : `Edited with ${modelName}`,
+                      publicId: uploaded.public_id
+                    };
+
+                    await appendLog({ phase: 'nanobanana.response.gemini_image', model: modelName, result, attempt });
+                    return result;
+                  }
+                }
+              }
+            }
+
+            throw new Error(`No image data in ${modelName} response`);
+          } catch (modelErr: unknown) {
+            await appendLog({ phase: 'nanobanana.model_error', model: modelName, error: String(modelErr), attempt });
+            if (modelName === modelsToTry[modelsToTry.length - 1]) {
+              throw modelErr;
             }
           }
         }
 
-        throw new Error('No image data in Gemini 2.5 response');
-
+        throw new Error('No image editing models succeeded');
       } catch (e: unknown) {
         lastError = e as Error;
-        await appendLog({ phase: 'nanobanana.call_error.gemini25', error: String(e), attempt });
+        await appendLog({ phase: 'nanobanana.call_error.gemini_image', error: String(e), attempt });
 
         if (attempt === MAX_RETRIES) throw lastError;
 

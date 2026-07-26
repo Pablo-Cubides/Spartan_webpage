@@ -2,7 +2,7 @@
 import { appendLog } from './logger';
 import { getAiConfig, getDefaultLocale } from '../config';
 import type { FaceAnalysis, EditIntent } from '../types/ai';
-import fetch from 'node-fetch';
+// Node 24 native fetch is used globally
 
 // Small local utility type to avoid spreading `any` — used for dynamic SDK and API shapes
 type UnknownRecord = Record<string, unknown>;
@@ -202,7 +202,7 @@ export async function analyzeClothingWithGemini(
     const genAI = new GoogleGenerativeAI(geminiKey);
 
     const model = genAI.getGenerativeModel({
-      model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+      model: getEnv('GEMINI_MODEL') || 'gemini-2.5-flash',
       generationConfig: {
         responseMimeType: 'application/json',
       },
@@ -223,7 +223,7 @@ export async function analyzeClothingWithGemini(
 
     await appendLog({
       phase: 'gemini.analyzeClothing.calling_sdk',
-      model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+      model: getEnv('GEMINI_MODEL') || 'gemini-2.5-flash',
     });
 
     const controller = new AbortController();
@@ -321,7 +321,7 @@ export async function analyzeImageWithGemini(
 
       // Configure the model to return JSON
       const model = genAI.getGenerativeModel({
-        model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+        model: getEnv('GEMINI_MODEL') || 'gemini-2.5-flash',
         generationConfig: {
           responseMimeType: 'application/json',
         },
@@ -343,7 +343,7 @@ export async function analyzeImageWithGemini(
 
       await appendLog({
         phase: 'gemini.analyze.calling_sdk',
-        model: getEnv('GEMINI_MODEL') || 'gemini-1.5-flash',
+        model: getEnv('GEMINI_MODEL') || 'gemini-2.5-flash',
       });
 
       // Create AbortController for timeout management
