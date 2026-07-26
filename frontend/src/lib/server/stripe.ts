@@ -99,19 +99,28 @@ export async function getCheckoutSession(sessionId: string): Promise<Stripe.Chec
 }
 
 /**
+ * Get current USD to COP exchange rate from environment or fallback default
+ */
+export function getUsdCopExchangeRate(): number {
+  const envRate = parseFloat(process.env.USD_COP_EXCHANGE_RATE || '');
+  return !isNaN(envRate) && envRate > 0 ? envRate : 4000;
+}
+
+/**
  * Convert COP to USD cents
- * Using approximate exchange rate (can be made dynamic later)
+ * Using configurable exchange rate (USD_COP_EXCHANGE_RATE)
  */
 export function copToUsdCents(copAmount: number): number {
-  const exchangeRate = 4000 // 1 USD = ~4000 COP (approximate)
-  const usdAmount = copAmount / exchangeRate
-  return Math.round(usdAmount * 100) // Convert to cents
+  const exchangeRate = getUsdCopExchangeRate();
+  const usdAmount = copAmount / exchangeRate;
+  return Math.round(usdAmount * 100); // Convert to cents
 }
 
 /**
  * Get display price in USD from COP
  */
 export function copToUsdDisplay(copAmount: number): string {
-  const usdAmount = copAmount / 4000
-  return usdAmount.toFixed(2)
+  const exchangeRate = getUsdCopExchangeRate();
+  const usdAmount = copAmount / exchangeRate;
+  return usdAmount.toFixed(2);
 }
