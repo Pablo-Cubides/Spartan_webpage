@@ -69,6 +69,9 @@ Documentar cada variable de entorno: a qué feature pertenece, su nivel de criti
 | `GEMINI_API_KEY_CLOTHING` | `high` | server | [docs/specs/ia-tools/spec.md](ia-tools/spec.md) | Asesor de estilo |
 | `GEMINI_API_KEY_COACH` | `high` | server | [docs/specs/ia-tools/spec.md](ia-tools/spec.md) | Coach Espartano |
 | `GEMINI_API_KEY` | `medium` | server | [docs/specs/ia-tools/spec.md](ia-tools/spec.md) | Fallback si clave específica no configurada |
+| `GEMINI_MODEL` | `medium` | server | [docs/specs/ia-tools/spec.md](ia-tools/spec.md) | Modelo para asesor de estilo/forma de cara. Default: `gemini-2.5-flash`. Google retira modelos periódicamente — ver docs/runbooks/ia-tools-runbook.md |
+| `GEMINI_COACH_MODEL` | `medium` | server | [docs/specs/ia-tools/spec.md](ia-tools/spec.md) | Modelo para Coach Espartano. Default: `gemini-2.5-flash` |
+| `GEMINI_IMAGE_MODEL` | `medium` | server | [docs/specs/ia-tools/spec.md](ia-tools/spec.md) | Modelo de edición de imágenes (Nano Banana). Default: `gemini-3.1-flash-image`, con fallback automático a `gemini-2.5-flash-image` en `nanobanana.ts` |
 
 ---
 
@@ -99,6 +102,7 @@ Documentar cada variable de entorno: a qué feature pertenece, su nivel de criti
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | `critical` | public | [docs/specs/pagos/spec.md](pagos/spec.md) | Llave pública para Stripe.js |
 | `STRIPE_SECRET_KEY` | `critical` | server | [docs/specs/pagos/spec.md](pagos/spec.md) | **Never log or expose** |
 | `STRIPE_WEBHOOK_SECRET` | `critical` | server | [docs/specs/pagos/spec.md](pagos/spec.md) | Verificación de firma de webhooks. Sin esto, webhooks no verificados |
+| `USD_COP_EXCHANGE_RATE` | `medium` | server | [docs/specs/pagos/spec.md](pagos/spec.md) | Tasa de cambio USD/COP para pagos Stripe en COP. Default: `4000` si no está configurada o es inválida. Configurar manualmente — no se obtiene de una API externa (`getUsdCopExchangeRate()` en `frontend/src/lib/server/stripe.ts`) |
 
 ---
 
