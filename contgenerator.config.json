@@ -1,0 +1,45 @@
+{
+  "contentDir": "blog-posts",
+  "outputFile": "frontend/src/data/blog-articles.generated.ts",
+  "baseUrl": "https://spartanclub.vercel.app",
+  "categories": [
+    {
+      "id": "entrenamiento-y-energia-fisica",
+      "name": "Entrenamiento y Energía Física",
+      "images": ["https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&h=630"]
+    },
+    {
+      "id": "estilo-y-presencia",
+      "name": "Estilo y Presencia",
+      "images": ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&h=630"]
+    },
+    {
+      "id": "mentalidad-y-disciplina",
+      "name": "Mentalidad y Disciplina",
+      "images": ["https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&h=630"]
+    },
+    {
+      "id": "productividad-y-gestion-del-tiempo",
+      "name": "Productividad y Gestión del Tiempo",
+      "images": ["https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=1200&h=630"]
+    }
+  ],
+  "editorial": {
+    "language": "es",
+    "country": "CO",
+    "brand": "Spartan Club",
+    "voice": "Directo, motivador y sin rodeos, con base estoica. Habla de hombre a hombre, con ejemplos concretos y pasos accionables. Cero humo: cada consejo debe poder aplicarse hoy mismo. Evita clichés de gurú y promesas mágicas.",
+    "audience": "Hombres hispanohablantes de 25 a 45 años, ocupados, que buscan disciplina, entrenamiento, estilo y productividad práctica.",
+    "wordTarget": 1600,
+    "author": "Spartan Club",
+    "flatContentDir": true,
+    "internalLinkPrefix": "/blog",
+    "internalLinkIncludesCategory": true,
+    "frontmatterAliases": {
+      "description": "meta_description",
+      "date": "publishedAt",
+      "featuredImage": "image",
+      "category": "__categoryId"
+    }
+  }
+}

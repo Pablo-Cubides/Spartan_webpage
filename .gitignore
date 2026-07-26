@@ -116,3 +116,6 @@ uploads/
 .gitkeep
 .filtered-list.txt
 webpage_clean/
+
+# ContGenerator social media packs (generated)
+media-pack/

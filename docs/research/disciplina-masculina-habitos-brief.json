@@ -1,0 +1,959 @@
+{
+  "keyword": "disciplina masculina habitos",
+  "generatedAt": "2026-07-08T04:36:58.455Z",
+  "provider": "google-autocomplete-light",
+  "classifier": "gemini:gemini-2.5-flash",
+  "country": "CO",
+  "language": "es",
+  "confidence": "high",
+  "counts": {
+    "suggestions": 37,
+    "serp": 0,
+    "clusters": 23
+  },
+  "suggestions": [
+    "disciplina masculina habitos",
+    "que es disciplina masculina habitos",
+    "como funciona disciplina masculina habitos",
+    "como hacer disciplina masculina habitos",
+    "por que disciplina masculina habitos",
+    "cuando usar disciplina masculina habitos",
+    "donde comprar disciplina masculina habitos",
+    "cual es disciplina masculina habitos",
+    "disciplina masculina habitos mejor",
+    "disciplina masculina habitos precio",
+    "disciplina masculina habitos vs",
+    "disciplina masculina habitos para",
+    "disciplina masculina habitos cerca de",
+    "disciplina masculina habitos en colombia",
+    "disciplina masculina habitos guia",
+    "disciplina masculina habitos ejemplos",
+    "disciplina masculina habitos beneficios",
+    "disciplina masculina habitos problemas",
+    "disciplina masculina habitos errores",
+    "disciplina masculina habitos alternativas",
+    "disciplina masculina habitos paso a paso",
+    "disciplina masculina habitos colombia",
+    "disciplina masculina habitos para empresas",
+    "disciplina masculina habitos para principiantes",
+    "disciplina masculina habitos costos",
+    "disciplina masculina habitos ventajas y desventajas",
+    "disciplina masculina habitos a",
+    "disciplina masculina habitos b",
+    "disciplina masculina habitos c",
+    "disciplina masculina habitos d",
+    "disciplina masculina habitos e",
+    "disciplina masculina habitos f",
+    "disciplina masculina habitos g",
+    "disciplina masculina habitos h",
+    "disciplina masculina habitos i",
+    "disciplina masculina habitos j",
+    "disciplina masculina habitos k"
+  ],
+  "classifiedKeywords": [
+    {
+      "keyword": "disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Disciplina Masculina Hábitos (Core)",
+      "articleTitle": "Guía Completa sobre Disciplina Masculina: Hábitos para el Éxito",
+      "priority": "alta"
+    },
+    {
+      "keyword": "que es disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Definición y Concepto",
+      "articleTitle": "¿Qué es la Disciplina Masculina y los Hábitos que la Conforman?",
+      "priority": "alta"
+    },
+    {
+      "keyword": "como funciona disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Funcionamiento y Principios",
+      "articleTitle": "Cómo Funciona la Disciplina Masculina: Principios y Hábitos Clave",
+      "priority": "media"
+    },
+    {
+      "keyword": "como hacer disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Implementación y Práctica",
+      "articleTitle": "Cómo Desarrollar Disciplina Masculina: Guía de Hábitos Paso a Paso",
+      "priority": "alta"
+    },
+    {
+      "keyword": "por que disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Motivación y Beneficios",
+      "articleTitle": "¿Por Qué la Disciplina Masculina y sus Hábitos son Esenciales?",
+      "priority": "media"
+    },
+    {
+      "keyword": "cuando usar disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Aplicación y Contexto",
+      "articleTitle": "Cuándo Aplicar la Disciplina Masculina: Momentos Clave para Desarrollar Hábitos",
+      "priority": "baja"
+    },
+    {
+      "keyword": "donde comprar disciplina masculina habitos",
+      "intent": "transaccional",
+      "stage": "compra",
+      "cluster": "Recursos y Adquisición",
+      "articleTitle": "Dónde Encontrar Recursos para Desarrollar la Disciplina Masculina y Buenos Hábitos",
+      "priority": "alta"
+    },
+    {
+      "keyword": "cual es disciplina masculina habitos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Definición y Concepto",
+      "articleTitle": "¿Cuál es la Verdadera Esencia de la Disciplina Masculina y sus Hábitos?",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos mejor",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "Comparativas y Mejores Opciones",
+      "articleTitle": "La Mejor Disciplina Masculina: Hábitos para un Desarrollo Óptimo",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos precio",
+      "intent": "transaccional",
+      "stage": "compra",
+      "cluster": "Precios y Costos",
+      "articleTitle": "Disciplina Masculina y Hábitos: ¿Cuánto Cuesta Invertir en tu Desarrollo?",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos vs",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "Comparativas",
+      "articleTitle": "Disciplina Masculina y Hábitos: ¿Comparación con Otros Enfoques de Desarrollo Personal?",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos para",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Aplicaciones y Audiencias",
+      "articleTitle": "Disciplina Masculina y Hábitos: Para Quién y Cómo Aplicarla",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos cerca de",
+      "intent": "navegacion/local",
+      "stage": "compra",
+      "cluster": "Recursos Locales",
+      "articleTitle": "Encuentra Recursos de Disciplina Masculina y Hábitos Cerca de Ti",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos en colombia",
+      "intent": "navegacion/local",
+      "stage": "descubrimiento",
+      "cluster": "Recursos en Colombia",
+      "articleTitle": "Disciplina Masculina y Hábitos en Colombia: Guía y Recursos Disponibles",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos guia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Guías Completas",
+      "articleTitle": "Guía Definitiva de Disciplina Masculina: Desarrolla Hábitos Poderosos",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos ejemplos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ejemplos Prácticos",
+      "articleTitle": "Ejemplos Prácticos de Disciplina Masculina: Hábitos que Transforman",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos beneficios",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Beneficios y Ventajas",
+      "articleTitle": "Beneficios de la Disciplina Masculina: Impacto de Buenos Hábitos en tu Vida",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos problemas",
+      "intent": "informacional",
+      "stage": "problema urgente",
+      "cluster": "Obstáculos y Soluciones",
+      "articleTitle": "Problemas Comunes al Aplicar la Disciplina Masculina y Cómo Resolverlos",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos errores",
+      "intent": "informacional",
+      "stage": "problema urgente",
+      "cluster": "Obstáculos y Soluciones",
+      "articleTitle": "Errores al Desarrollar Disciplina Masculina: Hábitos a Evitar",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos alternativas",
+      "intent": "informacional",
+      "stage": "comparacion",
+      "cluster": "Alternativas y Otros Enfoques",
+      "articleTitle": "Alternativas a la Disciplina Masculina: Explora Otros Hábitos de Éxito",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos paso a paso",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Guías Prácticas",
+      "articleTitle": "Disciplina Masculina Paso a Paso: Guía para Construir Hábitos Sólidos",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos colombia",
+      "intent": "navegacion/local",
+      "stage": "descubrimiento",
+      "cluster": "Recursos en Colombia",
+      "articleTitle": "Dónde Encontrar Disciplina Masculina y Hábitos en Colombia",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos para empresas",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Aplicación Empresarial",
+      "articleTitle": "Disciplina Masculina y Hábitos para Empresas: Fomentando el Éxito Corporativo",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos para principiantes",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Guías para Principiantes",
+      "articleTitle": "Disciplina Masculina para Principiantes: Hábitos Fundamentales para Empezar",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos costos",
+      "intent": "transaccional",
+      "stage": "compra",
+      "cluster": "Precios y Costos",
+      "articleTitle": "¿Cuáles son los Costos de Desarrollar la Disciplina Masculina y Buenos Hábitos?",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina masculina habitos ventajas y desventajas",
+      "intent": "informacional",
+      "stage": "comparacion",
+      "cluster": "Análisis Crítico",
+      "articleTitle": "Disciplina Masculina: Ventajas y Desventajas de sus Hábitos",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina masculina habitos a",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos b",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos c",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos d",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos e",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos f",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos g",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos h",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos i",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos j",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina masculina habitos k",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ruido/General",
+      "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+      "priority": "baja"
+    }
+  ],
+  "clusters": [
+    {
+      "cluster": "Definición y Concepto",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "que es disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Definición y Concepto",
+          "articleTitle": "¿Qué es la Disciplina Masculina y los Hábitos que la Conforman?",
+          "priority": "alta"
+        },
+        {
+          "keyword": "cual es disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Definición y Concepto",
+          "articleTitle": "¿Cuál es la Verdadera Esencia de la Disciplina Masculina y sus Hábitos?",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "¿Qué es la Disciplina Masculina y los Hábitos que la Conforman?",
+        "¿Cuál es la Verdadera Esencia de la Disciplina Masculina y sus Hábitos?"
+      ]
+    },
+    {
+      "cluster": "Precios y Costos",
+      "priority": "alta",
+      "intents": [
+        "transaccional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos costos",
+          "intent": "transaccional",
+          "stage": "compra",
+          "cluster": "Precios y Costos",
+          "articleTitle": "¿Cuáles son los Costos de Desarrollar la Disciplina Masculina y Buenos Hábitos?",
+          "priority": "alta"
+        },
+        {
+          "keyword": "disciplina masculina habitos precio",
+          "intent": "transaccional",
+          "stage": "compra",
+          "cluster": "Precios y Costos",
+          "articleTitle": "Disciplina Masculina y Hábitos: ¿Cuánto Cuesta Invertir en tu Desarrollo?",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "¿Cuáles son los Costos de Desarrollar la Disciplina Masculina y Buenos Hábitos?",
+        "Disciplina Masculina y Hábitos: ¿Cuánto Cuesta Invertir en tu Desarrollo?"
+      ]
+    },
+    {
+      "cluster": "Recursos en Colombia",
+      "priority": "alta",
+      "intents": [
+        "navegacion/local"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos colombia",
+          "intent": "navegacion/local",
+          "stage": "descubrimiento",
+          "cluster": "Recursos en Colombia",
+          "articleTitle": "Dónde Encontrar Disciplina Masculina y Hábitos en Colombia",
+          "priority": "alta"
+        },
+        {
+          "keyword": "disciplina masculina habitos en colombia",
+          "intent": "navegacion/local",
+          "stage": "descubrimiento",
+          "cluster": "Recursos en Colombia",
+          "articleTitle": "Disciplina Masculina y Hábitos en Colombia: Guía y Recursos Disponibles",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Dónde Encontrar Disciplina Masculina y Hábitos en Colombia",
+        "Disciplina Masculina y Hábitos en Colombia: Guía y Recursos Disponibles"
+      ]
+    },
+    {
+      "cluster": "Obstáculos y Soluciones",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos problemas",
+          "intent": "informacional",
+          "stage": "problema urgente",
+          "cluster": "Obstáculos y Soluciones",
+          "articleTitle": "Problemas Comunes al Aplicar la Disciplina Masculina y Cómo Resolverlos",
+          "priority": "alta"
+        },
+        {
+          "keyword": "disciplina masculina habitos errores",
+          "intent": "informacional",
+          "stage": "problema urgente",
+          "cluster": "Obstáculos y Soluciones",
+          "articleTitle": "Errores al Desarrollar Disciplina Masculina: Hábitos a Evitar",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Problemas Comunes al Aplicar la Disciplina Masculina y Cómo Resolverlos",
+        "Errores al Desarrollar Disciplina Masculina: Hábitos a Evitar"
+      ]
+    },
+    {
+      "cluster": "Disciplina Masculina Hábitos (Core)",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Disciplina Masculina Hábitos (Core)",
+          "articleTitle": "Guía Completa sobre Disciplina Masculina: Hábitos para el Éxito",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Guía Completa sobre Disciplina Masculina: Hábitos para el Éxito"
+      ]
+    },
+    {
+      "cluster": "Implementación y Práctica",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "como hacer disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Implementación y Práctica",
+          "articleTitle": "Cómo Desarrollar Disciplina Masculina: Guía de Hábitos Paso a Paso",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Cómo Desarrollar Disciplina Masculina: Guía de Hábitos Paso a Paso"
+      ]
+    },
+    {
+      "cluster": "Recursos y Adquisición",
+      "priority": "alta",
+      "intents": [
+        "transaccional"
+      ],
+      "keywords": [
+        {
+          "keyword": "donde comprar disciplina masculina habitos",
+          "intent": "transaccional",
+          "stage": "compra",
+          "cluster": "Recursos y Adquisición",
+          "articleTitle": "Dónde Encontrar Recursos para Desarrollar la Disciplina Masculina y Buenos Hábitos",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Dónde Encontrar Recursos para Desarrollar la Disciplina Masculina y Buenos Hábitos"
+      ]
+    },
+    {
+      "cluster": "Comparativas y Mejores Opciones",
+      "priority": "alta",
+      "intents": [
+        "comercial"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos mejor",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "Comparativas y Mejores Opciones",
+          "articleTitle": "La Mejor Disciplina Masculina: Hábitos para un Desarrollo Óptimo",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "La Mejor Disciplina Masculina: Hábitos para un Desarrollo Óptimo"
+      ]
+    },
+    {
+      "cluster": "Recursos Locales",
+      "priority": "alta",
+      "intents": [
+        "navegacion/local"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos cerca de",
+          "intent": "navegacion/local",
+          "stage": "compra",
+          "cluster": "Recursos Locales",
+          "articleTitle": "Encuentra Recursos de Disciplina Masculina y Hábitos Cerca de Ti",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Encuentra Recursos de Disciplina Masculina y Hábitos Cerca de Ti"
+      ]
+    },
+    {
+      "cluster": "Guías Completas",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos guia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Guías Completas",
+          "articleTitle": "Guía Definitiva de Disciplina Masculina: Desarrolla Hábitos Poderosos",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Guía Definitiva de Disciplina Masculina: Desarrolla Hábitos Poderosos"
+      ]
+    },
+    {
+      "cluster": "Beneficios y Ventajas",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos beneficios",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Beneficios y Ventajas",
+          "articleTitle": "Beneficios de la Disciplina Masculina: Impacto de Buenos Hábitos en tu Vida",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Beneficios de la Disciplina Masculina: Impacto de Buenos Hábitos en tu Vida"
+      ]
+    },
+    {
+      "cluster": "Guías Prácticas",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos paso a paso",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Guías Prácticas",
+          "articleTitle": "Disciplina Masculina Paso a Paso: Guía para Construir Hábitos Sólidos",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Disciplina Masculina Paso a Paso: Guía para Construir Hábitos Sólidos"
+      ]
+    },
+    {
+      "cluster": "Guías para Principiantes",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos para principiantes",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Guías para Principiantes",
+          "articleTitle": "Disciplina Masculina para Principiantes: Hábitos Fundamentales para Empezar",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Disciplina Masculina para Principiantes: Hábitos Fundamentales para Empezar"
+      ]
+    },
+    {
+      "cluster": "Funcionamiento y Principios",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "como funciona disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Funcionamiento y Principios",
+          "articleTitle": "Cómo Funciona la Disciplina Masculina: Principios y Hábitos Clave",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Cómo Funciona la Disciplina Masculina: Principios y Hábitos Clave"
+      ]
+    },
+    {
+      "cluster": "Motivación y Beneficios",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "por que disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Motivación y Beneficios",
+          "articleTitle": "¿Por Qué la Disciplina Masculina y sus Hábitos son Esenciales?",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "¿Por Qué la Disciplina Masculina y sus Hábitos son Esenciales?"
+      ]
+    },
+    {
+      "cluster": "Comparativas",
+      "priority": "media",
+      "intents": [
+        "comercial"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos vs",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "Comparativas",
+          "articleTitle": "Disciplina Masculina y Hábitos: ¿Comparación con Otros Enfoques de Desarrollo Personal?",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Masculina y Hábitos: ¿Comparación con Otros Enfoques de Desarrollo Personal?"
+      ]
+    },
+    {
+      "cluster": "Aplicaciones y Audiencias",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos para",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Aplicaciones y Audiencias",
+          "articleTitle": "Disciplina Masculina y Hábitos: Para Quién y Cómo Aplicarla",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Masculina y Hábitos: Para Quién y Cómo Aplicarla"
+      ]
+    },
+    {
+      "cluster": "Ejemplos Prácticos",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos ejemplos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ejemplos Prácticos",
+          "articleTitle": "Ejemplos Prácticos de Disciplina Masculina: Hábitos que Transforman",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Ejemplos Prácticos de Disciplina Masculina: Hábitos que Transforman"
+      ]
+    },
+    {
+      "cluster": "Alternativas y Otros Enfoques",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos alternativas",
+          "intent": "informacional",
+          "stage": "comparacion",
+          "cluster": "Alternativas y Otros Enfoques",
+          "articleTitle": "Alternativas a la Disciplina Masculina: Explora Otros Hábitos de Éxito",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Alternativas a la Disciplina Masculina: Explora Otros Hábitos de Éxito"
+      ]
+    },
+    {
+      "cluster": "Aplicación Empresarial",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos para empresas",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Aplicación Empresarial",
+          "articleTitle": "Disciplina Masculina y Hábitos para Empresas: Fomentando el Éxito Corporativo",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Masculina y Hábitos para Empresas: Fomentando el Éxito Corporativo"
+      ]
+    },
+    {
+      "cluster": "Análisis Crítico",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos ventajas y desventajas",
+          "intent": "informacional",
+          "stage": "comparacion",
+          "cluster": "Análisis Crítico",
+          "articleTitle": "Disciplina Masculina: Ventajas y Desventajas de sus Hábitos",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Masculina: Ventajas y Desventajas de sus Hábitos"
+      ]
+    },
+    {
+      "cluster": "Ruido/General",
+      "priority": "baja",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina masculina habitos a",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos b",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos c",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos d",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos e",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos f",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos g",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos h",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos i",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos j",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina masculina habitos k",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ruido/General",
+          "articleTitle": "Explorando la Disciplina Masculina: Hábitos de la A a la Z",
+          "priority": "baja"
+        }
+      ],
+      "articles": [
+        "Explorando la Disciplina Masculina: Hábitos de la A a la Z"
+      ]
+    },
+    {
+      "cluster": "Aplicación y Contexto",
+      "priority": "baja",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "cuando usar disciplina masculina habitos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Aplicación y Contexto",
+          "articleTitle": "Cuándo Aplicar la Disciplina Masculina: Momentos Clave para Desarrollar Hábitos",
+          "priority": "baja"
+        }
+      ],
+      "articles": [
+        "Cuándo Aplicar la Disciplina Masculina: Momentos Clave para Desarrollar Hábitos"
+      ]
+    }
+  ],
+  "serp": [],
+  "analysis": {
+    "intent": "Informacional",
+    "difficulty": 10,
+    "dominantFormats": [
+      "articulo informacional"
+    ],
+    "recurringDomains": [],
+    "questions": [
+      "que es disciplina masculina habitos",
+      "como funciona disciplina masculina habitos",
+      "como hacer disciplina masculina habitos",
+      "por que disciplina masculina habitos",
+      "cuando usar disciplina masculina habitos",
+      "donde comprar disciplina masculina habitos",
+      "cual es disciplina masculina habitos",
+      "Qué debe saber un lector antes de buscar disciplina masculina habitos",
+      "Cómo comparar fuentes confiables sobre disciplina masculina habitos"
+    ],
+    "opportunities": [
+      "Crear una sección de metodología y fuentes para superar contenidos sin trazabilidad.",
+      "Responder preguntas frecuentes con respuestas breves y enlazables.",
+      "Añadir ejemplos propios o criterios de decisión para diferenciarse de resúmenes genéricos."
+    ]
+  },
+  "nextUse": {
+    "plan": "Usar clusters y articleTitle como insumo inicial del plan SEO.",
+    "report": "Mostrar solo clusters y oportunidades con confidence medium/high.",
+    "trends": "Cruzar con Grok/X Search solo en modo profundo o sync de tendencias."
+  }
+}
