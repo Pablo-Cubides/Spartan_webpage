@@ -12,131 +12,25 @@ jobs:
     name: Ping Supabase Database
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
 
       - name: Install Dependencies
-        run: npm install --no-save @supabase/supabase-js
+        run: npm install --no-save pg
 
-      - name: Run Keep-Alive Script
+      # This step performs a REAL SQL round-trip against DATABASE_URL.
+      # The previous version only pinged the Auth Admin API, which succeeds even
+      # when Postgres is paused — it reported green while production was down.
+      - name: Ping Postgres (real keep-alive)
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          node -e "
-          const dns = require('node:dns/promises');
-          const { createClient } = require('@supabase/supabase-js');
-          
-          let supabaseUrl = process.env.SUPABASE_URL;
-          const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-          const databaseUrl = process.env.DATABASE_URL;
-          
-          if (!supabaseUrl || !supabaseKey) {
-            console.error('❌ Error: Missing environment variables SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
-            process.exit(1);
-          }
-
-          function tryParseHost(url) {
-            try {
-              return new URL(url).hostname;
-            } catch {
-              return null;
-            }
-          }
-
-          function extractProjectRefFromDatabaseUrl(dbUrl) {
-            if (!dbUrl) return null;
-            try {
-              const parsed = new URL(dbUrl);
-              const user = decodeURIComponent(parsed.username || '');
-              const m = user.match(/^postgres\.([a-z0-9]{20})$/i);
-              if (m) return m[1];
-              return null;
-            } catch {
-              return null;
-            }
-          }
-
-          let host = tryParseHost(supabaseUrl);
-          if (!host || !host.endsWith('.supabase.co')) {
-            const ref = extractProjectRefFromDatabaseUrl(databaseUrl);
-            if (ref) {
-              supabaseUrl = 'https://' + ref + '.supabase.co';
-              host = tryParseHost(supabaseUrl);
-              console.warn('⚠️ SUPABASE_URL invalid. Using fallback host from DATABASE_URL project ref:', host);
-            } else {
-              console.error('❌ Error: SUPABASE_URL is invalid and fallback project ref could not be extracted from DATABASE_URL');
-              process.exit(1);
-            }
-          }
-
-          async function sleep(ms) {
-            return new Promise((resolve) => setTimeout(resolve, ms));
-          }
-
-          async function retry(fn, attempts = 3, baseDelayMs = 1500) {
-            let lastError;
-            for (let i = 0; i < attempts; i++) {
-              try {
-                return await fn();
-              } catch (err) {
-                lastError = err;
-                if (i < attempts - 1) {
-                  const wait = baseDelayMs * Math.pow(2, i);
-                  console.warn('⚠️ Attempt ' + (i + 1) + ' failed. Retrying in ' + wait + 'ms...');
-                  await sleep(wait);
-                }
-              }
-            }
-            throw lastError;
-          }
-
-          console.log('Connecting to Supabase...');
-
-          async function ping() {
-            try {
-              try {
-                await retry(async () => {
-                  await dns.lookup(host);
-                }, 3, 1000);
-              } catch {
-                const ref = extractProjectRefFromDatabaseUrl(databaseUrl);
-                if (!ref) throw new Error('DNS lookup failed and no fallback project ref available');
-                const fallbackUrl = 'https://' + ref + '.supabase.co';
-                const fallbackHost = tryParseHost(fallbackUrl);
-                if (!fallbackHost) throw new Error('Failed to build fallback Supabase host');
-                await retry(async () => {
-                  await dns.lookup(fallbackHost);
-                }, 3, 1000);
-                supabaseUrl = fallbackUrl;
-                host = fallbackHost;
-                console.warn('⚠️ Switched to DNS-resolvable fallback SUPABASE_URL:', supabaseUrl);
-              }
-
-              // Ping Supabase Auth Admin API using service role key
-              const supabaseRetryClient = createClient(supabaseUrl, supabaseKey);
-              const { error } = await retry(async () => {
-                return await supabaseRetryClient.auth.admin.listUsers({ page: 1, perPage: 1 });
-              });
-              
-              if (error) {
-                console.error('❌ Error pinging Supabase:', error.message);
-                process.exit(1);
-              }
-              
-              console.log('✅ Supabase keep-alive success');
-              console.log('Supabase host:', host);
-              console.log('Activity registered at:', new Date().toISOString());
-            } catch (err) {
-              console.error('❌ Unexpected error:', err && err.message ? err.message : err);
-              process.exit(1);
-            }
-          }
-
-          ping();
-          "
+        run: node scripts/supabase-keepalive.js
