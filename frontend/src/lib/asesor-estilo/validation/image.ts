@@ -17,18 +17,7 @@ export interface ImageValidationResult {
 type FetchLike = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 
 async function getFetchImplementation(): Promise<FetchLike> {
-  try {
-    const mod = await import('node-fetch');
-    // node-fetch exports the fetch function as default in some versions
-    const maybeDefault = (mod as unknown) && (mod as unknown as { default?: unknown }).default
-    if (maybeDefault && typeof maybeDefault === 'function') return maybeDefault as FetchLike;
-    if (typeof (mod as unknown) === 'function') return (mod as unknown) as FetchLike;
-  } catch {
-    // fallback to global fetch
-  }
-
   if (typeof globalThis.fetch === 'function') return globalThis.fetch as FetchLike;
-
   throw new Error('No fetch implementation available');
 }
 

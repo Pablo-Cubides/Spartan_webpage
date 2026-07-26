@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+// Using native Node 24 fetch
 import { appendLog } from './ai/logger'
 import { APP_CONFIG } from './config/app.config'
 import { GoogleAuth } from 'google-auth-library'
