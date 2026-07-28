@@ -11,7 +11,8 @@ async function runAllTests() {
   console.log('🏃 RUNNING ALL TESTS');
   console.log('==================================================');
 
-  const hasDatabase = !!process.env.DATABASE_URL;
+  const dbUrl = process.env.DATABASE_URL || '';
+  const hasDatabase = !!dbUrl && !dbUrl.includes('tu-connection-string') && !dbUrl.includes('placeholder') && !dbUrl.includes('example');
   let passedTests = 0;
   let skippedTests = 0;
   let failedTests = 0;
