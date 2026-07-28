@@ -16,6 +16,27 @@ Allow: /herramientas/
 Allow: /nosotros/
 Allow: /politica-de-privacidad/
 Allow: /terminos-y-condiciones/
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# Explicit AI Crawlers & LLM Agents
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
 
 # Sitemaps
 Sitemap: https://spartanclub.vercel.app/sitemap.xml

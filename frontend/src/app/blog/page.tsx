@@ -130,7 +130,7 @@ export default async function BlogPage() {
 
           <div className="relative max-w-6xl mx-auto text-center">
             {/* Breadcrumb */}
-            <nav className="flex justify-center items-center gap-2 text-sm text-gray-500 mb-8">
+            <nav className="flex justify-center items-center gap-2 text-sm text-gray-400 mb-8">
               <Link href="/" className="hover:text-white transition">
                 Inicio
               </Link>
@@ -276,7 +276,7 @@ export default async function BlogPage() {
                       )}
 
                       {post.published_at && (
-                        <time className="text-xs text-gray-500">
+                        <time className="text-xs text-gray-400">
                           {new Date(post.published_at).toLocaleDateString(
                             "es-ES",
                             {

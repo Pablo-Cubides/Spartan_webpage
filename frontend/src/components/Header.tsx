@@ -92,26 +92,29 @@ export default function Header() {
           </Link>
         </div>
         <div className="flex justify-end flex-1 gap-8">
-          <div className="flex items-center gap-9">
+          <nav
+            aria-label="Navegación principal"
+            className="flex items-center gap-9"
+          >
             <Link
               href="/blog"
-              className="text-sm font-medium leading-normal text-white"
+              className="text-sm font-medium leading-normal text-white hover:text-gray-300 transition-colors"
             >
               Blog
             </Link>
             <Link
               href="/herramientas"
-              className="text-sm font-medium leading-normal text-white"
+              className="text-sm font-medium leading-normal text-white hover:text-gray-300 transition-colors"
             >
               Herramientas
             </Link>
             <Link
               href="/nosotros"
-              className="text-sm font-medium leading-normal text-white"
+              className="text-sm font-medium leading-normal text-white hover:text-gray-300 transition-colors"
             >
               Nosotros
             </Link>
-          </div>
+          </nav>
           <div className="flex gap-2">
             {!mounted || loading ? (
               <AuthSkeleton />

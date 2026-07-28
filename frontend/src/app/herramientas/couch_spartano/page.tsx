@@ -31,7 +31,6 @@ export default function CoachEspartanoPage() {
   const [pageState, setPageState] = useState<PageState>("loading");
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [summaryResponse, setSummaryResponse] = useState("");
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
   // Initialize coach chat hook with empty coaches (will be populated after fetch)
   const chatState = useCoachChat([]);
@@ -210,6 +209,8 @@ export default function CoachEspartanoPage() {
           ]}
         />
 
+        <h1 className="sr-only">Coach Espartano - Tu Entrenador IA Personal</h1>
+
         {/* Loading State */}
         {pageState === "loading" && (
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -219,7 +220,7 @@ export default function CoachEspartanoPage() {
 
         {/* Video Introduction - Sin requerir login, luego va al chat */}
         {pageState === "video" && (
-          <main className="flex flex-col items-center justify-center min-h-[60vh] p-8">
+          <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
               ¡Bienvenido a Coach Espartano!
             </h1>
@@ -244,7 +245,7 @@ export default function CoachEspartanoPage() {
             <p className="mt-4 text-gray-400 text-center">
               Puedes escribir tu primer mensaje después del video.
             </p>
-          </main>
+          </div>
         )}
 
         {/* Onboarding */}

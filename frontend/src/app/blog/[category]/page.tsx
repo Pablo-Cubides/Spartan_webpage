@@ -286,7 +286,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
                       </p>
                     )}
 
-                    <div className="flex items-center justify-between text-xs text-gray-500">
+                    <div className="flex items-center justify-between text-xs text-gray-400">
                       {post.published_at && (
                         <time>
                           {new Date(post.published_at).toLocaleDateString(

@@ -712,9 +712,9 @@ export default function Page() {
               onDrop={handleDrop}
               className={`p-8 rounded-lg text-center dropzone-visible ${isDragging ? "border-dashed border-indigo-400 bg-indigo-800/5" : "border-dashed border-transparent"}`}
             >
-              <h1 className="mb-2 text-lg font-semibold">
+              <h2 className="mb-2 text-lg font-semibold">
                 Carga tu foto para obtener consejos
-              </h1>
+              </h2>
               <p className="mb-4 text-sm text-muted-foreground">
                 Recomendamos una foto de frente con buena iluminación.
               </p>

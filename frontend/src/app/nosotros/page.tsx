@@ -169,9 +169,9 @@ export default function NosotrosPage() {
                   <FlagIcon />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">
+                  <h2 className="text-white text-3xl font-extrabold uppercase tracking-tight">
                     Nuestra Misión
-                  </h3>
+                  </h2>
                   <p className="text-[#9CA3AF] text-base leading-relaxed">
                     Empoderar a cada hombre con las herramientas, conocimiento y
                     disciplina necesaria para forjar su mejor versión y
@@ -184,9 +184,9 @@ export default function NosotrosPage() {
                   <EyeIcon />
                 </div>
                 <div className="space-y-3">
-                  <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">
+                  <h2 className="text-white text-3xl font-extrabold uppercase tracking-tight">
                     Nuestra Visión
-                  </h3>
+                  </h2>
                   <p className="text-[#9CA3AF] text-base leading-relaxed">
                     Ser la hermandad de referencia para hombres que buscan la
                     excelencia, creando líderes que impacten positivamente sus
@@ -257,9 +257,9 @@ export default function NosotrosPage() {
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 py-10 md:py-16">
             <div className="flex flex-col gap-8">
               <div className="space-y-2">
-                <h3 className="text-white text-3xl font-extrabold uppercase tracking-tight">
+                <h2 className="text-white text-3xl font-extrabold uppercase tracking-tight">
                   Conecta con la Tribu
-                </h3>
+                </h2>
                 <p className="text-[#9CA3AF]">
                   Síguenos en nuestras redes sociales
                 </p>

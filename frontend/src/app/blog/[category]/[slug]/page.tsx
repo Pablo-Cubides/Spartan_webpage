@@ -157,7 +157,8 @@ export default async function BlogPostPage({ params }: PageProps) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={post.cover_image || ""}
-                alt={post.title}
+                alt=""
+                aria-hidden="true"
                 className="w-full h-full object-cover opacity-60"
               />
               <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/70 to-[#0a0a0a]" />

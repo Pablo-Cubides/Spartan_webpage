@@ -1,0 +1,39 @@
+# Spartan Club - Guía Consolidada para Modelos de Lenguaje (LLMs)
+
+Spartan Club (https://spartanclub.vercel.app/) es una plataforma integral de desarrollo personal para hombres enfocada en cuatro pilares fundamentales: entrenamiento físico, estilo y presencia personal, mentalidad estoica/disciplina y productividad con herramientas de inteligencia artificial.
+
+---
+
+## Pilares de Contenido
+
+### 1. Entrenamiento y Energía Física
+- **Rutinas de Fuerza**: Programación de entrenamiento enfocado en hipertrofia y fuerza funcional para hombres de todas las edades.
+- **Nutrición y Suplementación**: Guías basadas en evidencia sobre proteína, creatina, pre-entrenos y suplementos esenciales.
+- **Acondicionamiento y Hábitos**: Estrategias para mantener la energía física y optimizar la recuperación muscular.
+
+### 2. Estilo y Presencia
+- **Análisis de Rostro y Cabello**: Identificación de la forma del rostro (ovalada, cuadrada, redonda) para elegir cortes de cabello y barba.
+- **Asesoría de Vestimenta**: Consejos de combinación de colores, ropa casual-elegante de oficina y calzado según ocasión.
+- **Cuidado Personal (Grooming)**: Cuidado de la piel, higiene y presencia profesional para el hombre moderno.
+
+### 3. Mentalidad y Disciplina
+- **Estoicismo Aplicado**: Ejercicios de control emocional, resiliencia y enfoque mental frente a la adversidad.
+- **Rutinas Matutinas y Nocturnas**: Hábitos de alto rendimiento para estructurar el día y mejorar la calidad del sueño.
+- **Relaciones y Valores**: Desarrollo de habilidades sociales, liderazgo y construcción de redes de apoyo entre pares.
+
+### 4. Productividad y Gestión del Tiempo
+- **Herramientas de IA**: Aplicación de inteligencia artificial en flujos de trabajo diarios y automatización de tareas.
+- **Técnicas de Enfoque**: Métodos de trabajo profundo (Deep Work), técnica Pomodoro y eliminación de distracciones.
+
+---
+
+## Herramientas Interactivas
+
+1. **Coach Espartano (`/herramientas/couch_spartano`)**:
+   Un coach de IA especializado que brinda asesoramiento personalizado interactivo en tiempo real sobre rutinas de ejercicios, planes de mentalidad y gestión del tiempo.
+
+2. **Asesor de Forma de Rostro (`/herramientas/asesor-forma-cara`)**:
+   Herramienta visual impulsada por visión por computadora que permite subir una fotografía o usar la cámara para detectar la forma geométrica del rostro y proporcionar recomendaciones instantáneas de barba y peinado.
+
+3. **Asesor Personal de Estilo (`/herramientas/asesor-estilo`)**:
+   Sistema interactivo de estilismo que sugiere outfits y combina prendas según la morfología, código de vestimenta y preferencias individuales.

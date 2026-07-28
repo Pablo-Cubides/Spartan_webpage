@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 interface BlogCategoryLayoutProps {
   category: { slug: string; name?: string };
@@ -14,12 +14,18 @@ interface BlogCategoryLayoutProps {
   }>;
 }
 
-export default function BlogCategoryLayout({ category, posts }: BlogCategoryLayoutProps) {
+export default function BlogCategoryLayout({
+  category,
+  posts,
+}: BlogCategoryLayoutProps) {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <header className="mb-8">
         <h1 className="text-4xl font-bold mb-4">
-          {category.name || category.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+          {category.name ||
+            category.slug
+              .replace(/-/g, " ")
+              .replace(/\b\w/g, (l) => l.toUpperCase())}
         </h1>
         <p className="text-gray-600">
           Artículos en la categoría {category.name || category.slug}
@@ -28,7 +34,10 @@ export default function BlogCategoryLayout({ category, posts }: BlogCategoryLayo
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
-          <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+          <article
+            key={post.id}
+            className="bg-white rounded-lg shadow-md overflow-hidden"
+          >
             {post.cover_image && (
               <Image
                 src={post.cover_image}
@@ -40,15 +49,22 @@ export default function BlogCategoryLayout({ category, posts }: BlogCategoryLayo
             )}
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-2">
-                <a href={`/blog/${post.category_slug}/${post.slug}`} className="hover:text-blue-600">
+                <a
+                  href={`/blog/${post.category_slug}/${post.slug}`}
+                  className="hover:text-blue-600"
+                >
                   {post.title}
                 </a>
               </h2>
-              <p className="text-gray-600 mb-4">{post.excerpt}</p>
-              <div className="flex items-center text-sm text-gray-500">
-                <span>Por {post.author?.name || 'Spartan Club'}</span>
+              <p className="text-gray-300 mb-4">{post.excerpt}</p>
+              <div className="flex items-center text-sm text-gray-400">
+                <span>Por {post.author?.name || "Spartan Club"}</span>
                 <span className="mx-2">•</span>
-                <span>{post.published_at ? new Date(post.published_at).toLocaleDateString() : ''}</span>
+                <span>
+                  {post.published_at
+                    ? new Date(post.published_at).toLocaleDateString()
+                    : ""}
+                </span>
               </div>
             </div>
           </article>

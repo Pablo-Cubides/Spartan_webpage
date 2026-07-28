@@ -17,7 +17,7 @@ interface SchemaOptions {
  */
 export function generateBlogPostingSchema(
   post: Record<string, unknown>, // Post object with author included
-  options: SchemaOptions
+  options: SchemaOptions,
 ) {
   const typedPost = post as Record<string, unknown>;
   const postUrl = `${options.baseUrl}/blog/${typedPost.category_slug}/${typedPost.slug}/`;
@@ -28,15 +28,23 @@ export function generateBlogPostingSchema(
     headline: typedPost.meta_title || typedPost.title,
     description: typedPost.meta_description || typedPost.excerpt,
     image: typedPost.cover_image ? [typedPost.cover_image] : [],
-    datePublished: ((typedPost.published_at as Date | null) || (typedPost.created_at as Date)).toISOString(),
+    datePublished: (
+      (typedPost.published_at as Date | null) || (typedPost.created_at as Date)
+    ).toISOString(),
     dateModified: (typedPost.updated_at as Date).toISOString(),
     ...((typedPost.author as Record<string, unknown> | null) && {
       author: {
         "@type": "Person",
-        name: ((typedPost.author as Record<string, unknown>).name as string | null) || "Spartan Club",
+        name:
+          ((typedPost.author as Record<string, unknown>).name as
+            string | null) || "Spartan Club",
         url: `${options.baseUrl}/autor/${((typedPost.author as Record<string, unknown>).name as string | null)?.toLowerCase().replace(/\s+/g, "-")}`,
         image: (typedPost.author as Record<string, unknown>).avatar_id
-          ? { "@type": "ImageObject", url: (typedPost.author as Record<string, unknown>).avatar_id as string }
+          ? {
+              "@type": "ImageObject",
+              url: (typedPost.author as Record<string, unknown>)
+                .avatar_id as string,
+            }
           : undefined,
       },
     }),
@@ -52,7 +60,9 @@ export function generateBlogPostingSchema(
       "@type": "WebPage",
       "@id": postUrl,
     },
-    keywords: (typedPost.expertise_areas as string[] | null)?.join(", ") || (typedPost.tags as string[] | null)?.join(", "),
+    keywords:
+      (typedPost.expertise_areas as string[] | null)?.join(", ") ||
+      (typedPost.tags as string[] | null)?.join(", "),
     wordCount: Math.ceil((typedPost.content as string).split(/\s+/).length),
     timeRequired: `PT${(typedPost.reading_time_minutes as number | null) || 5}M`,
     inLanguage: "es-ES",
@@ -65,7 +75,7 @@ export function generateBlogPostingSchema(
  */
 export function generateBreadcrumbSchema(
   breadcrumbs: BlogBreadcrumb[],
-  options: SchemaOptions
+  options: SchemaOptions,
 ) {
   return {
     "@context": "https://schema.org",
@@ -83,7 +93,7 @@ export function generateBreadcrumbSchema(
  * Genera schema FAQPage si el artículo contiene FAQs
  */
 export function generateFAQSchema(
-  faqs: Array<{ question: string; answer: string }>
+  faqs: Array<{ question: string; answer: string }>,
 ) {
   return {
     "@context": "https://schema.org",
@@ -104,7 +114,7 @@ export function generateFAQSchema(
  */
 export function generateCollectionPageSchema(
   posts: Record<string, unknown>[], // Array of posts with authors included
-  options: SchemaOptions & { collectionName: string; collectionUrl: string }
+  options: SchemaOptions & { collectionName: string; collectionUrl: string },
 ) {
   return {
     "@context": "https://schema.org",
@@ -124,10 +134,21 @@ export function generateCollectionPageSchema(
             "@type": "BlogPosting",
             headline: typedPost.title,
             url: `${options.baseUrl}/blog/${typedPost.category_slug}/${typedPost.slug}`,
-            datePublished: ((typedPost.published_at as Date | null) || (typedPost.created_at as Date)).toISOString(),
+            datePublished: (
+              (typedPost.published_at as Date | null) ||
+              (typedPost.created_at as Date)
+            ).toISOString(),
+            dateModified: typedPost.updated_at
+              ? (typedPost.updated_at as Date).toISOString()
+              : (
+                  (typedPost.published_at as Date | null) ||
+                  (typedPost.created_at as Date)
+                ).toISOString(),
             author: {
               "@type": "Person",
-              name: ((typedPost.author as Record<string, unknown> | null)?.name as string | null) || "Spartan Club",
+              name:
+                ((typedPost.author as Record<string, unknown> | null)?.name as
+                  string | null) || "Spartan Club",
             },
           },
         };
@@ -151,7 +172,7 @@ export function generateOrganizationSchema(
   name: string,
   url: string,
   logo: string,
-  socialProfiles: string[]
+  socialProfiles: string[],
 ) {
   return {
     "@context": "https://schema.org",
@@ -174,7 +195,7 @@ export function generateOrganizationSchema(
  */
 export function generateWebSiteSchema(
   url: string,
-  options?: { siteName?: string; searchUrl?: string; siteImage?: string }
+  options?: { siteName?: string; searchUrl?: string; siteImage?: string },
 ) {
   return {
     "@context": "https://schema.org",
@@ -185,7 +206,8 @@ export function generateWebSiteSchema(
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: options?.searchUrl || `${url}/blog/?q={search_term_string}`,
+        urlTemplate:
+          options?.searchUrl || `${url}/blog/?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -196,7 +218,9 @@ export function generateWebSiteSchema(
  * Combina múltiples schemas en un array
  * Útil para inyectar varios schemas en una página
  */
-export function combineSchemas(...schemas: Record<string, unknown>[]): Record<string, unknown>[] {
+export function combineSchemas(
+  ...schemas: Record<string, unknown>[]
+): Record<string, unknown>[] {
   return schemas.filter(Boolean);
 }
 
@@ -211,7 +235,7 @@ export function generatePersonSchema(
     expertise_areas?: string[];
     socialLinks?: { platform: string; url: string }[];
   },
-  baseUrl: string
+  baseUrl: string,
 ) {
   return {
     "@context": "https://schema.org",
