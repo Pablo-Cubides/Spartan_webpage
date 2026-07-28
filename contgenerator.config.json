@@ -1,7 +1,7 @@
 {
   "contentDir": "blog-posts",
   "outputFile": "frontend/src/data/blog-articles.generated.ts",
-  "baseUrl": "https://spartanclub.vercel.app",
+  "baseUrl": "https://www.triarvon.com",
   "categories": [
     {
       "id": "entrenamiento-y-energia-fisica",

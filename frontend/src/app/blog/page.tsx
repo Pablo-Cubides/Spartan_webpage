@@ -6,7 +6,7 @@ import {
   getAllPosts,
 } from "@/lib/blog/static-data";
 
-const BASE_URL = "https://spartanclub.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 // Helper to map icon string names back to components
 const getIconComponent = (categorySlug: string) => {

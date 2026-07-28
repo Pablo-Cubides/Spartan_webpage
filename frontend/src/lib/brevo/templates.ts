@@ -102,17 +102,17 @@ const baseTemplate = (content: string) => `
                 </tr>
                 <tr>
                   <td style="padding-bottom: 20px;">
-                    <a href="https://spartanclub.vercel.app" style="color: #C62828; text-decoration: none; margin: 0 10px; font-size: 24px;">🏠</a>
-                    <a href="https://spartanclub.vercel.app/blog" style="color: #C62828; text-decoration: none; margin: 0 10px; font-size: 24px;">📚</a>
-                    <a href="https://spartanclub.vercel.app/herramientas" style="color: #C62828; text-decoration: none; margin: 0 10px; font-size: 24px;">⚙️</a>
+                    <a href="https://www.triarvon.com" style="color: #C62828; text-decoration: none; margin: 0 10px; font-size: 24px;">🏠</a>
+                    <a href="https://www.triarvon.com/blog" style="color: #C62828; text-decoration: none; margin: 0 10px; font-size: 24px;">📚</a>
+                    <a href="https://www.triarvon.com/herramientas" style="color: #C62828; text-decoration: none; margin: 0 10px; font-size: 24px;">⚙️</a>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <p style="margin: 0; color: #666; font-size: 12px; line-height: 1.5;">
                       © 2026 Triarvon. Todos los derechos reservados.<br>
-                      <a href="https://spartanclub.vercel.app/politica-de-privacidad" style="color: #C62828; text-decoration: none;">Política de Privacidad</a> | 
-                      <a href="https://spartanclub.vercel.app/terminos-y-condiciones" style="color: #C62828; text-decoration: none;">Términos y Condiciones</a><br>
+                      <a href="https://www.triarvon.com/politica-de-privacidad" style="color: #C62828; text-decoration: none;">Política de Privacidad</a> | 
+                      <a href="https://www.triarvon.com/terminos-y-condiciones" style="color: #C62828; text-decoration: none;">Términos y Condiciones</a><br>
                       <a href="{{unsubscribe}}" style="color: #888; text-decoration: none; font-size: 11px;">Cancelar suscripción</a>
                     </p>
                   </td>
@@ -154,7 +154,7 @@ export const welcomeTemplate = (name: string) =>
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
       <td align="center" style="padding: 20px 0;">
-        <a href="https://spartanclub.vercel.app/blog" class="button" style="background-color: #C62828; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 4px; font-weight: bold; text-transform: uppercase; display: inline-block;">
+        <a href="https://www.triarvon.com/blog" class="button" style="background-color: #C62828; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 4px; font-weight: bold; text-transform: uppercase; display: inline-block;">
           Explorar el Blog
         </a>
       </td>
@@ -250,7 +250,7 @@ export const purchaseTemplate = (params: {
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
       <td align="center" style="padding: 20px 0;">
-        <a href="https://spartanclub.vercel.app/herramientas" class="button" style="background-color: #C62828; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 4px; font-weight: bold; text-transform: uppercase; display: inline-block;">
+        <a href="https://www.triarvon.com/herramientas" class="button" style="background-color: #C62828; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 4px; font-weight: bold; text-transform: uppercase; display: inline-block;">
           Usar mis Créditos
         </a>
       </td>
@@ -287,7 +287,7 @@ export const creditLowTemplate = (params: {
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
       <td align="center" style="padding: 20px 0;">
-        <a href="https://spartanclub.vercel.app/credits" class="button" style="background-color: #C62828; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 4px; font-weight: bold; text-transform: uppercase; display: inline-block;">
+        <a href="https://www.triarvon.com/credits" class="button" style="background-color: #C62828; color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 4px; font-weight: bold; text-transform: uppercase; display: inline-block;">
           Recargar Créditos
         </a>
       </td>

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { generateBreadcrumbSchema } from '@/lib/blog/schema-generator';
+import Link from "next/link";
+import { generateBreadcrumbSchema } from "@/lib/blog/schema-generator";
 
 interface BreadcrumbItem {
   label: string;
@@ -20,7 +20,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
       url: item.href,
       active: index === items.length - 1,
     })),
-    { baseUrl: 'https://spartanclub.vercel.app' }
+    { baseUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com" },
   );
 
   return (
@@ -35,7 +35,10 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
             <li key={item.href} className="flex items-center gap-2">
               {!item.current ? (
                 <>
-                  <Link href={item.href} className="text-blue-600 hover:underline">
+                  <Link
+                    href={item.href}
+                    className="text-blue-600 hover:underline"
+                  >
                     {item.label}
                   </Link>
                   {index < items.length - 1 && (

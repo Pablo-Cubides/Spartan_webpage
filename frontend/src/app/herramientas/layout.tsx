@@ -1,15 +1,22 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
-const BASE_URL = 'https://spartanclub.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
-  title: 'Herramientas | Spartan Club - Asesor de Estilo y Análisis',
-  description: 'Descubre nuestras herramientas de IA para análisis de estilo y forma de cara. Recomendaciones personalizadas para tu transformación.',
-  keywords: ['herramientas', 'asesor estilo', 'análisis imagen', 'recomendaciones', 'IA'],
+  title: "Herramientas | Spartan Club - Asesor de Estilo y Análisis",
+  description:
+    "Descubre nuestras herramientas de IA para análisis de estilo y forma de cara. Recomendaciones personalizadas para tu transformación.",
+  keywords: [
+    "herramientas",
+    "asesor estilo",
+    "análisis imagen",
+    "recomendaciones",
+    "IA",
+  ],
   openGraph: {
-    title: 'Herramientas | Spartan Club',
-    description: 'Herramientas de IA para tu transformación',
-    type: 'website',
+    title: "Herramientas | Spartan Club",
+    description: "Herramientas de IA para tu transformación",
+    type: "website",
     url: `${BASE_URL}/herramientas`,
   },
   alternates: {
@@ -17,6 +24,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HerramientasLayout({ children }: { children: React.ReactNode }) {
+export default function HerramientasLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <div className="bg-[#181111]">{children}</div>;
 }

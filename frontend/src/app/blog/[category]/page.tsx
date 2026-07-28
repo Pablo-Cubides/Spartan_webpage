@@ -10,7 +10,7 @@ interface PageProps {
   }>;
 }
 
-const BASE_URL = "https://spartanclub.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 // Category configuration with epic names and metadata
 const CATEGORIES: Record<

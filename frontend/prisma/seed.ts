@@ -199,10 +199,10 @@ async function main() {
     await seedBlogCategories();
     // Check if user exists for author or create dummy admin
     const admin = await prisma.user.upsert({
-      where: { email: 'admin@spartanclub.vercel.app' },
+      where: { email: 'admin@triarvon.com' },
       update: {},
       create: {
-        email: 'admin@spartanclub.vercel.app',
+        email: 'admin@triarvon.com',
         uid: 'admin-seed-uid',
         name: 'Spartan Admin',
         role: 'admin'

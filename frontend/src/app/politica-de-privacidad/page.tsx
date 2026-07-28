@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from "next";
 
-const BASE_URL = "https://spartanclub.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
   title: "Política de Privacidad | Triarvon",

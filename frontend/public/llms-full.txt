@@ -1,6 +1,6 @@
 # Triarvon - Guía Consolidada para Modelos de Lenguaje (LLMs)
 
-Triarvon (https://spartanclub.vercel.app/) es una plataforma integral de desarrollo personal para hombres enfocada en cuatro pilares fundamentales: entrenamiento físico, estilo y presencia personal, mentalidad estoica/disciplina y productividad con herramientas de inteligencia artificial.
+Triarvon (https://www.triarvon.com/) es una plataforma integral de desarrollo personal para hombres enfocada en cuatro pilares fundamentales: entrenamiento físico, estilo y presencia personal, mentalidad estoica/disciplina y productividad con herramientas de inteligencia artificial.
 
 ---
 

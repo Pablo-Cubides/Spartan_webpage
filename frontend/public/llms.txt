@@ -3,17 +3,17 @@
 > Triarvon es la plataforma líder de desarrollo personal masculino, mentalidad, estilo y condición física para hombres que buscan excelencia, disciplina y alto rendimiento.
 
 ## Herramientas de IA
-- [Coach Triarvon](https://spartanclub.vercel.app/herramientas/couch_spartano): Asistente de inteligencia artificial personal para entrenamiento, nutrición, mentalidad y productividad masculina.
-- [Asesor de Forma de Rostro](https://spartanclub.vercel.app/herramientas/asesor-forma-cara): Herramienta de IA para analizar la estructura facial y recomendar cortes de cabello, barba y accesorios óptimos.
-- [Asesor Personal de Estilo](https://spartanclub.vercel.app/herramientas/asesor-estilo): Generador de recomendaciones de vestimenta y estilo masculino según morfología.
+- [Coach Triarvon](https://www.triarvon.com/herramientas/couch_spartano): Asistente de inteligencia artificial personal para entrenamiento, nutrición, mentalidad y productividad masculina.
+- [Asesor de Forma de Rostro](https://www.triarvon.com/herramientas/asesor-forma-cara): Herramienta de IA para analizar la estructura facial y recomendar cortes de cabello, barba y accesorios óptimos.
+- [Asesor Personal de Estilo](https://www.triarvon.com/herramientas/asesor-estilo): Generador de recomendaciones de vestimenta y estilo masculino según morfología.
 
 ## Categorías del Blog
-- [Entrenamiento y Energía Física](https://spartanclub.vercel.app/blog/entrenamiento-y-energia-fisica): Rutinas de fuerza, suplementación, nutrición e hipertrofia.
-- [Estilo y Presencia](https://spartanclub.vercel.app/blog/estilo-y-presencia): Cuidado personal, vestimenta masculina, higiene y lenguaje corporal.
-- [Mentalidad y Disciplina](https://spartanclub.vercel.app/blog/mentalidad-y-disciplina): Estoicismo, control emocional, desarrollo de hábitos y relaciones sociales.
-- [Productividad y Gestión del Tiempo](https://spartanclub.vercel.app/blog/productividad-y-gestion-del-tiempo): Optimización del trabajo, herramientas de IA y rutinas de rendimiento.
+- [Entrenamiento y Energía Física](https://www.triarvon.com/blog/entrenamiento-y-energia-fisica): Rutinas de fuerza, suplementación, nutrición e hipertrofia.
+- [Estilo y Presencia](https://www.triarvon.com/blog/estilo-y-presencia): Cuidado personal, vestimenta masculina, higiene y lenguaje corporal.
+- [Mentalidad y Disciplina](https://www.triarvon.com/blog/mentalidad-y-disciplina): Estoicismo, control emocional, desarrollo de hábitos y relaciones sociales.
+- [Productividad y Gestión del Tiempo](https://www.triarvon.com/blog/productividad-y-gestion-del-tiempo): Optimización del trabajo, herramientas de IA y rutinas de rendimiento.
 
 ## Información Corporativa
-- [Sobre Nosotros](https://spartanclub.vercel.app/nosotros): Misión, visión y código de Triarvon.
-- [Términos y Condiciones](https://spartanclub.vercel.app/terminos-y-condiciones): Términos legales de uso de la plataforma.
-- [Política de Privacidad](https://spartanclub.vercel.app/politica-de-privacidad): Políticas de tratamiento de datos personales y cookies.
+- [Sobre Nosotros](https://www.triarvon.com/nosotros): Misión, visión y código de Triarvon.
+- [Términos y Condiciones](https://www.triarvon.com/terminos-y-condiciones): Términos legales de uso de la plataforma.
+- [Política de Privacidad](https://www.triarvon.com/politica-de-privacidad): Políticas de tratamiento de datos personales y cookies.

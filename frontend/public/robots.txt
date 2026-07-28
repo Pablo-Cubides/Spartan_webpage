@@ -39,7 +39,7 @@ User-agent: CCBot
 Allow: /
 
 # Sitemaps
-Sitemap: https://spartanclub.vercel.app/sitemap.xml
+Sitemap: https://www.triarvon.com/sitemap.xml
 
 # Crawl delay
 Crawl-delay: 0.5
