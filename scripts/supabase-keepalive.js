@@ -114,10 +114,9 @@ async function pingAuthApi() {
 }
 
 async function main() {
-  if (!DATABASE_URL) {
-    console.error('❌ DATABASE_URL is not set. Cannot verify the database.');
-    console.error('   Add it as a repository secret (Settings → Secrets → Actions).');
-    process.exit(1);
+  if (!DATABASE_URL || DATABASE_URL.includes('tu-connection-string') || DATABASE_URL.includes('placeholder')) {
+    console.log('ℹ DATABASE_URL is placeholder or missing. Skipping keep-alive (secrets not configured).');
+    process.exit(0);
   }
 
   console.log(`Target: ${safeTarget(DATABASE_URL)}`);
