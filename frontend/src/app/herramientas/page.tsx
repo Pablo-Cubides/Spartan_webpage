@@ -20,9 +20,9 @@ const HERRAMIENTAS = [
   },
   {
     id: "couch_spartano",
-    title: "Spartan Personal Coach",
+    title: "Triarvon Personal Coach",
     description:
-      "Un programa personalizado de coaching con IA para alcanzar tus metas de manera espartana. Cuerpo, mentalidad, estilo y productividad.",
+      "Un programa personalizado de coaching con IA para alcanzar tus metas en Triarvon. Cuerpo, mentalidad, estilo y productividad.",
     image: encodeURI("/Herramientas/Guerrero spartano.png"),
     status: "active",
   },
@@ -122,7 +122,9 @@ export default function HerramientasPage() {
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#c20909] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors"
               >
-                <span className="truncate">Desata tu Potencial Espartano</span>
+                <span className="truncate">
+                  Desata tu Potencial en Triarvon
+                </span>
               </button>
             </div>
           </div>

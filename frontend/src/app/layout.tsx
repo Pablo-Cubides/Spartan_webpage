@@ -6,6 +6,7 @@ import CookieConsent from "@/components/CookieConsent";
 import { Inter, Noto_Sans } from "next/font/google";
 import { assertEnvironment } from "@/lib/config/validate-env";
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 // Validate environment at startup time (not during build)
 if (
@@ -27,26 +28,26 @@ const BASE_URL = "https://spartanclub.vercel.app";
 export const metadata: Metadata = {
   // ==================== Basic ====================
   title: {
-    template: "%s | Spartan Club",
-    default: "Spartan Club - Forja tu Potencial de Guerrero Espartano",
+    template: "%s | Triarvon",
+    default: "Triarvon - Forja tu Potencial y Alto Rendimiento Masculino",
   },
   description:
     "Plataforma de desarrollo personal masculino. Accede a herramientas de IA, artículos sobre entrenamiento, estilo y mentalidad. Únete a la comunidad de hombres disciplinados en su búsqueda de excelencia.",
   keywords: [
     "desarrollo masculino",
-    "autoayuda",
+    "alto rendimiento",
     "entrenamiento",
     "estilo de vida",
     "mentalidad",
     "comunidad",
     "asesor de estilo",
-    "hombre spartano",
+    "triarvon",
   ],
 
   // ==================== Metadata ====================
-  authors: [{ name: "Spartan Club", url: BASE_URL }],
-  creator: "Spartan Club",
-  publisher: "Spartan Club",
+  authors: [{ name: "Triarvon", url: BASE_URL }],
+  creator: "Triarvon",
+  publisher: "Triarvon",
   formatDetection: {
     email: false,
     telephone: false,
@@ -79,16 +80,16 @@ export const metadata: Metadata = {
     locale: "es_ES",
     alternateLocale: ["en_US"],
     url: BASE_URL,
-    siteName: "Spartan Club",
-    title: "Spartan Club - Forja tu Potencial de Guerrero Espartano",
+    siteName: "Triarvon",
+    title: "Triarvon - Forja tu Potencial y Alto Rendimiento Masculino",
     description:
       "Herramientas de IA y comunidad para tu desarrollo personal masculino.",
     images: [
       {
-        url: `${BASE_URL}/Hero.webp`,
+        url: `${BASE_URL}/Triarvon/triarvon-logo-black-background.png`,
         width: 1200,
         height: 630,
-        alt: "Spartan Club - Forja tu Potencial",
+        alt: "Triarvon - Forja tu Potencial",
         type: "image/png",
       },
     ],
@@ -97,20 +98,21 @@ export const metadata: Metadata = {
   // ==================== Twitter/X ====================
   twitter: {
     card: "summary_large_image",
-    title: "Spartan Club",
-    description: "Plataforma de desarrollo personal masculino",
-    images: [`${BASE_URL}/Hero.webp`],
-    creator: "@spartanclub",
-    site: "@spartanclub",
+    title: "Triarvon",
+    description:
+      "Plataforma de desarrollo personal masculino y alto rendimiento",
+    images: [`${BASE_URL}/Triarvon/triarvon-logo-black-background.png`],
+    creator: "@triarvon",
+    site: "@triarvon",
   },
 
   // ==================== Icons & Theme ====================
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: "/Triarvon/favicon.ico",
+    shortcut: "/Triarvon/favicon.ico",
     apple: [
       {
-        url: "/apple-touch-icon.png",
+        url: "/Triarvon/triarvon-favicon-180.png",
         sizes: "180x180",
         type: "image/png",
       },
@@ -119,7 +121,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Spartan Club",
+    title: "Triarvon",
   },
   manifest: "/manifest.json",
 
@@ -156,15 +158,15 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${BASE_URL}/#organization`,
-  name: "Spartan Club",
+  name: "Triarvon",
   url: BASE_URL,
   logo: {
     "@type": "ImageObject",
     "@id": `${BASE_URL}/#logo`,
-    url: `${BASE_URL}/Logo%20spartan%20club.webp`,
+    url: `${BASE_URL}/Triarvon/triarvon-favicon-512.png`,
     width: 512,
     height: 512,
-    caption: "Spartan Club",
+    caption: "Triarvon",
   },
   image: {
     "@id": `${BASE_URL}/#logo`,
@@ -172,9 +174,9 @@ const organizationSchema = {
   description:
     "Plataforma de desarrollo personal masculino con herramientas de IA y comunidad.",
   sameAs: [
-    "https://twitter.com/spartanclub",
-    "https://instagram.com/spartanclub",
-    "https://youtube.com/@spartanclub",
+    "https://twitter.com/triarvon",
+    "https://instagram.com/triarvon",
+    "https://youtube.com/@triarvon",
   ],
   contactPoint: {
     "@type": "ContactPoint",
@@ -193,8 +195,8 @@ const websiteSchema = {
   "@type": "WebSite",
   "@id": `${BASE_URL}/#website`,
   url: BASE_URL,
-  name: "Spartan Club",
-  description: "Plataforma de desarrollo personal masculino",
+  name: "Triarvon",
+  description: "Plataforma de desarrollo personal masculino y alto rendimiento",
   publisher: {
     "@id": `${BASE_URL}/#organization`,
   },
@@ -209,8 +211,6 @@ const websiteSchema = {
     },
   ],
 };
-
-import { Analytics } from "@vercel/analytics/react";
 
 export default function RootLayout({
   children,

@@ -15,7 +15,7 @@ const baseTemplate = (content: string) => `
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting">
-  <title>Spartan Club</title>
+  <title>Triarvon</title>
   <!--[if mso]>
   <style type="text/css">
     body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
@@ -95,7 +95,7 @@ const baseTemplate = (content: string) => `
                 <tr>
                   <td style="padding-bottom: 20px;">
                     <p style="margin: 0; color: #9CA3AF; font-size: 14px; line-height: 1.6;">
-                      <strong style="color: #C62828;">Spartan Club</strong><br>
+                      <strong style="color: #C62828;">Triarvon</strong><br>
                       Forjando hombres, moldeando destinos.
                     </p>
                   </td>
@@ -110,7 +110,7 @@ const baseTemplate = (content: string) => `
                 <tr>
                   <td>
                     <p style="margin: 0; color: #666; font-size: 12px; line-height: 1.5;">
-                      © 2026 Spartan Club. Todos los derechos reservados.<br>
+                      © 2026 Triarvon. Todos los derechos reservados.<br>
                       <a href="https://spartanclub.vercel.app/politica-de-privacidad" style="color: #C62828; text-decoration: none;">Política de Privacidad</a> | 
                       <a href="https://spartanclub.vercel.app/terminos-y-condiciones" style="color: #C62828; text-decoration: none;">Términos y Condiciones</a><br>
                       <a href="{{unsubscribe}}" style="color: #888; text-decoration: none; font-size: 11px;">Cancelar suscripción</a>
@@ -132,13 +132,14 @@ const baseTemplate = (content: string) => `
 /**
  * Welcome Email Template
  */
-export const welcomeTemplate = (name: string) => baseTemplate(`
+export const welcomeTemplate = (name: string) =>
+  baseTemplate(`
   <h2 style="margin: 0 0 20px; color: #ffffff; font-size: 28px; font-weight: bold;">
     ¡Bienvenido a la Legión, ${name}!
   </h2>
   
   <p style="margin: 0 0 20px; color: #D1D5DB; font-size: 16px; line-height: 1.8;">
-    Has dado el primer paso hacia tu transformación. En Spartan Club no creemos en atajos ni en excusas. 
+    Has dado el primer paso hacia tu transformación. En Triarvon no creemos en atajos ni en excusas. 
     Aquí forjamos hombres que dominan su mente, su cuerpo y su destino.
   </p>
   
@@ -175,7 +176,8 @@ export const newsletterTemplate = (params: {
   content: string;
   ctaText: string;
   ctaUrl: string;
-}) => baseTemplate(`
+}) =>
+  baseTemplate(`
   <h2 style="margin: 0 0 10px; color: #ffffff; font-size: 24px; font-weight: bold;">
     ${params.title}
   </h2>
@@ -207,7 +209,8 @@ export const purchaseTemplate = (params: {
   packageName: string;
   credits: number;
   amount: number;
-}) => baseTemplate(`
+}) =>
+  baseTemplate(`
   <h2 style="margin: 0 0 20px; color: #ffffff; font-size: 28px; font-weight: bold;">
     ¡Compra Confirmada, ${params.name}!
   </h2>
@@ -266,7 +269,8 @@ export const purchaseTemplate = (params: {
 export const creditLowTemplate = (params: {
   name: string;
   creditsRemaining: number;
-}) => baseTemplate(`
+}) =>
+  baseTemplate(`
   <h2 style="margin: 0 0 20px; color: #ffffff; font-size: 28px; font-weight: bold;">
     Tus Créditos se están Agotando
   </h2>

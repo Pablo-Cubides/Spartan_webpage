@@ -1,9 +1,9 @@
-# Spartan Club
+# Triarvon
 
-> Spartan Club es la plataforma líder de desarrollo personal masculino, mentalidad, estilo y condición física para hombres que buscan excelencia y disciplina.
+> Triarvon es la plataforma líder de desarrollo personal masculino, mentalidad, estilo y condición física para hombres que buscan excelencia, disciplina y alto rendimiento.
 
 ## Herramientas de IA
-- [Coach Espartano](https://spartanclub.vercel.app/herramientas/couch_spartano): Asistente de inteligencia artificial personal para entrenamiento, nutrición, mentalidad y productividad masculina.
+- [Coach Triarvon](https://spartanclub.vercel.app/herramientas/couch_spartano): Asistente de inteligencia artificial personal para entrenamiento, nutrición, mentalidad y productividad masculina.
 - [Asesor de Forma de Rostro](https://spartanclub.vercel.app/herramientas/asesor-forma-cara): Herramienta de IA para analizar la estructura facial y recomendar cortes de cabello, barba y accesorios óptimos.
 - [Asesor Personal de Estilo](https://spartanclub.vercel.app/herramientas/asesor-estilo): Generador de recomendaciones de vestimenta y estilo masculino según morfología.
 
@@ -14,6 +14,6 @@
 - [Productividad y Gestión del Tiempo](https://spartanclub.vercel.app/blog/productividad-y-gestion-del-tiempo): Optimización del trabajo, herramientas de IA y rutinas de rendimiento.
 
 ## Información Corporativa
-- [Sobre Nosotros](https://spartanclub.vercel.app/nosotros): Misión, visión y código de Spartan Club.
+- [Sobre Nosotros](https://spartanclub.vercel.app/nosotros): Misión, visión y código de Triarvon.
 - [Términos y Condiciones](https://spartanclub.vercel.app/terminos-y-condiciones): Términos legales de uso de la plataforma.
 - [Política de Privacidad](https://spartanclub.vercel.app/politica-de-privacidad): Políticas de tratamiento de datos personales y cookies.

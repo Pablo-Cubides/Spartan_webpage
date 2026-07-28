@@ -225,8 +225,8 @@ export default function ModalLogin({
           <Image
             width={160}
             height={160}
-            src="/Logo spartan club - sin fondo.webp"
-            alt="Spartan Club"
+            src="/Triarvon/triarvon-logo-transparent.png"
+            alt="Triarvon"
             className="object-contain drop-shadow-2xl"
           />
         </div>

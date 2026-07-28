@@ -1,56 +1,34 @@
 {
-  "name": "Spartan Club",
-  "short_name": "Spartan",
-  "description": "Plataforma de desarrollo personal masculino",
+  "name": "Triarvon",
+  "short_name": "Triarvon",
+  "description": "Plataforma de desarrollo personal masculino y alto rendimiento",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#141414",
-  "theme_color": "#C62828",
+  "background_color": "#0a0a0a",
+  "theme_color": "#D32F2F",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
     {
-      "src": "/favicon.ico",
+      "src": "/Triarvon/favicon.ico",
       "sizes": "48x48",
       "type": "image/x-icon"
     },
     {
-      "src": "/Icono spartan club.png",
+      "src": "/Triarvon/triarvon-favicon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icono spartan club - sin fondo.png",
+      "src": "/Triarvon/triarvon-avatar-circle.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-540x720.png",
-      "sizes": "540x720",
-      "type": "image/png"
-    },
-    {
-      "src": "/screenshot-1080x1440.png",
-      "sizes": "1080x1440",
-      "type": "image/png"
-    }
-  ],
   "categories": [
     "lifestyle",
     "education"
-  ],
-  "share_target": {
-    "action": "/share",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  }
+  ]
 }

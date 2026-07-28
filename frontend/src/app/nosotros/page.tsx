@@ -8,11 +8,11 @@ import type { Metadata } from "next";
 const BASE_URL = "https://spartanclub.vercel.app";
 
 export const metadata: Metadata = {
-  title: "Nosotros | Spartan Club - Nuestra Misión y Visión",
+  title: "Nosotros | Triarvon - Nuestra Misión y Visión",
   description:
-    "Conoce la misión, visión y valores de Spartan Club. Somos una comunidad de hombres disciplinados comprometidos con el desarrollo personal, la excelencia física y la fortaleza mental.",
+    "Conoce la misión, visión y valores de Triarvon. Somos una comunidad de hombres disciplinados comprometidos con el desarrollo personal, la excelencia física y la fortaleza mental.",
   keywords: [
-    "spartan club",
+    "triarvon",
     "misión",
     "visión",
     "comunidad",
@@ -20,16 +20,18 @@ export const metadata: Metadata = {
   ],
 
   openGraph: {
-    title: "Nosotros | Spartan Club",
-    description: "Nuestra misión es forjar hombres de excelencia",
+    title: "Nosotros | Triarvon",
+    description:
+      "Nuestra misión es forjar hombres de excelencia y alto rendimiento",
     type: "website",
     url: `${BASE_URL}/nosotros`,
   },
 
   twitter: {
     card: "summary",
-    title: "Nosotros | Spartan Club",
-    description: "Nuestra misión es forjar hombres de excelencia",
+    title: "Nosotros | Triarvon",
+    description:
+      "Nuestra misión es forjar hombres de excelencia y alto rendimiento",
   },
 
   alternates: {
@@ -143,15 +145,15 @@ export default function NosotrosPage() {
                 </div>
                 <Link href="/herramientas" className="inline-block w-fit group">
                   <span className="inline-flex items-center justify-center rounded-lg bg-[#D32F2F] px-8 py-4 text-white font-bold uppercase tracking-wide hover:bg-red-700 transition-all transform group-hover:scale-105 shadow-lg hover:shadow-red-900/50">
-                    Únete a la Legión
+                    Únete a Triarvon
                   </span>
                 </Link>
               </div>
               <div className="md:w-1/2 w-full">
                 <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl aspect-square">
                   <Image
-                    src="/Logo spartan club.webp"
-                    alt="Spartan Club"
+                    src="/Triarvon/triarvon-logo-black-background.png"
+                    alt="Triarvon"
                     fill
                     className="object-contain p-8"
                     priority

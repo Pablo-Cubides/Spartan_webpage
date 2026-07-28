@@ -52,7 +52,7 @@ export default function CoachEspartanoPage() {
       const defaultCoaches = [
         {
           id: "general",
-          name: "Coach Espartano",
+          name: "Coach Triarvon",
           title: "Coach General",
           description: "Tu coach personal para transformación integral",
           icon: "⚔️",
@@ -202,14 +202,14 @@ export default function CoachEspartanoPage() {
             { label: "Inicio", href: "/" },
             { label: "Herramientas", href: "/herramientas" },
             {
-              label: "Coach Espartano",
+              label: "Coach Triarvon",
               href: "/herramientas/couch_spartano",
               current: true,
             },
           ]}
         />
 
-        <h1 className="sr-only">Coach Espartano - Tu Entrenador IA Personal</h1>
+        <h1 className="sr-only">Coach Triarvon - Tu Entrenador IA Personal</h1>
 
         {/* Loading State */}
         {pageState === "loading" && (
@@ -222,7 +222,7 @@ export default function CoachEspartanoPage() {
         {pageState === "video" && (
           <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
             <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
-              ¡Bienvenido a Coach Espartano!
+              ¡Bienvenido a Coach Triarvon!
             </h1>
             <div className="relative w-full max-w-3xl aspect-video bg-[#1a1a1a] rounded-2xl overflow-hidden border border-gray-800">
               <video

@@ -37,7 +37,7 @@ export function generateBlogPostingSchema(
         "@type": "Person",
         name:
           ((typedPost.author as Record<string, unknown>).name as
-            string | null) || "Spartan Club",
+            string | null) || "Triarvon",
         url: `${options.baseUrl}/autor/${((typedPost.author as Record<string, unknown>).name as string | null)?.toLowerCase().replace(/\s+/g, "-")}`,
         image: (typedPost.author as Record<string, unknown>).avatar_id
           ? {
@@ -50,7 +50,7 @@ export function generateBlogPostingSchema(
     }),
     publisher: {
       "@type": "Organization",
-      name: options.siteName || "Spartan Club",
+      name: options.siteName || "Triarvon",
       logo: {
         "@type": "ImageObject",
         url: options.siteImage || `${options.baseUrl}/logo.png`,
@@ -148,7 +148,7 @@ export function generateCollectionPageSchema(
               "@type": "Person",
               name:
                 ((typedPost.author as Record<string, unknown> | null)?.name as
-                  string | null) || "Spartan Club",
+                  string | null) || "Triarvon",
             },
           },
         };
@@ -156,7 +156,7 @@ export function generateCollectionPageSchema(
     },
     publisher: {
       "@type": "Organization",
-      name: options.siteName || "Spartan Club",
+      name: options.siteName || "Triarvon",
       logo: {
         "@type": "ImageObject",
         url: options.siteImage || `${options.baseUrl}/logo.png`,
@@ -200,7 +200,7 @@ export function generateWebSiteSchema(
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: options?.siteName || "Spartan Club",
+    name: options?.siteName || "Triarvon",
     url,
     potentialAction: {
       "@type": "SearchAction",

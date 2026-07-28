@@ -13,8 +13,8 @@ export default function Footer() {
               <Image
                 width={160}
                 height={160}
-                src="/Logo spartan club - sin fondo.webp"
-                alt="Spartan Club"
+                src="/Triarvon/triarvon-logo-transparent.png"
+                alt="Triarvon"
                 className="object-contain"
               />
             </div>
@@ -22,7 +22,7 @@ export default function Footer() {
           <p className="text-[#ababab] text-sm mt-2">
             Forjando hombres, moldeando destinos.
             <br />
-            Disciplina. Coraje. Hermandad.
+            Disciplina. Coraje. Excelencia.
           </p>
         </div>
         {/* Links rápidos */}
@@ -101,7 +101,7 @@ export default function Footer() {
                 />
                 <path
                   fill="currentColor"
-                  d="M6.47 6.47a.75.75 0 0 1 1.06 0l10 10a.75.75 0 1 1-1.06 1.06l-10-10a.75.75 0 0 1 0-1.06z"
+                  d="M6.47 6.47a.75.75 0 0 1 1.06 0l10 10a.75.75 0 1 1-1.06 1.06l-10-10a.75.75 0 0 1 0-1.06"
                 />
               </svg>
             </a>
@@ -156,7 +156,7 @@ export default function Footer() {
       <div className="border-t border-[#303030] py-4 text-center text-[#ababab] text-xs bg-[#141414]">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
           <span>
-            &copy; {new Date().getFullYear()} Spartan Club — Todos los derechos
+            &copy; {new Date().getFullYear()} Triarvon — Todos los derechos
             reservados.
           </span>
           <div className="flex gap-4">

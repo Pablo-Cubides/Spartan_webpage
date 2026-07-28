@@ -1,9 +1,9 @@
 {
-  "name": "spartan-club-frontend",
+  "name": "triarvon-frontend",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Spartan Club - Frontend con Next.js",
+  "description": "Triarvon - Plataforma de desarrollo personal masculino y alto rendimiento",
   "scripts": {
     "dev": "node -e \"require('dotenv').config({path: '.env.local', override: true})\" && next dev --turbo",
     "build": "npm run prisma:generate && next build",

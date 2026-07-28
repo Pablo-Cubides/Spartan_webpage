@@ -1,6 +1,6 @@
-# Spartan Club - Guía Consolidada para Modelos de Lenguaje (LLMs)
+# Triarvon - Guía Consolidada para Modelos de Lenguaje (LLMs)
 
-Spartan Club (https://spartanclub.vercel.app/) es una plataforma integral de desarrollo personal para hombres enfocada en cuatro pilares fundamentales: entrenamiento físico, estilo y presencia personal, mentalidad estoica/disciplina y productividad con herramientas de inteligencia artificial.
+Triarvon (https://spartanclub.vercel.app/) es una plataforma integral de desarrollo personal para hombres enfocada en cuatro pilares fundamentales: entrenamiento físico, estilo y presencia personal, mentalidad estoica/disciplina y productividad con herramientas de inteligencia artificial.
 
 ---
 
@@ -29,7 +29,7 @@ Spartan Club (https://spartanclub.vercel.app/) es una plataforma integral de des
 
 ## Herramientas Interactivas
 
-1. **Coach Espartano (`/herramientas/couch_spartano`)**:
+1. **Coach Triarvon (`/herramientas/couch_spartano`)**:
    Un coach de IA especializado que brinda asesoramiento personalizado interactivo en tiempo real sobre rutinas de ejercicios, planes de mentalidad y gestión del tiempo.
 
 2. **Asesor de Forma de Rostro (`/herramientas/asesor-forma-cara`)**:

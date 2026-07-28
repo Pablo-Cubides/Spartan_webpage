@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
-const BASE_URL = 'https://spartanclub.vercel.app';
+const BASE_URL = "https://spartanclub.vercel.app";
 
 export interface PageMetadataConfig {
   title: string;
@@ -8,7 +8,7 @@ export interface PageMetadataConfig {
   keywords?: string[];
   author?: string;
   ogImage?: string;
-  ogType?: 'website' | 'article';
+  ogType?: "website" | "article";
   articlePublishedTime?: string;
   articleModifiedTime?: string;
   articleAuthor?: string;
@@ -30,9 +30,9 @@ export function generatePageMetadata(config: PageMetadataConfig): Metadata {
     openGraph: {
       title: config.title,
       description: config.description,
-      type: config.ogType || 'website',
+      type: config.ogType || "website",
       url: canonical,
-      siteName: 'Spartan Club',
+      siteName: "Triarvon",
       images: [
         {
           url: ogImage,
@@ -41,7 +41,7 @@ export function generatePageMetadata(config: PageMetadataConfig): Metadata {
           alt: config.title,
         },
       ],
-      ...(config.ogType === 'article' && {
+      ...(config.ogType === "article" && {
         publishedTime: config.articlePublishedTime,
         modifiedTime: config.articleModifiedTime,
         authors: config.articleAuthor ? [config.articleAuthor] : [],
@@ -50,11 +50,11 @@ export function generatePageMetadata(config: PageMetadataConfig): Metadata {
     },
 
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: config.title,
       description: config.description,
       images: [ogImage],
-      creator: '@spartanclub',
+      creator: "@triarvon",
     },
 
     alternates: {
@@ -86,7 +86,7 @@ export function generateArticleMetadata(config: {
     keywords: config.keywords,
     author: config.author,
     ogImage: config.ogImage,
-    ogType: 'article',
+    ogType: "article",
     articlePublishedTime: config.publishedTime,
     articleModifiedTime: config.modifiedTime,
     articleAuthor: config.author,

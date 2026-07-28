@@ -19,7 +19,7 @@ export default async function Home() {
           <div className="absolute inset-0 z-0">
             <Image
               src={"/Hero.webp"}
-              alt={posts[0]?.title || "Spartan Club"}
+              alt={posts[0]?.title || "Triarvon"}
               fill
               style={{ objectFit: "cover" }}
               priority
@@ -32,7 +32,7 @@ export default async function Home() {
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-wider mb-6 leading-tight drop-shadow-lg">
               Desata tu Potencial{" "}
-              <span className="text-spartan-red">Espartano</span>
+              <span className="text-spartan-red">en Triarvon</span>
             </h1>
             <p className="font-sans text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
               Forja tu mejor versión. Conviértete en el hombre que estás
@@ -71,7 +71,7 @@ export default async function Home() {
                 </h2>
                 <div className="space-y-6 text-gray-400 leading-relaxed text-lg">
                   <p>
-                    En Spartan Club, creemos que todo hombre posee un potencial
+                    En Triarvon, creemos que todo hombre posee un potencial
                     ilimitado. Nuestra misión es proporcionarte el conocimiento,
                     las herramientas y la comunidad para superar tus límites.
                   </p>
@@ -85,8 +85,8 @@ export default async function Home() {
               <div className="w-full md:w-1/2 flex justify-center">
                 <div className="relative w-full max-w-md aspect-square rounded-lg overflow-hidden shadow-2xl">
                   <Image
-                    src="/Logo spartan club.webp"
-                    alt="Spartan"
+                    src="/Triarvon/triarvon-logo-black-background.png"
+                    alt="Triarvon"
                     fill
                     style={{ objectFit: "contain" }}
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -199,7 +199,7 @@ export default async function Home() {
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-spartan-red to-transparent"></div>
               <div className="relative z-10 text-center">
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-4">
-                  Únete a la Legión
+                  Únete a Triarvon
                 </h2>
                 <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
                   Recibe estrategias semanales, inspiración y contenido
