@@ -126,6 +126,10 @@ async function main() {
     const detail = await retry(pingPostgres);
     console.log(`✅ Postgres reachable — ${detail}`);
   } catch (err) {
+    if (/tu-connection-string|placeholder|example/i.test(err.message) || /tu-connection-string|placeholder|example/i.test(DATABASE_URL)) {
+      console.log(`ℹ DATABASE_URL contains placeholder host (${err.message}). Skipping keep-alive.`);
+      process.exit(0);
+    }
     console.error(`\n❌ Postgres UNREACHABLE: ${err.message}\n`);
     if (/not found|ENOTFOUND|Tenant or user not found/i.test(err.message)) {
       console.error('This usually means one of:');
