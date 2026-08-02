@@ -14,7 +14,7 @@ const prisma = new PrismaClient({
 const CATEGORY_DATA = [
     {
         slug: 'entrenamiento-y-energia-fisica',
-        epic_name: 'Cuerpo Espartano',
+        epic_name: 'Cuerpo Triarvon',
         description: 'Rutinas, fuerza, resistencia y energía para hombres.',
         icon: 'Dumbbell', // Storing icon name as string
         gradient: 'from-red-600 to-orange-600',
@@ -23,7 +23,7 @@ const CATEGORY_DATA = [
     },
     {
         slug: 'estilo-y-presencia',
-        epic_name: 'Estilo Espartano',
+        epic_name: 'Estilo Triarvon',
         description: 'Moda, cuidado personal y presencia masculina.',
         icon: 'Shirt',
         gradient: 'from-blue-600 to-indigo-600',
@@ -32,7 +32,7 @@ const CATEGORY_DATA = [
     },
     {
         slug: 'mentalidad-y-disciplina',
-        epic_name: 'Mentalidad Espartana',
+        epic_name: 'Mentalidad Triarvon',
         description: 'Disciplina, hábitos y resiliencia masculina.',
         icon: 'Brain',
         gradient: 'from-purple-600 to-pink-600',
@@ -41,7 +41,7 @@ const CATEGORY_DATA = [
     },
     {
         slug: 'productividad-y-gestion-del-tiempo',
-        epic_name: 'Productividad Espartana',
+        epic_name: 'Productividad Triarvon',
         description: 'Gestión del tiempo y máximo rendimiento.',
         icon: 'Clock',
         gradient: 'from-green-600 to-teal-600',

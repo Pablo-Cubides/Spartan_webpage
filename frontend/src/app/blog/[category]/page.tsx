@@ -27,11 +27,11 @@ const CATEGORIES: Record<
   }
 > = {
   "entrenamiento-y-energia-fisica": {
-    epicName: "Cuerpo Espartano",
+    epicName: "Cuerpo Triarvon",
     description:
       "Artículos sobre entrenamiento físico, fuerza, resistencia and energía para hombres. Rutinas en casa, gimnasio, cardio inteligente y consejos para ganar músculo y salud sin vivir en el gym.",
     metaTitle:
-      "Cuerpo Espartano – Entrenamiento y Energía Física | Spartan Club",
+      "Cuerpo Triarvon – Entrenamiento y Energía Física | Triarvon Club",
     metaDescription:
       "Artículos sobre entrenamiento físico, fuerza, resistencia y energía para hombres. Rutinas en casa, gimnasio, cardio y consejos para ganar músculo.",
     keywords: [
@@ -47,10 +47,10 @@ const CATEGORIES: Record<
       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&h=600",
   },
   "estilo-y-presencia": {
-    epicName: "Estilo Espartano",
+    epicName: "Estilo Triarvon",
     description:
       "Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen sin perder tu esencia.",
-    metaTitle: "Estilo Espartano – Estilo y Presencia Masculina | Spartan Club",
+    metaTitle: "Estilo Triarvon – Estilo y Presencia Masculina | Triarvon Club",
     metaDescription:
       "Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen.",
     keywords: [
@@ -70,10 +70,10 @@ const CATEGORIES: Record<
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1920&h=600",
   },
   "mentalidad-y-disciplina": {
-    epicName: "Mentalidad Espartana",
+    epicName: "Mentalidad Triarvon",
     description:
       "Contenidos sobre mentalidad, disciplina, hábitos y resiliencia masculina. Cómo construir carácter, superar excusas y sostener hábitos que te llevan a tus metas.",
-    metaTitle: "Mentalidad Espartana – Disciplina y Hábitos | Spartan Club",
+    metaTitle: "Mentalidad Triarvon – Disciplina y Hábitos | Triarvon Club",
     metaDescription:
       "Contenidos sobre mentalidad, disciplina, hábitos y resiliencia masculina. Cómo construir carácter, superar excusas y sostener hábitos.",
     keywords: [
@@ -89,10 +89,10 @@ const CATEGORIES: Record<
       "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1920&h=600",
   },
   "productividad-y-gestion-del-tiempo": {
-    epicName: "Productividad Espartana",
+    epicName: "Productividad Triarvon",
     description:
       "Estrategias y herramientas para que los hombres organicen mejor su tiempo, sean más productivos y consigan resultados en estudio, trabajo y proyectos personales.",
-    metaTitle: "Productividad Espartana – Gestión del Tiempo | Spartan Club",
+    metaTitle: "Productividad Triarvon – Gestión del Tiempo | Triarvon Club",
     metaDescription:
       "Estrategias y herramientas para que los hombres organicen mejor su tiempo, sean más productivos y consigan resultados.",
     keywords: [
@@ -116,7 +116,7 @@ export async function generateMetadata({
   const cat = CATEGORIES[category];
 
   if (!cat) {
-    return { title: "Categoría no encontrada | Spartan Club" };
+    return { title: "Categoría no encontrada | Triarvon Club" };
   }
 
   return {
@@ -194,7 +194,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <main className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
+      <div className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           {/* Background Image */}
@@ -203,6 +203,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
             <img
               src={cat.coverImage}
               alt=""
+              aria-hidden="true"
               className="w-full h-full object-cover opacity-30"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-[#0a0a0a]" />
@@ -319,7 +320,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
             </div>
           )}
         </section>
-      </main>
+      </div>
     </>
   );
 }

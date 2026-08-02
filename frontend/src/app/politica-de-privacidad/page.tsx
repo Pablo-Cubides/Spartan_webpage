@@ -23,7 +23,7 @@ export default function PrivacidadPage() {
         <p>
           <strong className="text-white">Responsable:</strong> Andrés Guerrero —{" "}
           <strong className="text-white">Contacto:</strong>{" "}
-          spartanmarket@gmail.com
+          triarvonmarket@gmail.com
         </p>
 
         <div className="bg-[#181a1d] p-6 rounded-lg">
@@ -48,7 +48,7 @@ export default function PrivacidadPage() {
             <li>
               <strong className="text-white">Tus derechos:</strong> Acceso,
               rectificación y eliminación enviando un correo a
-              spartanmarket@gmail.com.
+              triarvonmarket@gmail.com.
             </li>
           </ul>
         </div>
@@ -69,7 +69,7 @@ export default function PrivacidadPage() {
         <h2 className="text-2xl font-bold text-white pt-4">3. Contacto</h2>
         <p>
           Para solicitudes de privacidad o eliminación de datos:
-          spartanmarket@gmail.com
+          triarvonmarket@gmail.com
         </p>
       </div>
     </main>

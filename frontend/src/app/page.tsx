@@ -9,8 +9,8 @@ export default async function Home() {
   const posts = getRecentPosts(3);
 
   return (
-    <div className="bg-spartan-dark text-spartan-text font-sans selection:bg-spartan-red selection:text-white">
-      <main>
+    <div className="bg-triarvon-dark text-triarvon-text font-sans selection:bg-triarvon-red selection:text-white">
+      <div>
         {/* HERO SECTION */}
         <section
           id="hero"
@@ -19,7 +19,7 @@ export default async function Home() {
           <div className="absolute inset-0 z-0">
             <Image
               src={"/Hero.webp"}
-              alt={posts[0]?.title || "Triarvon"}
+              alt="Fondo de pantalla Triarvon - Alto Rendimiento Masculino"
               fill
               style={{ objectFit: "cover" }}
               priority
@@ -32,7 +32,7 @@ export default async function Home() {
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-wider mb-6 leading-tight drop-shadow-lg">
               Desata tu Potencial{" "}
-              <span className="text-spartan-red">en Triarvon</span>
+              <span className="text-triarvon-red">en Triarvon</span>
             </h1>
             <p className="font-sans text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
               Forja tu mejor versión. Conviértete en el hombre que estás
@@ -40,7 +40,7 @@ export default async function Home() {
               inquebrantable.
             </p>
             <Link href="/blog" className="inline-block">
-              <button className="bg-spartan-red hover:bg-red-700 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all duration-300 transform hover:scale-105 border border-red-800 shadow-[0_0_20px_rgba(217,35,35,0.4)]">
+              <button className="bg-triarvon-red hover:bg-red-700 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all duration-300 transform hover:scale-105 border border-red-800 shadow-[0_0_20px_rgba(217,35,35,0.4)]">
                 Inicia tu Transformación
               </button>
             </Link>
@@ -62,11 +62,11 @@ export default async function Home() {
         </section>
 
         {/* MISSION SECTION */}
-        <section id="mision" className="py-24 bg-spartan-dark">
+        <section id="mision" className="py-24 bg-triarvon-dark">
           <div className="container mx-auto px-6 md:px-12">
             <div className="flex flex-col md:flex-row items-center gap-16">
               <div className="w-full md:w-1/2">
-                <h2 className="font-display text-4xl font-bold text-white uppercase mb-8 tracking-wide border-l-4 border-spartan-red pl-6">
+                <h2 className="font-display text-4xl font-bold text-white uppercase mb-8 tracking-wide border-l-4 border-triarvon-red pl-6">
                   Nuestra Misión
                 </h2>
                 <div className="space-y-6 text-gray-400 leading-relaxed text-lg">
@@ -117,7 +117,7 @@ export default async function Home() {
               {posts.map((p) => (
                 <article
                   key={p.slug}
-                  className="bg-spartan-dark rounded-md overflow-hidden border border-gray-800 hover:border-spartan-red/50 transition-all duration-300 group hover:-translate-y-2 shadow-lg"
+                  className="bg-triarvon-dark rounded-md overflow-hidden border border-gray-800 hover:border-triarvon-red/50 transition-all duration-300 group hover:-translate-y-2 shadow-lg"
                 >
                   <div className="h-48 overflow-hidden relative">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-all z-10"></div>
@@ -141,7 +141,7 @@ export default async function Home() {
                     </p>
                     <Link
                       href={`/blog/${p.category_slug}/${p.slug}`}
-                      className="inline-block text-spartan-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors"
+                      className="inline-block text-triarvon-red text-sm font-bold uppercase tracking-wider hover:text-white transition-colors"
                     >
                       Leer Más &rarr;
                     </Link>
@@ -160,18 +160,18 @@ export default async function Home() {
           <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
             <div className="w-full max-w-7xl mx-auto overflow-hidden rounded-md">
               <Image
-                src="/Herramientas/Hero_herramientas_spartan.jpg"
+                src="/Herramientas/Hero_herramientas_triarvon.jpg"
                 alt="Arsenal"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="100vw"
               />
             </div>
-            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-spartan-red/10 to-black/40" />
+            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-triarvon-red/10 to-black/40" />
             <div className="absolute inset-0 z-20 bg-black/20" />
           </div>
           <div className="relative z-30 container mx-auto px-6 text-center">
-            <div className="max-w-3xl mx-auto border border-spartan-red/30 bg-black/40 backdrop-blur-sm p-12 rounded-sm relative">
+            <div className="max-w-3xl mx-auto border border-triarvon-red/30 bg-black/40 backdrop-blur-sm p-12 rounded-sm relative">
               <h2 className="font-display text-4xl md:text-5xl font-bold text-white uppercase mb-6 tracking-wide drop-shadow-lg">
                 Armas para tu Arsenal
               </h2>
@@ -181,7 +181,7 @@ export default async function Home() {
               </p>
               <Link
                 href="/herramientas"
-                className="bg-spartan-red hover:bg-red-600 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all shadow-lg hover:shadow-red-900/50"
+                className="bg-triarvon-red hover:bg-red-600 text-white font-display font-bold py-3 px-8 rounded-sm tracking-widest uppercase transition-all shadow-lg hover:shadow-red-900/50"
               >
                 Explora las Herramientas
               </Link>
@@ -192,16 +192,16 @@ export default async function Home() {
         {/* NEWSLETTER SECTION */}
         <section
           id="unete"
-          className="py-24 bg-spartan-dark flex justify-center items-center"
+          className="py-24 bg-triarvon-dark flex justify-center items-center"
         >
           <div className="container mx-auto px-6">
             <div className="bg-[#1f1f1f] rounded-lg p-8 md:p-12 max-w-4xl mx-auto border border-gray-800 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-spartan-red to-transparent"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-triarvon-red to-transparent"></div>
               <div className="relative z-10 text-center">
                 <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase mb-4">
                   Únete a Triarvon
                 </h2>
-                <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+                <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
                   Recibe estrategias semanales, inspiración y contenido
                   exclusivo directamente en tu correo. Sin spam, solo valor.
                 </p>
@@ -210,7 +210,7 @@ export default async function Home() {
             </div>
           </div>
         </section>
-      </main>
+      </div>
     </div>
   );
 }

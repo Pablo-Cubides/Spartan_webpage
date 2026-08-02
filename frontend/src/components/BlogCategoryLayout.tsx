@@ -58,7 +58,7 @@ export default function BlogCategoryLayout({
               </h2>
               <p className="text-gray-300 mb-4">{post.excerpt}</p>
               <div className="flex items-center text-sm text-gray-400">
-                <span>Por {post.author?.name || "Spartan Club"}</span>
+                <span>Por {post.author?.name || "Triarvon Club"}</span>
                 <span className="mx-2">•</span>
                 <span>
                   {post.published_at

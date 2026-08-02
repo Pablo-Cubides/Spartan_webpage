@@ -61,7 +61,7 @@ console.log("✅ Testing BlogPosting schema generation...");
 try {
   const postingSchema = generateBlogPostingSchema(mockPost, {
     baseUrl: "https://www.triarvon.com",
-    siteName: "Spartan Club",
+    siteName: "Triarvon Club",
     siteImage: "https://www.triarvon.com/og-image.png",
   });
   console.log("✓ BlogPosting schema valid");
@@ -77,7 +77,7 @@ try {
     [mockPost],
     {
       baseUrl: "https://www.triarvon.com",
-      siteName: "Spartan Club",
+      siteName: "Triarvon Club",
     }
   );
   console.log("✓ CollectionPage schema valid");

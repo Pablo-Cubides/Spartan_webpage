@@ -248,13 +248,13 @@
 /* Numbered lists with badge style */
 .article-content ol {
   list-style: none;
-  counter-reset: spartan-counter;
+  counter-reset: triarvon-counter;
   padding-left: 0;
   margin: 1.5rem 0;
 }
 
 .article-content ol li {
-  counter-increment: spartan-counter;
+  counter-increment: triarvon-counter;
   position: relative;
   padding-left: 3.5rem;
   margin-bottom: 1.25rem;
@@ -263,7 +263,7 @@
 }
 
 .article-content ol li::before {
-  content: counter(spartan-counter);
+  content: counter(triarvon-counter);
   position: absolute;
   left: 0;
   top: 0;

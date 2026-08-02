@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     }
 
     // Create mailto link that opens user's email client
-    const mailtoLink = `mailto:spartanmarketcol@gmail.com?subject=Contacto desde Spartan Club&body=${encodeURIComponent(message)}`;
+    const mailtoLink = `mailto:triarvonmarketcol@gmail.com?subject=Contacto desde Triarvon Club&body=${encodeURIComponent(message)}`;
 
     // Return success with the mailto link
     // The client will need to handle opening this link

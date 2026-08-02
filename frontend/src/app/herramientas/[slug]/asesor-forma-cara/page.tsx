@@ -383,7 +383,7 @@ export default function Page() {
       <div className="chat-shell">
         <div className="chat-header text-center">
           <div className="relative mx-auto mb-4 h-20 md:h-24 lg:h-28 w-auto">
-            <Image fill src="/Logo spartan club - sin fondo.png" alt="Spartan Club" className="object-contain" />
+            <Image fill src="/Logo triarvon club - sin fondo.png" alt="Triarvon Club" className="object-contain" />
           </div>
           <h1 className="chat-title">Face Shape Advisor</h1>
           <p className="chat-sub">Get advice on beard styles, hairstyles and more tailored to your face shape.</p>

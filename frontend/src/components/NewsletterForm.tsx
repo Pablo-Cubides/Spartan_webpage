@@ -44,13 +44,13 @@ export default function NewsletterForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Tu correo electrónico"
         aria-label="Tu correo electrónico"
-        className="flex-1 bg-black/50 border border-gray-700 text-white px-5 py-3 rounded-sm focus:outline-none focus:border-spartan-red transition-colors placeholder-gray-500"
+        className="flex-1 bg-black/50 border border-gray-700 text-white px-5 py-3 rounded-sm focus:outline-none focus:border-triarvon-red transition-colors placeholder-gray-500"
         required
       />
       <button
         type="submit"
         disabled={status === "sending" || !email}
-        className="bg-spartan-red hover:bg-red-700 text-white font-display font-bold px-8 py-3 rounded-sm uppercase tracking-wide disabled:opacity-60"
+        className="bg-triarvon-red hover:bg-red-700 text-white font-display font-bold px-8 py-3 rounded-sm uppercase tracking-wide disabled:opacity-60"
       >
         {status === "sending"
           ? "Enviando..."

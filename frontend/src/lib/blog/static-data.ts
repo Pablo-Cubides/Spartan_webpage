@@ -64,12 +64,12 @@ export const posts: BlogPost[] = [
         slug: "rutina-corta-ejercicios-hombres-sin-tiempo",
         title: "Rutina corta de ejercicios para hombres sin tiempo (20 minutos)",
         excerpt: "¿Sin tiempo para el gym? Prueba esta rutina de 20 minutos de alta intensidad (HIIT) avalada por la ciencia.",
-        content: "# Rutina de 20 minutos para días caóticos\n\nSi trabajas, estudias, tienes familia y aun así quieres entrenar, necesitas una rutina corta de ejercicios para hombres sin tiempo que funcione de verdad.\n\n## 1. Regla Espartana: 20 minutos o menos, pero al máximo\n\n- **Intensidad > Duración**: Entrenos cortos tipo HIIT mejoran el VO₂ máx\n- **Frecuencia gana a Perfección**: 3 sesiones de 20 minutos > 1 sesión de 2 horas\n- **Movimientos Compuestos**: Sentadillas, flexiones, ejercicios multiarticulares\n\n## 2. Calentamiento de 3 minutos\n\n1. Marcha militar\n2. Rotaciones de tronco\n3. Círculos de hombros\n4. Sentadillas de aire\n5. Jumping Jacks\n\n## 3. El Circuito \"Cuerpo Espartano Express\"\n\n**Estructura**: 30 segundos trabajo / 30 segundos descanso / 3-4 rondas\n\n1. **Sentadilla**: Baja profundo, sube explosivo\n2. **Flexiones**: Pecho al suelo, cuerpo en línea recta\n3. **Zancadas Alternas**: Paso largo, rodilla casi toca suelo\n4. **Mountain Climbers**: Plancha alta, rodillas al pecho alternando",
+        content: "# Rutina de 20 minutos para días caóticos\n\nSi trabajas, estudias, tienes familia y aun así quieres entrenar, necesitas una rutina corta de ejercicios para hombres sin tiempo que funcione de verdad.\n\n## 1. Regla Triarvon: 20 minutos o menos, pero al máximo\n\n- **Intensidad > Duración**: Entrenos cortos tipo HIIT mejoran el VO₂ máx\n- **Frecuencia gana a Perfección**: 3 sesiones de 20 minutos > 1 sesión de 2 horas\n- **Movimientos Compuestos**: Sentadillas, flexiones, ejercicios multiarticulares\n\n## 2. Calentamiento de 3 minutos\n\n1. Marcha militar\n2. Rotaciones de tronco\n3. Círculos de hombros\n4. Sentadillas de aire\n5. Jumping Jacks\n\n## 3. El Circuito \"Cuerpo Triarvon Express\"\n\n**Estructura**: 30 segundos trabajo / 30 segundos descanso / 3-4 rondas\n\n1. **Sentadilla**: Baja profundo, sube explosivo\n2. **Flexiones**: Pecho al suelo, cuerpo en línea recta\n3. **Zancadas Alternas**: Paso largo, rodilla casi toca suelo\n4. **Mountain Climbers**: Plancha alta, rodillas al pecho alternando",
         cover_image: "/images/blog/blog_rutina_ejercicios_1767539449757.png",
         published_at: "2025-12-28",
         category_slug: "entrenamiento-y-energia-fisica",
         keywords: ["rutina corta", "HIIT", "ejercicios en casa"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 2,
@@ -81,7 +81,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-26",
         category_slug: "entrenamiento-y-energia-fisica",
         keywords: ["creatina", "proteína", "suplementos"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 3,
@@ -93,7 +93,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-24",
         category_slug: "entrenamiento-y-energia-fisica",
         keywords: ["entrenamiento 40 años", "sarcopenia", "fuerza"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 4,
@@ -105,7 +105,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-22",
         category_slug: "estilo-y-presencia",
         keywords: ["armario cápsula", "ropa oficina", "smart casual"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 5,
@@ -117,7 +117,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-20",
         category_slug: "estilo-y-presencia",
         keywords: ["barba", "tipo de cara", "grooming"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 6,
@@ -129,19 +129,19 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-18",
         category_slug: "estilo-y-presencia",
         keywords: ["zapatillas traje", "smart casual", "moda masculina"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 7,
         slug: "como-ser-mas-disciplinado-en-la-vida",
-        title: "El Sistema Spartan de Disciplina: Cómo ser constante cuando se acaba la motivación",
-        excerpt: "¿Te falla la fuerza de voluntad? Aprende el Sistema Spartan basado en la identidad y la neurociencia.",
-        content: "# El Sistema Spartan de Disciplina\n\nLa motivación es una mentira. Es una emoción fugaz. Los hombres que logran resultados extraordinarios dependen de sistemas.\n\n## El Sistema Spartan: 3 Pilares\n\n### Pilar 1: Diseño de Identidad\nNo digas \"quiero ir al gym\". Di \"soy una persona que entrena\".\n\n### Pilar 2: Arquitectura de Entorno\nHaz que lo correcto sea fácil y lo incorrecto sea difícil.\n- Deja el libro en la almohada, el móvil en otra habitación\n- No tengas comida basura en casa\n\n### Pilar 3: Rituales Inquebrantables\nUn ritual no se negocia. Mismo horario, mismo lugar, misma secuencia.\n\n## El Protocolo de los 2 Minutos\n\nCuando no tengas ganas, comprométete solo a 2 minutos. El 90% de las veces, una vez que empiezas, continúas.",
-        cover_image: "/images/blog/blog_disciplina_spartan_1767539574372.png",
+        title: "El Sistema Triarvon de Disciplina: Cómo ser constante cuando se acaba la motivación",
+        excerpt: "¿Te falla la fuerza de voluntad? Aprende el Sistema Triarvon basado en la identidad y la neurociencia.",
+        content: "# El Sistema Triarvon de Disciplina\n\nLa motivación es una mentira. Es una emoción fugaz. Los hombres que logran resultados extraordinarios dependen de sistemas.\n\n## El Sistema Triarvon: 3 Pilares\n\n### Pilar 1: Diseño de Identidad\nNo digas \"quiero ir al gym\". Di \"soy una persona que entrena\".\n\n### Pilar 2: Arquitectura de Entorno\nHaz que lo correcto sea fácil y lo incorrecto sea difícil.\n- Deja el libro en la almohada, el móvil en otra habitación\n- No tengas comida basura en casa\n\n### Pilar 3: Rituales Inquebrantables\nUn ritual no se negocia. Mismo horario, mismo lugar, misma secuencia.\n\n## El Protocolo de los 2 Minutos\n\nCuando no tengas ganas, comprométete solo a 2 minutos. El 90% de las veces, una vez que empiezas, continúas.",
+        cover_image: "/images/blog/blog_disciplina_triarvon_1767539574372.png",
         published_at: "2025-12-16",
         category_slug: "mentalidad-y-disciplina",
         keywords: ["disciplina", "hábitos", "productividad"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 8,
@@ -153,7 +153,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-14",
         category_slug: "mentalidad-y-disciplina",
         keywords: ["rutina mañana", "productividad", "hábitos matutinos"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 9,
@@ -165,7 +165,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-12",
         category_slug: "mentalidad-y-disciplina",
         keywords: ["estoicismo", "control emocional", "ira"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 10,
@@ -177,7 +177,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-10",
         category_slug: "mentalidad-y-disciplina",
         keywords: ["soledad masculina", "amistad", "círculo de hombres"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 11,
@@ -189,7 +189,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-08",
         category_slug: "productividad-y-gestion-del-tiempo",
         keywords: ["dormir mejor", "insomnio", "rutina nocturna"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 12,
@@ -201,7 +201,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-06",
         category_slug: "productividad-y-gestion-del-tiempo",
         keywords: ["deep work", "concentración", "productividad"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     },
     {
         id: 13,
@@ -213,7 +213,7 @@ export const posts: BlogPost[] = [
         published_at: "2025-12-04",
         category_slug: "productividad-y-gestion-del-tiempo",
         keywords: ["ChatGPT", "IA", "productividad"],
-        author: { name: "Spartan Admin" }
+        author: { name: "Triarvon Admin" }
     }
 ];
 

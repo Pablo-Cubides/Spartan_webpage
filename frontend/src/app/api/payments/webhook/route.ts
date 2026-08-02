@@ -164,7 +164,7 @@ export async function POST(request: Request) {
       try {
         const templateId = Number(process.env.BREVO_TEMPLATE_PURCHASE) || 2;
         await sendTemplateEmail(purchase.user.email, templateId, { 
-          NAME: purchase.user.name || 'Espartano',
+          NAME: purchase.user.name || 'Triarvon',
           PACKAGE_NAME: purchase.package?.name || 'Paquete de Créditos',
           CREDITS: String(purchase.credits_received),
           AMOUNT: String(purchase.amount_paid)

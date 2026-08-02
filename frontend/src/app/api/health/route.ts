@@ -53,7 +53,7 @@ const getHandler = async () => {
 
   const response: HealthStatus = {
     status: overallStatus,
-    service: 'spartan-club-api',
+    service: 'triarvon-club-api',
     version: process.env.npm_package_version || '1.0.0',
     timestamp: new Date().toISOString(),
     checks,

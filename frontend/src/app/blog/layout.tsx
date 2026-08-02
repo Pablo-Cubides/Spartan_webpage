@@ -1,7 +1,7 @@
 import React from "react";
 
 export const metadata = {
-  title: "Blog - Spartan Club",
+  title: "Blog - Triarvon Club",
 };
 
 export default function BlogLayout({ children }: { children: React.ReactNode }) {

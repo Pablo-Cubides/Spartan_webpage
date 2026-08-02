@@ -4,7 +4,7 @@ import { consumeCredits as globalConsume, hasSufficientCredits as globalCheck } 
 import { prisma } from '../server/prisma';
 
 /**
- * CREDIT SYSTEM - Integrated with Spartan Platform
+ * CREDIT SYSTEM - Integrated with Triarvon Platform
  */
 
 /**

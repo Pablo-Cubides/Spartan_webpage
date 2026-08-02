@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
-  title: "Herramientas | Spartan Club - Asesor de Estilo y Análisis",
+  title: "Herramientas | Triarvon Club - Asesor de Estilo y Análisis",
   description:
     "Descubre nuestras herramientas de IA para análisis de estilo y forma de cara. Recomendaciones personalizadas para tu transformación.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "IA",
   ],
   openGraph: {
-    title: "Herramientas | Spartan Club",
+    title: "Herramientas | Triarvon Club",
     description: "Herramientas de IA para tu transformación",
     type: "website",
     url: `${BASE_URL}/herramientas`,

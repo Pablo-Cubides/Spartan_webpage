@@ -139,10 +139,10 @@ export default function LinktreeView() {
 
   const toolsAndContent: SocialLink[] = [
     {
-      id: "coach-spartano",
-      title: "Coach Spartano (IA)",
+      id: "coach-triarvono",
+      title: "Coach Triarvono (IA)",
       subtitle: "Tu mentor virtual de disciplina, entrenamiento y metas",
-      url: "/herramientas/couch_spartano",
+      url: "/herramientas/couch_triarvono",
       badge: "HERRAMIENTA IA",
       icon: <Bot className="w-6 h-6 text-amber-400" />,
       iconBgClass: "bg-neutral-900 border border-amber-500/30 shadow-md",

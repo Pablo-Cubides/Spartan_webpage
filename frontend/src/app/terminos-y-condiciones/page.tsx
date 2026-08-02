@@ -25,7 +25,7 @@ export default function TerminosPage() {
         </p>
         <p>
           <strong className="text-white">Contacto:</strong>{" "}
-          spartanmarket@gmail.com
+          triarvonmarket@gmail.com
         </p>
         <p>
           <strong className="text-white">Sitio:</strong> “Triarvon” (asesoría,
@@ -86,7 +86,7 @@ export default function TerminosPage() {
         </h2>
         <p>
           Estos Términos se rigen por la legislación vigente. Para dudas o
-          soporte: spartanmarket@gmail.com
+          soporte: triarvonmarket@gmail.com
         </p>
       </div>
     </main>

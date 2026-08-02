@@ -29,7 +29,7 @@ Triarvon (https://www.triarvon.com/) es una plataforma integral de desarrollo pe
 
 ## Herramientas Interactivas
 
-1. **Coach Triarvon (`/herramientas/couch_spartano`)**:
+1. **Coach Triarvon (`/herramientas/couch_triarvono`)**:
    Un coach de IA especializado que brinda asesoramiento personalizado interactivo en tiempo real sobre rutinas de ejercicios, planes de mentalidad y gestión del tiempo.
 
 2. **Asesor de Forma de Rostro (`/herramientas/asesor-forma-cara`)**:

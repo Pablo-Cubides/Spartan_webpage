@@ -1,5 +1,5 @@
 /**
- * Email HTML Templates for Spartan Club
+ * Email HTML Templates for Triarvon Club
  * Brand Colors:
  * - Primary Red: #C62828
  * - Dark Background: #0a0a0a, #1a1a1a
@@ -76,7 +76,7 @@ const baseTemplate = (content: string) => `
           <tr>
             <td style="background: linear-gradient(135deg, #C62828 0%, #8B0000 100%); padding: 30px 40px; text-align: center;">
               <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">
-                ⚔️ SPARTAN CLUB
+                ⚔️ TRIARVON CLUB
               </h1>
             </td>
           </tr>
@@ -163,7 +163,7 @@ export const welcomeTemplate = (name: string) =>
   
   <p style="margin: 30px 0 0; color: #9CA3AF; font-size: 14px; line-height: 1.6; font-style: italic; border-left: 3px solid #C62828; padding-left: 15px;">
     "La disciplina es el puente entre tus metas y tus logros."<br>
-    <span style="color: #666;">— Filosofía Espartana</span>
+    <span style="color: #666;">— Filosofía Triarvon</span>
   </p>
 `);
 
@@ -259,7 +259,7 @@ export const purchaseTemplate = (params: {
   
   <p style="margin: 30px 0 0; color: #9CA3AF; font-size: 14px; line-height: 1.6;">
     Si tienes alguna pregunta sobre tu compra, contacta a nuestro equipo en 
-    <a href="mailto:spartanmarketcol@gmail.com" style="color: #C62828; text-decoration: none;">spartanmarketcol@gmail.com</a>
+    <a href="mailto:triarvonmarketcol@gmail.com" style="color: #C62828; text-decoration: none;">triarvonmarketcol@gmail.com</a>
   </p>
 `);
 

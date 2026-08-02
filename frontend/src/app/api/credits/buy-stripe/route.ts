@@ -67,7 +67,7 @@ const handler = async (request: NextRequest) => {
   const session = await createCheckoutSession(
     [{
       name: pack.name,
-      description: `${pack.credits} créditos para Spartan Club (~$${usdDisplay} USD)`,
+      description: `${pack.credits} créditos para Triarvon Club (~$${usdDisplay} USD)`,
       amount: amountInCents,
       quantity: 1,
       currency: 'usd',

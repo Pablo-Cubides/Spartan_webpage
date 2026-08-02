@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-// A simple inline SVG for a Spartan helmet icon
-const SpartanHelmetIcon = () => (
+// A simple inline SVG for a Triarvon helmet icon
+const TriarvonHelmetIcon = () => (
   <svg className="w-24 h-24 text-[#a2aab3] mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2L8 6v3h8V6L12 2z" />
     <path d="M18 9H6v7c0 4 6 5 6 5s6-1 6-5V9z" />
@@ -12,7 +12,7 @@ const SpartanHelmetIcon = () => (
 export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#121416] text-white text-center px-4">
-      <SpartanHelmetIcon />
+      <TriarvonHelmetIcon />
       <h1 className="mt-8 text-6xl font-black text-[#C62828] tracking-widest">404</h1>
       <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
         Has Perdido el Camino, Guerrero.

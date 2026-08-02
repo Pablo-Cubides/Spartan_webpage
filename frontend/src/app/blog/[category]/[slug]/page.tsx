@@ -22,10 +22,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 // Category epic names lookup
 const EPIC_NAMES: Record<string, string> = {
-  "entrenamiento-y-energia-fisica": "Cuerpo Espartano",
-  "estilo-y-presencia": "Estilo Espartano",
-  "mentalidad-y-disciplina": "Mentalidad Espartana",
-  "productividad-y-gestion-del-tiempo": "Productividad Espartana",
+  "entrenamiento-y-energia-fisica": "Cuerpo Triarvon",
+  "estilo-y-presencia": "Estilo Triarvon",
+  "mentalidad-y-disciplina": "Mentalidad Triarvon",
+  "productividad-y-gestion-del-tiempo": "Productividad Triarvon",
 };
 
 export async function generateMetadata({
@@ -35,27 +35,27 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
 
   if (!post || post.category_slug !== category) {
-    return { title: "Artículo no encontrado | Spartan Club" };
+    return { title: "Artículo no encontrado | Triarvon Club" };
   }
 
   const postUrl = `${BASE_URL}/blog/${category}/${slug}`;
 
   return {
-    title: `${post.title} | Spartan Club`,
+    title: `${post.title} | Triarvon Club`,
     description: post.excerpt || undefined,
     keywords: post.keywords || [],
-    authors: [{ name: post.author?.name || "Spartan Club" }],
+    authors: [{ name: post.author?.name || "Triarvon Club" }],
     openGraph: {
       title: post.title,
       description: post.excerpt || undefined,
       url: postUrl,
       type: "article",
       publishedTime: post.published_at,
-      authors: [post.author?.name || "Spartan Club"],
+      authors: [post.author?.name || "Triarvon Club"],
       images: post.cover_image
         ? [{ url: post.cover_image, alt: post.title }]
         : [],
-      siteName: "Spartan Club",
+      siteName: "Triarvon Club",
     },
     twitter: {
       card: "summary_large_image",
@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   // Generate schema
   const schema = generateBlogPostingSchema(post, {
     baseUrl: BASE_URL,
-    siteName: "Spartan Club",
+    siteName: "Triarvon Club",
     siteImage: `${BASE_URL}/logo.png`,
   });
 
@@ -148,7 +148,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <main className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
+      <div className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           {/* Background Image */}
@@ -201,7 +201,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="flex flex-wrap items-center gap-6 text-gray-400">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                <span>{post.author?.name || "Spartan Club"}</span>
+                <span>{post.author?.name || "Triarvon Club"}</span>
               </div>
               {post.published_at && (
                 <div className="flex items-center gap-2">
@@ -258,7 +258,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                   ¿Te gustó este artículo?
                 </p>
                 <p className="text-gray-400 mb-4">
-                  Compártelo con otros espartanos y sigue explorando más
+                  Compártelo con otros triarvons y sigue explorando más
                   contenido.
                 </p>
                 <Link
@@ -328,7 +328,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
           </section>
         )}
-      </main>
+      </div>
     </>
   );
 }

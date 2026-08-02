@@ -37,16 +37,18 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
                 <>
                   <Link
                     href={item.href}
-                    className="text-blue-600 hover:underline"
+                    className="text-gray-300 hover:text-white transition-colors"
                   >
                     {item.label}
                   </Link>
                   {index < items.length - 1 && (
-                    <span className="text-gray-400">/</span>
+                    <span className="text-gray-500" aria-hidden="true">/</span>
                   )}
                 </>
               ) : (
-                <span className="text-gray-600">{item.label}</span>
+                <span className="text-gray-200 font-medium" aria-current="page">
+                  {item.label}
+                </span>
               )}
             </li>
           ))}

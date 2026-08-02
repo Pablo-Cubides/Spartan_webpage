@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | Spartan Club",
+  title: "Admin Dashboard | Triarvon Club",
   description: "Administrative control panel",
 };
 
@@ -17,7 +17,7 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 border-r border-gray-700 flex-shrink-0">
           <div className="p-6">
-          <h1 className="text-2xl font-bold text-blue-500">Spartan Club Admin</h1>
+          <h1 className="text-2xl font-bold text-blue-500">Triarvon Club Admin</h1>
         </div>
         <nav className="mt-6 px-4 space-y-2">
           <Link href="/admin/dashboard" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">

@@ -80,7 +80,7 @@ export async function uploadToStorage(buffer: Buffer, filename: string) {
       const cld = cloudinary as any
         // Use a generic Cloudinary folder for uploads to avoid ties to removed features
         const uploadStream = cld?.uploader?.upload_stream?.(
-          { folder: 'spartan-uploads', public_id: uniquePublicId, overwrite: false, resource_type: 'image' },
+          { folder: 'triarvon-uploads', public_id: uniquePublicId, overwrite: false, resource_type: 'image' },
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (error: any, result: any) => {
             if (error) return reject(new Error(String(error)))

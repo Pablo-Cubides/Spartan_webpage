@@ -129,7 +129,7 @@ class BrevoClient {
         to: [{ email, name }],
         templateId: BREVO_CONFIG.templates.welcome,
         params: {
-          NAME: name || 'Espartano',
+          NAME: name || 'Triarvon',
         },
       });
     }

@@ -42,7 +42,7 @@ const postHandler = async (request: NextRequest) => {
       uid,
       email,
       name: name || email.split('@')[0],
-      avatar_id: picture || '/icono spartan club - sin fondo.png',
+      avatar_id: picture || '/icono triarvon club - sin fondo.png',
       role: 'user',
       credits: 0,
       is_active: true,

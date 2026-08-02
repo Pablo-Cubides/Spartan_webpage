@@ -180,8 +180,8 @@ export default function BuyCredits() {
       <div className="text-center mb-10">
         <div className="flex justify-center mb-6">
           <Image
-            src="/Logo spartan club - sin fondo.webp"
-            alt="Spartan Club"
+            src="/Logo triarvon club - sin fondo.webp"
+            alt="Triarvon Club"
             width={240}
             height={240}
             className="object-contain"
@@ -189,7 +189,7 @@ export default function BuyCredits() {
         </div>
         <h1 className="text-4xl font-bold text-white mb-3">Comprar Créditos</h1>
         <p className="text-[#b2a4a4] text-lg">
-          Potencia tu experiencia Spartan con créditos premium
+          Potencia tu experiencia Triarvon con créditos premium
         </p>
 
         {/* Current Credits Display */}
@@ -521,7 +521,7 @@ export default function BuyCredits() {
           </li>
           <li className="flex items-start gap-2">
             <span className="text-[#c20909]">•</span>
-            Puedes usar créditos en todas las herramientas de Spartan Club
+            Puedes usar créditos en todas las herramientas de Triarvon Club
           </li>
           <li className="flex items-start gap-2">
             <span className="text-[#c20909]">•</span>

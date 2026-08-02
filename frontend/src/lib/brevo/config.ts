@@ -6,7 +6,7 @@ export const BREVO_CONFIG = {
   // Sender information
   sender: {
     name: "Triarvon",
-    email: process.env.BREVO_SENDER_EMAIL || "spartanmarketcol@gmail.com",
+    email: process.env.BREVO_SENDER_EMAIL || "triarvonmarketcol@gmail.com",
   },
 
   // Template IDs (create these in Brevo dashboard)

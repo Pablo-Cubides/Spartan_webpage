@@ -1,4 +1,4 @@
-# Spartan Club - robots.txt
+# Triarvon Club - robots.txt
 User-agent: *
 Allow: /
 

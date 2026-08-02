@@ -690,8 +690,8 @@ export default function Page() {
             <div className="relative h-60 w-auto mx-auto">
               <Image
                 fill
-                src="/Logo spartan club - sin fondo.webp"
-                alt="Spartan Club"
+                src="/Logo triarvon club - sin fondo.webp"
+                alt="Triarvon Club"
                 className="object-contain"
               />
             </div>
@@ -772,8 +772,8 @@ export default function Page() {
           <div className="relative mx-auto mb-4 h-20 md:h-24 lg:h-28 w-auto">
             <Image
               fill
-              src="/Logo spartan club - sin fondo.png"
-              alt="Spartan Club"
+              src="/Logo triarvon club - sin fondo.png"
+              alt="Triarvon Club"
               className="object-contain"
             />
           </div>

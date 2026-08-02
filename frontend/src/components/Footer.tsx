@@ -14,12 +14,12 @@ export default function Footer() {
                 width={160}
                 height={160}
                 src="/Triarvon/triarvon-logo-transparent.png"
-                alt="Triarvon"
+                alt="Logo Triarvon - Alto Rendimiento Masculino"
                 className="object-contain"
               />
             </div>
           </div>
-          <p className="text-[#ababab] text-sm mt-2">
+          <p className="text-[#d1d5db] text-sm mt-2">
             Forjando hombres, moldeando destinos.
             <br />
             Disciplina. Coraje. Excelencia.
@@ -27,14 +27,14 @@ export default function Footer() {
         </div>
         {/* Links rápidos */}
         <div>
-          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">
+          <h2 className="uppercase text-[#e53935] text-xs font-bold mb-3 tracking-widest">
             Navegación
-          </h3>
+          </h2>
           <ul className="flex flex-col gap-2">
             <li>
               <Link
                 href="/blog"
-                className="hover:text-[#C62828] transition text-sm"
+                className="text-gray-300 hover:text-white transition text-sm"
               >
                 Blog
               </Link>
@@ -42,7 +42,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/herramientas"
-                className="hover:text-[#C62828] transition text-sm"
+                className="text-gray-300 hover:text-white transition text-sm"
               >
                 Herramientas
               </Link>
@@ -50,7 +50,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/nosotros"
-                className="hover:text-[#C62828] transition text-sm"
+                className="text-gray-300 hover:text-white transition text-sm"
               >
                 Nosotros
               </Link>
@@ -59,17 +59,17 @@ export default function Footer() {
         </div>
         {/* Newsletter */}
         <div>
-          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">
+          <h2 className="uppercase text-[#e53935] text-xs font-bold mb-3 tracking-widest">
             Boletín Informativo
-          </h3>
-          <p className="text-[#ababab] text-sm mb-3">
+          </h2>
+          <p className="text-[#d1d5db] text-sm mb-3">
             Recibe consejos sobre disciplina, masculinidad y mejora personal en
             tu email.
           </p>
           <form className="flex flex-col gap-2">
             <input
               type="email"
-              className="rounded-lg bg-[#222] border border-[#303030] px-3 py-2 text-sm text-white placeholder-[#888] focus:outline-none"
+              className="rounded-lg bg-[#222] border border-[#303030] px-3 py-2 text-sm text-white placeholder-[#aaa] focus:outline-none focus:border-[#e53935]"
               placeholder="Tu correo"
               autoComplete="email"
               aria-label="Correo electrónico para boletín"
@@ -84,17 +84,17 @@ export default function Footer() {
         </div>
         {/* Redes sociales */}
         <div>
-          <h3 className="uppercase text-[#C62828] text-xs font-bold mb-3 tracking-widest">
+          <h2 className="uppercase text-[#e53935] text-xs font-bold mb-3 tracking-widest">
             Síguenos
-          </h3>
+          </h2>
           <div className="flex gap-4 mt-1">
             <a
               href="#"
-              aria-label="X"
-              className="hover:text-[#C62828] transition"
+              aria-label="Síguenos en X (Twitter)"
+              className="text-gray-300 hover:text-white transition"
             >
               {/* X */}
-              <svg width={24} height={24} fill="none" viewBox="0 0 24 24">
+              <svg width={24} height={24} fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fill="currentColor"
                   d="M17.53 6.47a.75.75 0 0 1 0 1.06L7.53 17.53a.75.75 0 1 1-1.06-1.06l10-10a.75.75 0 0 1 1.06 0z"
@@ -107,11 +107,11 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              aria-label="Instagram"
-              className="hover:text-[#C62828] transition"
+              aria-label="Síguenos en Instagram"
+              className="text-gray-300 hover:text-white transition"
             >
               {/* Instagram */}
-              <svg width={24} height={24} fill="none" viewBox="0 0 24 24">
+              <svg width={24} height={24} fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <rect
                   x="3"
                   y="3"
@@ -133,11 +133,11 @@ export default function Footer() {
             </a>
             <a
               href="#"
-              aria-label="YouTube"
-              className="hover:text-[#C62828] transition"
+              aria-label="Síguenos en YouTube"
+              className="text-gray-300 hover:text-white transition"
             >
               {/* YouTube */}
-              <svg width={24} height={24} fill="none" viewBox="0 0 24 24">
+              <svg width={24} height={24} fill="none" viewBox="0 0 24 24" aria-hidden="true">
                 <rect
                   x="3"
                   y="6"
@@ -153,7 +153,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-[#303030] py-4 text-center text-[#ababab] text-xs bg-[#141414]">
+      <div className="border-t border-[#303030] py-4 text-center text-[#d1d5db] text-xs bg-[#141414]">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
           <span>
             &copy; {new Date().getFullYear()} Triarvon — Todos los derechos
@@ -162,13 +162,13 @@ export default function Footer() {
           <div className="flex gap-4">
             <Link
               href="/terminos-y-condiciones"
-              className="hover:text-[#C62828] transition"
+              className="text-gray-300 hover:text-white transition"
             >
               Términos y Condiciones
             </Link>
             <Link
               href="/politica-de-privacidad"
-              className="hover:text-[#C62828] transition"
+              className="text-gray-300 hover:text-white transition"
             >
               Política de Privacidad
             </Link>

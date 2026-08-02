@@ -1,8 +1,8 @@
-# Configuración de Brevo para Spartan Club
+# Configuración de Brevo para Triarvon Club
 
 ## 🎨 Plantillas de Email
 
-Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de Spartan Club.
+Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de Triarvon Club.
 
 ### Colores de la Marca
 - **Rojo Principal**: #C62828
@@ -23,12 +23,12 @@ Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de
 3. Copia la key y guárdala en tu `.env.local`:
    ```
    BREVO_API_KEY=tu-api-key-aqui
-   BREVO_SENDER_EMAIL=spartanmarketcol@gmail.com
+   BREVO_SENDER_EMAIL=triarvonmarketcol@gmail.com
    ```
 
 ### 3. Configurar Dominio de Envío (Opcional pero recomendado)
 1. Ve a **Senders & IP** > **Domains**
-2. Agrega tu dominio `spartanclub.vercel.app`
+2. Agrega tu dominio `triarvonclub.vercel.app`
 3. Configura los registros DNS (SPF, DKIM)
 4. Verifica el dominio
 
@@ -47,7 +47,7 @@ Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de
 
 #### Plantilla 1: Welcome Email
 1. Ve a **Campaigns** > **Templates** > **Create a template**
-2. Nombre: `Spartan Club - Welcome`
+2. Nombre: `Triarvon Club - Welcome`
 3. Usa el código de `templates.ts` función `welcomeTemplate`
 4. Variables dinámicas: `{{params.NAME}}`
 5. Guarda y copia el Template ID:
@@ -56,7 +56,7 @@ Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de
    ```
 
 #### Plantilla 2: Newsletter
-1. Crea otra plantilla: `Spartan Club - Newsletter`
+1. Crea otra plantilla: `Triarvon Club - Newsletter`
 2. Usa el código de `newsletterTemplate`
 3. Variables: `{{params.TITLE}}`, `{{params.PREVIEW}}`, `{{params.CONTENT}}`, `{{params.CTA_TEXT}}`, `{{params.CTA_URL}}`
 4. Guarda el ID:
@@ -65,7 +65,7 @@ Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de
    ```
 
 #### Plantilla 3: Purchase Confirmation
-1. Crea: `Spartan Club - Purchase Confirmation`
+1. Crea: `Triarvon Club - Purchase Confirmation`
 2. Usa `purchaseTemplate`
 3. Variables: `{{params.NAME}}`, `{{params.PACKAGE_NAME}}`, `{{params.CREDITS}}`, `{{params.AMOUNT}}`
 4. Guarda el ID:
@@ -74,7 +74,7 @@ Este proyecto incluye plantillas HTML personalizadas con los colores y estilo de
    ```
 
 #### Plantilla 4: Credit Low
-1. Crea: `Spartan Club - Credit Low`
+1. Crea: `Triarvon Club - Credit Low`
 2. Usa `creditLowTemplate`
 3. Variables: `{{params.NAME}}`, `{{params.CREDITS_REMAINING}}`
 4. Guarda el ID:
@@ -92,7 +92,7 @@ Agrega estas variables a tu archivo `.env.local`:
 ```env
 # Brevo Configuration
 BREVO_API_KEY=tu-api-key-de-brevo
-BREVO_SENDER_EMAIL=spartanmarketcol@gmail.com
+BREVO_SENDER_EMAIL=triarvonmarketcol@gmail.com
 
 # Template IDs (obtener después de crear las plantillas)
 BREVO_TEMPLATE_WELCOME=1
@@ -171,4 +171,4 @@ Después de modificar, actualiza las plantillas en Brevo copiando el HTML genera
 ## 📞 Soporte
 
 - Documentación Brevo: https://developers.brevo.com
-- Email de soporte: spartanmarketcol@gmail.com
+- Email de soporte: triarvonmarketcol@gmail.com

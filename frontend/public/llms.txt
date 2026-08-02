@@ -3,7 +3,7 @@
 > Triarvon es la plataforma líder de desarrollo personal masculino, mentalidad, estilo y condición física para hombres que buscan excelencia, disciplina y alto rendimiento.
 
 ## Herramientas de IA
-- [Coach Triarvon](https://www.triarvon.com/herramientas/couch_spartano): Asistente de inteligencia artificial personal para entrenamiento, nutrición, mentalidad y productividad masculina.
+- [Coach Triarvon](https://www.triarvon.com/herramientas/couch_triarvono): Asistente de inteligencia artificial personal para entrenamiento, nutrición, mentalidad y productividad masculina.
 - [Asesor de Forma de Rostro](https://www.triarvon.com/herramientas/asesor-forma-cara): Herramienta de IA para analizar la estructura facial y recomendar cortes de cabello, barba y accesorios óptimos.
 - [Asesor Personal de Estilo](https://www.triarvon.com/herramientas/asesor-estilo): Generador de recomendaciones de vestimenta y estilo masculino según morfología.
 

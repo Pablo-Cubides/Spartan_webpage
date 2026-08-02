@@ -29,7 +29,7 @@ const prisma = new PrismaClient({
 async function main() {
   console.log('Actualizando paquetes de créditos...');
 
-  // Definir los nuevos paquetes con estética espartana
+  // Definir los nuevos paquetes con estética triarvon
   const packages = [
     {
       name: 'Paquete Iniciación',

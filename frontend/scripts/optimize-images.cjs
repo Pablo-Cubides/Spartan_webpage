@@ -6,9 +6,9 @@ const publicDir = path.join(__dirname, '../public');
 
 const imagesToOptimize = [
   'Hero.png',
-  'Logo spartan club.png',
-  'Logo spartan club - sin fondo.png',
-  'Icono spartan club.png',
+  'Logo triarvon club.png',
+  'Logo triarvon club - sin fondo.png',
+  'Icono triarvon club.png',
   'Herramientas/Seleccionar ropa tool.png'
 ];
 

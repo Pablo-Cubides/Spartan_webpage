@@ -154,6 +154,10 @@ export const viewport: Viewport = {
   ],
 };
 
+import Script from "next/script";
+
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
 // Organization Schema
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -198,6 +202,7 @@ const websiteSchema = {
   url: BASE_URL,
   name: "Triarvon",
   description: "Plataforma de desarrollo personal masculino y alto rendimiento",
+  dateModified: new Date().toISOString().split("T")[0],
   publisher: {
     "@id": `${BASE_URL}/#organization`,
   },
@@ -236,8 +241,26 @@ export default function RootLayout({
         />
       </head>
       <body className="relative flex size-full min-h-screen flex-col bg-[#141414] text-white font-sans">
+        {GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}');
+              `}
+            </Script>
+          </>
+        )}
         <Header />
-        {children}
+        <main id="main-content" className="flex-1 flex flex-col min-h-[calc(100vh-160px)]">
+          {children}
+        </main>
         <Footer />
         <CookieConsent />
         <Analytics />

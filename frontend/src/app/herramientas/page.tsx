@@ -5,7 +5,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 
 // Nota: Metadata no puede estar en 'use client', mover a layout.tsx si se necesita
 // export const metadata: Metadata = {
-//   title: 'Herramientas | Spartan Club - Asesor de Estilo y Análisis',
+//   title: 'Herramientas | Triarvon Club - Asesor de Estilo y Análisis',
 //   description: 'Descubre nuestras herramientas de IA...',
 // };
 
@@ -19,11 +19,11 @@ const HERRAMIENTAS = [
     status: "active",
   },
   {
-    id: "couch_spartano",
+    id: "couch_triarvono",
     title: "Triarvon Personal Coach",
     description:
       "Un programa personalizado de coaching con IA para alcanzar tus metas en Triarvon. Cuerpo, mentalidad, estilo y productividad.",
-    image: encodeURI("/Herramientas/Guerrero spartano.png"),
+    image: encodeURI("/Herramientas/Guerrero triarvono.png"),
     status: "active",
   },
   {
@@ -38,7 +38,7 @@ const HERRAMIENTAS = [
 
 export default function HerramientasPage() {
   return (
-    <main
+    <div
       className="min-h-screen bg-[#0a0a0a]"
       style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
     >
@@ -59,7 +59,7 @@ export default function HerramientasPage() {
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed"
               style={{
-                backgroundImage: `url(${encodeURI("/Herramientas/Hero_herramientas_spartan.jpg")})`,
+                backgroundImage: `url(${encodeURI("/Herramientas/Hero_herramientas_triarvon.jpg")})`,
               }}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-[#050505]"></div>
@@ -69,14 +69,14 @@ export default function HerramientasPage() {
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">
                 Herramientas para tu Transformación
               </h1>
-              <p className="text-[#ba9c9c] text-sm md:text-base">
+              <p className="text-gray-300 text-sm md:text-base">
                 Descubre las herramientas diseñadas para impulsarte en tu camino
                 hacia una vida más disciplinada y plena.
               </p>
             </div>
           </div>
         </div>
-        <div className="flex justify-center flex-1 px-40 py-5">
+        <div className="flex justify-center flex-1 px-4 md:px-40 py-5">
           <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
             {/* Grid de Herramientas */}
             <div className="grid grid-cols-1 gap-4 p-4">
@@ -99,14 +99,14 @@ export default function HerramientasPage() {
                       style={{ backgroundImage: `url("${tool.image}")` }}
                     />
                     <div className="flex w-full grow flex-col items-stretch justify-center gap-2 p-4 @xl:px-6">
-                      <p className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+                      <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
                         {tool.title}
-                      </p>
-                      <p className="text-[#ba9c9c] text-base font-normal leading-normal">
+                      </h2>
+                      <p className="text-gray-300 text-base font-normal leading-normal">
                         {tool.description}
                       </p>
                       {tool.status === "soon" && (
-                        <p className="text-[#c20909] text-sm font-semibold mt-2">
+                        <p className="text-[#ff5252] text-sm font-semibold mt-2">
                           Próximamente
                         </p>
                       )}
@@ -130,6 +130,6 @@ export default function HerramientasPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

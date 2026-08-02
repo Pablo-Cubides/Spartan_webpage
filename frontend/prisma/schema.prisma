@@ -21,7 +21,7 @@ model User {
   updated_at      DateTime?
   purchases       Purchase[]
   posts           BlogPost[]
-  spartanProfile  SpartanProfile?
+  triarvonProfile  TriarvonProfile?
   creditUsage     CreditUsage[]
 }
 
@@ -115,11 +115,11 @@ model BlogPost {
 }
 
 // =============================================
-// Coach Espartano Models
+// Coach Triarvon Models
 // =============================================
 
 // User's coaching profile with goals and preferences
-model SpartanProfile {
+model TriarvonProfile {
   id             Int      @id @default(autoincrement())
   user_id        Int      @unique
   user           User     @relation(fields: [user_id], references: [id])
@@ -141,7 +141,7 @@ model SpartanProfile {
 // Conversation with a specific coach
 model CoachConversation {
   id           Int            @id @default(autoincrement())
-  profile      SpartanProfile @relation(fields: [profile_id], references: [id])
+  profile      TriarvonProfile @relation(fields: [profile_id], references: [id])
   profile_id   Int
   coachType    String         // "general", "cuerpo", "estilo", "mentalidad", "productividad"
   messages     CoachMessage[]

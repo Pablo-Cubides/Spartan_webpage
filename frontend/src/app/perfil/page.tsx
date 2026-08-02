@@ -120,7 +120,7 @@ export default function PerfilPage() {
     email: firebaseUser.email || '',
     alias: null,
     credits: 0,
-    avatar_url: firebaseUser.photoURL || '/icono spartan club - sin fondo.png'
+    avatar_url: firebaseUser.photoURL || '/icono triarvon club - sin fondo.png'
   };
 
   return (
@@ -138,7 +138,7 @@ export default function PerfilPage() {
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-32 h-32 relative">
                     <Image
-                      src={displayProfile.avatar_url || '/icono spartan club - sin fondo.png'}
+                      src={displayProfile.avatar_url || '/icono triarvon club - sin fondo.png'}
                       alt={displayProfile.name || 'User Avatar'}
                       fill
                       className="rounded-full object-cover"
@@ -146,7 +146,7 @@ export default function PerfilPage() {
                   </div>
                   <div className="flex flex-col items-center justify-center">
                     <p className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">
-                      {displayProfile.name || 'Spartan Warrior'}
+                      {displayProfile.name || 'Triarvon Warrior'}
                     </p>
                     <p className="text-[#b2a4a4] text-base font-normal leading-normal text-center">
                       Alias: {displayProfile.alias || 'No alias'}

@@ -2,7 +2,7 @@
 
 export interface BlogCategory {
   id: number;
-  name_display: string; // "Mentalidad Espartana"
+  name_display: string; // "Mentalidad Triarvon"
   slug: string; // "mentalidad-y-disciplina"
   description?: string;
   meta_title?: string;

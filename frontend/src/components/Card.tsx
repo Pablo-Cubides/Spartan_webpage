@@ -13,8 +13,8 @@ export function Card({ imageUrl, title, description, aspectRatio = 'aspect-[3/4]
       <div className={`relative w-full ${aspectRatio} rounded-lg overflow-hidden`}>
         <Image src={imageUrl} alt={title} layout="fill" objectFit="cover" />
       </div>
-      <p className="text-base font-medium leading-normal text-white">{title}</p>
-      {description && <p className="text-[#ababab] text-sm font-normal leading-normal">{description}</p>}
+      <h3 className="text-base font-medium leading-normal text-white">{title}</h3>
+      {description && <p className="text-gray-300 text-sm font-normal leading-normal">{description}</p>}
     </div>
   );
 }

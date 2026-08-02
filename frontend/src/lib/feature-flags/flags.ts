@@ -12,7 +12,7 @@
  */
 
 export const FLAGS = {
-  /** Enables Layer 2 strategist plan in Coach Espartano (gradual 10/50/100%). */
+  /** Enables Layer 2 strategist plan in Coach Triarvon (gradual 10/50/100%). */
   COACH_LAYER2_ENABLED: 'coach_layer2_enabled',
   /** Master kill switch for Stripe payment gateway. */
   PAYMENT_STRIPE_ENABLED: 'payment_stripe_enabled',

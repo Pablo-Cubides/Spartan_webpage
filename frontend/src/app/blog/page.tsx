@@ -25,7 +25,7 @@ const getIconComponent = (categorySlug: string) => {
 };
 
 export const metadata: Metadata = {
-  title: "Blog Spartan Club | Desarrollo Masculino, Entrenamiento y Estilo",
+  title: "Blog Triarvon Club | Desarrollo Masculino, Entrenamiento y Estilo",
   description:
     "Artículos expertos sobre entrenamiento físico, estilo masculino, mentalidad y productividad. Consejos prácticos para hombres que buscan la excelencia.",
   keywords: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     "desarrollo personal masculino",
   ],
   openGraph: {
-    title: "Blog Spartan Club | Desarrollo Masculino",
+    title: "Blog Triarvon Club | Desarrollo Masculino",
     description:
       "Artículos sobre entrenamiento, estilo, mentalidad y productividad para hombres.",
     type: "website",
@@ -47,13 +47,13 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/Hero.png`,
         width: 1200,
         height: 630,
-        alt: "Spartan Club Blog",
+        alt: "Triarvon Club Blog",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog Spartan Club",
+    title: "Blog Triarvon Club",
     description: "Desarrollo masculino integral",
     images: [`${BASE_URL}/Hero.png`],
   },
@@ -91,7 +91,7 @@ export default async function BlogPage() {
   const blogSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Blog Spartan Club",
+    name: "Blog Triarvon Club",
     description: "Artículos sobre desarrollo masculino integral",
     url: `${BASE_URL}/blog`,
   };
@@ -121,7 +121,7 @@ export default async function BlogPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <main className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
+      <div className="min-h-screen bg-gradient-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 px-4">
           {/* Background Effects */}
@@ -141,7 +141,7 @@ export default async function BlogPage() {
             <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
               Blog{" "}
               <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-                Spartan
+                Triarvon
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
@@ -294,7 +294,7 @@ export default async function BlogPage() {
             </div>
           </section>
         )}
-      </main>
+      </div>
     </>
   );
 }

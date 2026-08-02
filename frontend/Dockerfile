@@ -1,5 +1,5 @@
 # =============================================================================
-# Spartan Club - Production Dockerfile
+# Triarvon Club - Production Dockerfile
 # Multi-stage build optimized for Next.js with Prisma
 # =============================================================================
 

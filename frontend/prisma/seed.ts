@@ -16,7 +16,7 @@ async function seedBlogCategories() {
   const categories = [
     {
       slug: 'entrenamiento-y-energia-fisica',
-      epic_name: 'Cuerpo Espartano',
+      epic_name: 'Cuerpo Triarvon',
       description: 'Rutinas, fuerza, resistencia y energía para hombres.',
       icon: 'Dumbbell',
       gradient: 'from-red-600 to-orange-600',
@@ -25,7 +25,7 @@ async function seedBlogCategories() {
     },
     {
       slug: 'estilo-y-presencia',
-      epic_name: 'Estilo Espartano',
+      epic_name: 'Estilo Triarvon',
       description: 'Moda, cuidado personal y presencia masculina.',
       icon: 'Shirt',
       gradient: 'from-blue-600 to-indigo-600',
@@ -34,7 +34,7 @@ async function seedBlogCategories() {
     },
     {
       slug: 'mentalidad-y-disciplina',
-      epic_name: 'Mentalidad Espartana',
+      epic_name: 'Mentalidad Triarvon',
       description: 'Disciplina, hábitos y resiliencia masculina.',
       icon: 'Brain',
       gradient: 'from-purple-600 to-pink-600',
@@ -43,7 +43,7 @@ async function seedBlogCategories() {
     },
     {
       slug: 'productividad-y-gestion-del-tiempo',
-      epic_name: 'Productividad Espartana',
+      epic_name: 'Productividad Triarvon',
       description: 'Gestión del tiempo y máximo rendimiento.',
       icon: 'Clock',
       gradient: 'from-green-600 to-teal-600',
@@ -94,10 +94,10 @@ async function seedBlogPosts() {
   const baseDir = path.join(process.cwd(), 'public', 'Blog');
 
   const categoryFiles = [
-    { slug: 'entrenamiento-y-energia-fisica', filename: 'Articulos categoria 1 Spartan.txt' },
-    { slug: 'estilo-y-presencia', filename: 'Articulos categoria 2 Spartan.txt' },
-    { slug: 'mentalidad-y-disciplina', filename: 'Articulos categoria 3 Spartan.txt' },
-    { slug: 'productividad-y-gestion-del-tiempo', filename: 'Articulos categoria 4 Spartan.txt' },
+    { slug: 'entrenamiento-y-energia-fisica', filename: 'Articulos categoria 1 Triarvon.txt' },
+    { slug: 'estilo-y-presencia', filename: 'Articulos categoria 2 Triarvon.txt' },
+    { slug: 'mentalidad-y-disciplina', filename: 'Articulos categoria 3 Triarvon.txt' },
+    { slug: 'productividad-y-gestion-del-tiempo', filename: 'Articulos categoria 4 Triarvon.txt' },
   ];
 
   for (const catFile of categoryFiles) {
@@ -204,7 +204,7 @@ async function main() {
       create: {
         email: 'admin@triarvon.com',
         uid: 'admin-seed-uid',
-        name: 'Spartan Admin',
+        name: 'Triarvon Admin',
         role: 'admin'
       }
     });

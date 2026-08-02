@@ -117,7 +117,7 @@ const XIcon = () => (
 export default function NosotrosPage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col bg-[#0a0a0a] text-[#D1D5DB] overflow-x-hidden">
-      <main className="flex-1">
+      <div className="flex-1">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           {/* Breadcrumb */}
           <Breadcrumb
@@ -136,7 +136,7 @@ export default function NosotrosPage() {
                     Forjando <span className="text-[#D32F2F]">Hombres</span> de
                     Élite
                   </h1>
-                  <p className="text-[#9CA3AF] text-lg md:text-xl leading-relaxed">
+                  <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
                     Nuestra misión es empoderarte con las herramientas para
                     conquistar tus objetivos. Nuestra visión es crear una
                     hermandad de hombres disciplinados que lideran con el
@@ -174,7 +174,7 @@ export default function NosotrosPage() {
                   <h2 className="text-white text-3xl font-extrabold uppercase tracking-tight">
                     Nuestra Misión
                   </h2>
-                  <p className="text-[#9CA3AF] text-base leading-relaxed">
+                  <p className="text-gray-300 text-base leading-relaxed">
                     Empoderar a cada hombre con las herramientas, conocimiento y
                     disciplina necesaria para forjar su mejor versión y
                     construir una vida con propósito.
@@ -189,7 +189,7 @@ export default function NosotrosPage() {
                   <h2 className="text-white text-3xl font-extrabold uppercase tracking-tight">
                     Nuestra Visión
                   </h2>
-                  <p className="text-[#9CA3AF] text-base leading-relaxed">
+                  <p className="text-gray-300 text-base leading-relaxed">
                     Ser la hermandad de referencia para hombres que buscan la
                     excelencia, creando líderes que impacten positivamente sus
                     comunidades.
@@ -205,7 +205,7 @@ export default function NosotrosPage() {
               <h2 className="text-white text-4xl md:text-5xl font-black uppercase tracking-tight mb-4">
                 El <span className="text-[#D32F2F]">Código</span>
               </h2>
-              <p className="text-[#9CA3AF] text-lg max-w-2xl mx-auto">
+              <p className="text-gray-300 text-lg max-w-2xl mx-auto">
                 Los principios fundamentales que guían nuestra hermandad
               </p>
             </div>
@@ -215,10 +215,10 @@ export default function NosotrosPage() {
                   <CalendarIcon />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-white text-2xl font-bold uppercase tracking-tight">
+                  <h3 className="text-white text-2xl font-bold uppercase tracking-tight">
                     Disciplina
-                  </p>
-                  <p className="text-[#9CA3AF] leading-relaxed">
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed">
                     Compromiso inquebrantable con la consistencia y el
                     autocontrol diario para forjar el carácter.
                   </p>
@@ -229,10 +229,10 @@ export default function NosotrosPage() {
                   <GroupsIcon />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-white text-2xl font-bold uppercase tracking-tight">
+                  <h3 className="text-white text-2xl font-bold uppercase tracking-tight">
                     Hermandad
-                  </p>
-                  <p className="text-[#9CA3AF] leading-relaxed">
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed">
                     Apoyo mutuo y lealtad que nos une; juntos somos más fuertes
                     que la suma de nuestras partes.
                   </p>
@@ -243,10 +243,10 @@ export default function NosotrosPage() {
                   <ShieldIcon />
                 </div>
                 <div className="space-y-3">
-                  <p className="text-white text-2xl font-bold uppercase tracking-tight">
+                  <h3 className="text-white text-2xl font-bold uppercase tracking-tight">
                     Liderazgo
-                  </p>
-                  <p className="text-[#9CA3AF] leading-relaxed">
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed">
                     Tomar las riendas de tu vida e inspirar a otros a alcanzar
                     su máximo potencial a través del ejemplo.
                   </p>
@@ -262,7 +262,7 @@ export default function NosotrosPage() {
                 <h2 className="text-white text-3xl font-extrabold uppercase tracking-tight">
                   Conecta con la Tribu
                 </h2>
-                <p className="text-[#9CA3AF]">
+                <p className="text-gray-300">
                   Síguenos en nuestras redes sociales
                 </p>
               </div>
@@ -275,7 +275,7 @@ export default function NosotrosPage() {
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <InstagramIcon />
                   </div>
-                  <p className="text-[#9CA3AF] text-sm font-medium group-hover:text-white transition-colors">
+                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
                     Instagram
                   </p>
                 </a>
@@ -287,7 +287,7 @@ export default function NosotrosPage() {
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <XIcon />
                   </div>
-                  <p className="text-[#9CA3AF] text-sm font-medium group-hover:text-white transition-colors">
+                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
                     X
                   </p>
                 </a>
@@ -299,7 +299,7 @@ export default function NosotrosPage() {
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <YouTubeIcon />
                   </div>
-                  <p className="text-[#9CA3AF] text-sm font-medium group-hover:text-white transition-colors">
+                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
                     YouTube
                   </p>
                 </a>
@@ -311,7 +311,7 @@ export default function NosotrosPage() {
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <DiscordIcon />
                   </div>
-                  <p className="text-[#9CA3AF] text-sm font-medium group-hover:text-white transition-colors">
+                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
                     Discord
                   </p>
                 </a>
@@ -331,7 +331,7 @@ export default function NosotrosPage() {
                     ¿Listo para tu{" "}
                     <span className="text-[#D32F2F]">Transformación</span>?
                   </h2>
-                  <p className="text-[#9CA3AF] text-xl leading-relaxed">
+                  <p className="text-gray-300 text-xl leading-relaxed">
                     Únete a una comunidad de hombres que no se conforman. Es
                     hora de forjar la mejor versión de ti.
                   </p>
@@ -345,7 +345,7 @@ export default function NosotrosPage() {
             </div>
           </section>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
