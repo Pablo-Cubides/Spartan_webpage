@@ -30,11 +30,11 @@
     "/api/newsletter":                "docs/specs/api-contracts/contact.md",
     "/api/health":                    "docs/specs/api-contracts/contact.md",
     "/api/home-content":              "docs/specs/api-contracts/contact.md",
-    "/herramientas/couch_spartano/api/chat": "docs/specs/api-contracts/coach-chat.md",
-    "/herramientas/couch_spartano/api/chat/history": "docs/specs/api-contracts/coach-chat.md",
-    "/herramientas/couch_spartano/api/coaches": "docs/specs/api-contracts/coach-chat.md",
-    "/herramientas/couch_spartano/api/profile": "docs/specs/api-contracts/coach-chat.md",
-    "/herramientas/couch_spartano/api/reports": "docs/specs/api-contracts/coach-chat.md",
-    "/herramientas/couch_spartano/api/welcome": "docs/specs/api-contracts/coach-chat.md"
+    "/herramientas/couch_triarvono/api/chat": "docs/specs/api-contracts/coach-chat.md",
+    "/herramientas/couch_triarvono/api/chat/history": "docs/specs/api-contracts/coach-chat.md",
+    "/herramientas/couch_triarvono/api/coaches": "docs/specs/api-contracts/coach-chat.md",
+    "/herramientas/couch_triarvono/api/profile": "docs/specs/api-contracts/coach-chat.md",
+    "/herramientas/couch_triarvono/api/reports": "docs/specs/api-contracts/coach-chat.md",
+    "/herramientas/couch_triarvono/api/welcome": "docs/specs/api-contracts/coach-chat.md"
   }
 }

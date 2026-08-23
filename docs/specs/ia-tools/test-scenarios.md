@@ -1,19 +1,19 @@
-# Test Scenarios — IA Tools (Coach Espartano + Asesor de Estilo)
+# Test Scenarios — IA Tools (Coach Triarvon + Asesor de Estilo)
 
 Test file: `frontend/tests/asesor-estilo/config.test.ts`  
-Implementation: `frontend/src/app/herramientas/couch_spartano/`, `frontend/src/app/api/asesor-estilo/`
+Implementation: `frontend/src/app/herramientas/couch_triarvono/`, `frontend/src/app/api/asesor-estilo/`
 
 ---
 
-## Coach Espartano
+## Coach Triarvon
 
 ### Scenario 1 — Onboarding requerido antes de chatear
 
-**Given** un usuario autenticado sin `SpartanProfile.onboardingDone = true`  
-**When** envía POST a `/herramientas/couch_spartano/api/chat`  
+**Given** un usuario autenticado sin `TriarvonProfile.onboardingDone = true`  
+**When** envía POST a `/herramientas/couch_triarvono/api/chat`  
 **Then** responde `400 { error: "ONBOARDING_REQUIRED" }`  
 
-Reference: `frontend/src/app/herramientas/couch_spartano/api/chat/route.ts:39`
+Reference: `frontend/src/app/herramientas/couch_triarvono/api/chat/route.ts:39`
 
 ---
 
@@ -25,7 +25,7 @@ Reference: `frontend/src/app/herramientas/couch_spartano/api/chat/route.ts:39`
 **And** `CoachFreeMessages.count` se incrementa en 1  
 **And** el mensaje se almacena cifrado en `CoachMessage`  
 
-Reference: `frontend/src/lib/coach-espartano/credits.ts:canSendMessage()`
+Reference: `frontend/src/lib/coach-triarvon/credits.ts:canSendMessage()`
 
 ---
 
@@ -36,7 +36,7 @@ Reference: `frontend/src/lib/coach-espartano/credits.ts:canSendMessage()`
 **Then** responde `200` con `{ creditsUsed: 1, creditsRemaining: 4 }`  
 **And** `User.credits` se reduce en 1  
 
-Reference: `frontend/src/lib/coach-espartano/credits.ts:recordMessageSent()`
+Reference: `frontend/src/lib/coach-triarvon/credits.ts:recordMessageSent()`
 
 ---
 
@@ -47,7 +47,7 @@ Reference: `frontend/src/lib/coach-espartano/credits.ts:recordMessageSent()`
 **Then** responde `402 { error: "INSUFFICIENT_CREDITS" }`  
 **And** ningún mensaje se almacena ni se llama al modelo IA  
 
-Reference: `frontend/src/lib/coach-espartano/credits.ts:canSendMessage()`
+Reference: `frontend/src/lib/coach-triarvon/credits.ts:canSendMessage()`
 
 ---
 
@@ -57,7 +57,7 @@ Reference: `frontend/src/lib/coach-espartano/credits.ts:canSendMessage()`
 **When** intenta chatear con coach `cuerpo`  
 **Then** responde `400 { error: "COACH_NOT_ENABLED" }`  
 
-Reference: `frontend/src/app/herramientas/couch_spartano/api/chat/route.ts:58`
+Reference: `frontend/src/app/herramientas/couch_triarvono/api/chat/route.ts:58`
 
 ---
 
@@ -69,7 +69,7 @@ Reference: `frontend/src/app/herramientas/couch_spartano/api/chat/route.ts:58`
 **And** el mensaje no llega al modelo IA  
 **And** no se consumen créditos  
 
-Reference: `frontend/src/lib/coach-espartano/safety.ts:checkMessageSafety()`
+Reference: `frontend/src/lib/coach-triarvon/safety.ts:checkMessageSafety()`
 
 ---
 
@@ -80,7 +80,7 @@ Reference: `frontend/src/lib/coach-espartano/safety.ts:checkMessageSafety()`
 **Then** el sistema detecta que `monthYear` cambió y reinicia `count = 0`  
 **And** el mensaje se procesa con cuota disponible  
 
-Reference: `frontend/src/lib/coach-espartano/credits.ts` — reset por monthYear mismatch
+Reference: `frontend/src/lib/coach-triarvon/credits.ts` — reset por monthYear mismatch
 
 ---
 

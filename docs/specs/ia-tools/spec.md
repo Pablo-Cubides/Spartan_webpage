@@ -5,11 +5,11 @@ owner: engineering
 last_changed: "2026-04-29"
 ---
 
-# Spec: IA Tools — Coach Espartano y Asesor de Estilo
+# Spec: IA Tools — Coach Triarvon y Asesor de Estilo
 
 ## Problem
 
-Los usuarios de Spartan Club necesitan orientación personalizada en áreas de desarrollo masculino (cuerpo, estilo, mentalidad, productividad). El acceso a coaches humanos es costoso e inaccesible para la mayoría. Las herramientas IA genéricas no conocen el contexto ni los objetivos específicos del usuario.
+Los usuarios de Triarvon Club necesitan orientación personalizada en áreas de desarrollo masculino (cuerpo, estilo, mentalidad, productividad). El acceso a coaches humanos es costoso e inaccesible para la mayoría. Las herramientas IA genéricas no conocen el contexto ni los objetivos específicos del usuario.
 
 ## Goal
 
@@ -22,7 +22,7 @@ Proveer herramientas IA especializadas que:
 ## Scope
 
 ### In
-- **Coach Espartano**: 5 coaches especializados (general, cuerpo, estilo, mentalidad, productividad)
+- **Coach Triarvon**: 5 coaches especializados (general, cuerpo, estilo, mentalidad, productividad)
 - **Cuota gratuita mensual** por usuario + sistema de créditos de pago
 - **Onboarding** de perfil obligatorio antes de acceder a coaches
 - **Asesor de Estilo**: análisis de imagen de ropa/outfit con IA visual
@@ -35,7 +35,7 @@ Proveer herramientas IA especializadas que:
 - Entrenadores humanos en la plataforma
 - Exportación del historial de conversaciones
 
-## Coach Espartano — Acceptance Criteria
+## Coach Triarvon — Acceptance Criteria
 
 - Un usuario nuevo no puede acceder a ningún coach hasta completar el onboarding de perfil. {@test: frontend/tests/asesor-estilo/config.test.ts}
 - El onboarding captura: `mainGoal`, `subGoals`, `levels` (cuerpo/estilo/mentalidad/productividad), `restrictions` (tiempo, presupuesto), `preferences` (gym, home, etc.). {@test: frontend/tests/asesor-estilo/config.test.ts}
@@ -82,11 +82,11 @@ Asesor:      N créditos por análisis de imagen (configurable)
 
 ## API Contracts
 
-- `POST /herramientas/couch_spartano/api/chat` — ver `docs/specs/api-contracts/coach-chat.md`
-- `GET  /herramientas/couch_spartano/api/chat/history`
-- `GET  /herramientas/couch_spartano/api/coaches`
-- `GET  /herramientas/couch_spartano/api/profile`
-- `POST /herramientas/couch_spartano/api/welcome`
+- `POST /herramientas/couch_triarvono/api/chat` — ver `docs/specs/api-contracts/coach-chat.md`
+- `GET  /herramientas/couch_triarvono/api/chat/history`
+- `GET  /herramientas/couch_triarvono/api/coaches`
+- `GET  /herramientas/couch_triarvono/api/profile`
+- `POST /herramientas/couch_triarvono/api/welcome`
 - `POST /api/asesor-estilo/upload`
 - `POST /api/asesor-estilo/analyze`
 - `POST /api/asesor-estilo/iterate`
@@ -95,13 +95,13 @@ Asesor:      N créditos por análisis de imagen (configurable)
 
 | Spec requirement | Code location |
 |-----------------|---------------|
-| Onboarding check | `frontend/src/app/herramientas/couch_spartano/api/chat/route.ts:39` |
-| Credit gate | `frontend/src/lib/coach-espartano/credits.ts:canSendMessage()` |
-| Safety check | `frontend/src/lib/coach-espartano/safety.ts:checkMessageSafety()` |
-| AI response (Gemini) | `frontend/src/lib/coach-espartano/gemini.ts:getChatResponse()` |
-| Strategist Layer 2 | `frontend/src/lib/coach-espartano/gemini.ts:runStrategistAnalysis()` |
-| Message encryption | `frontend/src/lib/coach-espartano/encryption.ts` |
-| Coach config | `frontend/src/lib/coach-espartano/config/coaches.config.ts` |
+| Onboarding check | `frontend/src/app/herramientas/couch_triarvono/api/chat/route.ts:39` |
+| Credit gate | `frontend/src/lib/coach-triarvon/credits.ts:canSendMessage()` |
+| Safety check | `frontend/src/lib/coach-triarvon/safety.ts:checkMessageSafety()` |
+| AI response (Gemini) | `frontend/src/lib/coach-triarvon/gemini.ts:getChatResponse()` |
+| Strategist Layer 2 | `frontend/src/lib/coach-triarvon/gemini.ts:runStrategistAnalysis()` |
+| Message encryption | `frontend/src/lib/coach-triarvon/encryption.ts` |
+| Coach config | `frontend/src/lib/coach-triarvon/config/coaches.config.ts` |
 | Profile model | `frontend/prisma/schema.prisma:122` |
 | Conversation model | `frontend/prisma/schema.prisma:142` |
 | Message model | `frontend/prisma/schema.prisma:156` |
@@ -126,7 +126,7 @@ See `docs/specs/ia-tools/test-scenarios.md`.
 
 ## Definition of Done
 
-- [x] Onboarding de perfil funcional — `SpartanProfile` creado en DB
+- [x] Onboarding de perfil funcional — `TriarvonProfile` creado en DB
 - [x] Chat con 5 tipos de coach — `CoachConversation` + `CoachMessage` en DB
 - [x] Credit gate funcional — `CoachFreeMessages` + `User.credits`
 - [x] Cifrado de mensajes — `encryption.ts`

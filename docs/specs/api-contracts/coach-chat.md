@@ -1,14 +1,14 @@
-# API Contract — Coach Espartano Chat
+# API Contract — Coach Triarvon Chat
 
-Implementation: `frontend/src/app/herramientas/couch_spartano/api/chat/route.ts`
+Implementation: `frontend/src/app/herramientas/couch_triarvono/api/chat/route.ts`
 
 ---
 
-## POST /herramientas/couch_spartano/api/chat — Send message
+## POST /herramientas/couch_triarvono/api/chat — Send message
 
 ```
 Method:     POST
-Path:       /herramientas/couch_spartano/api/chat
+Path:       /herramientas/couch_triarvono/api/chat
 Auth:       Bearer <Firebase ID Token>
 Rate:       Enforced by credit system (free tier: N msg/month, paid: per-credit)
 Idempotent: no
@@ -57,11 +57,11 @@ Status: 200
 
 ---
 
-## GET /herramientas/couch_spartano/api/chat/history — Chat history
+## GET /herramientas/couch_triarvono/api/chat/history — Chat history
 
 ```
 Method: GET
-Path:   /herramientas/couch_spartano/api/chat/history?coachType=<type>&limit=<n>
+Path:   /herramientas/couch_triarvono/api/chat/history?coachType=<type>&limit=<n>
 Auth:   Bearer <Firebase ID Token>
 ```
 
@@ -92,7 +92,7 @@ Note: messages are stored encrypted in DB and decrypted on retrieval.
 ```
 Model: CoachConversation  (frontend/prisma/schema.prisma:142)
 Model: CoachMessage       (frontend/prisma/schema.prisma:156)
-Model: SpartanProfile     (frontend/prisma/schema.prisma:122)
+Model: TriarvonProfile     (frontend/prisma/schema.prisma:122)
 Model: CoachFreeMessages  (frontend/prisma/schema.prisma:167)
 ```
 
@@ -110,12 +110,12 @@ Model: CoachFreeMessages  (frontend/prisma/schema.prisma:167)
 
 - Free tier: N messages/month tracked in `CoachFreeMessages` (resets monthly).
 - Paid: 1 credit per message beyond free tier, deducted from `User.credits`.
-- Gate enforced in `lib/coach-espartano/credits.ts:canSendMessage()`.
+- Gate enforced in `lib/coach-triarvon/credits.ts:canSendMessage()`.
 
 ### Message encryption
 
 - All `CoachMessage.content` stored AES-256 encrypted.
-- Encryption/decryption handled by `lib/coach-espartano/encryption.ts`.
+- Encryption/decryption handled by `lib/coach-triarvon/encryption.ts`.
 - Keys derived from `COACH_ENCRYPTION_KEY` env var.
 
 ## Responsibilities
@@ -123,8 +123,8 @@ Model: CoachFreeMessages  (frontend/prisma/schema.prisma:167)
 | Responsibility | Owner |
 |---|---|
 | Auth | `verifyIdToken()` in `lib/server/firebaseAdmin.ts` |
-| Credit gate | `canSendMessage()` / `recordMessageSent()` in `lib/coach-espartano/credits.ts` |
-| Safety check | `checkMessageSafety()` in `lib/coach-espartano/safety.ts` |
-| AI response | `getChatResponse()` in `lib/coach-espartano/gemini.ts` |
-| Encryption | `lib/coach-espartano/encryption.ts` |
+| Credit gate | `canSendMessage()` / `recordMessageSent()` in `lib/coach-triarvon/credits.ts` |
+| Safety check | `checkMessageSafety()` in `lib/coach-triarvon/safety.ts` |
+| AI response | `getChatResponse()` in `lib/coach-triarvon/gemini.ts` |
+| Encryption | `lib/coach-triarvon/encryption.ts` |
 | Strategist (Layer 2) | `runStrategistAnalysis()` — async, runs periodically |
