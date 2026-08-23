@@ -79,7 +79,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_ES",
-    alternateLocale: ["en_US"],
     url: BASE_URL,
     siteName: "Triarvon",
     title: "Triarvon - Forja tu Potencial y Alto Rendimiento Masculino",
@@ -136,7 +135,7 @@ export const metadata: Metadata = {
     canonical: BASE_URL,
     languages: {
       es: BASE_URL,
-      en: `${BASE_URL}/en`,
+      "x-default": BASE_URL,
     },
   },
 };
@@ -258,7 +257,10 @@ export default function RootLayout({
           </>
         )}
         <Header />
-        <main id="main-content" className="flex-1 flex flex-col min-h-[calc(100vh-160px)]">
+        <main
+          id="main-content"
+          className="flex-1 flex flex-col min-h-[calc(100vh-160px)]"
+        >
           {children}
         </main>
         <Footer />

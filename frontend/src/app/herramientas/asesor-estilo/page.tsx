@@ -761,7 +761,7 @@ export default function Page() {
 
   if (step === "upload") {
     return (
-      <main className="app-center" role="main">
+      <div className="app-center">
         <ModalLogin
           open={showLoginModal}
           onClose={() => setShowLoginModal(false)}
@@ -959,7 +959,7 @@ export default function Page() {
             </div>
           </section>
         </section>
-      </main>
+      </div>
     );
   }
 
@@ -967,7 +967,7 @@ export default function Page() {
 
   // Ready/chat view
   return (
-    <main className="app-center" role="main">
+    <div className="app-center">
       <ModalLogin
         open={showLoginModal}
         onClose={() => setShowLoginModal(false)}
@@ -1233,7 +1233,7 @@ export default function Page() {
           </div>
         )}
       </section>
-    </main>
+    </div>
   );
 }
 

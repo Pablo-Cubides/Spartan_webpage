@@ -22,16 +22,23 @@ export function generateBlogPostingSchema(
   const typedPost = post as Record<string, unknown>;
   const postUrl = `${options.baseUrl}/blog/${typedPost.category_slug}/${typedPost.slug}/`;
 
+  const pubDate = typedPost.published_at
+    ? new Date(typedPost.published_at as string | Date)
+    : typedPost.created_at
+      ? new Date(typedPost.created_at as string | Date)
+      : new Date();
+  const modDate = typedPost.updated_at
+    ? new Date(typedPost.updated_at as string | Date)
+    : pubDate;
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: typedPost.meta_title || typedPost.title,
     description: typedPost.meta_description || typedPost.excerpt,
     image: typedPost.cover_image ? [typedPost.cover_image] : [],
-    datePublished: (
-      (typedPost.published_at as Date | null) || (typedPost.created_at as Date)
-    ).toISOString(),
-    dateModified: (typedPost.updated_at as Date).toISOString(),
+    datePublished: pubDate.toISOString(),
+    dateModified: modDate.toISOString(),
     ...((typedPost.author as Record<string, unknown> | null) && {
       author: {
         "@type": "Person",

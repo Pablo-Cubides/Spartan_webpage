@@ -1,0 +1,937 @@
+{
+  "keyword": "disciplina diaria y productividad personal",
+  "generatedAt": "2026-08-12T06:09:41.009Z",
+  "provider": "google-autocomplete-light",
+  "classifier": "gemini:gemini-2.5-flash",
+  "country": "CO",
+  "language": "es",
+  "confidence": "high",
+  "counts": {
+    "suggestions": 37,
+    "serp": 0,
+    "clusters": 21
+  },
+  "suggestions": [
+    "disciplina diaria y productividad personal",
+    "que es disciplina diaria y productividad personal",
+    "como funciona disciplina diaria y productividad personal",
+    "como hacer disciplina diaria y productividad personal",
+    "por que disciplina diaria y productividad personal",
+    "cuando usar disciplina diaria y productividad personal",
+    "donde comprar disciplina diaria y productividad personal",
+    "cual es disciplina diaria y productividad personal",
+    "disciplina diaria y productividad personal mejor",
+    "disciplina diaria y productividad personal precio",
+    "disciplina diaria y productividad personal vs",
+    "disciplina diaria y productividad personal para",
+    "disciplina diaria y productividad personal cerca de",
+    "disciplina diaria y productividad personal en colombia",
+    "disciplina diaria y productividad personal guia",
+    "disciplina diaria y productividad personal ejemplos",
+    "disciplina diaria y productividad personal beneficios",
+    "disciplina diaria y productividad personal problemas",
+    "disciplina diaria y productividad personal errores",
+    "disciplina diaria y productividad personal alternativas",
+    "disciplina diaria y productividad personal paso a paso",
+    "disciplina diaria y productividad personal colombia",
+    "disciplina diaria y productividad personal para empresas",
+    "disciplina diaria y productividad personal para principiantes",
+    "disciplina diaria y productividad personal costos",
+    "disciplina diaria y productividad personal ventajas y desventajas",
+    "disciplina diaria y productividad personal a",
+    "disciplina diaria y productividad personal b",
+    "disciplina diaria y productividad personal c",
+    "disciplina diaria y productividad personal d",
+    "disciplina diaria y productividad personal e",
+    "disciplina diaria y productividad personal f",
+    "disciplina diaria y productividad personal g",
+    "disciplina diaria y productividad personal h",
+    "disciplina diaria y productividad personal i",
+    "disciplina diaria y productividad personal j",
+    "disciplina diaria y productividad personal k"
+  ],
+  "classifiedKeywords": [
+    {
+      "keyword": "disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Concepto General",
+      "articleTitle": "Qué es la Disciplina Diaria y la Productividad Personal: Guía Completa",
+      "priority": "alta"
+    },
+    {
+      "keyword": "que es disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Concepto General",
+      "articleTitle": "Qué es la Disciplina Diaria y Productividad Personal y Por Qué es Crucial",
+      "priority": "alta"
+    },
+    {
+      "keyword": "como funciona disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Funcionamiento",
+      "articleTitle": "Cómo Funciona la Disciplina Diaria para Impulsar tu Productividad Personal",
+      "priority": "media"
+    },
+    {
+      "keyword": "como hacer disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Implementación Práctica",
+      "articleTitle": "Cómo Desarrollar Disciplina Diaria y Mejorar tu Productividad Personal: Guía Práctica",
+      "priority": "alta"
+    },
+    {
+      "keyword": "por que disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Beneficios/Motivación",
+      "articleTitle": "Por Qué la Disciplina Diaria es Clave para una Productividad Personal Sostenible",
+      "priority": "media"
+    },
+    {
+      "keyword": "cuando usar disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Contexto de Uso",
+      "articleTitle": "Cuándo Aplicar la Disciplina Diaria para Maximizar tu Productividad Personal",
+      "priority": "baja"
+    },
+    {
+      "keyword": "donde comprar disciplina diaria y productividad personal",
+      "intent": "transaccional",
+      "stage": "compra",
+      "cluster": "Compra/Servicios",
+      "articleTitle": "Dónde Adquirir Cursos o Recursos de Disciplina Diaria y Productividad Personal en Colombia",
+      "priority": "alta"
+    },
+    {
+      "keyword": "cual es disciplina diaria y productividad personal",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Concepto General",
+      "articleTitle": "¿Cuál es la Verdadera Definición de Disciplina Diaria y Productividad Personal?",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal mejor",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "Mejores Opciones",
+      "articleTitle": "La Mejor Disciplina Diaria para Aumentar tu Productividad Personal: Guía Comparativa",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal precio",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "Precios/Costos",
+      "articleTitle": "Precio de Programas de Disciplina Diaria y Productividad Personal: ¿Cuánto Cuesta Invertir en Ti?",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal vs",
+      "intent": "informacional",
+      "stage": "comparacion",
+      "cluster": "Comparación",
+      "articleTitle": "Disciplina Diaria y Productividad Personal VS [Alternativa]: ¿Cuál Es Mejor Para Ti?",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal para",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Aplicaciones Específicas",
+      "articleTitle": "Disciplina Diaria y Productividad Personal: Soluciones Personalizadas para Cada Necesidad",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal cerca de",
+      "intent": "navegacion/local",
+      "stage": "compra",
+      "cluster": "Local/Servicios",
+      "articleTitle": "Encuentra Expertos en Disciplina Diaria y Productividad Personal Cerca de Ti en Colombia",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal en colombia",
+      "intent": "navegacion/local",
+      "stage": "comparacion",
+      "cluster": "Local/Colombia",
+      "articleTitle": "Disciplina Diaria y Productividad Personal en Colombia: Guía de Recursos y Expertos",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal guia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Guías/Recursos",
+      "articleTitle": "Guía Completa de Disciplina Diaria y Productividad Personal: Todo lo que Necesitas Saber",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal ejemplos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Ejemplos Prácticos",
+      "articleTitle": "Ejemplos Prácticos de Disciplina Diaria para Mejorar tu Productividad Personal",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal beneficios",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Beneficios/Motivación",
+      "articleTitle": "Los Inesperados Beneficios de la Disciplina Diaria en tu Productividad Personal",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal problemas",
+      "intent": "informacional",
+      "stage": "problema urgente",
+      "cluster": "Problemas/Soluciones",
+      "articleTitle": "Problemas Comunes al Aplicar Disciplina Diaria y Cómo Solucionarlos para Mejorar tu Productividad",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal errores",
+      "intent": "informacional",
+      "stage": "problema urgente",
+      "cluster": "Errores/Prevención",
+      "articleTitle": "Evita Estos Errores Comunes al Implementar Disciplina Diaria y Maximiza tu Productividad Personal",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal alternativas",
+      "intent": "informacional",
+      "stage": "comparacion",
+      "cluster": "Alternativas",
+      "articleTitle": "Alternativas a la Disciplina Diaria y Productividad Personal: Explora Otras Opciones",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal paso a paso",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Implementación Práctica",
+      "articleTitle": "Disciplina Diaria y Productividad Personal Paso a Paso: Tu Ruta Hacia el Éxito",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal colombia",
+      "intent": "navegacion/local",
+      "stage": "comparacion",
+      "cluster": "Local/Colombia",
+      "articleTitle": "Cómo Aplicar Disciplina Diaria y Productividad Personal en el Contexto Colombiano",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal para empresas",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "Nicho/Empresas",
+      "articleTitle": "Disciplina Diaria y Productividad Personal para Empresas: Impulsa el Rendimiento de tu Equipo",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal para principiantes",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Nicho/Principiantes",
+      "articleTitle": "Disciplina Diaria y Productividad Personal para Principiantes: Empieza con Éxito Hoy",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal costos",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "Precios/Costos",
+      "articleTitle": "Costos Asociados a la Disciplina Diaria y Productividad Personal: ¿Cuánto Invertir?",
+      "priority": "alta"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal ventajas y desventajas",
+      "intent": "informacional",
+      "stage": "comparacion",
+      "cluster": "Ventajas/Desventajas",
+      "articleTitle": "Disciplina Diaria y Productividad Personal: Ventajas y Desventajas que Debes Conocer",
+      "priority": "media"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal a",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal b",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal c",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal d",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal e",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal f",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal g",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal h",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal i",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal j",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    },
+    {
+      "keyword": "disciplina diaria y productividad personal k",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "Long-tail Genérico",
+      "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+      "priority": "baja"
+    }
+  ],
+  "clusters": [
+    {
+      "cluster": "Concepto General",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Concepto General",
+          "articleTitle": "Qué es la Disciplina Diaria y la Productividad Personal: Guía Completa",
+          "priority": "alta"
+        },
+        {
+          "keyword": "que es disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Concepto General",
+          "articleTitle": "Qué es la Disciplina Diaria y Productividad Personal y Por Qué es Crucial",
+          "priority": "alta"
+        },
+        {
+          "keyword": "cual es disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Concepto General",
+          "articleTitle": "¿Cuál es la Verdadera Definición de Disciplina Diaria y Productividad Personal?",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Qué es la Disciplina Diaria y la Productividad Personal: Guía Completa",
+        "Qué es la Disciplina Diaria y Productividad Personal y Por Qué es Crucial",
+        "¿Cuál es la Verdadera Definición de Disciplina Diaria y Productividad Personal?"
+      ]
+    },
+    {
+      "cluster": "Implementación Práctica",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "como hacer disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Implementación Práctica",
+          "articleTitle": "Cómo Desarrollar Disciplina Diaria y Mejorar tu Productividad Personal: Guía Práctica",
+          "priority": "alta"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal paso a paso",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Implementación Práctica",
+          "articleTitle": "Disciplina Diaria y Productividad Personal Paso a Paso: Tu Ruta Hacia el Éxito",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Cómo Desarrollar Disciplina Diaria y Mejorar tu Productividad Personal: Guía Práctica",
+        "Disciplina Diaria y Productividad Personal Paso a Paso: Tu Ruta Hacia el Éxito"
+      ]
+    },
+    {
+      "cluster": "Precios/Costos",
+      "priority": "alta",
+      "intents": [
+        "comercial"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal costos",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "Precios/Costos",
+          "articleTitle": "Costos Asociados a la Disciplina Diaria y Productividad Personal: ¿Cuánto Invertir?",
+          "priority": "alta"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal precio",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "Precios/Costos",
+          "articleTitle": "Precio de Programas de Disciplina Diaria y Productividad Personal: ¿Cuánto Cuesta Invertir en Ti?",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Costos Asociados a la Disciplina Diaria y Productividad Personal: ¿Cuánto Invertir?",
+        "Precio de Programas de Disciplina Diaria y Productividad Personal: ¿Cuánto Cuesta Invertir en Ti?"
+      ]
+    },
+    {
+      "cluster": "Local/Colombia",
+      "priority": "alta",
+      "intents": [
+        "navegacion/local"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal colombia",
+          "intent": "navegacion/local",
+          "stage": "comparacion",
+          "cluster": "Local/Colombia",
+          "articleTitle": "Cómo Aplicar Disciplina Diaria y Productividad Personal en el Contexto Colombiano",
+          "priority": "alta"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal en colombia",
+          "intent": "navegacion/local",
+          "stage": "comparacion",
+          "cluster": "Local/Colombia",
+          "articleTitle": "Disciplina Diaria y Productividad Personal en Colombia: Guía de Recursos y Expertos",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Cómo Aplicar Disciplina Diaria y Productividad Personal en el Contexto Colombiano",
+        "Disciplina Diaria y Productividad Personal en Colombia: Guía de Recursos y Expertos"
+      ]
+    },
+    {
+      "cluster": "Compra/Servicios",
+      "priority": "alta",
+      "intents": [
+        "transaccional"
+      ],
+      "keywords": [
+        {
+          "keyword": "donde comprar disciplina diaria y productividad personal",
+          "intent": "transaccional",
+          "stage": "compra",
+          "cluster": "Compra/Servicios",
+          "articleTitle": "Dónde Adquirir Cursos o Recursos de Disciplina Diaria y Productividad Personal en Colombia",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Dónde Adquirir Cursos o Recursos de Disciplina Diaria y Productividad Personal en Colombia"
+      ]
+    },
+    {
+      "cluster": "Mejores Opciones",
+      "priority": "alta",
+      "intents": [
+        "comercial"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal mejor",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "Mejores Opciones",
+          "articleTitle": "La Mejor Disciplina Diaria para Aumentar tu Productividad Personal: Guía Comparativa",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "La Mejor Disciplina Diaria para Aumentar tu Productividad Personal: Guía Comparativa"
+      ]
+    },
+    {
+      "cluster": "Local/Servicios",
+      "priority": "alta",
+      "intents": [
+        "navegacion/local"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal cerca de",
+          "intent": "navegacion/local",
+          "stage": "compra",
+          "cluster": "Local/Servicios",
+          "articleTitle": "Encuentra Expertos en Disciplina Diaria y Productividad Personal Cerca de Ti en Colombia",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Encuentra Expertos en Disciplina Diaria y Productividad Personal Cerca de Ti en Colombia"
+      ]
+    },
+    {
+      "cluster": "Guías/Recursos",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal guia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Guías/Recursos",
+          "articleTitle": "Guía Completa de Disciplina Diaria y Productividad Personal: Todo lo que Necesitas Saber",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Guía Completa de Disciplina Diaria y Productividad Personal: Todo lo que Necesitas Saber"
+      ]
+    },
+    {
+      "cluster": "Nicho/Empresas",
+      "priority": "alta",
+      "intents": [
+        "comercial"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal para empresas",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "Nicho/Empresas",
+          "articleTitle": "Disciplina Diaria y Productividad Personal para Empresas: Impulsa el Rendimiento de tu Equipo",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Disciplina Diaria y Productividad Personal para Empresas: Impulsa el Rendimiento de tu Equipo"
+      ]
+    },
+    {
+      "cluster": "Beneficios/Motivación",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal beneficios",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Beneficios/Motivación",
+          "articleTitle": "Los Inesperados Beneficios de la Disciplina Diaria en tu Productividad Personal",
+          "priority": "media"
+        },
+        {
+          "keyword": "por que disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Beneficios/Motivación",
+          "articleTitle": "Por Qué la Disciplina Diaria es Clave para una Productividad Personal Sostenible",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Los Inesperados Beneficios de la Disciplina Diaria en tu Productividad Personal",
+        "Por Qué la Disciplina Diaria es Clave para una Productividad Personal Sostenible"
+      ]
+    },
+    {
+      "cluster": "Funcionamiento",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "como funciona disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Funcionamiento",
+          "articleTitle": "Cómo Funciona la Disciplina Diaria para Impulsar tu Productividad Personal",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Cómo Funciona la Disciplina Diaria para Impulsar tu Productividad Personal"
+      ]
+    },
+    {
+      "cluster": "Comparación",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal vs",
+          "intent": "informacional",
+          "stage": "comparacion",
+          "cluster": "Comparación",
+          "articleTitle": "Disciplina Diaria y Productividad Personal VS [Alternativa]: ¿Cuál Es Mejor Para Ti?",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Diaria y Productividad Personal VS [Alternativa]: ¿Cuál Es Mejor Para Ti?"
+      ]
+    },
+    {
+      "cluster": "Aplicaciones Específicas",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal para",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Aplicaciones Específicas",
+          "articleTitle": "Disciplina Diaria y Productividad Personal: Soluciones Personalizadas para Cada Necesidad",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Diaria y Productividad Personal: Soluciones Personalizadas para Cada Necesidad"
+      ]
+    },
+    {
+      "cluster": "Ejemplos Prácticos",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal ejemplos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Ejemplos Prácticos",
+          "articleTitle": "Ejemplos Prácticos de Disciplina Diaria para Mejorar tu Productividad Personal",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Ejemplos Prácticos de Disciplina Diaria para Mejorar tu Productividad Personal"
+      ]
+    },
+    {
+      "cluster": "Problemas/Soluciones",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal problemas",
+          "intent": "informacional",
+          "stage": "problema urgente",
+          "cluster": "Problemas/Soluciones",
+          "articleTitle": "Problemas Comunes al Aplicar Disciplina Diaria y Cómo Solucionarlos para Mejorar tu Productividad",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Problemas Comunes al Aplicar Disciplina Diaria y Cómo Solucionarlos para Mejorar tu Productividad"
+      ]
+    },
+    {
+      "cluster": "Errores/Prevención",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal errores",
+          "intent": "informacional",
+          "stage": "problema urgente",
+          "cluster": "Errores/Prevención",
+          "articleTitle": "Evita Estos Errores Comunes al Implementar Disciplina Diaria y Maximiza tu Productividad Personal",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Evita Estos Errores Comunes al Implementar Disciplina Diaria y Maximiza tu Productividad Personal"
+      ]
+    },
+    {
+      "cluster": "Alternativas",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal alternativas",
+          "intent": "informacional",
+          "stage": "comparacion",
+          "cluster": "Alternativas",
+          "articleTitle": "Alternativas a la Disciplina Diaria y Productividad Personal: Explora Otras Opciones",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Alternativas a la Disciplina Diaria y Productividad Personal: Explora Otras Opciones"
+      ]
+    },
+    {
+      "cluster": "Nicho/Principiantes",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal para principiantes",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Nicho/Principiantes",
+          "articleTitle": "Disciplina Diaria y Productividad Personal para Principiantes: Empieza con Éxito Hoy",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Diaria y Productividad Personal para Principiantes: Empieza con Éxito Hoy"
+      ]
+    },
+    {
+      "cluster": "Ventajas/Desventajas",
+      "priority": "media",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal ventajas y desventajas",
+          "intent": "informacional",
+          "stage": "comparacion",
+          "cluster": "Ventajas/Desventajas",
+          "articleTitle": "Disciplina Diaria y Productividad Personal: Ventajas y Desventajas que Debes Conocer",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Disciplina Diaria y Productividad Personal: Ventajas y Desventajas que Debes Conocer"
+      ]
+    },
+    {
+      "cluster": "Long-tail Genérico",
+      "priority": "baja",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "disciplina diaria y productividad personal a",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal b",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal c",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal d",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal e",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal f",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal g",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal h",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal i",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal j",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        },
+        {
+          "keyword": "disciplina diaria y productividad personal k",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Long-tail Genérico",
+          "articleTitle": "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)",
+          "priority": "baja"
+        }
+      ],
+      "articles": [
+        "Explorando Aspectos de Disciplina Diaria y Productividad Personal (de A a la K)"
+      ]
+    },
+    {
+      "cluster": "Contexto de Uso",
+      "priority": "baja",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "cuando usar disciplina diaria y productividad personal",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "Contexto de Uso",
+          "articleTitle": "Cuándo Aplicar la Disciplina Diaria para Maximizar tu Productividad Personal",
+          "priority": "baja"
+        }
+      ],
+      "articles": [
+        "Cuándo Aplicar la Disciplina Diaria para Maximizar tu Productividad Personal"
+      ]
+    }
+  ],
+  "serp": [],
+  "analysis": {
+    "intent": "Informacional",
+    "difficulty": 10,
+    "dominantFormats": [
+      "articulo informacional"
+    ],
+    "recurringDomains": [],
+    "questions": [
+      "que es disciplina diaria y productividad personal",
+      "como funciona disciplina diaria y productividad personal",
+      "como hacer disciplina diaria y productividad personal",
+      "por que disciplina diaria y productividad personal",
+      "cuando usar disciplina diaria y productividad personal",
+      "donde comprar disciplina diaria y productividad personal",
+      "cual es disciplina diaria y productividad personal",
+      "Qué debe saber un lector antes de buscar disciplina diaria y productividad personal",
+      "Cómo comparar fuentes confiables sobre disciplina diaria y productividad personal"
+    ],
+    "opportunities": [
+      "Crear una sección de metodología y fuentes para superar contenidos sin trazabilidad.",
+      "Responder preguntas frecuentes con respuestas breves y enlazables.",
+      "Añadir ejemplos propios o criterios de decisión para diferenciarse de resúmenes genéricos."
+    ]
+  },
+  "nextUse": {
+    "plan": "Usar clusters y articleTitle como insumo inicial del plan SEO.",
+    "report": "Mostrar solo clusters y oportunidades con confidence medium/high.",
+    "trends": "Cruzar con Grok/X Search solo en modo profundo o sync de tendencias."
+  }
+}

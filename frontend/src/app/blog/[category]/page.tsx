@@ -264,13 +264,13 @@ export default async function BlogCategoryPage({ params }: PageProps) {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={post.cover_image}
-                        alt={post.title}
+                        alt={`Portada de ${post.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-red-900/50 to-gray-900 flex items-center justify-center">
-                        <Icon className="w-12 h-12 text-gray-600" />
+                        <Icon className="w-12 h-12 text-gray-400" />
                       </div>
                     )}
                   </div>
@@ -282,12 +282,12 @@ export default async function BlogCategoryPage({ params }: PageProps) {
                     </h2>
 
                     {post.excerpt && (
-                      <p className="text-sm text-gray-400 line-clamp-2 mb-4">
+                      <p className="text-sm text-gray-300 line-clamp-2 mb-4">
                         {post.excerpt}
                       </p>
                     )}
 
-                    <div className="flex items-center justify-between text-xs text-gray-400">
+                    <div className="flex items-center justify-between text-xs text-gray-300">
                       {post.published_at && (
                         <time>
                           {new Date(post.published_at).toLocaleDateString(

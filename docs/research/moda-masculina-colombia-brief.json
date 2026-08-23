@@ -1,0 +1,762 @@
+{
+  "keyword": "moda masculina colombia",
+  "generatedAt": "2026-08-19T06:03:42.232Z",
+  "provider": "google-autocomplete-light",
+  "classifier": "local-rules",
+  "classifierNote": "Gemini no pudo clasificar; clasificacion local aplicada ({\"error\":{\"code\":503,\"message\":\"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\"status\":\"UNAVAILABLE\"}}).",
+  "country": "CO",
+  "language": "es",
+  "confidence": "high",
+  "counts": {
+    "suggestions": 38,
+    "serp": 0,
+    "clusters": 4
+  },
+  "suggestions": [
+    "moda masculina colombia",
+    "que es moda masculina colombia",
+    "como funciona moda masculina colombia",
+    "como hacer moda masculina colombia",
+    "por que moda masculina colombia",
+    "cuando usar moda masculina colombia",
+    "donde comprar moda masculina colombia",
+    "cual es moda masculina colombia",
+    "moda masculina colombia mejor",
+    "moda masculina colombia precio",
+    "moda masculina colombia vs",
+    "moda masculina colombia para",
+    "moda masculina colombia cerca de",
+    "moda masculina colombia en colombia",
+    "moda masculina colombia guia",
+    "moda masculina colombia ejemplos",
+    "moda masculina colombia beneficios",
+    "moda masculina colombia problemas",
+    "moda masculina colombia errores",
+    "moda masculina colombia alternativas",
+    "moda masculina colombia paso a paso",
+    "moda masculina colombia colombia",
+    "moda masculina colombia para empresas",
+    "moda masculina colombia para principiantes",
+    "moda masculina colombia costos",
+    "moda masculina colombia ventajas y desventajas",
+    "moda masculina colombia a",
+    "moda masculina colombia b",
+    "moda masculina colombia c",
+    "moda masculina colombia d",
+    "moda masculina colombia e",
+    "moda masculina colombia f",
+    "moda masculina colombia g",
+    "moda masculina colombia h",
+    "moda masculina colombia i",
+    "moda masculina colombia j",
+    "moda masculina colombia k",
+    "moda masculina en colombia"
+  ],
+  "classifiedKeywords": [
+    {
+      "keyword": "moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "que es moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "preguntas frecuentes",
+      "articleTitle": "que es Moda Masculina Colombia: Definicion, Usos Y Ejemplos",
+      "priority": "alta"
+    },
+    {
+      "keyword": "como funciona moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "preguntas frecuentes",
+      "articleTitle": "Como Funciona Moda Masculina Colombia: Guia Practica Paso A Paso",
+      "priority": "alta"
+    },
+    {
+      "keyword": "como hacer moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "preguntas frecuentes",
+      "articleTitle": "Como Hacer Moda Masculina Colombia: Guia Practica Paso A Paso",
+      "priority": "alta"
+    },
+    {
+      "keyword": "por que moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "preguntas frecuentes",
+      "articleTitle": "por que Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "cuando usar moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "preguntas frecuentes",
+      "articleTitle": "Cuando Usar Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "donde comprar moda masculina colombia",
+      "intent": "transaccional",
+      "stage": "compra",
+      "cluster": "precio y compra",
+      "articleTitle": "Donde Comprar Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "alta"
+    },
+    {
+      "keyword": "cual es moda masculina colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "preguntas frecuentes",
+      "articleTitle": "Cual es Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia mejor",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "comparacion",
+      "articleTitle": "Moda Masculina Colombia Mejor: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "alta"
+    },
+    {
+      "keyword": "moda masculina colombia precio",
+      "intent": "transaccional",
+      "stage": "compra",
+      "cluster": "precio y compra",
+      "articleTitle": "Moda Masculina Colombia Precio: Rangos, Factores Y Como Cotizar",
+      "priority": "alta"
+    },
+    {
+      "keyword": "moda masculina colombia vs",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "comparacion",
+      "articleTitle": "Moda Masculina Colombia vs: Diferencias Y Como Elegir",
+      "priority": "alta"
+    },
+    {
+      "keyword": "moda masculina colombia para",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Para: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia cerca de",
+      "intent": "navegacion/local",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Cerca de: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia en colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia en Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia guia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Guia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia ejemplos",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Ejemplos: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia beneficios",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Beneficios: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia problemas",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Problemas: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia errores",
+      "intent": "informacional",
+      "stage": "problema urgente",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Errores: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia alternativas",
+      "intent": "comercial",
+      "stage": "comparacion",
+      "cluster": "comparacion",
+      "articleTitle": "Moda Masculina Colombia Alternativas: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "alta"
+    },
+    {
+      "keyword": "moda masculina colombia paso a paso",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Paso a Paso: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia para empresas",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Para Empresas: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia para principiantes",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Para Principiantes: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia costos",
+      "intent": "transaccional",
+      "stage": "descubrimiento",
+      "cluster": "precio y compra",
+      "articleTitle": "Moda Masculina Colombia Costos: Rangos, Factores Y Como Cotizar",
+      "priority": "alta"
+    },
+    {
+      "keyword": "moda masculina colombia ventajas y desventajas",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia Ventajas y Desventajas: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia a",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia a: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia b",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia b: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia c",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia c: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia d",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia d: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia e",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia e: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia f",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia f: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia g",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia g: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia h",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia h: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia i",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia i: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia j",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia j: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina colombia k",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina Colombia k: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    },
+    {
+      "keyword": "moda masculina en colombia",
+      "intent": "informacional",
+      "stage": "descubrimiento",
+      "cluster": "casos de uso",
+      "articleTitle": "Moda Masculina en Colombia: Guia Practica Para Tomar Mejores Decisiones",
+      "priority": "media"
+    }
+  ],
+  "clusters": [
+    {
+      "cluster": "preguntas frecuentes",
+      "priority": "alta",
+      "intents": [
+        "informacional"
+      ],
+      "keywords": [
+        {
+          "keyword": "como funciona moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "preguntas frecuentes",
+          "articleTitle": "Como Funciona Moda Masculina Colombia: Guia Practica Paso A Paso",
+          "priority": "alta"
+        },
+        {
+          "keyword": "como hacer moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "preguntas frecuentes",
+          "articleTitle": "Como Hacer Moda Masculina Colombia: Guia Practica Paso A Paso",
+          "priority": "alta"
+        },
+        {
+          "keyword": "que es moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "preguntas frecuentes",
+          "articleTitle": "que es Moda Masculina Colombia: Definicion, Usos Y Ejemplos",
+          "priority": "alta"
+        },
+        {
+          "keyword": "cual es moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "preguntas frecuentes",
+          "articleTitle": "Cual es Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "cuando usar moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "preguntas frecuentes",
+          "articleTitle": "Cuando Usar Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "por que moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "preguntas frecuentes",
+          "articleTitle": "por que Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Como Funciona Moda Masculina Colombia: Guia Practica Paso A Paso",
+        "Como Hacer Moda Masculina Colombia: Guia Practica Paso A Paso",
+        "que es Moda Masculina Colombia: Definicion, Usos Y Ejemplos",
+        "Cual es Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+        "Cuando Usar Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+        "por que Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones"
+      ]
+    },
+    {
+      "cluster": "precio y compra",
+      "priority": "alta",
+      "intents": [
+        "transaccional"
+      ],
+      "keywords": [
+        {
+          "keyword": "donde comprar moda masculina colombia",
+          "intent": "transaccional",
+          "stage": "compra",
+          "cluster": "precio y compra",
+          "articleTitle": "Donde Comprar Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "alta"
+        },
+        {
+          "keyword": "moda masculina colombia costos",
+          "intent": "transaccional",
+          "stage": "descubrimiento",
+          "cluster": "precio y compra",
+          "articleTitle": "Moda Masculina Colombia Costos: Rangos, Factores Y Como Cotizar",
+          "priority": "alta"
+        },
+        {
+          "keyword": "moda masculina colombia precio",
+          "intent": "transaccional",
+          "stage": "compra",
+          "cluster": "precio y compra",
+          "articleTitle": "Moda Masculina Colombia Precio: Rangos, Factores Y Como Cotizar",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Donde Comprar Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia Costos: Rangos, Factores Y Como Cotizar",
+        "Moda Masculina Colombia Precio: Rangos, Factores Y Como Cotizar"
+      ]
+    },
+    {
+      "cluster": "comparacion",
+      "priority": "alta",
+      "intents": [
+        "comercial"
+      ],
+      "keywords": [
+        {
+          "keyword": "moda masculina colombia alternativas",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "comparacion",
+          "articleTitle": "Moda Masculina Colombia Alternativas: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "alta"
+        },
+        {
+          "keyword": "moda masculina colombia mejor",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "comparacion",
+          "articleTitle": "Moda Masculina Colombia Mejor: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "alta"
+        },
+        {
+          "keyword": "moda masculina colombia vs",
+          "intent": "comercial",
+          "stage": "comparacion",
+          "cluster": "comparacion",
+          "articleTitle": "Moda Masculina Colombia vs: Diferencias Y Como Elegir",
+          "priority": "alta"
+        }
+      ],
+      "articles": [
+        "Moda Masculina Colombia Alternativas: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia Mejor: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia vs: Diferencias Y Como Elegir"
+      ]
+    },
+    {
+      "cluster": "casos de uso",
+      "priority": "media",
+      "intents": [
+        "informacional",
+        "navegacion/local"
+      ],
+      "keywords": [
+        {
+          "keyword": "moda masculina colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia a",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia a: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia b",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia b: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia beneficios",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Beneficios: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia c",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia c: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia cerca de",
+          "intent": "navegacion/local",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Cerca de: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia d",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia d: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia e",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia e: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia ejemplos",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Ejemplos: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia en colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia en Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia errores",
+          "intent": "informacional",
+          "stage": "problema urgente",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Errores: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia f",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia f: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia g",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia g: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia guia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Guia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia h",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia h: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia i",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia i: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia j",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia j: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia k",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia k: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia para",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Para: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia para empresas",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Para Empresas: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia para principiantes",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Para Principiantes: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia paso a paso",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Paso a Paso: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia problemas",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Problemas: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina colombia ventajas y desventajas",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina Colombia Ventajas y Desventajas: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        },
+        {
+          "keyword": "moda masculina en colombia",
+          "intent": "informacional",
+          "stage": "descubrimiento",
+          "cluster": "casos de uso",
+          "articleTitle": "Moda Masculina en Colombia: Guia Practica Para Tomar Mejores Decisiones",
+          "priority": "media"
+        }
+      ],
+      "articles": [
+        "Moda Masculina Colombia: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia a: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia b: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia Beneficios: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia c: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia Cerca de: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia Colombia: Guia Practica Para Tomar Mejores Decisiones",
+        "Moda Masculina Colombia d: Guia Practica Para Tomar Mejores Decisiones"
+      ]
+    }
+  ],
+  "serp": [],
+  "analysis": {
+    "intent": "Informacional",
+    "difficulty": 10,
+    "dominantFormats": [
+      "articulo informacional"
+    ],
+    "recurringDomains": [],
+    "questions": [
+      "que es moda masculina colombia",
+      "como funciona moda masculina colombia",
+      "como hacer moda masculina colombia",
+      "por que moda masculina colombia",
+      "cuando usar moda masculina colombia",
+      "donde comprar moda masculina colombia",
+      "cual es moda masculina colombia",
+      "Qué debe saber un lector antes de buscar moda masculina colombia",
+      "Cómo comparar fuentes confiables sobre moda masculina colombia"
+    ],
+    "opportunities": [
+      "Crear una sección de metodología y fuentes para superar contenidos sin trazabilidad.",
+      "Responder preguntas frecuentes con respuestas breves y enlazables.",
+      "Añadir ejemplos propios o criterios de decisión para diferenciarse de resúmenes genéricos."
+    ]
+  },
+  "nextUse": {
+    "plan": "Usar clusters y articleTitle como insumo inicial del plan SEO.",
+    "report": "Mostrar solo clusters y oportunidades con confidence medium/high.",
+    "trends": "Cruzar con Grok/X Search solo en modo profundo o sync de tendencias."
+  }
+}

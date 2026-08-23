@@ -117,6 +117,30 @@ const nextConfig: NextConfig = {
     ],
   }),
 
+  // Permanent redirects for rebranded and legacy URLs
+  redirects: async () => [
+    {
+      source: "/herramientas/couch_spartano",
+      destination: "/herramientas/couch_triarvono",
+      permanent: true,
+    },
+    {
+      source: "/herramientas/coach_spartano",
+      destination: "/herramientas/couch_triarvono",
+      permanent: true,
+    },
+    {
+      source: "/herramientas/coach_triarvono",
+      destination: "/herramientas/couch_triarvono",
+      permanent: true,
+    },
+    {
+      source: "/herramientas/coach-triarvon",
+      destination: "/herramientas/couch_triarvono",
+      permanent: true,
+    },
+  ],
+
   // Environment variables
   env: {
     NEXT_PUBLIC_APP_NAME: "Triarvon Club",

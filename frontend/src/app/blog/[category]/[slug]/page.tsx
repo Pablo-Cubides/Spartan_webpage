@@ -310,7 +310,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={related.cover_image}
-                        alt={related.title}
+                        alt={`Portada de ${related.title}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                       />

@@ -115,8 +115,9 @@ async function pingAuthApi() {
 
 async function main() {
   if (!DATABASE_URL || DATABASE_URL.includes('tu-connection-string') || DATABASE_URL.includes('placeholder')) {
-    console.log('ℹ DATABASE_URL is placeholder or missing. Skipping keep-alive (secrets not configured).');
-    process.exit(0);
+    console.error('❌ ERROR: DATABASE_URL secret is missing or contains placeholder values (e.g. "tu-connection-string").');
+    console.error('Please configure a valid Supabase DATABASE_URL in GitHub Repository Secrets.');
+    process.exit(1);
   }
 
   console.log(`Target: ${safeTarget(DATABASE_URL)}`);
@@ -127,8 +128,9 @@ async function main() {
     console.log(`✅ Postgres reachable — ${detail}`);
   } catch (err) {
     if (/tu-connection-string|placeholder|example/i.test(err.message) || /tu-connection-string|placeholder|example/i.test(DATABASE_URL)) {
-      console.log(`ℹ DATABASE_URL contains placeholder host (${err.message}). Skipping keep-alive.`);
-      process.exit(0);
+      console.error(`❌ ERROR: DATABASE_URL contains placeholder host (${err.message}).`);
+      console.error('Please update DATABASE_URL in GitHub Repository Secrets with your real Postgres connection string.');
+      process.exit(1);
     }
     console.error(`\n❌ Postgres UNREACHABLE: ${err.message}\n`);
     if (/not found|ENOTFOUND|Tenant or user not found/i.test(err.message)) {
