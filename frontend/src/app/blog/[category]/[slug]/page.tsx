@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { generateBlogPostingSchema } from "@/lib/blog/schema-generator";
+import FAQSchema, { FAQItem } from "@/components/seo/FAQSchema";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -27,6 +28,58 @@ const EPIC_NAMES: Record<string, string> = {
   "mentalidad-y-disciplina": "Mentalidad Triarvon",
   "productividad-y-gestion-del-tiempo": "Productividad Triarvon",
 };
+
+function extractFaqsFromContent(content: string): FAQItem[] {
+  const faqs: FAQItem[] = [];
+  const lines = content.split("\n");
+  let currentQuestion = "";
+  let currentAnswer: string[] = [];
+
+  for (const line of lines) {
+    const headingMatch = line.match(/^#{2,3}\s+(.+[?？].*)$/);
+    if (headingMatch) {
+      if (currentQuestion && currentAnswer.length > 0) {
+        faqs.push({
+          question: currentQuestion.trim(),
+          answer: currentAnswer
+            .join(" ")
+            .trim()
+            .replace(/[#*`_]/g, ""),
+        });
+        currentAnswer = [];
+      }
+      currentQuestion = headingMatch[1].trim();
+    } else if (currentQuestion) {
+      if (line.startsWith("#")) {
+        if (currentAnswer.length > 0) {
+          faqs.push({
+            question: currentQuestion.trim(),
+            answer: currentAnswer
+              .join(" ")
+              .trim()
+              .replace(/[#*`_]/g, ""),
+          });
+        }
+        currentQuestion = "";
+        currentAnswer = [];
+      } else if (line.trim()) {
+        currentAnswer.push(line.trim());
+      }
+    }
+  }
+
+  if (currentQuestion && currentAnswer.length > 0) {
+    faqs.push({
+      question: currentQuestion.trim(),
+      answer: currentAnswer
+        .join(" ")
+        .trim()
+        .replace(/[#*`_]/g, ""),
+    });
+  }
+
+  return faqs;
+}
 
 export async function generateMetadata({
   params,
@@ -105,8 +158,10 @@ export default async function BlogPostPage({ params }: PageProps) {
   const schema = generateBlogPostingSchema(post, {
     baseUrl: BASE_URL,
     siteName: "Triarvon Club",
-    siteImage: `${BASE_URL}/logo.png`,
+    siteImage: `${BASE_URL}/Triarvon/triarvon-favicon-512.png`,
   });
+
+  const faqs = extractFaqsFromContent(post.content);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -147,6 +202,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {faqs.length > 0 && <FAQSchema items={faqs} />}
 
       <div className="min-h-screen bg-linear-to-b from-[#0a0a0a] via-[#121212] to-[#0a0a0a]">
         {/* Hero Section */}
@@ -157,8 +213,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={post.cover_image || ""}
-                alt=""
-                aria-hidden="true"
+                alt={`Portada del artículo: ${post.title}`}
                 className="w-full h-full object-cover opacity-60"
               />
               <div className="absolute inset-0 bg-linear-to-b from-black/40 via-black/70 to-[#0a0a0a]" />
@@ -196,6 +251,13 @@ export default async function BlogPostPage({ params }: PageProps) {
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
               {post.title}
             </h1>
+
+            {/* Answer-First direct content block for AI Engines & Users */}
+            {post.excerpt && (
+              <p className="text-lg md:text-xl text-gray-200 leading-relaxed mb-6 font-medium max-w-3xl border-l-4 border-red-600 pl-4 bg-white/5 py-2 rounded-r-md">
+                {post.excerpt}
+              </p>
+            )}
 
             {/* Meta info */}
             <div className="flex flex-wrap items-center gap-6 text-gray-400">

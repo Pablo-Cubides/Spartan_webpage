@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import type { Metadata } from "next";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
@@ -14,23 +13,31 @@ export const metadata: Metadata = {
 
 export default function PrivacidadPage() {
   return (
-    <main className="px-6 py-12 mx-auto max-w-4xl text-white">
-      <h1 className="text-3xl font-bold mb-6 text-[#C62828]">
+    <div className="px-6 py-12 mx-auto max-w-4xl text-white">
+      <h1 className="text-3xl font-bold mb-4 text-[#C62828]">
         Política de Privacidad — Triarvon
       </h1>
-      <div className="space-y-6 text-[#a2aab3]">
-        <p className="text-sm">Última actualización: 28/Jul/2026</p>
+      <p className="text-base text-gray-200 leading-relaxed mb-6">
+        En Triarvon protegemos tu privacidad y la seguridad de tus datos
+        personales. Esta política detalla la información que recopilamos, cómo
+        la utilizamos para brindarte nuestros servicios y tus derechos de
+        acceso, rectificación y eliminación.
+      </p>
+      <div className="space-y-6 text-gray-300">
+        <p className="text-sm text-gray-400">
+          Última actualización: 28/Jul/2026
+        </p>
         <p>
           <strong className="text-white">Responsable:</strong> Andrés Guerrero —{" "}
           <strong className="text-white">Contacto:</strong>{" "}
           triarvonmarket@gmail.com
         </p>
 
-        <div className="bg-[#181a1d] p-6 rounded-lg">
+        <div className="bg-[#181a1d] p-6 rounded-lg border border-gray-800">
           <h2 className="text-2xl font-bold text-white mb-4">
             Resumen de Privacidad
           </h2>
-          <ul className="list-disc list-inside space-y-2">
+          <ul className="list-disc list-inside space-y-2 text-gray-200">
             <li>
               <strong className="text-white">Datos recopilados:</strong> Correo
               electrónico, alias, nombre (si te registras); datos técnicos de
@@ -72,6 +79,6 @@ export default function PrivacidadPage() {
           triarvonmarket@gmail.com
         </p>
       </div>
-    </main>
+    </div>
   );
 }

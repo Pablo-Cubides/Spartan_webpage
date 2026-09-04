@@ -13,12 +13,19 @@ export const metadata: Metadata = {
 
 export default function TerminosPage() {
   return (
-    <main className="px-6 py-12 mx-auto max-w-4xl text-white">
-      <h1 className="text-3xl font-bold mb-6 text-[#C62828]">
+    <div className="px-6 py-12 mx-auto max-w-4xl text-white">
+      <h1 className="text-3xl font-bold mb-4 text-[#C62828]">
         Términos y Condiciones — Triarvon
       </h1>
-      <div className="space-y-6 text-[#a2aab3]">
-        <p className="text-sm">Última actualización: 28/Jul/2026</p>
+      <p className="text-base text-gray-200 leading-relaxed mb-6">
+        Este documento establece los términos y condiciones de uso para la
+        plataforma Triarvon, nuestras herramientas de inteligencia artificial y
+        los servicios de desarrollo personal y coaching para hombres.
+      </p>
+      <div className="space-y-6 text-gray-300">
+        <p className="text-sm text-gray-400">
+          Última actualización: 28/Jul/2026
+        </p>
         <p>
           <strong className="text-white">Titular/Responsable:</strong> Andrés
           Guerrero
@@ -28,49 +35,47 @@ export default function TerminosPage() {
           triarvonmarket@gmail.com
         </p>
         <p>
-          <strong className="text-white">Sitio:</strong> “Triarvon” (asesoría,
-          guías, herramientas de IA, boletín y desarrollo de alto rendimiento
-          masculino).
+          Bienvenido a Triarvon. Al acceder o utilizar nuestra plataforma web y
+          nuestras herramientas de análisis de estilo y coaching asistido por
+          IA, aceptas estos Términos y Condiciones. Si no estás de acuerdo, por
+          favor no utilices el servicio.
         </p>
 
         <h2 className="text-2xl font-bold text-white pt-4">
-          1. Aceptación y alcance
+          1. Descripción del servicio
         </h2>
         <p>
-          Al utilizar Triarvon aceptas estos Términos y Condiciones. Si no estás
-          de acuerdo, por favor no utilices el sitio.
+          Triarvon ofrece una plataforma de desarrollo personal masculino que
+          incluye artículos de blog, un Asesor de Estilo con IA y el servicio de
+          Coach Triarvon (chat asistido por inteligencia artificial). Las
+          respuestas generadas por IA son orientativas y no reemplazan el
+          consejo médico, nutricional, psicológico ni legal profesional.
         </p>
 
         <h2 className="text-2xl font-bold text-white pt-4">
-          2. Elegibilidad (18+)
+          2. Cuentas y registro
         </h2>
         <p>
-          Triarvon está destinado a mayores de 18 años. El contenido es
-          educativo e informativo y no sustituye la asesoría médica,
-          psicológica, nutricional o legal.
+          Para acceder a ciertas funciones debes registrarte con un correo
+          válido. Eres responsable de mantener la confidencialidad de tus
+          credenciales y de cualquier actividad en tu cuenta.
         </p>
 
         <h2 className="text-2xl font-bold text-white pt-4">
-          3. Servicios ofrecidos
-        </h2>
-        <ul className="list-disc list-inside space-y-2">
-          <li>
-            Contenido editorial: guías, artículos y recomendaciones de alto
-            rendimiento.
-          </li>
-          <li>
-            Herramientas interactivas con inteligencia artificial (Coach
-            Triarvon, Asesor de Estilo).
-          </li>
-          <li>Boletín informativo.</li>
-        </ul>
-
-        <h2 className="text-2xl font-bold text-white pt-4">
-          4. Cuentas y perfiles
+          3. Sistema de créditos y pagos
         </h2>
         <p>
-          Puedes crear un perfil mediante correo electrónico o Google Firebase.
-          Eres responsable de mantener la seguridad de tu cuenta.
+          Ciertas funciones de IA consumen créditos. Los créditos adquiridos no
+          son reembolsables una vez utilizados. Los pagos se procesan de forma
+          segura mediante pasarelas autorizadas (MercadoPago y Stripe).
+        </p>
+
+        <h2 className="text-2xl font-bold text-white pt-4">4. Uso aceptable</h2>
+        <p>
+          Te comprometes a no usar la plataforma con fines ilegales, abusivos,
+          que infrinjan derechos de terceros o que busquen eludir las medidas de
+          seguridad del sistema. Nos reservamos el derecho de suspender cuentas
+          que violen estas normas.
         </p>
 
         <h2 className="text-2xl font-bold text-white pt-4">
@@ -89,6 +94,6 @@ export default function TerminosPage() {
           soporte: triarvonmarket@gmail.com
         </p>
       </div>
-    </main>
+    </div>
   );
 }

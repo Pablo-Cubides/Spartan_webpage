@@ -677,7 +677,7 @@ export default function Page() {
 
   if (step === "upload") {
     return (
-      <main className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="min-h-screen bg-[#0a0a0a] text-white">
         {showCamera && (
           <CameraModal
             onCapture={handleCameraCapture}
@@ -751,7 +751,7 @@ export default function Page() {
             {/* suggestions are hidden during initial upload; they'll appear in the chat area after the first edit */}
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
@@ -759,7 +759,7 @@ export default function Page() {
 
   // Ready/chat view
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
       {showCamera && (
         <CameraModal
           onCapture={handleCameraCapture}
@@ -943,7 +943,7 @@ export default function Page() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }
 

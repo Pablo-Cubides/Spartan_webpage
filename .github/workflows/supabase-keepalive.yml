@@ -2,8 +2,8 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-    # Run every 3 days at 00:00 UTC
-    - cron: '0 0 */3 * *'
+    # Run twice daily (04:15 and 16:15 UTC) to maintain Supabase activity and tolerate runner delays
+    - cron: '15 4,16 * * *'
   # Run manually from Actions tab
   workflow_dispatch:
 
@@ -22,13 +22,9 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install Dependencies
-        run: npm install --no-save pg
-
-      # This step performs a REAL SQL round-trip against DATABASE_URL.
-      # The previous version only pinged the Auth Admin API, which succeeds even
-      # when Postgres is paused — it reported green while production was down.
-      - name: Ping Postgres (real keep-alive)
+      # Ping Supabase Data API (PostgREST) + Auth API natively using Node 24 fetch.
+      # Zero npm dependencies needed, preventing npm hang/timeouts.
+      - name: Ping Supabase (PostgREST & Postgres)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

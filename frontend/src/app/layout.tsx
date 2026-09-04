@@ -178,9 +178,10 @@ const organizationSchema = {
   description:
     "Plataforma de desarrollo personal masculino con herramientas de IA y comunidad.",
   sameAs: [
-    "https://twitter.com/triarvon",
-    "https://instagram.com/triarvon",
-    "https://youtube.com/@triarvon",
+    "https://x.com/triarvon_club",
+    "https://www.instagram.com/triarvon_club/",
+    "https://www.facebook.com/profile.php?id=61569420803657",
+    "https://www.tiktok.com/@triarvon_club",
   ],
   contactPoint: {
     "@type": "ContactPoint",

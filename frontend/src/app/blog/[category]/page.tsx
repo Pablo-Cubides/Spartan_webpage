@@ -202,8 +202,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={cat.coverImage}
-              alt=""
-              aria-hidden="true"
+              alt={`Portada de ${cat.epicName}`}
               className="w-full h-full object-cover opacity-30"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-[#0a0a0a]" />

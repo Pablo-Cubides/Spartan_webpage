@@ -195,7 +195,7 @@ export default function CoachTriarvonPage() {
 
   // Render based on page state
   return (
-    <main className="flex-1 bg-[#0a0a0a] min-h-screen">
+    <div className="flex-1 bg-[#0a0a0a] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb
           items={[
@@ -333,6 +333,6 @@ export default function CoachTriarvonPage() {
           />
         )}
       </div>
-    </main>
+    </div>
   );
 }

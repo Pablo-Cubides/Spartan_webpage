@@ -2,9 +2,9 @@
   "ci": {
     "collect": {
       "url": [
-        "https://spartan-club.vercel.app/",
-        "https://spartan-club.vercel.app/blog",
-        "https://spartan-club.vercel.app/asesor-estilo"
+        "https://www.triarvon.com/",
+        "https://www.triarvon.com/blog",
+        "https://www.triarvon.com/herramientas/asesor-estilo"
       ],
       "numberOfRuns": 3,
       "settings": {

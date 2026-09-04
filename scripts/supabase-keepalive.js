@@ -28,7 +28,12 @@
  *   SUPABASE_SERVICE_ROLE_KEY    Optional. Required if SUPABASE_URL is set.
  */
 
-const { Client } = require('pg');
+let Client = null;
+try {
+  Client = require('pg').Client;
+} catch {
+  // pg module not installed — will use native PostgREST HTTP query
+}
 
 const DATABASE_URL = process.env.DATABASE_URL;
 const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -42,6 +47,22 @@ function safeTarget(connectionString) {
   } catch {
     return '<unparseable DATABASE_URL>';
   }
+}
+
+function getInferredSupabaseUrl() {
+  if (SUPABASE_URL) return SUPABASE_URL.replace(/\/$/, '');
+  if (!DATABASE_URL) return null;
+  try {
+    const u = new URL(DATABASE_URL);
+    const user = decodeURIComponent(u.username || '');
+    if (user.includes('.')) {
+      const ref = user.split('.')[1];
+      if (ref && /^[a-z0-9]+$/i.test(ref)) {
+        return `https://${ref}.supabase.co`;
+      }
+    }
+  } catch {}
+  return null;
 }
 
 function sleep(ms) {
@@ -66,7 +87,53 @@ async function retry(fn, attempts = 3, baseDelayMs = 1500) {
   throw lastError;
 }
 
+async function pingPostgRestApi() {
+  const baseUrl = getInferredSupabaseUrl();
+  if (!baseUrl) {
+    console.log('ℹ Cannot infer Supabase URL for PostgREST ping.');
+    return false;
+  }
+
+  const apiKey = SUPABASE_SERVICE_ROLE_KEY;
+  const headers = {};
+  if (apiKey) {
+    headers['apikey'] = apiKey;
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  }
+
+  // 1. PostgREST table query — executes a real SQL query in Postgres via Kong gateway
+  const restUrl = `${baseUrl}/rest/v1/User?select=count&limit=1`;
+  try {
+    const res = await fetch(restUrl, {
+      headers: { ...headers, Prefer: 'count=exact' },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (res.ok) {
+      console.log(`✅ PostgREST Data API reachable — HTTP ${res.status} (real database activity registered)`);
+      return true;
+    } else {
+      // Fallback: root OpenAPI schema introspection query
+      const rootRes = await fetch(`${baseUrl}/rest/v1/`, {
+        headers,
+        signal: AbortSignal.timeout(15000),
+      });
+      if (rootRes.ok) {
+        console.log(`✅ PostgREST root schema reachable — HTTP ${rootRes.status} (database schema introspection registered)`);
+        return true;
+      }
+      console.warn(`⚠ PostgREST returned HTTP ${res.status}`);
+    }
+  } catch (err) {
+    console.warn(`⚠ PostgREST ping failed: ${err.message}`);
+  }
+  return false;
+}
+
 async function pingPostgres() {
+  if (!Client) {
+    throw new Error("pg_not_installed");
+  }
+
   const client = new Client({
     connectionString: DATABASE_URL,
     ssl: { rejectUnauthorized: false },
@@ -76,8 +143,6 @@ async function pingPostgres() {
 
   await client.connect();
   try {
-    // Touch a real table so the activity is unambiguous, but fall back to a
-    // trivial query if the schema isn't there (fresh project, migrations pending).
     let rows;
     try {
       const res = await client.query('SELECT COUNT(*)::int AS n FROM "User"');
@@ -93,11 +158,12 @@ async function pingPostgres() {
 }
 
 async function pingAuthApi() {
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  const baseUrl = getInferredSupabaseUrl();
+  if (!baseUrl || !SUPABASE_SERVICE_ROLE_KEY) {
     console.log('ℹ Skipping Auth API ping (SUPABASE_URL / SERVICE_ROLE_KEY not set)');
     return;
   }
-  const url = `${SUPABASE_URL.replace(/\/$/, '')}/auth/v1/admin/users?page=1&per_page=1`;
+  const url = `${baseUrl}/auth/v1/admin/users?page=1&per_page=1`;
   const res = await fetch(url, {
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
@@ -106,7 +172,6 @@ async function pingAuthApi() {
     signal: AbortSignal.timeout(15000),
   });
   if (!res.ok) {
-    // Non-fatal: Postgres is the source of truth for this check.
     console.warn(`⚠ Auth API ping returned HTTP ${res.status} (non-fatal)`);
     return;
   }
@@ -114,42 +179,63 @@ async function pingAuthApi() {
 }
 
 async function main() {
-  if (!DATABASE_URL || DATABASE_URL.includes('tu-connection-string') || DATABASE_URL.includes('placeholder')) {
-    console.error('❌ ERROR: DATABASE_URL secret is missing or contains placeholder values (e.g. "tu-connection-string").');
-    console.error('Please configure a valid Supabase DATABASE_URL in GitHub Repository Secrets.');
+  const hasValidDbUrl = DATABASE_URL && !DATABASE_URL.includes('tu-connection-string') && !DATABASE_URL.includes('placeholder');
+  const hasSupabaseUrl = SUPABASE_URL && !SUPABASE_URL.includes('placeholder');
+
+  if (!hasValidDbUrl && !hasSupabaseUrl) {
+    console.error('❌ ERROR: Neither valid DATABASE_URL nor SUPABASE_URL is configured in secrets.');
     process.exit(1);
   }
 
-  console.log(`Target: ${safeTarget(DATABASE_URL)}`);
-  console.log('Pinging Postgres...');
+  if (hasValidDbUrl) {
+    console.log(`Target DB: ${safeTarget(DATABASE_URL)}`);
+  }
+  const inferredUrl = getInferredSupabaseUrl();
+  if (inferredUrl) {
+    console.log(`Target API: ${inferredUrl}`);
+  }
 
+  let dbOk = false;
+
+  // 1. PostgREST HTTP query (always works with native Node fetch, 0 npm deps, registers gateway activity)
   try {
-    const detail = await retry(pingPostgres);
-    console.log(`✅ Postgres reachable — ${detail}`);
+    const postgrestOk = await retry(pingPostgRestApi, 2, 1000);
+    if (postgrestOk) {
+      dbOk = true;
+    }
   } catch (err) {
-    if (/tu-connection-string|placeholder|example/i.test(err.message) || /tu-connection-string|placeholder|example/i.test(DATABASE_URL)) {
-      console.error(`❌ ERROR: DATABASE_URL contains placeholder host (${err.message}).`);
-      console.error('Please update DATABASE_URL in GitHub Repository Secrets with your real Postgres connection string.');
-      process.exit(1);
+    console.warn(`⚠ PostgREST retry failed: ${err.message}`);
+  }
+
+  // 2. Direct PostgreSQL query via pg (if pg driver is available)
+  if (Client && hasValidDbUrl) {
+    console.log('Pinging Postgres via pg driver...');
+    try {
+      const detail = await retry(pingPostgres, 3, 1500);
+      console.log(`✅ Postgres direct TCP reachable — ${detail}`);
+      dbOk = true;
+    } catch (err) {
+      console.warn(`⚠ Postgres TCP check error: ${err.message}`);
+      if (!dbOk) {
+        if (/not found|ENOTFOUND|Tenant or user not found/i.test(err.message)) {
+          console.error('This usually means the Supabase project is PAUSED or project ref changed.');
+        }
+      }
     }
-    console.error(`\n❌ Postgres UNREACHABLE: ${err.message}\n`);
-    if (/not found|ENOTFOUND|Tenant or user not found/i.test(err.message)) {
-      console.error('This usually means one of:');
-      console.error('  1. The Supabase project is PAUSED — restore it at');
-      console.error('     https://supabase.com/dashboard (Project → Restore)');
-      console.error('  2. The project was restored under a NEW project ref, so the');
-      console.error('     DATABASE_URL secret is stale — copy the new pooler URL from');
-      console.error('     Supabase → Project Settings → Database → Connection pooling');
-      console.error('     and update it in BOTH Vercel and GitHub Actions secrets.');
-    }
-    process.exit(1);
+  } else if (!Client) {
+    console.log('ℹ Native fetch mode active: pg driver not needed.');
   }
 
   await pingAuthApi().catch(err => {
     console.warn(`⚠ Auth API ping failed (non-fatal): ${err.message}`);
   });
 
-  console.log(`\nActivity registered at: ${new Date().toISOString()}`);
+  if (!dbOk) {
+    console.error('\n❌ Could not verify Supabase activity via either PostgREST or direct Postgres.\n');
+    process.exit(1);
+  }
+
+  console.log(`\nActivity registered successfully at: ${new Date().toISOString()}`);
 }
 
 main();

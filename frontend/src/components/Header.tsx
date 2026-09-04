@@ -83,7 +83,8 @@ export default function Header() {
               width={32}
               height={32}
               src="/Triarvon/triarvon-mark-one-color-transparent.png"
-              alt="Triarvon"
+              alt=""
+              aria-hidden="true"
               className="object-contain"
             />
             <span className="hidden sm:inline-block font-display font-bold tracking-wider text-xl">

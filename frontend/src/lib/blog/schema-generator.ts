@@ -60,7 +60,9 @@ export function generateBlogPostingSchema(
       name: options.siteName || "Triarvon",
       logo: {
         "@type": "ImageObject",
-        url: options.siteImage || `${options.baseUrl}/logo.png`,
+        url:
+          options.siteImage ||
+          `${options.baseUrl}/Triarvon/triarvon-favicon-512.png`,
       },
     },
     mainEntityOfPage: {
@@ -166,7 +168,9 @@ export function generateCollectionPageSchema(
       name: options.siteName || "Triarvon",
       logo: {
         "@type": "ImageObject",
-        url: options.siteImage || `${options.baseUrl}/logo.png`,
+        url:
+          options.siteImage ||
+          `${options.baseUrl}/Triarvon/triarvon-favicon-512.png`,
       },
     },
   };

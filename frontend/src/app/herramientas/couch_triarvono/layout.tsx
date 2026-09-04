@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/herramientas/couch_triarvono`,
     images: [
       {
-        url: `${BASE_URL}/og-coach-triarvon.jpg`,
+        url: `${BASE_URL}/Triarvon/triarvon-logo-black-background.png`,
         width: 1200,
         height: 630,
         alt: "Coach Triarvon - Coaching con IA",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "Coach Triarvon | Coaching con IA",
     description:
       "5 coaches especializados para transformación masculina completa",
-    images: [`${BASE_URL}/og-coach-triarvon.jpg`],
+    images: [`${BASE_URL}/Triarvon/triarvon-logo-black-background.png`],
   },
   alternates: {
     canonical: `${BASE_URL}/herramientas/couch_triarvono`,
@@ -80,11 +80,6 @@ export default function CoachTriarvonLayout({
       price: "0",
       priceCurrency: "USD",
       description: "10 mensajes gratis por mes, luego sistema de créditos",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "127",
     },
     description:
       "5 coaches especializados con inteligencia artificial para transformación masculina: Cuerpo, Estilo, Mentalidad, Productividad y Coach General.",
