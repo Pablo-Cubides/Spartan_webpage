@@ -116,14 +116,77 @@ export default function HerramientasPage() {
               ))}
             </div>
 
+            {/* Metodología y Beneficios de las Herramientas IA */}
+            <div className="mt-12 space-y-10 border-t border-gray-800 pt-10 px-4">
+              <section className="space-y-4">
+                <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                  ¿Por qué utilizar herramientas con Inteligencia Artificial en tu desarrollo personal?
+                </h2>
+                <p className="text-gray-300 leading-relaxed">
+                  En Triarvon combinamos principios clásicos de disciplina, entrenamiento físico y estilismo masculino con tecnología de visión artificial y modelos generativos de última generación. El objetivo no es reemplazar el criterio personal, sino ofrecerte una retroalimentación objetiva, precisa e inmediata adaptada a tu fisionomía, estilo de vida y metas individuales.
+                </p>
+              </section>
+
+              <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-[#161616] p-6 rounded-xl border border-gray-800">
+                  <h3 className="text-lg font-bold text-white mb-2 text-red-400">
+                    Análisis Antropométrico
+                  </h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    Evaluamos proporciones faciales y silueta corporal mediante algoritmos de visión para sugerir peinados, barbas y prendas que equilibran tus facciones naturalmente.
+                  </p>
+                </div>
+                <div className="bg-[#161616] p-6 rounded-xl border border-gray-800">
+                  <h3 className="text-lg font-bold text-white mb-2 text-red-400">
+                    Coaching Especializado 24/7
+                  </h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    Consultores virtuales enfocados en áreas críticas: acondicionamiento físico, nutrición, mentalidad estoica, gestión del tiempo y estilismo integral.
+                  </p>
+                </div>
+                <div className="bg-[#161616] p-6 rounded-xl border border-gray-800">
+                  <h3 className="text-lg font-bold text-white mb-2 text-red-400">
+                    Privacidad y Cifrado
+                  </h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    Tus fotografías se procesan de forma privada y segura en servidores protegidos. No compartimos ni vendemos tu información visual a terceros.
+                  </p>
+                </div>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl md:text-2xl font-bold text-white">
+                  Preguntas Frecuentes sobre las Herramientas
+                </h2>
+                <div className="space-y-4 text-gray-300 text-sm">
+                  <div className="bg-[#141414] p-5 rounded-lg border border-gray-800/80">
+                    <h4 className="font-semibold text-white text-base mb-1">
+                      ¿Necesito pagar para probar el Asesor de Estilo y el Asesor de Rostro?
+                    </h4>
+                    <p>
+                      No. Al registrarte en Triarvon obtienes créditos iniciales gratuitos para realizar tus primeros análisis y experimentar las recomendaciones de IA sin costo.
+                    </p>
+                  </div>
+                  <div className="bg-[#141414] p-5 rounded-lg border border-gray-800/80">
+                    <h4 className="font-semibold text-white text-base mb-1">
+                      ¿Cómo debo tomar la fotografía para obtener el mejor resultado?
+                    </h4>
+                    <p>
+                      Recomendamos una foto de frente, con iluminación neutra y uniforme, fondo despejado y sin accesorios como gafas oscuras o gorras que tapen la línea mandibular o el cabello.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
             {/* CTA final */}
-            <div className="flex justify-center px-4 py-3">
+            <div className="flex justify-center px-4 py-8">
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#c20909] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors"
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-[#c20909] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors shadow-lg hover:shadow-red-900/40"
               >
                 <span className="truncate">
-                  Desata tu Potencial en Triarvon
+                  Explorar Herramientas Arriba ↑
                 </span>
               </button>
             </div>

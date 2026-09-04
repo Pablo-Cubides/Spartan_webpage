@@ -155,7 +155,8 @@ export const viewport: Viewport = {
 
 import Script from "next/script";
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-TRIARVON01";
 
 // Organization Schema
 const organizationSchema = {

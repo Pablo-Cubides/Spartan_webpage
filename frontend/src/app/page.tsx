@@ -189,6 +189,52 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* METODOLOGÍA Y PILARES TRIARVON */}
+        <section className="py-20 bg-[#0f0f0f] border-t border-b border-gray-900">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="text-center mb-12">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-white uppercase tracking-wide">
+                Los 3 Pilares del Hombre Triarvon
+              </h2>
+              <p className="mt-3 text-gray-300 max-w-2xl mx-auto text-base">
+                Un sistema integral diseñado para construir fortaleza interna, dominio físico y una presencia magnética que proyecte respeto.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-[#181818] p-8 rounded-lg border border-gray-800 space-y-3">
+                <div className="text-3xl mb-2 text-triarvon-red">⚔️</div>
+                <h3 className="font-display text-xl font-bold text-white uppercase">
+                  1. Dominio y Energía Física
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Entrenamiento de fuerza inteligente, composición corporal óptima y vitalidad diaria. Tu cuerpo es el templo y la herramienta con la que ejecutas tu propósito.
+                </p>
+              </div>
+
+              <div className="bg-[#181818] p-8 rounded-lg border border-gray-800 space-y-3">
+                <div className="text-3xl mb-2 text-triarvon-red">🧠</div>
+                <h3 className="font-display text-xl font-bold text-white uppercase">
+                  2. Fortaleza Mental y Disciplina
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Enfoque inquebrantable, dominio de las emociones y mentalidad estoica frente a los desafíos cotidianos. La disciplina es el puente entre tus metas y tus resultados.
+                </p>
+              </div>
+
+              <div className="bg-[#181818] p-8 rounded-lg border border-gray-800 space-y-3">
+                <div className="text-3xl mb-2 text-triarvon-red">👔</div>
+                <h3 className="font-display text-xl font-bold text-white uppercase">
+                  3. Estilo y Presencia Magnética
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Cuidado personal impecable, códigos de vestimenta estratégicos y comunicación asertiva. Tu imagen es tu primera tarjeta de presentación al mundo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* NEWSLETTER SECTION */}
         <section
           id="unete"

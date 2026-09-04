@@ -255,6 +255,26 @@ export default function NosotrosPage() {
             </div>
           </section>
 
+          {/* El Manifiesto Triarvon */}
+          <section className="py-10 md:py-16">
+            <div className="bg-[#121212] border border-gray-800 rounded-3xl p-8 md:p-12 space-y-6">
+              <h2 className="text-white text-3xl md:text-4xl font-extrabold uppercase tracking-tight">
+                El Manifiesto Triarvon: Forjando un Estándar Superior
+              </h2>
+              <div className="space-y-4 text-gray-300 leading-relaxed text-base">
+                <p>
+                  En una época saturada de gratificación instantánea, pasividad y distracciones continuas, Triarvon nace como una respuesta decidida para hombres que se rehúsan a conformarse con la mediocridad. Creemos firmemente que la excelencia no es un accidente genético ni un golpe de suerte, sino la consecuencia directa de hábitos deliberados ejecutados con implacable consistencia día tras día.
+                </p>
+                <p>
+                  Nuestra filosofía integra tres pilares fundamentales que no pueden operar de forma aislada: la <strong>fortaleza física</strong> como base biológica de la energía, la <strong>agudeza mental y emocional</strong> inspirada en el estoicismo clásico para tomar decisiones serenas bajo presión, y la <strong>presencia personal impecable</strong> como reflejo externo de orden y respeto por uno mismo.
+                </p>
+                <p>
+                  Cada artículo, herramienta de inteligencia artificial y espacio de comunidad que desarrollamos tiene un único propósito: entregarte claridad estratégica, eliminar las excusas y equiparte con las habilidades prácticas necesarias para liderar tu propia vida, elevar a tu familia y construir un legado perdurable.
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* Social + Contact */}
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 py-10 md:py-16">
             <div className="flex flex-col gap-8">
@@ -269,50 +289,58 @@ export default function NosotrosPage() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                 <a
                   className="flex flex-col items-center gap-3 text-center group"
-                  href="#"
-                  aria-label="Instagram"
+                  href="https://www.instagram.com/triarvon_club/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram de Triarvon"
                 >
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <InstagramIcon />
                   </div>
-                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
+                  <p className="text-gray-200 text-sm font-medium group-hover:text-white transition-colors">
                     Instagram
                   </p>
                 </a>
                 <a
                   className="flex flex-col items-center gap-3 text-center group"
-                  href="#"
-                  aria-label="X"
+                  href="https://x.com/triarvon_club"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X (Twitter) de Triarvon"
                 >
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <XIcon />
                   </div>
-                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
+                  <p className="text-gray-200 text-sm font-medium group-hover:text-white transition-colors">
                     X
                   </p>
                 </a>
                 <a
                   className="flex flex-col items-center gap-3 text-center group"
-                  href="#"
-                  aria-label="YouTube"
+                  href="https://www.facebook.com/profile.php?id=61569420803657"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook de Triarvon"
                 >
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <YouTubeIcon />
                   </div>
-                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
-                    YouTube
+                  <p className="text-gray-200 text-sm font-medium group-hover:text-white transition-colors">
+                    Facebook
                   </p>
                 </a>
                 <a
                   className="flex flex-col items-center gap-3 text-center group"
-                  href="#"
-                  aria-label="Discord"
+                  href="https://www.tiktok.com/@triarvon_club"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok de Triarvon"
                 >
                   <div className="rounded-full bg-gradient-to-br from-[#1a1a1a] to-[#0f0f0f] border border-gray-800 p-5 transition-all group-hover:border-[#D32F2F] group-hover:bg-[#D32F2F]/10 group-hover:scale-110">
                     <DiscordIcon />
                   </div>
-                  <p className="text-gray-300 text-sm font-medium group-hover:text-white transition-colors">
-                    Discord
+                  <p className="text-gray-200 text-sm font-medium group-hover:text-white transition-colors">
+                    TikTok
                   </p>
                 </a>
               </div>

@@ -409,11 +409,21 @@ export default function LinktreeView() {
           ))}
         </div>
 
+        {/* RESUMEN COMUNIDAD TRIARVON */}
+        <div className="w-full bg-neutral-900/40 border border-neutral-800/80 rounded-2xl p-5 mb-8 text-neutral-300 text-xs leading-relaxed text-center space-y-2">
+          <p className="font-semibold text-white text-sm">
+            Directorio Oficial de Canales & Recursos de Triarvon
+          </p>
+          <p>
+            Bienvenido al portal centralizado de Triarvon. Desde aquí puedes conectar con nuestra comunidad en redes sociales, acceder a las herramientas asistidas por Inteligencia Artificial para análisis de estilo y rostro, o interactuar directamente con nuestro equipo de coaching 24/7.
+          </p>
+        </div>
+
         {/* FOOTER BADGE */}
         <div className="flex flex-col items-center gap-2 text-center pt-4 border-t border-neutral-900 w-full">
           <div className="flex items-center gap-4 text-neutral-400">
             <a
-              href="https://instagram.com/triarvon"
+              href="https://www.instagram.com/triarvon_club/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full hover:bg-neutral-900 hover:text-white transition"
@@ -422,7 +432,7 @@ export default function LinktreeView() {
               <InstagramLogo className="w-5 h-5" />
             </a>
             <a
-              href="https://facebook.com/triarvon"
+              href="https://www.facebook.com/profile.php?id=61569420803657"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full hover:bg-neutral-900 hover:text-white transition"
@@ -431,7 +441,7 @@ export default function LinktreeView() {
               <FacebookLogo className="w-5 h-5" />
             </a>
             <a
-              href="https://x.com/triarvon"
+              href="https://x.com/triarvon_club"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full hover:bg-neutral-900 hover:text-white transition"
@@ -447,7 +457,7 @@ export default function LinktreeView() {
               <Globe className="w-5 h-5" />
             </Link>
           </div>
-          <p className="text-neutral-500 text-xs">
+          <p className="text-neutral-400 text-xs">
             © {new Date().getFullYear()} Triarvon • Todos los derechos
             reservados.
           </p>

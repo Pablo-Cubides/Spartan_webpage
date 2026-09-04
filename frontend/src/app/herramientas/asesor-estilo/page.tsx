@@ -936,6 +936,45 @@ export default function Page() {
               </div>
             </div>
 
+            {/* Guía Explicativa de Estilo y Colorimetría Masculina */}
+            <div className="mt-10 border-t border-gray-800/80 pt-8 space-y-8">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Los 4 Pilares del Estilo Masculino Inteligente
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  El Asesor de Estilo de Triarvon analiza tu silueta, contraste tonal y contextura física para construir combinaciones armónicas que transmitan autoridad, presencia y seguridad sin necesidad de gastar de más.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">1. Ajuste (Fit)</h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    La ropa que mejor sienta es la que respeta tus medidas exactas. Ni excesivamente holgada ni restrictiva.
+                  </p>
+                </div>
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">2. Colorimetría</h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Paletas neutras como base (azul marino, blanco, gris, verde oliva, negro) para crear hasta 30 combinaciones con solo 8 prendas.
+                  </p>
+                </div>
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">3. Proporciones</h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Uso estratégico de capas, tiro de pantalón y longitud de chaquetas para estilizar la silueta en torso y piernas.
+                  </p>
+                </div>
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">4. Versatilidad</h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Transición natural del estilo casual a formal ("Smart Casual") con blazers desestructurados y calzado de calidad.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-6">
               {/* Suggestions are only shown after an edited image exists to avoid confusion */}
               {editedUrl ? (
@@ -1102,7 +1141,7 @@ export default function Page() {
                 <div className="msg-image-container">
                   <Image
                     src={editedUrl}
-                    alt="Edited image"
+                    alt="Propuesta de estilo generada por el asesor"
                     className="msg-image"
                     width={0}
                     height={0}

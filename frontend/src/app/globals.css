@@ -9,6 +9,9 @@
   .font-display {
     font-family: 'Anton', sans-serif;
   }
+  .text-muted-foreground {
+    color: #d1d5db !important;
+  }
 }
 
 @layer components {
@@ -51,7 +54,7 @@
   }
 
   .chat-title { font-size: 1.75rem; font-weight: 700; color: white; }
-  .chat-sub { color: #9ca3af; margin-top: 0.4rem; font-size: 0.95rem }
+  .chat-sub { color: #d1d5db; margin-top: 0.4rem; font-size: 0.95rem }
 
   /* Messages area */
   .messages {

@@ -242,9 +242,48 @@ export default function CoachTriarvonPage() {
                 Continuar →
               </button>
             </div>
-            <p className="mt-4 text-gray-400 text-center">
-              Puedes escribir tu primer mensaje después del video.
+            <p className="mt-4 text-gray-300 text-center max-w-xl">
+              Puedes escribir tu primer mensaje después del video para iniciar tu asesoría personalizada con inteligencia artificial.
             </p>
+
+            {/* Guía de Especialidades de Coaches */}
+            <div className="mt-10 w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-left">
+              <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                <div className="text-2xl mb-1">⚔️</div>
+                <h3 className="font-bold text-white text-sm text-red-400">Coach General</h3>
+                <p className="text-gray-300 text-xs mt-1 leading-relaxed">
+                  Coordina tu plan maestro de desarrollo personal, alineando hábitos, disciplina y objetivos trimestrales.
+                </p>
+              </div>
+              <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                <div className="text-2xl mb-1">💪</div>
+                <h3 className="font-bold text-white text-sm text-red-400">Coach de Cuerpo</h3>
+                <p className="text-gray-300 text-xs mt-1 leading-relaxed">
+                  Programación de fuerza, hipertrofia, resistencia cardiovascular y nutrición estratégica adaptada a tu rutina.
+                </p>
+              </div>
+              <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                <div className="text-2xl mb-1">👔</div>
+                <h3 className="font-bold text-white text-sm text-red-400">Coach de Estilo</h3>
+                <p className="text-gray-300 text-xs mt-1 leading-relaxed">
+                  Presencia, código de vestimenta, combinaciones cromáticas y cuidado de la imagen masculina.
+                </p>
+              </div>
+              <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                <div className="text-2xl mb-1">🧠</div>
+                <h3 className="font-bold text-white text-sm text-red-400">Coach de Mentalidad</h3>
+                <p className="text-gray-300 text-xs mt-1 leading-relaxed">
+                  Principios estoicos, control de la reactividad emocional, enfoque mental y resiliencia ante la adversidad.
+                </p>
+              </div>
+              <div className="bg-[#141416] p-4 rounded-xl border border-gray-800 sm:col-span-2 md:col-span-2">
+                <div className="text-2xl mb-1">⚡</div>
+                <h3 className="font-bold text-white text-sm text-red-400">Coach de Productividad</h3>
+                <p className="text-gray-300 text-xs mt-1 leading-relaxed">
+                  Sistemas de trabajo profundo (Deep Work), bloqueo de tiempo, eliminación de distracciones y ejecución diaria de alto impacto.
+                </p>
+              </div>
+            </div>
           </div>
         )}
 

@@ -19,7 +19,7 @@ export default function Footer() {
               />
             </div>
           </div>
-          <p className="text-[#d1d5db] text-sm mt-2">
+          <p className="text-gray-200 text-sm mt-2">
             Forjando hombres, moldeando destinos.
             <br />
             Disciplina. Coraje. Excelencia.
@@ -27,14 +27,14 @@ export default function Footer() {
         </div>
         {/* Links rápidos */}
         <div>
-          <h2 className="uppercase text-[#e53935] text-xs font-bold mb-3 tracking-widest">
+          <h2 className="uppercase text-red-500 text-xs font-bold mb-3 tracking-widest">
             Navegación
           </h2>
           <ul className="flex flex-col gap-2">
             <li>
               <Link
                 href="/blog"
-                className="text-gray-300 hover:text-white transition text-sm"
+                className="text-gray-200 hover:text-white transition text-sm"
               >
                 Blog
               </Link>
@@ -42,7 +42,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/herramientas"
-                className="text-gray-300 hover:text-white transition text-sm"
+                className="text-gray-200 hover:text-white transition text-sm"
               >
                 Herramientas
               </Link>
@@ -50,7 +50,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/nosotros"
-                className="text-gray-300 hover:text-white transition text-sm"
+                className="text-gray-200 hover:text-white transition text-sm"
               >
                 Nosotros
               </Link>
@@ -59,17 +59,17 @@ export default function Footer() {
         </div>
         {/* Newsletter */}
         <div>
-          <h2 className="uppercase text-[#e53935] text-xs font-bold mb-3 tracking-widest">
+          <h2 className="uppercase text-red-500 text-xs font-bold mb-3 tracking-widest">
             Boletín Informativo
           </h2>
-          <p className="text-[#d1d5db] text-sm mb-3">
+          <p className="text-gray-200 text-sm mb-3">
             Recibe consejos sobre disciplina, masculinidad y mejora personal en
             tu email.
           </p>
           <form className="flex flex-col gap-2">
             <input
               type="email"
-              className="rounded-lg bg-[#222] border border-[#303030] px-3 py-2 text-sm text-white placeholder-[#aaa] focus:outline-none focus:border-[#e53935]"
+              className="rounded-lg bg-[#1a1a1a] border border-gray-600 px-3 py-2 text-sm text-white placeholder-gray-300 focus:outline-none focus:border-red-500"
               placeholder="Tu correo"
               autoComplete="email"
               aria-label="Correo electrónico para boletín"
@@ -84,7 +84,7 @@ export default function Footer() {
         </div>
         {/* Redes sociales */}
         <div>
-          <h2 className="uppercase text-[#e53935] text-xs font-bold mb-3 tracking-widest">
+          <h2 className="uppercase text-red-500 text-xs font-bold mb-3 tracking-widest">
             Síguenos
           </h2>
           <div className="flex gap-4 mt-1">
@@ -189,7 +189,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-[#303030] py-4 text-center text-[#d1d5db] text-xs bg-[#141414]">
+      <div className="border-t border-[#303030] py-4 text-center text-gray-300 text-xs bg-[#141414]">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-2">
           <span>
             &copy; {new Date().getFullYear()} Triarvon — Todos los derechos

@@ -38,7 +38,7 @@ export function ChatInterface({
         <span className="text-3xl">{coach.icon}</span>
         <div>
           <h3 className="text-white font-bold">{coach.name}</h3>
-          <p className="text-gray-500 text-sm">{coach.title}</p>
+          <p className="text-gray-300 text-sm">{coach.title}</p>
         </div>
       </div>
 
@@ -68,7 +68,7 @@ function ChatMessages({
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">
       {messages.length === 0 && !loading && (
-        <div className="text-center text-gray-500 py-8">
+        <div className="text-center text-gray-300 py-8">
           <p>¡Comienza la conversación!</p>
         </div>
       )}

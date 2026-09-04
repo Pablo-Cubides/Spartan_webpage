@@ -36,7 +36,7 @@ export function CoachSidebar({ coaches, selectedCoach, onSelectCoach, onEditProf
                         <span className="text-2xl">{coach.icon}</span>
                         <div className="text-left">
                             <p className="font-semibold text-sm">{coach.name}</p>
-                            <p className="text-xs opacity-70">{coach.title}</p>
+                            <p className={`text-xs ${selectedCoach === coach.id ? 'text-white/90' : 'text-gray-300'}`}>{coach.title}</p>
                         </div>
                     </button>
                 ))}

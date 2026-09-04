@@ -20,10 +20,10 @@ export function CreditStatus({ credits, messagesRemaining }: CreditStatusProps) 
                     style={{ width: `${Math.min((messagesRemaining / 25) * 100, 100)}%` }}
                 />
             </div>
-            <p className="text-gray-500 text-xs mt-2">
+            <p className="text-gray-300 text-xs mt-2">
                 {credits > 0 ? `${credits} créditos restantes` : 'Sin créditos'}
             </p>
-            <p className="text-gray-600 text-xs mt-3 leading-relaxed">
+            <p className="text-gray-300 text-xs mt-3 leading-relaxed">
                 🔒 Tus conversaciones se almacenan cifradas. Nadie del equipo lee tus chats.
             </p>
         </div>

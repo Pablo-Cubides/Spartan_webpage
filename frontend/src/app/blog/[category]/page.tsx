@@ -318,6 +318,38 @@ export default async function BlogCategoryPage({ params }: PageProps) {
               </p>
             </div>
           )}
+
+          {/* Guía Editorial y Marco de Aprendizaje de la Categoría */}
+          <div className="mt-16 border-t border-white/10 pt-12 space-y-8">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 backdrop-blur-sm">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                El Estándar Triarvon: {cat.epicName}
+              </h2>
+              <p className="text-gray-300 leading-relaxed text-base mb-6">
+                En esta sección reunimos investigaciones aplicadas, guías paso a paso y análisis estratégicos para hombres que buscan dominar este pilar. No nos enfocamos en soluciones temporales ni modas pasajeras, sino en fundamentos atemporales respaldados por la evidencia científica y la experiencia práctica.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-white/10">
+                <div>
+                  <h4 className="font-bold text-white mb-1 text-red-400">Objetivo del Pilar</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Construir hábitos duraderos que optimicen tu rendimiento diario y refuercen tu confianza.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-white mb-1 text-red-400">Enfoque Práctico</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Instrucciones directas, rutinas estructuradas y listas accionables listas para implementar hoy mismo.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-white mb-1 text-red-400">Comunidad y Criterio</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Aprende junto a una hermandad orientada a elevar sus estándares de disciplina y maestría personal.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </>
