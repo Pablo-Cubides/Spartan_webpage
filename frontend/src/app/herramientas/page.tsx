@@ -2,12 +2,32 @@
 
 import Link from "next/link";
 import { Breadcrumb } from "@/components/Breadcrumb";
+import FAQSchema, { FAQItem } from "@/components/seo/FAQSchema";
 
-// Nota: Metadata no puede estar en 'use client', mover a layout.tsx si se necesita
-// export const metadata: Metadata = {
-//   title: 'Herramientas | Triarvon Club - Asesor de Estilo y Análisis',
-//   description: 'Descubre nuestras herramientas de IA...',
-// };
+const HERRAMIENTAS_FAQS: FAQItem[] = [
+  {
+    question:
+      "¿Necesito pagar para probar el Asesor de Estilo y el Asesor de Rostro?",
+    answer:
+      "No. Al registrarte en Triarvon obtienes créditos iniciales gratuitos para realizar tus primeros análisis y experimentar las recomendaciones de IA sin costo.",
+  },
+  {
+    question: "¿Cómo debo tomar la fotografía para obtener el mejor resultado?",
+    answer:
+      "Recomendamos una foto de frente, con iluminación neutra y uniforme, fondo despejado y sin accesorios como gafas oscuras o gorras que tapen la línea mandibular o el cabello.",
+  },
+  {
+    question:
+      "¿Qué nivel de precisión ofrecen los análisis de morfología facial y estilo?",
+    answer:
+      "Nuestros modelos de visión computacional aplican reglas de visagismo y antropometría geométrica para recomendar proporciones óptimas de barba, corte de cabello y prendas adaptadas a tu estructura corporal.",
+  },
+  {
+    question: "¿Cómo se protegen mis fotos y datos biométricos?",
+    answer:
+      "Tus imágenes se procesan de forma privada en servidores cifrados bajo estándares de privacidad digital. No compartimos, vendemos ni utilizamos tus datos visuales para alimentar modelos públicos externos.",
+  },
+];
 
 const HERRAMIENTAS = [
   {
@@ -42,6 +62,7 @@ export default function HerramientasPage() {
       className="min-h-screen bg-[#0a0a0a]"
       style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
     >
+      <FAQSchema items={HERRAMIENTAS_FAQS} />
       <div className="flex flex-col h-full layout-container grow">
         {/* Breadcrumb */}
         <div className="relative z-40 px-4 md:px-40 py-5">
@@ -171,29 +192,17 @@ export default function HerramientasPage() {
                   Preguntas Frecuentes sobre las Herramientas
                 </h2>
                 <div className="space-y-4 text-gray-300 text-sm">
-                  <div className="bg-[#141414] p-5 rounded-lg border border-gray-800/80">
-                    <h3 className="font-semibold text-white text-base mb-1">
-                      ¿Necesito pagar para probar el Asesor de Estilo y el
-                      Asesor de Rostro?
-                    </h3>
-                    <p>
-                      No. Al registrarte en Triarvon obtienes créditos iniciales
-                      gratuitos para realizar tus primeros análisis y
-                      experimentar las recomendaciones de IA sin costo.
-                    </p>
-                  </div>
-                  <div className="bg-[#141414] p-5 rounded-lg border border-gray-800/80">
-                    <h3 className="font-semibold text-white text-base mb-1">
-                      ¿Cómo debo tomar la fotografía para obtener el mejor
-                      resultado?
-                    </h3>
-                    <p>
-                      Recomendamos una foto de frente, con iluminación neutra y
-                      uniforme, fondo despejado y sin accesorios como gafas
-                      oscuras o gorras que tapen la línea mandibular o el
-                      cabello.
-                    </p>
-                  </div>
+                  {HERRAMIENTAS_FAQS.map((faq) => (
+                    <div
+                      key={faq.question}
+                      className="bg-[#141414] p-5 rounded-lg border border-gray-800/80"
+                    >
+                      <h3 className="font-semibold text-white text-base mb-1">
+                        {faq.question}
+                      </h3>
+                      <p>{faq.answer}</p>
+                    </div>
+                  ))}
                 </div>
               </section>
             </div>
