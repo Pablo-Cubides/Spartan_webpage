@@ -418,25 +418,36 @@ export default function LinktreeView() {
             Bienvenido al portal centralizado de la hermandad Triarvon. Esta
             página reúne todos los canales oficiales y herramientas digitales
             diseñadas para acompañar tu proceso de evolución personal, estética
-            y profesional.
+            y profesional sin atajos ficticios ni distracciones.
           </p>
           <div className="text-left space-y-2 pt-2 border-t border-neutral-800 text-[11px] text-gray-300">
             <p>
               <strong className="text-white">⚔️ Plataforma Principal:</strong>{" "}
-              Accede a artículos editoriales, guías de entrenamiento y análisis
-              antropométrico.
+              Accede a artículos editoriales profundos, guías de biomecánica
+              aplicada, nutrición basada en evidencia y análisis antropométrico
+              masculino.
             </p>
             <p>
               <strong className="text-white">📱 Comunidad en Redes:</strong>{" "}
-              Síguenos en Instagram, Facebook y X (Twitter) para lecciones
-              diarias de mentalidad estoica, disciplina y estilo.
+              Síguenos en Instagram, Facebook y X (Twitter) para micro-dosis
+              diarias de mentalidad estoica, disciplina táctica, debates de
+              estilo y retos comunitarios.
             </p>
             <p>
               <strong className="text-white">
                 🤖 Módulos de Inteligencia Artificial:
               </strong>{" "}
-              Consulta en tiempo real con nuestros asesores de estilo,
-              proporciones faciales y el Coach Triarvon 24/7.
+              Consulta en tiempo real con nuestros modelos de asesoría
+              morfológica, visagismo facial asistido y el Coach Triarvon
+              disponible de manera ininterrumpida.
+            </p>
+            <p>
+              <strong className="text-white">
+                🛡️ Código de Conducta y Crecimiento:
+              </strong>{" "}
+              Nuestra comunidad se rige por la responsabilidad individual, la
+              búsqueda de la excelencia física e intelectual, y la camaradería
+              entre hombres decididos a elevar sus estándares de vida.
             </p>
           </div>
         </div>

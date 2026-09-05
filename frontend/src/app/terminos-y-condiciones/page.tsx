@@ -197,6 +197,56 @@ export default function TerminosPage() {
           nuestro equipo directivo en el correo electrónico:{" "}
           <strong className="text-white">triarvonmarket@gmail.com</strong>.
         </p>
+
+        <h2 className="text-2xl font-bold text-white pt-4">
+          10. Marco Jurídico y Referencias Institucionales de Autoridad
+        </h2>
+        <p className="text-sm">
+          Los presentes términos se estructuran conforme a los estándares
+          internacionales de comercio electrónico, derechos del consumidor
+          digital y protección de propiedad intelectual:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-sm pl-4 text-gray-300">
+          <li>
+            <strong className="text-white">
+              Propiedad Intelectual y Derechos de Autor:
+            </strong>{" "}
+            Directrices internacionales de la{" "}
+            <a
+              href="https://www.wipo.int/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 underline"
+            >
+              Organización Mundial de la Propiedad Intelectual (WIPO / OMPI)
+            </a>
+            .
+          </li>
+          <li>
+            <strong className="text-white">
+              Protección del Consumidor en Medios Digitales:
+            </strong>{" "}
+            Estatuto de protección al consumidor y comercio electrónico en{" "}
+            <a
+              href="https://www.sic.gov.co/proteccion-al-consumidor"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 underline"
+            >
+              Superintendencia de Industria y Comercio (.gov.co)
+            </a>{" "}
+            y fundamentos jurídicos en la{" "}
+            <a
+              href="https://es.wikipedia.org/wiki/Contrato_de_adhesi%C3%B3n"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 underline"
+            >
+              Enciclopedia Wikipedia: Contratos de Adhesión Digital
+            </a>
+            .
+          </li>
+        </ul>
       </div>
     </div>
   );

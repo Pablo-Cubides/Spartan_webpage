@@ -221,6 +221,56 @@ export default function PrivacidadPage() {
           Responderemos a tu solicitud con la mayor diligencia dentro de los
           plazos establecidos por la legislación aplicable.
         </p>
+
+        <h2 className="text-2xl font-bold text-white pt-4">
+          9. Marco Legal y Referencias Regulatorias de Autoridad
+        </h2>
+        <p className="text-sm">
+          Triarvon fundamenta sus protocolos de privacidad en los estándares
+          internacionales más rigurosos de soberanía y protección de datos
+          digitales:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-sm pl-4 text-gray-300">
+          <li>
+            <strong className="text-white">
+              Reglamento General de Protección de Datos (RGPD / GDPR):
+            </strong>{" "}
+            Consulta el marco normativo comunitario en el{" "}
+            <a
+              href="https://eur-lex.europa.eu/eli/reg/2016/679/oj"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 underline"
+            >
+              Diario Oficial de la Unión Europea (EUR-Lex)
+            </a>{" "}
+            y su análisis en la{" "}
+            <a
+              href="https://es.wikipedia.org/wiki/Reglamento_General_de_Protecci%C3%B3n_de_Datos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 underline"
+            >
+              Enciclopedia Wikipedia: RGPD
+            </a>
+            .
+          </li>
+          <li>
+            <strong className="text-white">
+              Régimen de Protección de Datos Personales (Habeas Data):
+            </strong>{" "}
+            Directrices de la Superintendencia de Industria y Comercio en{" "}
+            <a
+              href="https://www.sic.gov.co/proteccion-de-datos-personales"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-red-400 hover:text-red-300 underline"
+            >
+              Portal Oficial SIC (.gov.co)
+            </a>
+            .
+          </li>
+        </ul>
       </div>
     </div>
   );

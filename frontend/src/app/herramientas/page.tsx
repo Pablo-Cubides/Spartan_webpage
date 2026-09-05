@@ -120,10 +120,16 @@ export default function HerramientasPage() {
             <div className="mt-12 space-y-10 border-t border-gray-800 pt-10 px-4">
               <section className="space-y-4">
                 <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
-                  ¿Por qué utilizar herramientas con Inteligencia Artificial en tu desarrollo personal?
+                  ¿Por qué utilizar herramientas con Inteligencia Artificial en
+                  tu desarrollo personal?
                 </h2>
                 <p className="text-gray-300 leading-relaxed">
-                  En Triarvon combinamos principios clásicos de disciplina, entrenamiento físico y estilismo masculino con tecnología de visión artificial y modelos generativos de última generación. El objetivo no es reemplazar el criterio personal, sino ofrecerte una retroalimentación objetiva, precisa e inmediata adaptada a tu fisionomía, estilo de vida y metas individuales.
+                  En Triarvon combinamos principios clásicos de disciplina,
+                  entrenamiento físico y estilismo masculino con tecnología de
+                  visión artificial y modelos generativos de última generación.
+                  El objetivo no es reemplazar el criterio personal, sino
+                  ofrecerte una retroalimentación objetiva, precisa e inmediata
+                  adaptada a tu fisionomía, estilo de vida y metas individuales.
                 </p>
               </section>
 
@@ -133,7 +139,9 @@ export default function HerramientasPage() {
                     Análisis Antropométrico
                   </h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    Evaluamos proporciones faciales y silueta corporal mediante algoritmos de visión para sugerir peinados, barbas y prendas que equilibran tus facciones naturalmente.
+                    Evaluamos proporciones faciales y silueta corporal mediante
+                    algoritmos de visión para sugerir peinados, barbas y prendas
+                    que equilibran tus facciones naturalmente.
                   </p>
                 </div>
                 <div className="bg-[#161616] p-6 rounded-xl border border-gray-800">
@@ -141,7 +149,9 @@ export default function HerramientasPage() {
                     Coaching Especializado 24/7
                   </h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    Consultores virtuales enfocados en áreas críticas: acondicionamiento físico, nutrición, mentalidad estoica, gestión del tiempo y estilismo integral.
+                    Consultores virtuales enfocados en áreas críticas:
+                    acondicionamiento físico, nutrición, mentalidad estoica,
+                    gestión del tiempo y estilismo integral.
                   </p>
                 </div>
                 <div className="bg-[#161616] p-6 rounded-xl border border-gray-800">
@@ -149,7 +159,9 @@ export default function HerramientasPage() {
                     Privacidad y Cifrado
                   </h3>
                   <p className="text-gray-300 text-sm leading-relaxed">
-                    Tus fotografías se procesan de forma privada y segura en servidores protegidos. No compartimos ni vendemos tu información visual a terceros.
+                    Tus fotografías se procesan de forma privada y segura en
+                    servidores protegidos. No compartimos ni vendemos tu
+                    información visual a terceros.
                   </p>
                 </div>
               </section>
@@ -160,19 +172,26 @@ export default function HerramientasPage() {
                 </h2>
                 <div className="space-y-4 text-gray-300 text-sm">
                   <div className="bg-[#141414] p-5 rounded-lg border border-gray-800/80">
-                    <h4 className="font-semibold text-white text-base mb-1">
-                      ¿Necesito pagar para probar el Asesor de Estilo y el Asesor de Rostro?
-                    </h4>
+                    <h3 className="font-semibold text-white text-base mb-1">
+                      ¿Necesito pagar para probar el Asesor de Estilo y el
+                      Asesor de Rostro?
+                    </h3>
                     <p>
-                      No. Al registrarte en Triarvon obtienes créditos iniciales gratuitos para realizar tus primeros análisis y experimentar las recomendaciones de IA sin costo.
+                      No. Al registrarte en Triarvon obtienes créditos iniciales
+                      gratuitos para realizar tus primeros análisis y
+                      experimentar las recomendaciones de IA sin costo.
                     </p>
                   </div>
                   <div className="bg-[#141414] p-5 rounded-lg border border-gray-800/80">
-                    <h4 className="font-semibold text-white text-base mb-1">
-                      ¿Cómo debo tomar la fotografía para obtener el mejor resultado?
-                    </h4>
+                    <h3 className="font-semibold text-white text-base mb-1">
+                      ¿Cómo debo tomar la fotografía para obtener el mejor
+                      resultado?
+                    </h3>
                     <p>
-                      Recomendamos una foto de frente, con iluminación neutra y uniforme, fondo despejado y sin accesorios como gafas oscuras o gorras que tapen la línea mandibular o el cabello.
+                      Recomendamos una foto de frente, con iluminación neutra y
+                      uniforme, fondo despejado y sin accesorios como gafas
+                      oscuras o gorras que tapen la línea mandibular o el
+                      cabello.
                     </p>
                   </div>
                 </div>
@@ -185,9 +204,7 @@ export default function HerramientasPage() {
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-8 bg-[#c20909] text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-700 transition-colors shadow-lg hover:shadow-red-900/40"
               >
-                <span className="truncate">
-                  Explorar Herramientas Arriba ↑
-                </span>
+                <span className="truncate">Explorar Herramientas Arriba ↑</span>
               </button>
             </div>
           </div>

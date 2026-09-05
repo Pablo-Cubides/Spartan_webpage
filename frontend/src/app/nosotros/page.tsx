@@ -289,6 +289,48 @@ export default function NosotrosPage() {
                   para liderar tu propia vida, elevar a tu familia y construir
                   un legado perdurable.
                 </p>
+
+                {/* Referencias y Fundamentos Institucionales */}
+                <div className="pt-6 border-t border-gray-800 text-xs text-gray-400 space-y-2">
+                  <h3 className="font-semibold text-gray-200 uppercase tracking-wider text-xs">
+                    Fundamentos Filosóficos y Científicos de Nuestra
+                    Metodología:
+                  </h3>
+                  <p className="leading-relaxed">
+                    Nuestros modelos de coaching y contenidos combinan el
+                    estudio del{" "}
+                    <a
+                      href="https://es.wikipedia.org/wiki/Estoicismo"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-red-400 hover:text-red-300 underline"
+                    >
+                      estoicismo clásico
+                    </a>{" "}
+                    como disciplina de carácter, principios de ética y
+                    deliberación documentados por la{" "}
+                    <a
+                      href="https://plato.stanford.edu/entries/stoicism/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-red-400 hover:text-red-300 underline"
+                    >
+                      Stanford Encyclopedia of Philosophy
+                    </a>
+                    , y parámetros de fisiología humana y salud basados en la
+                    literatura biomédica de{" "}
+                    <a
+                      href="https://pubmed.ncbi.nlm.nih.gov/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-red-400 hover:text-red-300 underline"
+                    >
+                      National Center for Biotechnology Information (NCBI /
+                      PubMed)
+                    </a>
+                    .
+                  </p>
+                </div>
               </div>
             </div>
           </section>

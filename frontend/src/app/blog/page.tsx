@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
 import {
   categories as staticCategories,
@@ -174,12 +175,15 @@ export default async function BlogPage() {
                   >
                     {/* Background Image */}
                     <div className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={cat.cover_image || ""}
-                        alt={cat.epic_name || "Categoría editorial Triarvon"}
-                        className="w-full h-full object-cover"
-                      />
+                      {cat.cover_image && (
+                        <Image
+                          src={cat.cover_image}
+                          alt={cat.epic_name || "Categoría editorial Triarvon"}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
                     </div>
 
@@ -238,14 +242,14 @@ export default async function BlogPage() {
                     className="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 hover:bg-white/10"
                   >
                     {/* Image */}
-                    <div className="aspect-video overflow-hidden bg-gray-900">
+                    <div className="relative aspect-video overflow-hidden bg-gray-900">
                       {post.cover_image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                           src={post.cover_image}
                           alt={post.title || "Artículo editorial Triarvon"}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          loading="lazy"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-red-900/50 to-gray-900 flex items-center justify-center">
@@ -253,7 +257,7 @@ export default async function BlogPage() {
                         </div>
                       )}
                       {/* Gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                     </div>
 
                     {/* Content */}

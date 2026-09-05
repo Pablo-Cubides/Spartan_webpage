@@ -32,7 +32,7 @@ export default function CookieConsent() {
             nuestra plataforma. Al continuar navegando, aceptas nuestra{" "}
             <a
               href="/politica-de-privacidad"
-              className="text-[#D32F2F] hover:underline font-medium"
+              className="text-red-400 hover:underline font-medium"
             >
               Política de Privacidad
             </a>{" "}

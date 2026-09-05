@@ -334,31 +334,78 @@ export default async function BlogCategoryPage({ params }: PageProps) {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-white/10">
                 <div>
-                  <h4 className="font-bold text-white mb-1 text-red-400">
+                  <h3 className="font-bold text-white mb-1 text-red-400 text-base">
                     Objetivo del Pilar
-                  </h4>
+                  </h3>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Construir hábitos duraderos que optimicen tu rendimiento
-                    diario y refuercen tu confianza.
+                    Construir hábitos biológicamente sostenibles y patrones de
+                    comportamiento duraderos que optimicen tu rendimiento
+                    neuroquímico, composición física y confianza estratégica en
+                    entornos sociales y profesionales de alta exigencia.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1 text-red-400">
-                    Enfoque Práctico
-                  </h4>
+                  <h3 className="font-bold text-white mb-1 text-red-400 text-base">
+                    Enfoque Práctico y Evidencia
+                  </h3>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Instrucciones directas, rutinas estructuradas y listas
-                    accionables listas para implementar hoy mismo.
+                    Protocolos paso a paso validados experimentalmente: rutinas
+                    de entrenamiento periodizado, biohacking del sueño,
+                    nutrición sin dogmas y estilismo adaptado a la morfología
+                    individual, eliminando la sobrecarga de información
+                    irrelevante.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1 text-red-400">
-                    Comunidad y Criterio
-                  </h4>
+                  <h3 className="font-bold text-white mb-1 text-red-400 text-base">
+                    Criterio y Comunidad
+                  </h3>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Aprende junto a una hermandad orientada a elevar sus
-                    estándares de disciplina y maestría personal.
+                    Aprende junto a una comunidad orientada al autocontrol, la
+                    sobriedad y la excelencia táctica. Fomentamos el pensamiento
+                    crítico para que ejecutes con precisión militar cada
+                    decisión sobre tu cuerpo, estilo y mentalidad.
                   </p>
+                </div>
+              </div>
+
+              {/* Fundamentos Académicos y Referencias GEO */}
+              <div className="mt-8 pt-6 border-t border-white/10 text-xs text-gray-400">
+                <h3 className="font-semibold text-gray-300 uppercase tracking-wider text-xs mb-3">
+                  Fuentes Científicas y Metodológicas del Pilar:
+                </h3>
+                <p className="mb-3 leading-relaxed">
+                  Los protocolos desarrollados en el pilar de {cat.epicName}{" "}
+                  integran principios de investigación biomédica, fisiología del
+                  ejercicio y psicología conductual contemporánea, contrastados
+                  con literatura de acceso abierto y manuales clínicos de
+                  referencia internacional:
+                </p>
+                <div className="flex flex-wrap gap-4 text-gray-400">
+                  <a
+                    href="https://pubmed.ncbi.nlm.nih.gov/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-red-400 transition-colors underline decoration-dotted"
+                  >
+                    National Institutes of Health (NCBI/PubMed)
+                  </a>
+                  <a
+                    href="https://www.stanford.edu/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-red-400 transition-colors underline decoration-dotted"
+                  >
+                    Stanford Medicine Research
+                  </a>
+                  <a
+                    href="https://es.wikipedia.org/wiki/Desarrollo_personal"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-red-400 transition-colors underline decoration-dotted"
+                  >
+                    Enciclopedia Wikipedia: Fundamentos de Optimización
+                  </a>
                 </div>
               </div>
             </div>

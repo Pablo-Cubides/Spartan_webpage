@@ -221,9 +221,9 @@ export default function CoachTriarvonPage() {
         {/* Video Introduction - Sin requerir login, luego va al chat */}
         {pageState === "video" && (
           <div className="flex flex-col items-center justify-center min-h-[60vh] p-8">
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black uppercase text-white tracking-tight leading-[1.1] mb-6 drop-shadow-2xl">
               ¡Bienvenido a Coach Triarvon!
-            </h1>
+            </h2>
             <div className="relative w-full max-w-3xl aspect-video bg-[#1a1a1a] rounded-2xl overflow-hidden border border-gray-800">
               <video
                 src="/Herramientas/Videos/onboarding-welcome.mp4"
@@ -248,7 +248,10 @@ export default function CoachTriarvonPage() {
             </p>
 
             {/* Guía de Especialidades de Coaches */}
-            <div className="mt-10 w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-left">
+            <h2 className="text-xl font-bold text-white text-center mt-10 mb-4">
+              Especialidades de Mentoría IA Disponibles
+            </h2>
+            <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-left">
               <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
                 <div className="text-2xl mb-1">⚔️</div>
                 <h3 className="font-bold text-white text-sm text-red-400">
@@ -468,6 +471,46 @@ export default function CoachTriarvonPage() {
                 utiliza para entrenar modelos externos con tus datos privados.
               </p>
             </div>
+          </div>
+
+          <div className="bg-[#101012] p-6 rounded-xl border border-gray-800 text-gray-300 text-sm space-y-4">
+            <h3 className="text-base font-bold text-white uppercase tracking-wider">
+              Protocolo de Interacción y Maximización de Respuestas
+            </h3>
+            <p className="leading-relaxed">
+              Para extraer el máximo valor de cada sesión con tu Coach Triarvon,
+              estructura tus consultas especificando contexto actual,
+              restricciones operativas y el resultado tangible deseado. A
+              diferencia de asistentes genéricos, nuestros agentes están
+              ajustados para proporcionar planes de acción directos, métricas
+              cuantificables y pasos de ejecución inmediata en lugar de
+              respuestas teóricas superficiales.
+            </p>
+            <p className="leading-relaxed">
+              La arquitectura del sistema combina principios de coaching
+              ontológico, psicología de la acción y modelado de hábitos basado
+              en evidencia neurocientífica. Consulta más información sobre los
+              fundamentos de la formación de hábitos y fijación de objetivos en
+              recursos de acceso abierto como{" "}
+              <a
+                href="https://es.wikipedia.org/wiki/Psicolog%C3%ADa_del_deporte"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-400 hover:text-red-300 underline"
+              >
+                Wikipedia: Psicología del Rendimiento
+              </a>{" "}
+              y estudios de{" "}
+              <a
+                href="https://pubmed.ncbi.nlm.nih.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-400 hover:text-red-300 underline"
+              >
+                NCBI / PubMed
+              </a>
+              .
+            </p>
           </div>
         </section>
       </div>

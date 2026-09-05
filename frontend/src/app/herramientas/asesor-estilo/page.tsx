@@ -990,6 +990,74 @@ export default function Page() {
                   </p>
                 </div>
               </div>
+
+              {/* Guía Morfológica y Armario Cápsula Inteligente */}
+              <div className="bg-[#111113] p-6 rounded-xl border border-gray-800/80 space-y-4 text-gray-300 text-sm">
+                <h3 className="text-lg font-bold text-white">
+                  Morfología Masculina y Reglas de Proporción Anatómica
+                </h3>
+                <p className="leading-relaxed">
+                  Cada estructura corporal responde a leyes ópticas específicas
+                  de geometría y líneas de corte. Nuestra tecnología evalúa la
+                  relación entre la anchura biacromial (hombros), el perímetro
+                  torácico y la cintura para identificar tu tipología y
+                  equilibrar visualmente tu silueta:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div className="p-3 bg-black/40 rounded-lg border border-white/5">
+                    <span className="font-semibold text-white block mb-1">
+                      Silueta Trapecio / V:
+                    </span>
+                    Hombros anchos con cintura estrecha. Admite prendas
+                    entalladas y patrones estructurados sin recargar hombreras.
+                  </div>
+                  <div className="p-3 bg-black/40 rounded-lg border border-white/5">
+                    <span className="font-semibold text-white block mb-1">
+                      Silueta Rectángulo:
+                    </span>
+                    Hombros y cadera alineados. Se busca generar volumen en la
+                    parte superior mediante solapas anchas y capas superpuestas.
+                  </div>
+                  <div className="p-3 bg-black/40 rounded-lg border border-white/5">
+                    <span className="font-semibold text-white block mb-1">
+                      Silueta Óvalo:
+                    </span>
+                    Mayor peso visual en la zona media. Favorece líneas
+                    verticales, tonos oscuros monocromáticos y tejidos de caída
+                    limpia.
+                  </div>
+                  <div className="p-3 bg-black/40 rounded-lg border border-white/5">
+                    <span className="font-semibold text-white block mb-1">
+                      Silueta Triángulo Invertido:
+                    </span>
+                    Espalda muy desarrollada por entrenamiento. Requiere
+                    pantalones de corte recto o relajado para equilibrar el tren
+                    inferior.
+                  </div>
+                </div>
+                <div className="pt-2 text-xs text-gray-400 border-t border-white/5">
+                  Aprende más sobre las bases de la antropometría aplicada al
+                  diseño y la colorimetría textil en{" "}
+                  <a
+                    href="https://es.wikipedia.org/wiki/Indumentaria"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-400 hover:text-red-300 underline"
+                  >
+                    Wikipedia: Indumentaria Masculina
+                  </a>{" "}
+                  y referencias científicas de ergonomía y percepción visual en{" "}
+                  <a
+                    href="https://pubmed.ncbi.nlm.nih.gov/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-400 hover:text-red-300 underline"
+                  >
+                    NCBI / PubMed
+                  </a>
+                  .
+                </div>
+              </div>
             </div>
 
             <div className="mt-6">

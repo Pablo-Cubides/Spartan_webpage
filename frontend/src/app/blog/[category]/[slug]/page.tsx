@@ -395,6 +395,235 @@ export default async function BlogPostPage({ params }: PageProps) {
               </p>
             </div>
 
+            {/* Fuentes de Autoridad y Referencias Académicas (GEO & E-E-A-T) */}
+            <div className="mt-8 p-6 rounded-xl bg-white/[0.02] border border-white/10">
+              <h4 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+                <span className="text-red-500">📚</span> Fuentes y Referencias
+                Académicas Consultadas
+              </h4>
+              <p className="text-gray-300 text-xs leading-relaxed mb-4">
+                En cumplimiento de nuestros estándares de rigor y verificación
+                editorial, los conceptos abordados en esta publicación se
+                sustentan y contrastan con literatura científica, registros
+                enciclopédicos y fuentes académicas de acceso público:
+              </p>
+              <div className="space-y-3">
+                {category === "entrenamiento-y-energia-fisica" && (
+                  <>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://pubmed.ncbi.nlm.nih.gov/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        National Institutes of Health (NIH / PubMed) ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">(nih.gov)</span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Base de datos biomédica oficial con ensayos clínicos
+                        sobre hipertrofia, metabolismo y fisiología del
+                        ejercicio.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://es.wikipedia.org/wiki/Entrenamiento_de_fuerza"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Wikipedia: Fundamentos del Entrenamiento de Fuerza ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (es.wikipedia.org)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Compendio enciclopédico sobre periodización,
+                        reclutamiento neuromuscular y adaptación física.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://www.who.int/es/news-room/fact-sheets/detail/physical-activity"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Organización Mundial de la Salud (OMS / WHO) ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">(who.int)</span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Directrices globales sobre actividad física, salud
+                        cardiovascular y prevención del sedentarismo.
+                      </p>
+                    </div>
+                  </>
+                )}
+                {category === "estilo-y-presencia" && (
+                  <>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://es.wikipedia.org/wiki/Moda_masculina"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Wikipedia: Historia y Códigos de Vestimenta Masculina ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (es.wikipedia.org)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Evolución histórica del vestir masculino, sastrería y
+                        etiqueta contemporánea.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://www.britannica.com/topic/dress-clothing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Encyclopaedia Britannica: Fundamentos de Indumentaria y
+                        Sastrería ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (britannica.com)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Tratado enciclopédico sobre proporciones, confección y
+                        estética indumentaria.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://es.wikipedia.org/wiki/N%C3%BAmero_%C3%A1ureo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Wikipedia: Proporción Áurea y Antropometría Facial ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (es.wikipedia.org)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Geometría armónica aplicada al visagismo, corte de
+                        cabello y estructura facial.
+                      </p>
+                    </div>
+                  </>
+                )}
+                {category === "mentalidad-y-disciplina" && (
+                  <>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://plato.stanford.edu/entries/stoicism/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Stanford Encyclopedia of Philosophy: Estoicismo ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">(stanford.edu)</span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Monografía académica de la Universidad de Stanford sobre
+                        la ética estoica, el autocontrol y la virtud racional.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://es.wikipedia.org/wiki/Meditaciones"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Wikipedia: Meditaciones de Marco Aurelio ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (es.wikipedia.org)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Tratado clásico de introspección, fortaleza interior y
+                        gestión de la adversidad.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://www.apa.org/topics/resilience"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        American Psychological Association (APA): Resiliencia y
+                        Conducta ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">(apa.org)</span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Investigaciones científicas sobre formación de hábitos,
+                        neuroplasticidad y resiliencia conductual.
+                      </p>
+                    </div>
+                  </>
+                )}
+                {category === "productividad-y-gestion-del-tiempo" && (
+                  <>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://es.wikipedia.org/wiki/Gesti%C3%B3n_del_tiempo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        Wikipedia: Metodologías de Gestión del Tiempo ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (es.wikipedia.org)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Sistemas estructurados de priorización, bloques de
+                        enfoque y combate a la procrastinación.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://mitsloan.mit.edu/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        MIT Sloan Management Review: Enfoque y Productividad ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">(mit.edu)</span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Estudios del Instituto Tecnológico de Massachusetts
+                        sobre concentración y productividad ejecutiva.
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-300 border-l-2 border-red-500/50 pl-3 py-1">
+                      <a
+                        href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6751071/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-red-400 hover:text-red-300 font-semibold underline inline-flex items-center gap-1"
+                      >
+                        National Center for Biotechnology Information (NCBI) ↗
+                      </a>
+                      <span className="text-gray-400 ml-1">
+                        (ncbi.nlm.nih.gov)
+                      </span>
+                      <p className="text-gray-400 text-[11px] mt-0.5">
+                        Investigación científica oficial sobre ritmo circadiano,
+                        arquitectura del sueño y eficiencia cognitiva.
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
             {/* End CTA */}
             <div className="mt-8 pt-8 border-t border-white/10">
               <div className="bg-linear-to-r from-red-900/30 to-transparent p-6 rounded-xl border border-red-500/20">

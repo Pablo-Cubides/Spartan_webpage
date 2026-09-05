@@ -797,6 +797,69 @@ export default function Page() {
                     rapado o barba completa definida.
                   </p>
                 </div>
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Cara Diamante
+                  </h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Pómulos prominentes con frente y barbilla más estrechas.
+                    Favorece barbas más densas en mandíbula y flequillos
+                    laterales para ampliar la frente.
+                  </p>
+                </div>
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Cara Rectangular / Alargada
+                  </h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Mayor longitud vertical en proporción al ancho. Se evitan
+                    tupés excesivamente altos; funcionan barbas completas con
+                    volumen en mejillas para ensanchar el tercio inferior.
+                  </p>
+                </div>
+                <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Cara Triangular
+                  </h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Mandíbula prominente y frente más estrecha. Cortes con
+                    textura y capas en la coronilla aportan simetría, combinados
+                    con barbas rasuradas o perfiladas al milímetro.
+                  </p>
+                </div>
+              </div>
+
+              {/* Fundamentos de Visagismo y Proporciones Faciales */}
+              <div className="bg-[#111113] p-5 rounded-xl border border-gray-800/80 text-xs text-gray-300 space-y-3">
+                <h4 className="text-sm font-semibold text-white uppercase tracking-wider">
+                  Fundamentos de Visagismo y Biometría Facial
+                </h4>
+                <p className="leading-relaxed">
+                  El visagismo es la disciplina técnica que estudia las
+                  proporciones de los tres tercios faciales (superior, medio e
+                  inferior) para proyectar armonía y simetría mediante el
+                  estilismo capilar y el afeitado. Nuestra red neuronal aplica
+                  estos principios para optimizar tu presencia sin alterar tus
+                  rasgos esenciales.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-4 text-gray-400 border-t border-white/5">
+                  <a
+                    href="https://es.wikipedia.org/wiki/Antropometr%C3%ADa"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-400 hover:text-red-300 underline"
+                  >
+                    Wikipedia: Antropometría y Proporciones Humanas
+                  </a>
+                  <a
+                    href="https://pubmed.ncbi.nlm.nih.gov/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-400 hover:text-red-300 underline"
+                  >
+                    Estudios de Morfometría Facial en NCBI / PubMed
+                  </a>
+                </div>
               </div>
             </div>
 
