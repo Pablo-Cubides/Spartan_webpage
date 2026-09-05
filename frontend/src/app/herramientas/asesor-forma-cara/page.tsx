@@ -691,7 +691,7 @@ export default function Page() {
               <Image
                 fill
                 src="/Logo triarvon club - sin fondo.webp"
-                alt="Triarvon Club"
+                alt="Emblema oficial Asesor de Rostro Triarvon"
                 className="object-contain"
               />
             </div>
@@ -752,30 +752,49 @@ export default function Page() {
             <div className="mt-10 border-t border-gray-800/80 pt-8 space-y-8">
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">
-                  ¿Cómo funciona el análisis de forma facial con Inteligencia Artificial?
+                  ¿Cómo funciona el análisis de forma facial con Inteligencia
+                  Artificial?
                 </h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Nuestro modelo procesa la relación matemática entre el ancho de los pómulos, la longitud de la mandíbula, la amplitud de la frente y el largo total del rostro. Al identificar tu morfología única (ovalada, cuadrada, redonda, rectangular, diamante o triangular), la herramienta calcula las proporciones ideales para tu corte de cabello, estilo de barba y accesorios como gafas de sol.
+                  Nuestro modelo procesa la relación matemática entre el ancho
+                  de los pómulos, la longitud de la mandíbula, la amplitud de la
+                  frente y el largo total del rostro. Al identificar tu
+                  morfología única (ovalada, cuadrada, redonda, rectangular,
+                  diamante o triangular), la herramienta calcula las
+                  proporciones ideales para tu corte de cabello, estilo de barba
+                  y accesorios como gafas de sol.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-red-400">Cara Cuadrada</h4>
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Cara Cuadrada
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    Mandíbula angulada y frente amplia. Recomendamos cortes con volumen superior y barbas con laterales cortos y mentón redondeado para suavizar ángulos.
+                    Mandíbula angulada y frente amplia. Recomendamos cortes con
+                    volumen superior y barbas con laterales cortos y mentón
+                    redondeado para suavizar ángulos.
                   </p>
                 </div>
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-red-400">Cara Redonda</h4>
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Cara Redonda
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    Pómulos anchos y contornos suaves. El objetivo es alargar: cortes desvanecidos laterales (fade) y barba tipo chivo o con punta marcada en el mentón.
+                    Pómulos anchos y contornos suaves. El objetivo es alargar:
+                    cortes desvanecidos laterales (fade) y barba tipo chivo o
+                    con punta marcada en el mentón.
                   </p>
                 </div>
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-red-400">Cara Ovalada</h4>
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Cara Ovalada
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    Considerada la morfología más equilibrada naturalmente. Permite experimentar con casi cualquier peinado, tupé, rapado o barba completa definida.
+                    Considerada la morfología más equilibrada naturalmente.
+                    Permite experimentar con casi cualquier peinado, tupé,
+                    rapado o barba completa definida.
                   </p>
                 </div>
               </div>
@@ -806,7 +825,7 @@ export default function Page() {
             <Image
               fill
               src="/Logo triarvon club - sin fondo.png"
-              alt="Triarvon Club"
+              alt="Emblema oficial Asesor de Rostro Triarvon"
               className="object-contain"
             />
           </div>

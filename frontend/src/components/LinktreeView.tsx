@@ -410,13 +410,35 @@ export default function LinktreeView() {
         </div>
 
         {/* RESUMEN COMUNIDAD TRIARVON */}
-        <div className="w-full bg-neutral-900/40 border border-neutral-800/80 rounded-2xl p-5 mb-8 text-neutral-300 text-xs leading-relaxed text-center space-y-2">
-          <p className="font-semibold text-white text-sm">
-            Directorio Oficial de Canales & Recursos de Triarvon
+        <div className="mt-8 text-center text-xs text-neutral-300 max-w-sm mx-auto space-y-3 bg-neutral-950/80 p-5 rounded-2xl border border-neutral-800/80 leading-relaxed shadow-lg">
+          <h2 className="font-bold text-sm text-white uppercase tracking-wider text-red-500">
+            Ecosistema y Directorio Oficial Triarvon
+          </h2>
+          <p className="text-gray-300">
+            Bienvenido al portal centralizado de la hermandad Triarvon. Esta
+            página reúne todos los canales oficiales y herramientas digitales
+            diseñadas para acompañar tu proceso de evolución personal, estética
+            y profesional.
           </p>
-          <p>
-            Bienvenido al portal centralizado de Triarvon. Desde aquí puedes conectar con nuestra comunidad en redes sociales, acceder a las herramientas asistidas por Inteligencia Artificial para análisis de estilo y rostro, o interactuar directamente con nuestro equipo de coaching 24/7.
-          </p>
+          <div className="text-left space-y-2 pt-2 border-t border-neutral-800 text-[11px] text-gray-300">
+            <p>
+              <strong className="text-white">⚔️ Plataforma Principal:</strong>{" "}
+              Accede a artículos editoriales, guías de entrenamiento y análisis
+              antropométrico.
+            </p>
+            <p>
+              <strong className="text-white">📱 Comunidad en Redes:</strong>{" "}
+              Síguenos en Instagram, Facebook y X (Twitter) para lecciones
+              diarias de mentalidad estoica, disciplina y estilo.
+            </p>
+            <p>
+              <strong className="text-white">
+                🤖 Módulos de Inteligencia Artificial:
+              </strong>{" "}
+              Consulta en tiempo real con nuestros asesores de estilo,
+              proporciones faciales y el Coach Triarvon 24/7.
+            </p>
+          </div>
         </div>
 
         {/* FOOTER BADGE */}

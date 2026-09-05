@@ -42,7 +42,9 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
                     {item.label}
                   </Link>
                   {index < items.length - 1 && (
-                    <span className="text-gray-500" aria-hidden="true">/</span>
+                    <span className="text-gray-400" aria-hidden="true">
+                      /
+                    </span>
                   )}
                 </>
               ) : (

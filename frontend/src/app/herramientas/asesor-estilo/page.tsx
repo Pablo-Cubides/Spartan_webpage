@@ -778,7 +778,7 @@ export default function Page() {
             <div className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden">
               <button
                 onClick={() => setShowCreditsModal(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10"
+                className="absolute top-4 right-4 text-gray-700 hover:text-black z-10"
               >
                 <svg
                   width="24"
@@ -836,7 +836,7 @@ export default function Page() {
                   <Image
                     fill
                     src="/Logo triarvon club - sin fondo.webp"
-                    alt="Triarvon Club"
+                    alt="Emblema oficial Asesor de Estilo Triarvon"
                     className="object-contain"
                   />
                 </div>
@@ -860,7 +860,7 @@ export default function Page() {
                     <Image
                       fill
                       src="/Logo triarvon club - sin fondo.webp"
-                      alt="Triarvon Club"
+                      alt="Emblema oficial Asesor de Estilo Triarvon"
                       className="object-contain"
                     />
                   </div>
@@ -943,33 +943,50 @@ export default function Page() {
                   Los 4 Pilares del Estilo Masculino Inteligente
                 </h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  El Asesor de Estilo de Triarvon analiza tu silueta, contraste tonal y contextura física para construir combinaciones armónicas que transmitan autoridad, presencia y seguridad sin necesidad de gastar de más.
+                  El Asesor de Estilo de Triarvon analiza tu silueta, contraste
+                  tonal y contextura física para construir combinaciones
+                  armónicas que transmitan autoridad, presencia y seguridad sin
+                  necesidad de gastar de más.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-emerald-400">1. Ajuste (Fit)</h4>
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">
+                    1. Ajuste (Fit)
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    La ropa que mejor sienta es la que respeta tus medidas exactas. Ni excesivamente holgada ni restrictiva.
+                    La ropa que mejor sienta es la que respeta tus medidas
+                    exactas. Ni excesivamente holgada ni restrictiva.
                   </p>
                 </div>
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-emerald-400">2. Colorimetría</h4>
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">
+                    2. Colorimetría
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    Paletas neutras como base (azul marino, blanco, gris, verde oliva, negro) para crear hasta 30 combinaciones con solo 8 prendas.
+                    Paletas neutras como base (azul marino, blanco, gris, verde
+                    oliva, negro) para crear hasta 30 combinaciones con solo 8
+                    prendas.
                   </p>
                 </div>
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-emerald-400">3. Proporciones</h4>
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">
+                    3. Proporciones
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    Uso estratégico de capas, tiro de pantalón y longitud de chaquetas para estilizar la silueta en torso y piernas.
+                    Uso estratégico de capas, tiro de pantalón y longitud de
+                    chaquetas para estilizar la silueta en torso y piernas.
                   </p>
                 </div>
                 <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
-                  <h4 className="font-bold text-white mb-1 text-emerald-400">4. Versatilidad</h4>
+                  <h4 className="font-bold text-white mb-1 text-emerald-400">
+                    4. Versatilidad
+                  </h4>
                   <p className="text-gray-300 text-xs leading-relaxed">
-                    Transición natural del estilo casual a formal ("Smart Casual") con blazers desestructurados y calzado de calidad.
+                    Transición natural del estilo casual a formal (&ldquo;Smart
+                    Casual&rdquo;) con blazers desestructurados y calzado de
+                    calidad.
                   </p>
                 </div>
               </div>
@@ -1023,7 +1040,7 @@ export default function Page() {
           <div className="relative w-full max-w-4xl bg-white rounded-xl overflow-hidden">
             <button
               onClick={() => setShowCreditsModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 z-10"
+              className="absolute top-4 right-4 text-gray-700 hover:text-black z-10"
             >
               <svg
                 width="24"
@@ -1083,7 +1100,11 @@ export default function Page() {
                   <div className="msg-image-container" aria-hidden={false}>
                     <Image
                       src={m.image}
-                      alt={m.from === "user" ? "Imagen cargada" : "Imagen"}
+                      alt={
+                        m.from === "user"
+                          ? "Fotografía cargada por el usuario para análisis"
+                          : "Propuesta de estilo generada por el asesor"
+                      }
                       className="msg-image"
                       width={0}
                       height={0}

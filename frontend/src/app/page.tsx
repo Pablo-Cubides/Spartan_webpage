@@ -86,7 +86,7 @@ export default async function Home() {
                 <div className="relative w-full max-w-md aspect-square rounded-lg overflow-hidden shadow-2xl">
                   <Image
                     src="/Triarvon/triarvon-logo-black-background.png"
-                    alt="Triarvon"
+                    alt="Emblema oficial Triarvon - Alto Rendimiento Masculino"
                     fill
                     style={{ objectFit: "contain" }}
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -124,7 +124,7 @@ export default async function Home() {
                     {p.cover_image && (
                       <Image
                         src={p.cover_image}
-                        alt={p.title}
+                        alt={p.title || "Artículo editorial Triarvon"}
                         fill
                         style={{ objectFit: "cover" }}
                         sizes="(max-width: 768px) 100vw, 33vw"
@@ -161,7 +161,7 @@ export default async function Home() {
             <div className="w-full max-w-7xl mx-auto overflow-hidden rounded-md">
               <Image
                 src="/Herramientas/Hero_herramientas_triarvon.jpg"
-                alt="Arsenal"
+                alt="Arsenal de Herramientas de IA y Desarrollo Masculino Triarvon"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="100vw"
@@ -197,7 +197,8 @@ export default async function Home() {
                 Los 3 Pilares del Hombre Triarvon
               </h2>
               <p className="mt-3 text-gray-300 max-w-2xl mx-auto text-base">
-                Un sistema integral diseñado para construir fortaleza interna, dominio físico y una presencia magnética que proyecte respeto.
+                Un sistema integral diseñado para construir fortaleza interna,
+                dominio físico y una presencia magnética que proyecte respeto.
               </p>
             </div>
 
@@ -208,7 +209,9 @@ export default async function Home() {
                   1. Dominio y Energía Física
                 </h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Entrenamiento de fuerza inteligente, composición corporal óptima y vitalidad diaria. Tu cuerpo es el templo y la herramienta con la que ejecutas tu propósito.
+                  Entrenamiento de fuerza inteligente, composición corporal
+                  óptima y vitalidad diaria. Tu cuerpo es el templo y la
+                  herramienta con la que ejecutas tu propósito.
                 </p>
               </div>
 
@@ -218,7 +221,9 @@ export default async function Home() {
                   2. Fortaleza Mental y Disciplina
                 </h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Enfoque inquebrantable, dominio de las emociones y mentalidad estoica frente a los desafíos cotidianos. La disciplina es el puente entre tus metas y tus resultados.
+                  Enfoque inquebrantable, dominio de las emociones y mentalidad
+                  estoica frente a los desafíos cotidianos. La disciplina es el
+                  puente entre tus metas y tus resultados.
                 </p>
               </div>
 
@@ -228,7 +233,9 @@ export default async function Home() {
                   3. Estilo y Presencia Magnética
                 </h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Cuidado personal impecable, códigos de vestimenta estratégicos y comunicación asertiva. Tu imagen es tu primera tarjeta de presentación al mundo.
+                  Cuidado personal impecable, códigos de vestimenta estratégicos
+                  y comunicación asertiva. Tu imagen es tu primera tarjeta de
+                  presentación al mundo.
                 </p>
               </div>
             </div>

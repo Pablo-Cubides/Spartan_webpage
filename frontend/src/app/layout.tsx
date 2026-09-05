@@ -153,8 +153,6 @@ export const viewport: Viewport = {
   ],
 };
 
-import Script from "next/script";
-
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-TRIARVON01";
 
@@ -227,6 +225,25 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} ${notoSans.variable}`}>
       <head>
+        {/* Google Analytics - Raw HTML Crawler & Browser Detection */}
+        {GA_MEASUREMENT_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
+                `,
+              }}
+            />
+          </>
+        )}
         {/* JSON-LD Schemas */}
         <script
           type="application/ld+json"
@@ -242,22 +259,6 @@ export default function RootLayout({
         />
       </head>
       <body className="relative flex size-full min-h-screen flex-col bg-[#141414] text-white font-sans">
-        {GA_MEASUREMENT_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}');
-              `}
-            </Script>
-          </>
-        )}
         <Header />
         <main
           id="main-content"

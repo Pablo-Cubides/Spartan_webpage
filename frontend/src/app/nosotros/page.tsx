@@ -153,7 +153,7 @@ export default function NosotrosPage() {
                 <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl aspect-square">
                   <Image
                     src="/Triarvon/triarvon-logo-black-background.png"
-                    alt="Triarvon"
+                    alt="Emblema oficial Triarvon - Alto Rendimiento Masculino"
                     fill
                     className="object-contain p-8"
                     priority
@@ -263,13 +263,31 @@ export default function NosotrosPage() {
               </h2>
               <div className="space-y-4 text-gray-300 leading-relaxed text-base">
                 <p>
-                  En una época saturada de gratificación instantánea, pasividad y distracciones continuas, Triarvon nace como una respuesta decidida para hombres que se rehúsan a conformarse con la mediocridad. Creemos firmemente que la excelencia no es un accidente genético ni un golpe de suerte, sino la consecuencia directa de hábitos deliberados ejecutados con implacable consistencia día tras día.
+                  En una época saturada de gratificación instantánea, pasividad
+                  y distracciones continuas, Triarvon nace como una respuesta
+                  decidida para hombres que se rehúsan a conformarse con la
+                  mediocridad. Creemos firmemente que la excelencia no es un
+                  accidente genético ni un golpe de suerte, sino la consecuencia
+                  directa de hábitos deliberados ejecutados con implacable
+                  consistencia día tras día.
                 </p>
                 <p>
-                  Nuestra filosofía integra tres pilares fundamentales que no pueden operar de forma aislada: la <strong>fortaleza física</strong> como base biológica de la energía, la <strong>agudeza mental y emocional</strong> inspirada en el estoicismo clásico para tomar decisiones serenas bajo presión, y la <strong>presencia personal impecable</strong> como reflejo externo de orden y respeto por uno mismo.
+                  Nuestra filosofía integra tres pilares fundamentales que no
+                  pueden operar de forma aislada: la{" "}
+                  <strong>fortaleza física</strong> como base biológica de la
+                  energía, la <strong>agudeza mental y emocional</strong>{" "}
+                  inspirada en el estoicismo clásico para tomar decisiones
+                  serenas bajo presión, y la{" "}
+                  <strong>presencia personal impecable</strong> como reflejo
+                  externo de orden y respeto por uno mismo.
                 </p>
                 <p>
-                  Cada artículo, herramienta de inteligencia artificial y espacio de comunidad que desarrollamos tiene un único propósito: entregarte claridad estratégica, eliminar las excusas y equiparte con las habilidades prácticas necesarias para liderar tu propia vida, elevar a tu familia y construir un legado perdurable.
+                  Cada artículo, herramienta de inteligencia artificial y
+                  espacio de comunidad que desarrollamos tiene un único
+                  propósito: entregarte claridad estratégica, eliminar las
+                  excusas y equiparte con las habilidades prácticas necesarias
+                  para liderar tu propia vida, elevar a tu familia y construir
+                  un legado perdurable.
                 </p>
               </div>
             </div>

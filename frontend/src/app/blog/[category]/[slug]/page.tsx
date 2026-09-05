@@ -307,14 +307,96 @@ export default async function BlogPostPage({ params }: PageProps) {
                 remarkPlugins={[remarkGfm]}
                 components={{
                   h1: "h2",
+                  img: ({ node: _node, ...props }) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      {...props}
+                      alt={
+                        props.alt && props.alt.trim().length > 0
+                          ? props.alt
+                          : `Ilustración editorial: ${post.title}`
+                      }
+                      loading="lazy"
+                      className="rounded-xl my-6 border border-white/10 shadow-lg mx-auto max-w-full"
+                    />
+                  ),
                 }}
               >
                 {post.content}
               </ReactMarkdown>
             </div>
 
-            {/* End CTA */}
+            {/* Puntos Clave y Criterios de Aplicación */}
             <div className="mt-12 pt-8 border-t border-white/10">
+              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <span className="text-red-500">⚔️</span> Pautas de Aplicación
+                Práctica
+              </h3>
+              <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                El conocimiento sin ejecución pierde su valor formativo. Para
+                integrar eficazmente las lecciones de este artículo en tu rutina
+                diaria, te recomendamos aplicar estos tres principios
+                fundamentales de desarrollo masculino:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-sm">
+                <div className="bg-black/40 p-4 rounded-xl border border-white/10">
+                  <h4 className="font-semibold text-red-400 mb-1">
+                    1. Consistencia Progresiva
+                  </h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Prioriza la repetición deliberada por encima de la
+                    intensidad aislada. Ajusta tus hábitos gradualmente para
+                    consolidar cambios que resistan la fricción diaria.
+                  </p>
+                </div>
+                <div className="bg-black/40 p-4 rounded-xl border border-white/10">
+                  <h4 className="font-semibold text-red-400 mb-1">
+                    2. Registro y Medición
+                  </h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Lo que se mide se puede optimizar. Evalúa semanalmente tu
+                    nivel de energía, disciplina y enfoque para realizar ajustes
+                    basados en resultados comprobados.
+                  </p>
+                </div>
+                <div className="bg-black/40 p-4 rounded-xl border border-white/10">
+                  <h4 className="font-semibold text-red-400 mb-1">
+                    3. Integración Holística
+                  </h4>
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    Ninguna dimensión prospera en solitario. Conecta tu esfuerzo
+                    físico con el dominio mental, el descanso reparador y un
+                    código ético inquebrantable.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Metodología Editorial Triarvon */}
+            <div className="mt-8 p-6 rounded-xl bg-white/[0.03] border border-white/10">
+              <h4 className="text-base font-bold text-white mb-2">
+                Metodología y Estándar Editorial Triarvon
+              </h4>
+              <p className="text-gray-300 text-xs leading-relaxed mb-3">
+                En Triarvon promovemos una filosofía de superación personal
+                fundamentada en la autodisciplina, la claridad estratégica y la
+                responsabilidad individual. Cada publicación es concebida para
+                brindar orientación práctica a hombres comprometidos con elevar
+                sus estándares físicos, cognitivos y profesionales.
+              </p>
+              <p className="text-gray-400 text-xs leading-relaxed italic">
+                Aviso importante: El contenido de esta publicación tiene
+                propósitos exclusivamente educativos e informativos sobre estilo
+                de vida y bienestar masculino. No constituye diagnóstico ni
+                reemplaza la asesoría médica, nutricional o psicológica
+                profesional. Consulta siempre con especialistas antes de
+                implementar modificaciones exigentes en tus hábitos de salud o
+                ejercicio.
+              </p>
+            </div>
+
+            {/* End CTA */}
+            <div className="mt-8 pt-8 border-t border-white/10">
               <div className="bg-linear-to-r from-red-900/30 to-transparent p-6 rounded-xl border border-red-500/20">
                 <p className="text-white font-bold text-lg mb-2">
                   ¿Te gustó este artículo?

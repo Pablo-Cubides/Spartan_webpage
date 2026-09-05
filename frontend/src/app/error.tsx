@@ -1,17 +1,37 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
+import { useEffect } from "react";
+import Link from "next/link";
 
 // A simple inline SVG for a broken shield icon
 const BrokenShieldIcon = () => (
-    <svg className="w-20 h-20 text-[#C62828] mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L4 6v5.5C4 17.5 12 22 12 22s8-4.5 8-10.5V6L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M9.5 10.5L14.5 15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-        <path d="M14 10L9 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
+  <svg
+    className="w-20 h-20 text-[#C62828] mx-auto"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 2L4 6v5.5C4 17.5 12 22 12 22s8-4.5 8-10.5V6L12 2z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M9.5 10.5L14.5 15.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M14 10L9 15"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+  </svg>
 );
-
 
 export default function Error({
   error,
@@ -32,10 +52,11 @@ export default function Error({
         Un Obstáculo en el Camino.
       </h1>
       <p className="mt-4 max-w-md text-[#a2aab3]">
-        La batalla se detuvo inesperadamente. Puedes intentar reagruparte o volver al inicio. El error ha sido reportado.
+        La batalla se detuvo inesperadamente. Puedes intentar reagruparte o
+        volver al inicio. El error ha sido reportado.
       </p>
-      
-      {process.env.NODE_ENV === 'development' && (
+
+      {process.env.NODE_ENV === "development" && (
         <details className="mt-4 text-left w-full max-w-md">
           <summary className="cursor-pointer text-sm text-gray-400 hover:text-gray-300">
             Detalles del error (desarrollo)
@@ -61,7 +82,7 @@ export default function Error({
         </Link>
       </div>
       {error.digest && (
-        <p className="mt-6 text-xs text-gray-500">
+        <p className="mt-6 text-xs text-gray-400">
           Código de error: {error.digest}
         </p>
       )}

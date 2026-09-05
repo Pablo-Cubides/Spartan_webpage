@@ -177,7 +177,7 @@ export default async function BlogPage() {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={cat.cover_image || ""}
-                        alt={cat.epic_name}
+                        alt={cat.epic_name || "Categoría editorial Triarvon"}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
@@ -198,7 +198,7 @@ export default async function BlogPage() {
                           {cat.description}
                         </p>
                       </div>
-                      <div className="flex-shrink-0 text-gray-500 group-hover:text-red-500 group-hover:translate-x-2 transition-all duration-300">
+                      <div className="flex-shrink-0 text-gray-400 group-hover:text-red-500 group-hover:translate-x-2 transition-all duration-300">
                         <svg
                           className="w-6 h-6"
                           fill="none"
@@ -243,7 +243,7 @@ export default async function BlogPage() {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={post.cover_image}
-                          alt={post.title}
+                          alt={post.title || "Artículo editorial Triarvon"}
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           loading="lazy"
                         />

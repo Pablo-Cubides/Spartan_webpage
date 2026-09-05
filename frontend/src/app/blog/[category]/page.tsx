@@ -263,7 +263,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={post.cover_image}
-                        alt={`Portada de ${post.title}`}
+                        alt={`Portada de ${post.title || "artículo Triarvon"}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                       />
@@ -326,25 +326,38 @@ export default async function BlogCategoryPage({ params }: PageProps) {
                 El Estándar Triarvon: {cat.epicName}
               </h2>
               <p className="text-gray-300 leading-relaxed text-base mb-6">
-                En esta sección reunimos investigaciones aplicadas, guías paso a paso y análisis estratégicos para hombres que buscan dominar este pilar. No nos enfocamos en soluciones temporales ni modas pasajeras, sino en fundamentos atemporales respaldados por la evidencia científica y la experiencia práctica.
+                En esta sección reunimos investigaciones aplicadas, guías paso a
+                paso y análisis estratégicos para hombres que buscan dominar
+                este pilar. No nos enfocamos en soluciones temporales ni modas
+                pasajeras, sino en fundamentos atemporales respaldados por la
+                evidencia científica y la experiencia práctica.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-white/10">
                 <div>
-                  <h4 className="font-bold text-white mb-1 text-red-400">Objetivo del Pilar</h4>
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Objetivo del Pilar
+                  </h4>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Construir hábitos duraderos que optimicen tu rendimiento diario y refuercen tu confianza.
+                    Construir hábitos duraderos que optimicen tu rendimiento
+                    diario y refuercen tu confianza.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1 text-red-400">Enfoque Práctico</h4>
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Enfoque Práctico
+                  </h4>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Instrucciones directas, rutinas estructuradas y listas accionables listas para implementar hoy mismo.
+                    Instrucciones directas, rutinas estructuradas y listas
+                    accionables listas para implementar hoy mismo.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-white mb-1 text-red-400">Comunidad y Criterio</h4>
+                  <h4 className="font-bold text-white mb-1 text-red-400">
+                    Comunidad y Criterio
+                  </h4>
                   <p className="text-gray-400 text-sm leading-relaxed">
-                    Aprende junto a una hermandad orientada a elevar sus estándares de disciplina y maestría personal.
+                    Aprende junto a una hermandad orientada a elevar sus
+                    estándares de disciplina y maestría personal.
                   </p>
                 </div>
               </div>

@@ -243,44 +243,61 @@ export default function CoachTriarvonPage() {
               </button>
             </div>
             <p className="mt-4 text-gray-300 text-center max-w-xl">
-              Puedes escribir tu primer mensaje después del video para iniciar tu asesoría personalizada con inteligencia artificial.
+              Puedes escribir tu primer mensaje después del video para iniciar
+              tu asesoría personalizada con inteligencia artificial.
             </p>
 
             {/* Guía de Especialidades de Coaches */}
             <div className="mt-10 w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-left">
               <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
                 <div className="text-2xl mb-1">⚔️</div>
-                <h3 className="font-bold text-white text-sm text-red-400">Coach General</h3>
+                <h3 className="font-bold text-white text-sm text-red-400">
+                  Coach General
+                </h3>
                 <p className="text-gray-300 text-xs mt-1 leading-relaxed">
-                  Coordina tu plan maestro de desarrollo personal, alineando hábitos, disciplina y objetivos trimestrales.
+                  Coordina tu plan maestro de desarrollo personal, alineando
+                  hábitos, disciplina y objetivos trimestrales.
                 </p>
               </div>
               <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
                 <div className="text-2xl mb-1">💪</div>
-                <h3 className="font-bold text-white text-sm text-red-400">Coach de Cuerpo</h3>
+                <h3 className="font-bold text-white text-sm text-red-400">
+                  Coach de Cuerpo
+                </h3>
                 <p className="text-gray-300 text-xs mt-1 leading-relaxed">
-                  Programación de fuerza, hipertrofia, resistencia cardiovascular y nutrición estratégica adaptada a tu rutina.
+                  Programación de fuerza, hipertrofia, resistencia
+                  cardiovascular y nutrición estratégica adaptada a tu rutina.
                 </p>
               </div>
               <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
                 <div className="text-2xl mb-1">👔</div>
-                <h3 className="font-bold text-white text-sm text-red-400">Coach de Estilo</h3>
+                <h3 className="font-bold text-white text-sm text-red-400">
+                  Coach de Estilo
+                </h3>
                 <p className="text-gray-300 text-xs mt-1 leading-relaxed">
-                  Presencia, código de vestimenta, combinaciones cromáticas y cuidado de la imagen masculina.
+                  Presencia, código de vestimenta, combinaciones cromáticas y
+                  cuidado de la imagen masculina.
                 </p>
               </div>
               <div className="bg-[#141416] p-4 rounded-xl border border-gray-800">
                 <div className="text-2xl mb-1">🧠</div>
-                <h3 className="font-bold text-white text-sm text-red-400">Coach de Mentalidad</h3>
+                <h3 className="font-bold text-white text-sm text-red-400">
+                  Coach de Mentalidad
+                </h3>
                 <p className="text-gray-300 text-xs mt-1 leading-relaxed">
-                  Principios estoicos, control de la reactividad emocional, enfoque mental y resiliencia ante la adversidad.
+                  Principios estoicos, control de la reactividad emocional,
+                  enfoque mental y resiliencia ante la adversidad.
                 </p>
               </div>
               <div className="bg-[#141416] p-4 rounded-xl border border-gray-800 sm:col-span-2 md:col-span-2">
                 <div className="text-2xl mb-1">⚡</div>
-                <h3 className="font-bold text-white text-sm text-red-400">Coach de Productividad</h3>
+                <h3 className="font-bold text-white text-sm text-red-400">
+                  Coach de Productividad
+                </h3>
                 <p className="text-gray-300 text-xs mt-1 leading-relaxed">
-                  Sistemas de trabajo profundo (Deep Work), bloqueo de tiempo, eliminación de distracciones y ejecución diaria de alto impacto.
+                  Sistemas de trabajo profundo (Deep Work), bloqueo de tiempo,
+                  eliminación de distracciones y ejecución diaria de alto
+                  impacto.
                 </p>
               </div>
             </div>
@@ -371,6 +388,88 @@ export default function CoachTriarvonPage() {
             onClose={() => chatState.setShowLoginModal(false)}
           />
         )}
+
+        {/* Metodología y Especialidades de los Coaches Triarvon */}
+        <section className="mt-14 pt-10 border-t border-gray-800/80 space-y-8">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Metodología y Especialidades del Coach Triarvon con Inteligencia
+              Artificial
+            </h2>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              El Coach Triarvon es un sistema de mentoría interactiva potenciado
+              por modelos avanzados de lenguaje, diseñado específicamente para
+              brindar acompañamiento estratégico en el desarrollo integral
+              masculino. A través de 5 perfiles especializados, obtienes
+              respuestas directas, libres de complacencias y fundamentadas en
+              hábitos de alta exigencia:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+            <div className="bg-[#141416] p-5 rounded-xl border border-gray-800">
+              <h3 className="font-bold text-white mb-1 text-red-500">
+                ⚔️ Coach General
+              </h3>
+              <p className="text-gray-300 text-xs leading-relaxed">
+                Mentor de visión global para coordinar tus metas de vida,
+                establecimiento de metas trimestrales, balance de prioridades y
+                resolución de dilemas cotidianos con enfoque resolutivo.
+              </p>
+            </div>
+            <div className="bg-[#141416] p-5 rounded-xl border border-gray-800">
+              <h3 className="font-bold text-white mb-1 text-red-500">
+                💪 Coach Físico
+              </h3>
+              <p className="text-gray-300 text-xs leading-relaxed">
+                Especialista en optimización corporal: estructura de hipertrofia
+                y fuerza, periodización de cargas, protocolos de recuperación
+                muscular y pautas de nutrición deportiva adaptada.
+              </p>
+            </div>
+            <div className="bg-[#141416] p-5 rounded-xl border border-gray-800">
+              <h3 className="font-bold text-white mb-1 text-red-500">
+                👔 Coach de Estilo
+              </h3>
+              <p className="text-gray-300 text-xs leading-relaxed">
+                Consultoría en presencia y estética: armonía cromática,
+                selección de armario cápsula, cuidado personal (grooming) y
+                proyección de autoridad según cada contexto social y
+                profesional.
+              </p>
+            </div>
+            <div className="bg-[#141416] p-5 rounded-xl border border-gray-800">
+              <h3 className="font-bold text-white mb-1 text-red-500">
+                🧠 Coach de Mentalidad
+              </h3>
+              <p className="text-gray-300 text-xs leading-relaxed">
+                Entrenamiento en estoicismo pragmático, resiliencia emocional
+                ante la adversidad, erradicación de la postergación y
+                fortalecimiento del enfoque interno bajo situaciones de presión.
+              </p>
+            </div>
+            <div className="bg-[#141416] p-5 rounded-xl border border-gray-800">
+              <h3 className="font-bold text-white mb-1 text-red-500">
+                ⚡ Coach de Productividad
+              </h3>
+              <p className="text-gray-300 text-xs leading-relaxed">
+                Sistemas de gestión del tiempo: bloques de trabajo profundo
+                (deep work), optimización de energía circadiana, eliminación de
+                distracciones y arquitectura de rutinas matutinas y nocturnas.
+              </p>
+            </div>
+            <div className="bg-[#141416] p-5 rounded-xl border border-gray-800">
+              <h3 className="font-bold text-white mb-1 text-red-500">
+                🔒 Privacidad y Seguridad
+              </h3>
+              <p className="text-gray-300 text-xs leading-relaxed">
+                Tus conversaciones están protegidas bajo estándares de cifrado
+                seguro. Ninguna interacción se comparte públicamente ni se
+                utiliza para entrenar modelos externos con tus datos privados.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
