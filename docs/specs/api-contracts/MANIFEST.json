@@ -7,6 +7,8 @@
     "/api/blog/validate-slug":        "docs/specs/api-contracts/blog.md",
     "/api/admin/blog":                "docs/specs/api-contracts/blog.md",
     "/api/admin/blog/[id]":           "docs/specs/api-contracts/blog.md",
+    "/api/admin/blog/articles":       "docs/specs/api-contracts/blog.md",
+    "/api/admin/blog/articles/[id]":  "docs/specs/api-contracts/blog.md",
     "/api/admin/blog/media":          "docs/specs/api-contracts/blog-media.md",
     "/api/admin/users":               "docs/specs/api-contracts/admin-users.md",
     "/api/admin/users/[id]/role":     "docs/specs/api-contracts/admin-users.md",
