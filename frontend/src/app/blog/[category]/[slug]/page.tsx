@@ -6,11 +6,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Calendar, Clock, User, ArrowLeft, Share2 } from "lucide-react";
-import {
-  getAllPosts,
-  getPostBySlug,
-  getPostsByCategory,
-} from "@/lib/blog/static-data";
+import { getPostBySlug } from "@/lib/blog/static-data";
 import {
   getPublicBlogArticleBySlug,
   getPublicBlogArticles,

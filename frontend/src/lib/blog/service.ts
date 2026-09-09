@@ -3,7 +3,6 @@ import path from "path";
 import {
   posts as staticPosts,
   categories as staticCategories,
-  BlogPost as StaticBlogPost,
 } from "./static-data";
 import { prisma } from "../server/prisma";
 
@@ -35,6 +34,24 @@ export interface BlogMetrics {
   paused: number;
   byAgent: number;
 }
+
+interface PrismaBlogPostDelegate {
+  findMany: (
+    args?: Record<string, unknown>,
+  ) => Promise<Record<string, unknown>[]>;
+  create: (args: { data: Record<string, unknown> }) => Promise<{ id: number }>;
+  update: (args: {
+    where: { id: number };
+    data: Record<string, unknown>;
+  }) => Promise<Record<string, unknown>>;
+  delete: (args: { where: { id: number } }) => Promise<unknown>;
+}
+
+interface PrismaWithBlog {
+  blogPost: PrismaBlogPostDelegate;
+}
+
+const prismaBlog = prisma as unknown as PrismaWithBlog;
 
 const LOCAL_STORAGE_PATH = path.join(
   process.cwd(),
@@ -178,8 +195,7 @@ function getStaticArticles(): BlogArticle[] {
  */
 async function getDynamicArticles(): Promise<BlogArticle[]> {
   try {
-    // Attempt Prisma query
-    const dbPosts = await (prisma as any).blogPost.findMany({
+    const dbPosts = await prismaBlog.blogPost.findMany({
       orderBy: { created_at: "desc" },
       include: {
         author: {
@@ -189,9 +205,14 @@ async function getDynamicArticles(): Promise<BlogArticle[]> {
     });
 
     if (Array.isArray(dbPosts)) {
-      return dbPosts.map((p: any) => {
-        const isScheduled =
-          p.published_at && new Date(p.published_at) > new Date();
+      return dbPosts.map((p: Record<string, unknown>) => {
+        const publishedAtStr =
+          typeof p.published_at === "string" || p.published_at instanceof Date
+            ? new Date(p.published_at as string | Date)
+            : null;
+        const isScheduled = Boolean(
+          publishedAtStr && publishedAtStr > new Date(),
+        );
         const derivedStatus = p.status
           ? (p.status as BlogArticle["status"])
           : !p.is_published
@@ -200,33 +221,43 @@ async function getDynamicArticles(): Promise<BlogArticle[]> {
               ? "scheduled"
               : "published";
 
+        const categorySlug =
+          (p.category_slug as string) || "entrenamiento-y-energia-fisica";
+        const authorObj = p.author as
+          { name?: string; email?: string } | undefined;
+        const authorName =
+          (p.author_name as string) || authorObj?.name || "Agente Triarvon";
+        const contentStr = (p.content as string) || "";
+        const createdAtStr = p.created_at
+          ? new Date(p.created_at as string | Date).toISOString()
+          : new Date().toISOString();
+
         return {
-          id: p.id,
-          slug: p.slug,
-          title: p.title,
-          content: p.content,
-          excerpt: p.excerpt || extractExcerpt(p.content),
-          cover_image: p.cover_image,
-          category_slug: p.category_slug || "entrenamiento-y-energia-fisica",
-          category_name: getCategoryEpicName(
-            p.category_slug || "entrenamiento-y-energia-fisica",
-          ),
-          keywords: p.keywords || [],
+          id: p.id as number | string,
+          slug: (p.slug as string) || "",
+          title: (p.title as string) || "",
+          content: contentStr,
+          excerpt: (p.excerpt as string) || extractExcerpt(contentStr),
+          cover_image: p.cover_image as string | undefined,
+          category_slug: categorySlug,
+          category_name: getCategoryEpicName(categorySlug),
+          keywords: Array.isArray(p.keywords) ? (p.keywords as string[]) : [],
           author: {
-            name: p.author_name || p.author?.name || "Agente Triarvon",
+            name: authorName,
           },
-          published_at: p.published_at
-            ? new Date(p.published_at).toISOString()
-            : new Date(p.created_at).toISOString(),
-          created_at: new Date(p.created_at).toISOString(),
+          published_at: publishedAtStr
+            ? publishedAtStr.toISOString()
+            : createdAtStr,
+          created_at: createdAtStr,
           status: derivedStatus,
-          source: (p.source as BlogArticle["source"]) || "agent",
-          reading_time: p.reading_time || calculateReadingTime(p.content),
+          source: (p.source as string as BlogArticle["source"]) || "agent",
+          reading_time:
+            (p.reading_time as string) || calculateReadingTime(contentStr),
         };
       });
     }
-  } catch (prismaError) {
-    // Fallback to local json file
+  } catch {
+    // Fallback to local json file if DB is offline
   }
 
   return readLocalArticles();
@@ -366,7 +397,7 @@ export async function createBlogArticle(data: {
   const reading_time = calculateReadingTime(data.content);
   const now = new Date();
 
-  let published_at = data.published_at ? new Date(data.published_at) : now;
+  const published_at = data.published_at ? new Date(data.published_at) : now;
   let status = data.status || "published";
 
   if (published_at.getTime() > now.getTime() && status === "published") {
@@ -397,7 +428,7 @@ export async function createBlogArticle(data: {
 
   // Try saving to Prisma DB first
   try {
-    const created = await (prisma as any).blogPost.create({
+    const created = await prismaBlog.blogPost.create({
       data: {
         title: newArticle.title,
         slug: newArticle.slug,
@@ -418,7 +449,7 @@ export async function createBlogArticle(data: {
     });
     newArticle.id = created.id;
     return newArticle;
-  } catch (err) {
+  } catch {
     // Fallback to local storage
   }
 
@@ -448,7 +479,7 @@ export async function updateBlogArticle(
   // Try Prisma update
   if (!isNaN(idNum)) {
     try {
-      const dataToUpdate: any = {};
+      const dataToUpdate: Record<string, unknown> = {};
       if (updates.status !== undefined) {
         dataToUpdate.status = updates.status;
         dataToUpdate.is_published =
@@ -469,34 +500,45 @@ export async function updateBlogArticle(
       if (updates.published_at !== undefined)
         dataToUpdate.published_at = new Date(updates.published_at);
 
-      const updated = await (prisma as any).blogPost.update({
+      const updated = await prismaBlog.blogPost.update({
         where: { id: idNum },
         data: dataToUpdate,
       });
 
+      const updatedCategory =
+        (updated.category_slug as string) || "entrenamiento-y-energia-fisica";
+      const updatedContent = (updated.content as string) || "";
+      const updatedPubAt = updated.published_at
+        ? new Date(updated.published_at as string | Date).toISOString()
+        : new Date().toISOString();
+      const updatedCreatedAt = updated.created_at
+        ? new Date(updated.created_at as string | Date).toISOString()
+        : new Date().toISOString();
+
       return {
-        id: updated.id,
-        slug: updated.slug,
-        title: updated.title,
-        content: updated.content,
-        excerpt: updated.excerpt,
-        cover_image: updated.cover_image,
-        category_slug: updated.category_slug,
-        category_name: getCategoryEpicName(updated.category_slug),
-        keywords: updated.keywords || [],
-        author: { name: updated.author_name || "Admin Triarvon" },
-        published_at:
-          updated.published_at?.toISOString() || new Date().toISOString(),
-        created_at:
-          updated.created_at?.toISOString() || new Date().toISOString(),
+        id: updated.id as number | string,
+        slug: (updated.slug as string) || "",
+        title: (updated.title as string) || "",
+        content: updatedContent,
+        excerpt: (updated.excerpt as string) || extractExcerpt(updatedContent),
+        cover_image: updated.cover_image as string | undefined,
+        category_slug: updatedCategory,
+        category_name: getCategoryEpicName(updatedCategory),
+        keywords: Array.isArray(updated.keywords)
+          ? (updated.keywords as string[])
+          : [],
+        author: { name: (updated.author_name as string) || "Admin Triarvon" },
+        published_at: updatedPubAt,
+        created_at: updatedCreatedAt,
         status:
           (updated.status as BlogArticle["status"]) ||
           (updated.is_published ? "published" : "paused"),
-        source: (updated.source as BlogArticle["source"]) || "manual",
+        source: (updated.source as string as BlogArticle["source"]) || "manual",
         reading_time:
-          updated.reading_time || calculateReadingTime(updated.content),
+          (updated.reading_time as string) ||
+          calculateReadingTime(updatedContent),
       };
-    } catch (err) {
+    } catch {
       // Continue to local json update
     }
   }
@@ -557,11 +599,11 @@ export async function deleteBlogArticle(
 
   if (!isNaN(idNum)) {
     try {
-      await (prisma as any).blogPost.delete({
+      await prismaBlog.blogPost.delete({
         where: { id: idNum },
       });
       return true;
-    } catch (err) {
+    } catch {
       // Fall through to local delete
     }
   }

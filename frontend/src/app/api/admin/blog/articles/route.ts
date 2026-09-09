@@ -50,10 +50,12 @@ export async function GET(request: NextRequest) {
       metrics,
       total: articles.length,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Error desconocido";
     console.error("GET /api/admin/blog/articles error:", error);
     return NextResponse.json(
-      { error: "Error al obtener artículos", details: error.message },
+      { error: "Error al obtener artículos", details: message },
       { status: 500 },
     );
   }
@@ -148,10 +150,12 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 },
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Error desconocido";
     console.error("POST /api/admin/blog/articles error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      { error: "Internal Server Error", details: message },
       { status: 500 },
     );
   }

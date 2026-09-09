@@ -20,7 +20,6 @@ import {
   Trash2,
   Play,
   Pause,
-  Filter,
   RefreshCw,
   Sparkles,
   Layers,
@@ -258,8 +257,10 @@ export default function AdminBlogManagement() {
         status: "published",
       });
       fetchArticles();
-    } catch (err: any) {
-      setManualError(err.message);
+    } catch (err: unknown) {
+      setManualError(
+        err instanceof Error ? err.message : "Error al crear artículo.",
+      );
     } finally {
       setSubmittingManual(false);
     }
@@ -640,6 +641,7 @@ curl -X POST "${endpointUrl}" \\
                         <div className="flex items-start gap-3">
                           <div className="w-10 h-10 rounded-lg bg-gray-800 border border-gray-700 overflow-hidden flex-shrink-0 relative mt-0.5">
                             {article.cover_image ? (
+                              // eslint-disable-next-line @next/next/no-img-element
                               <img
                                 src={article.cover_image}
                                 alt={article.title}
@@ -1046,7 +1048,8 @@ curl -X POST "${endpointUrl}" \\
                     onChange={(e) =>
                       setManualForm({
                         ...manualForm,
-                        status: e.target.value as any,
+                        status: e.target.value as
+                          "published" | "scheduled" | "paused",
                       })
                     }
                     className="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-red-500"
