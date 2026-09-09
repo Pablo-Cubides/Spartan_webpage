@@ -11,6 +11,12 @@ import {
   getPostBySlug,
   getPostsByCategory,
 } from "@/lib/blog/static-data";
+import {
+  getPublicBlogArticleBySlug,
+  getPublicBlogArticles,
+} from "@/lib/blog/service";
+
+export const dynamicParams = true;
 
 interface PageProps {
   params: Promise<{
@@ -85,7 +91,8 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { category, slug } = await params;
-  const post = getPostBySlug(slug);
+  const post =
+    (await getPublicBlogArticleBySlug(slug, category)) || getPostBySlug(slug);
 
   if (!post || post.category_slug !== category) {
     return { title: "Artículo no encontrado | Triarvon Club" };
@@ -121,7 +128,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getPublicBlogArticles();
   return posts.map((post) => ({
     category: post.category_slug,
     slug: post.slug,
@@ -131,25 +138,27 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: PageProps) {
   const { category, slug } = await params;
 
-  const staticPost = getPostBySlug(slug);
+  const foundPost =
+    (await getPublicBlogArticleBySlug(slug, category)) || getPostBySlug(slug);
 
-  if (!staticPost || staticPost.category_slug !== category) {
+  if (!foundPost || foundPost.category_slug !== category) {
     notFound();
   }
 
   // Transform to expected format
   const post = {
-    ...staticPost,
-    meta_title: staticPost.title,
-    meta_description: staticPost.excerpt,
-    published_at: new Date(staticPost.published_at),
-    updated_at: new Date(staticPost.published_at),
+    ...foundPost,
+    meta_title: foundPost.title,
+    meta_description: foundPost.excerpt,
+    published_at: new Date(foundPost.published_at),
+    updated_at: new Date(foundPost.published_at),
     is_published: true,
-    author: { name: staticPost.author.name, avatar_id: null },
+    author: { name: foundPost.author.name, avatar_id: null },
   };
 
   // Get related posts
-  const relatedPosts = getPostsByCategory(category)
+  const allCategoryPosts = await getPublicBlogArticles(category);
+  const relatedPosts = allCategoryPosts
     .filter((p) => p.slug !== slug)
     .slice(0, 3)
     .map((p) => ({ slug: p.slug, title: p.title, cover_image: p.cover_image }));

@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getAllPosts } from "@/lib/blog/static-data";
+import { getPublicBlogArticles } from "@/lib/blog/service";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
@@ -94,8 +94,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     ];
 
-    // Dynamic blog posts from static data (ADR 003)
-    const blogPosts = getAllPosts();
+    // Dynamic blog posts from unified service (Static + Dynamic DB/Agents)
+    const blogPosts = await getPublicBlogArticles();
 
     const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
       url: `${BASE_URL}/blog/${post.category_slug}/${post.slug}`,

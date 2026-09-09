@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
-import { getPostsByCategory } from "@/lib/blog/static-data";
+import { getPublicBlogArticles } from "@/lib/blog/service";
 
 interface PageProps {
   params: Promise<{
@@ -157,8 +157,8 @@ export default async function BlogCategoryPage({ params }: PageProps) {
 
   const Icon = cat.icon;
 
-  // Use static data instead of database
-  const posts = getPostsByCategory(categorySlug).map((post) => ({
+  const categoryPosts = await getPublicBlogArticles(categorySlug);
+  const posts = categoryPosts.map((post) => ({
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt,

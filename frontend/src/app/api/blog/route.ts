@@ -1,92 +1,54 @@
-
-
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/server/prisma";
 import { withErrorHandler, ValidationError } from "@/lib/api/error-handler";
+import { getPublicBlogArticles } from "@/lib/blog/service";
 
 const getHandler = async (request: NextRequest) => {
-  // Extract pagination params from query string
+  // Extract query params
   const { searchParams } = new URL(request.url);
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '10');
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "10");
+  const category = searchParams.get("category") || undefined;
 
   // Validate pagination params
   if (isNaN(page) || page < 1) {
-    throw new ValidationError('Invalid page parameter', { page: 'Must be >= 1' });
+    throw new ValidationError("Invalid page parameter", {
+      page: "Must be >= 1",
+    });
   }
   if (isNaN(limit) || limit < 1 || limit > 50) {
-    throw new ValidationError('Invalid limit parameter', { limit: 'Must be between 1 and 50' });
+    throw new ValidationError("Invalid limit parameter", {
+      limit: "Must be between 1 and 50",
+    });
   }
 
+  const allPosts = await getPublicBlogArticles(category);
+  const total = allPosts.length;
   const skip = (page - 1) * limit;
+  const paginated = allPosts.slice(skip, skip + limit);
 
-  try {
-    // Get total count of published posts
-    const total = await prisma.blogPost.count({
-      where: {
-        is_published: true,
-        published_at: {
-          lte: new Date(),
-        },
-      },
-    });
+  const posts = paginated.map((p) => ({
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    cover_image: p.cover_image,
+    published_at: p.published_at,
+    category_slug: p.category_slug,
+    category_name: p.category_name,
+    author: { name: p.author.name },
+  }));
 
-    // Get paginated posts
-    const posts = await prisma.blogPost.findMany({
-      where: {
-        is_published: true,
-        published_at: {
-          lte: new Date(),
-        },
-      },
-      skip,
-      take: limit,
-      orderBy: { published_at: "desc" },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        excerpt: true,
-        cover_image: true,
-        published_at: true,
-        author: {
-          select: { name: true },
-        },
-      },
-    });
-
-    return NextResponse.json({
-      posts,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-        hasNextPage: page < Math.ceil(total / limit),
-        hasPrevPage: page > 1,
-      },
-    });
-  } catch (err: unknown) {
-    // If Prisma / DATABASE_URL not configured in local dev, return sample data instead
-    console.warn("blog API prisma error, returning sample data:", err instanceof Error ? err.message : err);
-
-    const SAMPLE = [
-      {
-        id: 1,
-        title: "El legado del líder: Inspirando a otros",
-        slug: "el-legado-del-lider",
-        excerpt: "Inspirate como el líder inspira y las características que son fundamentales para alcanzar tus metas.",
-        cover_image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80",
-        published_at: new Date().toISOString(),
-        author: { name: "Admin" },
-      },
-    ];
-
-    return NextResponse.json({
-      posts: SAMPLE,
-      pagination: { page, limit, total: SAMPLE.length, pages: 1, hasNextPage: false, hasPrevPage: false },
-    });
-  }
-}
+  return NextResponse.json({
+    posts,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+      hasNextPage: page < Math.ceil(total / limit),
+      hasPrevPage: page > 1,
+    },
+  });
+};
 
 export const GET = withErrorHandler(getHandler);

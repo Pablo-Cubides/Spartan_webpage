@@ -2,10 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
-import {
-  categories as staticCategories,
-  getAllPosts,
-} from "@/lib/blog/static-data";
+import { categories as staticCategories } from "@/lib/blog/static-data";
+import { getPublicBlogArticles } from "@/lib/blog/service";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
@@ -72,21 +70,21 @@ export default async function BlogPage() {
     cover_image: cat.cover_image,
   }));
 
-  const latestPosts = getAllPosts()
-    .slice(0, 6)
-    .map((post) => ({
-      slug: post.slug,
-      category_slug: post.category_slug,
-      title: post.title,
-      excerpt: post.excerpt,
-      cover_image: post.cover_image,
-      published_at: new Date(post.published_at),
-      category: {
-        epic_name:
-          staticCategories.find((c) => c.slug === post.category_slug)?.name ||
-          "",
-      },
-    }));
+  const publicPosts = await getPublicBlogArticles();
+  const latestPosts = publicPosts.slice(0, 6).map((post) => ({
+    slug: post.slug,
+    category_slug: post.category_slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    cover_image: post.cover_image,
+    published_at: new Date(post.published_at),
+    category: {
+      epic_name:
+        staticCategories.find((c) => c.slug === post.category_slug)?.name ||
+        post.category_name ||
+        "",
+    },
+  }));
 
   // Schema.org
   const blogSchema = {

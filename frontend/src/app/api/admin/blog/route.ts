@@ -1,10 +1,13 @@
-
-
 import { NextResponse, NextRequest } from "next/server";
-import { prisma } from "@/lib/server/prisma";
 import { verifyAdmin } from "@/lib/server/auth";
 import { CreateBlogPostSchema } from "@/lib/validation/schemas";
-import { withErrorHandler, AuthorizationError, ConflictError, ValidationError, parseJsonBody } from "@/lib/api/error-handler";
+import {
+  withErrorHandler,
+  AuthorizationError,
+  ValidationError,
+  parseJsonBody,
+} from "@/lib/api/error-handler";
+import { getAllUnifiedArticles, createBlogArticle } from "@/lib/blog/service";
 
 const getHandler = async (request: NextRequest) => {
   const user = await verifyAdmin(request);
@@ -14,33 +17,24 @@ const getHandler = async (request: NextRequest) => {
 
   // Extract pagination params from query string
   const { searchParams } = new URL(request.url);
-  const page = parseInt(searchParams.get('page') || '1');
-  const limit = parseInt(searchParams.get('limit') || '10');
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "50");
 
-  // Validate pagination params
   if (isNaN(page) || page < 1) {
-    throw new ValidationError('Invalid page parameter', { page: 'Must be >= 1' });
+    throw new ValidationError("Invalid page parameter", {
+      page: "Must be >= 1",
+    });
   }
   if (isNaN(limit) || limit < 1 || limit > 100) {
-    throw new ValidationError('Invalid limit parameter', { limit: 'Must be between 1 and 100' });
+    throw new ValidationError("Invalid limit parameter", {
+      limit: "Must be between 1 and 100",
+    });
   }
 
+  const all = await getAllUnifiedArticles();
+  const total = all.length;
   const skip = (page - 1) * limit;
-
-  // Get total count
-  const total = await prisma.blogPost.count();
-
-  // Get paginated posts
-  const posts = await prisma.blogPost.findMany({
-    skip,
-    take: limit,
-    orderBy: { created_at: "desc" },
-    include: {
-      author: {
-        select: { name: true, email: true },
-      },
-    },
-  });
+  const posts = all.slice(skip, skip + limit);
 
   return NextResponse.json({
     posts,
@@ -53,7 +47,7 @@ const getHandler = async (request: NextRequest) => {
       hasPrevPage: page > 1,
     },
   });
-}
+};
 
 const postHandler = async (request: NextRequest) => {
   const user = await verifyAdmin(request);
@@ -61,30 +55,34 @@ const postHandler = async (request: NextRequest) => {
     throw new AuthorizationError("Admin access required");
   }
 
-  const body = await parseJsonBody<Record<string, unknown>>(request, CreateBlogPostSchema);
-  const { title, slug, content, excerpt, cover_image, is_published, published_at } = body;
+  const body = await parseJsonBody<Record<string, unknown>>(
+    request,
+    CreateBlogPostSchema,
+  );
+  const {
+    title,
+    slug,
+    content,
+    excerpt,
+    cover_image,
+    is_published,
+    published_at,
+  } = body;
 
-  // Check if slug exists
-  const existing = await prisma.blogPost.findUnique({ where: { slug: slug as string } });
-  if (existing) {
-    throw new ConflictError("Slug already exists");
-  }
-
-  const post = await prisma.blogPost.create({
-    data: {
-      title: title as string,
-      slug: slug as string,
-      content: content as string,
-      excerpt: excerpt as string | undefined,
-      cover_image: cover_image as string | undefined,
-      is_published: (is_published as boolean) || false,
-      published_at: published_at ? new Date(published_at as string) : null,
-      author_id: user.id,
-    },
+  const created = await createBlogArticle({
+    title: title as string,
+    slug: slug as string,
+    content: content as string,
+    excerpt: excerpt as string | undefined,
+    cover_image: cover_image as string | undefined,
+    status: is_published ? "published" : "paused",
+    published_at: published_at as string | undefined,
+    source: "manual",
+    author_name: user.name || "Admin Triarvon",
   });
 
-  return NextResponse.json(post);
-}
+  return NextResponse.json(created);
+};
 
-export const GET = withErrorHandler(getHandler)
-export const POST = withErrorHandler(postHandler)
+export const GET = withErrorHandler(getHandler);
+export const POST = withErrorHandler(postHandler);
