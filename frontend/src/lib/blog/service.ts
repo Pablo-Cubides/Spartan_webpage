@@ -256,8 +256,12 @@ async function getDynamicArticles(): Promise<BlogArticle[]> {
         };
       });
     }
-  } catch {
-    // Fallback to local json file if DB is offline
+  } catch (error: unknown) {
+    console.error(
+      "[BlogService:getDynamicArticles] Error al consultar artículos en PostgreSQL (Prisma):",
+      error,
+    );
+    // Fallback to local json file if DB is offline in local dev
   }
 
   return readLocalArticles();
@@ -449,8 +453,24 @@ export async function createBlogArticle(data: {
     });
     newArticle.id = created.id;
     return newArticle;
-  } catch {
-    // Fallback to local storage
+  } catch (error: unknown) {
+    console.error(
+      "[BlogService:createBlogArticle] Error al crear artículo en PostgreSQL (Prisma):",
+      error,
+    );
+
+    // En producción (o Vercel), el disco de las lambdas es efímero.
+    // Fallar silenciosamente finge éxito pero destruye el artículo tras milisegundos.
+    if (process.env.NODE_ENV === "production" || process.env.VERCEL) {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      throw new Error(
+        `Error al persistir el artículo en la base de datos: ${errMsg}`,
+      );
+    }
+
+    console.warn(
+      "[BlogService:createBlogArticle] Entorno local: usando fallback en agent-articles.json",
+    );
   }
 
   // Save to local JSON fallback
@@ -538,8 +558,18 @@ export async function updateBlogArticle(
           (updated.reading_time as string) ||
           calculateReadingTime(updatedContent),
       };
-    } catch {
-      // Continue to local json update
+    } catch (error: unknown) {
+      console.error(
+        "[BlogService:updateBlogArticle] Error al actualizar artículo en PostgreSQL (Prisma):",
+        error,
+      );
+      if (process.env.NODE_ENV === "production" || process.env.VERCEL) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        throw new Error(
+          `Error al actualizar el artículo en la base de datos: ${errMsg}`,
+        );
+      }
+      // Continuar a fallback local solo en desarrollo
     }
   }
 
@@ -603,8 +633,18 @@ export async function deleteBlogArticle(
         where: { id: idNum },
       });
       return true;
-    } catch {
-      // Fall through to local delete
+    } catch (error: unknown) {
+      console.error(
+        "[BlogService:deleteBlogArticle] Error al eliminar artículo en PostgreSQL (Prisma):",
+        error,
+      );
+      if (process.env.NODE_ENV === "production" || process.env.VERCEL) {
+        const errMsg = error instanceof Error ? error.message : String(error);
+        throw new Error(
+          `Error al eliminar el artículo de la base de datos: ${errMsg}`,
+        );
+      }
+      // Fall through to local delete in development
     }
   }
 
