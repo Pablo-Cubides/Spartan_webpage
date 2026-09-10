@@ -10,6 +10,9 @@ interface PageProps {
   }>;
 }
 
+export const dynamicParams = true;
+export const revalidate = 60;
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 // Category configuration with epic names and metadata

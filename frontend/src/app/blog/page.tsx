@@ -5,6 +5,8 @@ import { Dumbbell, Shirt, Brain, Clock } from "lucide-react";
 import { categories as staticCategories } from "@/lib/blog/static-data";
 import { getPublicBlogArticles } from "@/lib/blog/service";
 
+export const revalidate = 60;
+
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 // Helper to map icon string names back to components

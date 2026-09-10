@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { verifyAdminOrAgentKey } from "@/lib/server/auth";
 import {
   updateBlogArticle,
@@ -58,6 +59,14 @@ export async function PATCH(
       );
     }
 
+    try {
+      revalidatePath("/blog");
+      revalidatePath(`/blog/${updated.category_slug}`);
+      revalidatePath(`/blog/${updated.category_slug}/${updated.slug}`);
+    } catch {
+      // Non-blocking cache revalidation
+    }
+
     return NextResponse.json({
       success: true,
       message: `Artículo actualizado (${updated.status})`,
@@ -88,6 +97,12 @@ export async function DELETE(
         { error: "Artículo no encontrado para eliminar" },
         { status: 404 },
       );
+    }
+
+    try {
+      revalidatePath("/blog");
+    } catch {
+      // Non-blocking cache revalidation
     }
 
     return NextResponse.json({

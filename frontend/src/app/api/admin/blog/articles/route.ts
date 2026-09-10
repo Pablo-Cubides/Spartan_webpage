@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { verifyAdminOrAgentKey } from "@/lib/server/auth";
 import {
   getAllUnifiedArticles,
@@ -140,6 +141,16 @@ export async function POST(request: NextRequest) {
         (user.isAgent ? "Agente IA Triarvon" : user.name || "Admin Triarvon"),
       keywords: Array.isArray(keywords) ? keywords : [],
     });
+
+    try {
+      revalidatePath("/blog");
+      revalidatePath(`/blog/${createdArticle.category_slug}`);
+      revalidatePath(
+        `/blog/${createdArticle.category_slug}/${createdArticle.slug}`,
+      );
+    } catch {
+      // Non-blocking cache revalidation
+    }
 
     return NextResponse.json(
       {

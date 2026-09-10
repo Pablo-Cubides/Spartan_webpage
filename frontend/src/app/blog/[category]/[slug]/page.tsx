@@ -13,6 +13,7 @@ import {
 } from "@/lib/blog/service";
 
 export const dynamicParams = true;
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{
