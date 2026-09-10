@@ -6,7 +6,6 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Calendar, Clock, User, ArrowLeft, Share2 } from "lucide-react";
-import { getPostBySlug } from "@/lib/blog/static-data";
 import {
   getPublicBlogArticleBySlug,
   getPublicBlogArticles,
@@ -88,8 +87,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { category, slug } = await params;
-  const post =
-    (await getPublicBlogArticleBySlug(slug, category)) || getPostBySlug(slug);
+  const post = await getPublicBlogArticleBySlug(slug, category);
 
   if (!post || post.category_slug !== category) {
     return { title: "Artículo no encontrado | Triarvon Club" };
@@ -135,8 +133,7 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: PageProps) {
   const { category, slug } = await params;
 
-  const foundPost =
-    (await getPublicBlogArticleBySlug(slug, category)) || getPostBySlug(slug);
+  const foundPost = await getPublicBlogArticleBySlug(slug, category);
 
   if (!foundPost || foundPost.category_slug !== category) {
     notFound();
