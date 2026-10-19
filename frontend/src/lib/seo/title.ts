@@ -21,9 +21,14 @@ export function fitTitle(title: string, max: number = SEO_TITLE_MAX): string {
   // 2) Cortar en la ultima palabra completa que entre
   const cut = clean.slice(0, max + 1);
   const space = cut.lastIndexOf(" ");
-  const head = (space > 25 ? cut.slice(0, space) : clean.slice(0, max)).replace(
+  let head = (space > 25 ? cut.slice(0, space) : clean.slice(0, max)).replace(
     /[\s,;:.\-–—(]+$/,
     "",
   );
+  // no terminar en una palabra suelta ("... cientificos y")
+  const dangling =
+    /\s(y|e|o|u|de|del|la|el|los|las|un|una|en|con|para|por|a|al|que|se|su|sus)$/i;
+  while (dangling.test(head))
+    head = head.replace(dangling, "").replace(/[\s,;:.\-–—(]+$/, "");
   return head;
 }

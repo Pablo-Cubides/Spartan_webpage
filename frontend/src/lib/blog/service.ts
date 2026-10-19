@@ -227,7 +227,7 @@ async function getDynamicArticles(): Promise<BlogArticle[]> {
         const authorObj = p.author as
           { name?: string; email?: string } | undefined;
         const authorName =
-          (p.author_name as string) || authorObj?.name || "Agente Triarvon";
+          (p.author_name as string) || authorObj?.name || "Andrés Guerrero";
         const contentStr = (p.content as string) || "";
         const createdAtStr = p.created_at
           ? new Date(p.created_at as string | Date).toISOString()
@@ -424,9 +424,7 @@ export async function createBlogArticle(data: {
     category_name: getCategoryEpicName(category_slug),
     keywords: data.keywords || [],
     author: {
-      name:
-        data.author_name ||
-        (data.source === "manual" ? "Admin Triarvon" : "Agente Triarvon"),
+      name: data.author_name || "Andrés Guerrero",
     },
     published_at: published_at.toISOString(),
     created_at: now.toISOString(),
@@ -564,7 +562,7 @@ export async function updateBlogArticle(
         keywords: Array.isArray(updated.keywords)
           ? (updated.keywords as string[])
           : [],
-        author: { name: (updated.author_name as string) || "Admin Triarvon" },
+        author: { name: (updated.author_name as string) || "Andrés Guerrero" },
         published_at: updatedPubAt,
         created_at: updatedCreatedAt,
         status:

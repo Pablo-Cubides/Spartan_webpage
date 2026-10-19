@@ -113,6 +113,10 @@ export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
     from: "/blog/entrenamiento-y-energia-fisica/duchas-frias-beneficios-hombre",
     to: "/blog/entrenamiento-y-energia-fisica",
   },
+  {
+    from: "/blog/mentalidad-y-disciplina/la-soledad-masculina-por-qu-necesitas-un-c-rculo-de-hierro-y-c-mo-crearlo",
+    to: "/blog/mentalidad-y-disciplina/la-soledad-masculina-por-que-necesitas-un-circulo-de-hierro-y-como-crearlo",
+  },
 ];
 
 export const TOOL_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [

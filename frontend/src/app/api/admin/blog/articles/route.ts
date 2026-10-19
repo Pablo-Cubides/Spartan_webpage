@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
       source: user.isAgent ? "agent" : "manual",
       author_name:
         author_name ||
-        (user.isAgent ? "Agente IA Triarvon" : user.name || "Admin Triarvon"),
+        (user.isAgent ? "Andrés Guerrero" : user.name || "Andrés Guerrero"),
       keywords: Array.isArray(keywords) ? keywords : [],
     });
 
