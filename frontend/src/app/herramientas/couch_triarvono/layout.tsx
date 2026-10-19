@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import ToolSeoContent from "@/components/seo/ToolSeoContent";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
@@ -102,12 +102,47 @@ export default function CoachTriarvonLayout({
 
   return (
     <>
-      <Script
-        id="coach-triarvon-jsonld"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="bg-[#0a0a0a] min-h-screen">{children}</div>
+      <ToolSeoContent
+        name={"el Coach Triarvon"}
+        path={"/herramientas/couch_triarvono"}
+        baseUrl={BASE_URL}
+        intro={
+          "El Coach Triarvon es un asistente de inteligencia artificial para hombres de habla hispana que quieren mejorar su cuerpo, su estilo, su mentalidad y su productividad. Funciona como un chat: eliges el área en la que quieres trabajar y recibes orientación práctica, rutinas y hábitos para aplicar desde hoy."
+        }
+        steps={[
+          "Elige el área en la que quieres trabajar: cuerpo, estilo, mentalidad o productividad.",
+          "Cuéntale tu situación, tu objetivo y el tiempo que tienes disponible.",
+          "Recibe un plan concreto con pasos que puedas aplicar esta semana.",
+          "Vuelve a conversar para ajustar el plan a medida que avanzas.",
+        ]}
+        faqs={[
+          {
+            question: "¿Qué es el Coach Triarvon?",
+            answer:
+              "Es un asistente de inteligencia artificial de coaching personal para hombres, que responde por chat en áreas como entrenamiento, estilo, mentalidad y productividad, y propone pasos concretos en cada una.",
+          },
+          {
+            question: "¿Reemplaza a un entrenador o a un médico?",
+            answer:
+              "No. Es una guía de hábitos y rutinas generales. Para lesiones, enfermedades o planes médicos, consulta siempre con un profesional de la salud.",
+          },
+          {
+            question: "¿Cuánto cuesta empezar?",
+            answer:
+              "Puedes empezar gratis. Si necesitas más conversaciones, puedes comprar créditos dentro de la herramienta.",
+          },
+          {
+            question: "¿En qué idioma funciona?",
+            answer:
+              "En español. Los ejemplos están pensados para hombres de Colombia, del resto de Latinoamérica y de España.",
+          },
+        ]}
+      />
     </>
   );
 }

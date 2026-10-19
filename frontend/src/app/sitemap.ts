@@ -104,7 +104,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
 
-    return [...staticRoutes, ...blogRoutes];
+    return [
+      ...staticRoutes,
+      ...blogRoutes,
+      {
+        url: `${BASE_URL}/autor/andres-guerrero`,
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+      },
+    ];
   } catch (error) {
     console.error("Error generating sitemap:", error);
 

@@ -74,7 +74,7 @@ export function generateBlogPostingSchema(
       (typedPost.tags as string[] | null)?.join(", "),
     wordCount: Math.ceil((typedPost.content as string).split(/\s+/).length),
     timeRequired: `PT${(typedPost.reading_time_minutes as number | null) || 5}M`,
-    inLanguage: "es-ES",
+    inLanguage: "es",
     isAccessibleForFree: true,
   };
 }

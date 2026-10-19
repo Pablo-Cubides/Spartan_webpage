@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { ARTICLE_REDIRECTS, TOOL_REDIRECTS } from "./src/lib/blog/retired";
 
 const nextConfig: NextConfig = {
   // Production mode settings
@@ -119,6 +120,8 @@ const nextConfig: NextConfig = {
 
   // Permanent redirects for rebranded and legacy URLs
   redirects: async () => [
+    ...ARTICLE_REDIRECTS.map((entry) => ({ source: entry.from, destination: entry.to, permanent: true })),
+    ...TOOL_REDIRECTS.map((entry) => ({ source: entry.from, destination: entry.to, permanent: true })),
     {
       source: "/herramientas/couch_spartano",
       destination: "/herramientas/couch_triarvono",

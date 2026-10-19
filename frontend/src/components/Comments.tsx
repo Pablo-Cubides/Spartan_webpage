@@ -97,6 +97,7 @@ export default function Comments({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Escribe tu comentario"
+            aria-label="Escribe tu comentario"
             className="w-full p-3 bg-[#111111] rounded h-28"
           />
           <div className="flex items-center gap-3">

@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { generateBlogPostingSchema } from "@/lib/blog/schema-generator";
+import { fitTitle } from "@/lib/seo/title";
+import { AUTHOR_SLUG } from "@/lib/seo/authors";
 import FAQSchema, { FAQItem } from "@/components/seo/FAQSchema";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -96,12 +98,12 @@ export async function generateMetadata({
   const postUrl = `${BASE_URL}/blog/${category}/${slug}`;
 
   return {
-    title: `${post.title} | Triarvon Club`,
+    title: { absolute: fitTitle(post.title) },
     description: post.excerpt || undefined,
     keywords: post.keywords || [],
     authors: [{ name: post.author?.name || "Triarvon Club" }],
     openGraph: {
-      title: post.title,
+      title: fitTitle(post.title),
       description: post.excerpt || undefined,
       url: postUrl,
       type: "article",
@@ -266,7 +268,12 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="flex flex-wrap items-center gap-6 text-gray-400">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
-                <span>{post.author?.name || "Triarvon Club"}</span>
+                <Link
+                  href={`/autor/${AUTHOR_SLUG(post.author?.name || "Triarvon Club")}`}
+                  rel="author"
+                >
+                  {post.author?.name || "Triarvon Club"}
+                </Link>
               </div>
               {post.published_at && (
                 <div className="flex items-center gap-2">

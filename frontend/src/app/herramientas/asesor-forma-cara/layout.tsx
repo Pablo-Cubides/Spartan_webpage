@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import ToolSeoContent from "@/components/seo/ToolSeoContent";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
@@ -85,12 +85,48 @@ export default function AsesorFormaCaraLayout({
 
   return (
     <>
-      <Script
-        id="asesor-forma-cara-jsonld"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="bg-[#181111] min-h-screen">{children}</div>
+      <ToolSeoContent
+        name={"el Asesor de Forma de Rostro"}
+        path={"/herramientas/asesor-forma-cara"}
+        baseUrl={BASE_URL}
+        intro={
+          "El Asesor de Forma de Rostro de Triarvon usa inteligencia artificial para identificar la forma de tu cara (ovalada, redonda, cuadrada, alargada, entre otras) y recomendarte el corte de cabello, el estilo de barba y los accesorios que mejor te favorecen. Sirve para decidir qué pedirle al barbero y para saber qué evitar."
+        }
+        steps={[
+          "Sube una foto de frente, con el cabello hacia atrás y sin gafas.",
+          "La IA identifica la forma de tu rostro y tus proporciones.",
+          "Recibe recomendaciones de corte de cabello, estilo de barba y accesorios.",
+          "Compara opciones y lleva la que más te guste a tu barbero.",
+        ]}
+        faqs={[
+          {
+            question: "¿Cómo sé qué forma de cara tengo?",
+            answer:
+              "La herramienta lo detecta a partir de una foto frontal: mide la relación entre frente, pómulos y mandíbula y la clasifica en una forma de rostro. También recibes una explicación de por qué ese tipo de cara se favorece con ciertos cortes.",
+          },
+          {
+            question:
+              "¿Qué corte de cabello y barba me favorecen según mi rostro?",
+            answer:
+              "Depende de tu forma de cara: por ejemplo, las caras redondas suelen verse mejor con volumen arriba y barba que alargue, y las cuadradas con cortes que suavicen la mandíbula. La herramienta te da opciones específicas para tu caso.",
+          },
+          {
+            question: "¿Qué foto debo subir?",
+            answer:
+              "Una foto de frente, con buena luz, el cabello hacia atrás y sin gafas ni gorra, para que la IA vea bien la frente y la mandíbula.",
+          },
+          {
+            question: "¿Tiene costo?",
+            answer:
+              "Puedes empezar con créditos de prueba y comprar más dentro de la herramienta si quieres generar nuevas recomendaciones.",
+          },
+        ]}
+      />
     </>
   );
 }

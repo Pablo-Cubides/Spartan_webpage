@@ -5,6 +5,7 @@ import {
   categories as staticCategories,
 } from "./static-data";
 import { prisma } from "../server/prisma";
+import { isRetiredSlug } from "./retired";
 
 export interface BlogArticle {
   id: number | string;
@@ -308,6 +309,9 @@ export async function getPublicBlogArticles(
   const now = new Date().getTime();
 
   return all.filter((article) => {
+    // Copias retiradas (redirigen con 301 a la version que se conserva)
+    if (isRetiredSlug(article.slug)) return false;
+
     // Status must be published
     if (article.status !== "published") return false;
 
@@ -333,6 +337,7 @@ export async function getPublicBlogArticleBySlug(
   const found = all.find((p) => p.slug === slug);
 
   if (!found) return null;
+  if (isRetiredSlug(found.slug)) return null;
   if (found.status !== "published") return null;
 
   const now = new Date().getTime();
@@ -506,6 +511,18 @@ export async function updateBlogArticle(
           updates.status === "published" || updates.status === "scheduled";
       }
       if (updates.title !== undefined) dataToUpdate.title = updates.title;
+      // Autor y slug editables por la API de agente (2026-10-19): firma de marca y slugs limpios
+      const extra = updates as unknown as {
+        author_name?: string;
+        slug?: string;
+      };
+      if (typeof extra.author_name === "string" && extra.author_name.trim())
+        dataToUpdate.author_name = extra.author_name.trim().slice(0, 120);
+      if (
+        typeof extra.slug === "string" &&
+        /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(extra.slug)
+      )
+        dataToUpdate.slug = extra.slug;
       if (updates.content !== undefined) {
         dataToUpdate.content = updates.content;
         dataToUpdate.reading_time = calculateReadingTime(updates.content);
