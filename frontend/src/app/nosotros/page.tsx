@@ -8,9 +8,9 @@ import type { Metadata } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
-  title: "Nosotros | Triarvon - Nuestra Misión y Visión",
+  title: "Nosotros: misión y visión",
   description:
-    "Conoce la misión, visión y valores de Triarvon. Somos una comunidad de hombres disciplinados comprometidos con el desarrollo personal, la excelencia física y la fortaleza mental.",
+    "Conoce la misión, visión y valores de Triarvon: una comunidad de hombres disciplinados comprometidos con su desarrollo personal y su fortaleza mental.",
   keywords: [
     "triarvon",
     "misión",
