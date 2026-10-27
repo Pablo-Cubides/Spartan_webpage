@@ -4,10 +4,9 @@ import ToolSeoContent from "@/components/seo/ToolSeoContent";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
-  title:
-    "Coach Triarvon con IA | Coaching Personal Masculino 24/7 | Triarvon Club",
+  title: "Coach Triarvon con IA: coaching masculino 24/7",
   description:
-    "5 coaches especializados con inteligencia artificial para transformación masculina completa: Cuerpo, Estilo, Mentalidad, Productividad. Coaching personalizado 24/7, gratis para empezar.",
+    "5 coaches con IA para tu transformación: cuerpo, estilo, mentalidad y productividad. Coaching personalizado 24/7, gratis para empezar.",
   keywords: [
     "coach triarvon",
     "coaching con inteligencia artificial",

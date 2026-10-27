@@ -26,7 +26,7 @@ const getIconComponent = (categorySlug: string) => {
 };
 
 export const metadata: Metadata = {
-  title: "Blog Triarvon Club | Desarrollo Masculino, Entrenamiento y Estilo",
+  title: "Blog masculino: entrenamiento, estilo y mentalidad",
   description:
     "Artículos expertos sobre entrenamiento físico, estilo masculino, mentalidad y productividad. Consejos prácticos para hombres que buscan la excelencia.",
   keywords: [

@@ -25,6 +25,14 @@ export const metadata: Metadata = {
       "Nuestra misión es forjar hombres de excelencia y alto rendimiento",
     type: "website",
     url: `${BASE_URL}/nosotros`,
+    images: [
+      {
+        url: `${BASE_URL}/Triarvon/triarvon-logo-black-background.png`,
+        width: 1200,
+        height: 630,
+        alt: "Triarvon: misión y visión",
+      },
+    ],
   },
 
   twitter: {

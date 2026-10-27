@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     default: "Triarvon - Forja tu Potencial y Alto Rendimiento Masculino",
   },
   description:
-    "Plataforma de desarrollo personal masculino. Accede a herramientas de IA, artículos sobre entrenamiento, estilo y mentalidad. Únete a la comunidad de hombres disciplinados en su búsqueda de excelencia.",
+    "Plataforma de desarrollo personal masculino: herramientas con IA y guías de entrenamiento, estilo y mentalidad para hombres que buscan disciplina.",
   keywords: [
     "desarrollo masculino",
     "alto rendimiento",

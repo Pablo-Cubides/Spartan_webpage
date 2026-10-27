@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
-  title: "Herramientas | Triarvon Club - Asesor de Estilo y Análisis",
+  title: "Herramientas de IA: estilo y forma de cara",
   description:
     "Descubre nuestras herramientas de IA para análisis de estilo y forma de cara. Recomendaciones personalizadas para tu transformación.",
   keywords: [
@@ -18,6 +18,14 @@ export const metadata: Metadata = {
     description: "Herramientas de IA para tu transformación",
     type: "website",
     url: `${BASE_URL}/herramientas`,
+    images: [
+      {
+        url: `${BASE_URL}/Triarvon/triarvon-logo-black-background.png`,
+        width: 1200,
+        height: 630,
+        alt: "Herramientas de IA de Triarvon",
+      },
+    ],
   },
   alternates: {
     canonical: `${BASE_URL}/herramientas`,

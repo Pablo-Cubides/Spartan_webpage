@@ -4,8 +4,7 @@ import ToolSeoContent from "@/components/seo/ToolSeoContent";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
 export const metadata: Metadata = {
-  title:
-    "Análisis de Barba y Corte de Cabello según Forma de Cara | Triarvon Club",
+  title: "Barba y corte de cabello según tu forma de cara",
   description:
     "Descubre la forma de tu rostro y recibe recomendaciones con IA para corte de cabello, estilo de barba y accesorios que mejor te favorecen.",
   keywords: [

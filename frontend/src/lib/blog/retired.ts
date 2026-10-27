@@ -83,15 +83,15 @@ export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   },
   {
     from: "/blog/estilo-y-presencia/asesora-de-vestimenta-personalizada-gua-completa-con-ia-para-hombres-modernos-",
-    to: "/blog/estilo-y-presencia/asesora-de-vestimenta-personalizada-guia-completa-con-ia-para-hombres-modernos",
+    to: "/herramientas/asesor-estilo",
   },
   {
     from: "/blog/estilo-y-presencia/el-corte-perfecto-cmo-elegir-cabello-y-barba-segn-tu-forma-facial-con-ia-",
-    to: "/blog/estilo-y-presencia/el-corte-perfecto-como-elegir-cabello-y-barba-segun-tu-forma-facial-con-ia",
+    to: "/herramientas/asesor-forma-cara",
   },
   {
     from: "/blog/mentalidad-y-disciplina/entrena-tu-mente-como-un-guerrero-coaching-ia-para-disciplina-y-resiliencia-masculina-",
-    to: "/blog/mentalidad-y-disciplina/entrena-tu-mente-como-un-guerrero-coaching-ia-para-disciplina-y-resiliencia-masculina",
+    to: "/herramientas/couch_triarvono",
   },
   {
     from: "/blog/mentalidad-y-disciplina/la-soledad-masculina-por-qu-necesitas-un-c-rculo-de-hierro-y-c-mo-crearlo",
@@ -99,15 +99,15 @@ export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   },
   {
     from: "/blog/estilo-y-presencia/asesoria-vestimenta-personalizada-guia-ia-hombres-modernos",
-    to: "/blog/estilo-y-presencia/asesora-de-vestimenta-personalizada-guia-completa-con-ia-para-hombres-modernos",
+    to: "/herramientas/asesor-estilo",
   },
   {
     from: "/blog/estilo-y-presencia/corte-perfecto-cabello-barba-forma-facial-ia",
-    to: "/blog/estilo-y-presencia/el-corte-perfecto-como-elegir-cabello-y-barba-segun-tu-forma-facial-con-ia",
+    to: "/herramientas/asesor-forma-cara",
   },
   {
     from: "/blog/mentalidad-y-disciplina/entrena-mente-guerrero-coaching-ia-disciplina-resiliencia",
-    to: "/blog/mentalidad-y-disciplina/entrena-tu-mente-como-un-guerrero-coaching-ia-para-disciplina-y-resiliencia-masculina",
+    to: "/herramientas/couch_triarvono",
   },
   {
     from: "/blog/entrenamiento-y-energia-fisica/duchas-frias-beneficios-hombre",
@@ -116,6 +116,34 @@ export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   {
     from: "/blog/mentalidad-y-disciplina/la-soledad-masculina-por-qu-necesitas-un-c-rculo-de-hierro-y-c-mo-crearlo",
     to: "/blog/mentalidad-y-disciplina/la-soledad-masculina-por-que-necesitas-un-circulo-de-hierro-y-como-crearlo",
+  },
+
+  // 2026-10-26 (Search Console + Page Review): el mismo articulo del Coach estaba en 4 categorias con el mismo titulo y 2.189 palabras
+  // (se canibalizaban); queda la de Mentalidad y Disciplina. Los 3 articulos de ~310 palabras eran fichas de herramientas disfrazadas
+  // de articulo (Google nunca los indexo): ahora llevan a su herramienta.
+  {
+    from: "/blog/entrenamiento-y-energia-fisica/coach-espartano-ia-coaching-personalizado-transformacion-masculina-entrenamiento-y-energia-fisica",
+    to: "/blog/mentalidad-y-disciplina/coach-espartano-ia-coaching-personalizado-transformacion-masculina-mentalidad-y-disciplina",
+  },
+  {
+    from: "/blog/productividad-y-gestion-del-tiempo/coach-espartano-ia-coaching-personalizado-transformacion-masculina-productividad-y-gestion-del-tiempo",
+    to: "/blog/mentalidad-y-disciplina/coach-espartano-ia-coaching-personalizado-transformacion-masculina-mentalidad-y-disciplina",
+  },
+  {
+    from: "/blog/estilo-y-presencia/coach-espartano-ia-coaching-personalizado-transformacion-masculina-estilo-y-presencia",
+    to: "/blog/mentalidad-y-disciplina/coach-espartano-ia-coaching-personalizado-transformacion-masculina-mentalidad-y-disciplina",
+  },
+  {
+    from: "/blog/mentalidad-y-disciplina/entrena-tu-mente-como-un-guerrero-coaching-ia-para-disciplina-y-resiliencia-masculina",
+    to: "/herramientas/couch_triarvono",
+  },
+  {
+    from: "/blog/estilo-y-presencia/el-corte-perfecto-como-elegir-cabello-y-barba-segun-tu-forma-facial-con-ia",
+    to: "/herramientas/asesor-forma-cara",
+  },
+  {
+    from: "/blog/estilo-y-presencia/asesora-de-vestimenta-personalizada-guia-completa-con-ia-para-hombres-modernos",
+    to: "/herramientas/asesor-estilo",
   },
 ];
 
