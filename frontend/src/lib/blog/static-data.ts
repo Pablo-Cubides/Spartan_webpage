@@ -31,7 +31,7 @@ export const categories: BlogCategory[] = [
     description: "Rutinas, ejercicios y consejos para mantenerte en forma",
     gradient: "from-red-600 to-orange-500",
     cover_image:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670778/articulos/triarvon/cat-entrenamiento-y-energia-fisica.jpg",
   },
   {
     id: 2,
@@ -40,7 +40,7 @@ export const categories: BlogCategory[] = [
     description: "Moda masculina, grooming y presencia personal",
     gradient: "from-purple-600 to-pink-500",
     cover_image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670779/articulos/triarvon/cat-estilo-y-presencia.jpg",
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ export const categories: BlogCategory[] = [
     description: "Desarrollo personal, estoicismo y fortaleza mental",
     gradient: "from-blue-600 to-cyan-500",
     cover_image:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670781/articulos/triarvon/cat-mentalidad-y-disciplina.jpg",
   },
   {
     id: 4,
@@ -58,7 +58,7 @@ export const categories: BlogCategory[] = [
     description: "Técnicas, herramientas y hábitos para ser más productivo",
     gradient: "from-green-600 to-teal-500",
     cover_image:
-      "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670783/articulos/triarvon/cat-productividad-y-gestion-del-tiempo.jpg",
   },
 ];
 

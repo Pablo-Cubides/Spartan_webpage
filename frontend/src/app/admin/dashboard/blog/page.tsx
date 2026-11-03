@@ -1085,7 +1085,7 @@ curl -X POST "${endpointUrl}" \\
                 </label>
                 <input
                   type="url"
-                  placeholder="https://images.unsplash.com/photo-..."
+                  placeholder="https://res.cloudinary.com/..."
                   value={manualForm.cover_image}
                   onChange={(e) =>
                     setManualForm({

@@ -47,7 +47,7 @@ const CATEGORIES: Record<
     icon: Dumbbell,
     gradient: "from-red-600 to-orange-600",
     coverImage:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&h=600",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670778/articulos/triarvon/cat-entrenamiento-y-energia-fisica.jpg",
   },
   "estilo-y-presencia": {
     epicName: "Estilo Triarvon",
@@ -70,7 +70,7 @@ const CATEGORIES: Record<
     icon: Shirt,
     gradient: "from-blue-600 to-indigo-600",
     coverImage:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1920&h=600",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670779/articulos/triarvon/cat-estilo-y-presencia.jpg",
   },
   "mentalidad-y-disciplina": {
     epicName: "Mentalidad Triarvon",
@@ -89,7 +89,7 @@ const CATEGORIES: Record<
     icon: Brain,
     gradient: "from-purple-600 to-pink-600",
     coverImage:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1920&h=600",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670781/articulos/triarvon/cat-mentalidad-y-disciplina.jpg",
   },
   "productividad-y-gestion-del-tiempo": {
     epicName: "Productividad Triarvon",
@@ -108,7 +108,7 @@ const CATEGORIES: Record<
     icon: Clock,
     gradient: "from-green-600 to-teal-600",
     coverImage:
-      "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=1920&h=600",
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793670783/articulos/triarvon/cat-productividad-y-gestion-del-tiempo.jpg",
   },
 };
 
