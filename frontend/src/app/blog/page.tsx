@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/blog`,
     images: [
       {
-        url: `${BASE_URL}/Hero.png`,
+        url: "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793677557/articulos/triarvon/blog-hero.jpg",
         width: 1200,
         height: 630,
         alt: "Triarvon Club Blog",
@@ -56,7 +56,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Blog Triarvon Club",
     description: "Desarrollo masculino integral",
-    images: [`${BASE_URL}/Hero.png`],
+    images: [
+      "https://res.cloudinary.com/lv3hwy1f/image/upload/v1793677557/articulos/triarvon/blog-hero.jpg",
+    ],
   },
   alternates: { canonical: `${BASE_URL}/blog` },
 };
