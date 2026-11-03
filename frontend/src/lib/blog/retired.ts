@@ -153,6 +153,16 @@ export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   },
 ];
 
+// Articulos que conservan el slug pero cambian de categoria (la URL incluye la categoria). A diferencia de
+// ARTICLE_REDIRECTS, NO entran en RETIRED_SLUGS: el articulo sigue publicado en su URL nueva.
+export const ARTICLE_MOVES: ReadonlyArray<{ from: string; to: string }> = [
+  // 2026-11-03: el articulo de fuerza en casa estaba en Mentalidad y Disciplina; su tema es entrenamiento.
+  {
+    from: "/blog/mentalidad-y-disciplina/entrenamiento-de-fuerza-en-casa-sin-gimnasio",
+    to: "/blog/entrenamiento-y-energia-fisica/entrenamiento-de-fuerza-en-casa-sin-gimnasio",
+  },
+];
+
 export const TOOL_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
   {
     from: "/herramientas/coach-espartano",
