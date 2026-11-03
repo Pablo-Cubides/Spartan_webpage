@@ -3,6 +3,9 @@ import { getPublicBlogArticles } from "@/lib/blog/service";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 
+// Los articulos del agente se publican por la API sin desplegar: sin esto el sitemap quedaba congelado hasta el siguiente deploy.
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     // Static pages
