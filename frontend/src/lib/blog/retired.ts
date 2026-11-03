@@ -5,6 +5,12 @@
 // salen de las listas y del sitemap por estar aqui.
 
 export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
+  // 2026-11-03: dos articulos competian por "traje con zapatillas blancas". Se unifican en el que ya posicionaba (las 3 reglas
+  // y la pregunta de la boda pasaron a ese articulo) y el otro redirige con 301.
+  {
+    from: "/blog/estilo-y-presencia/zapatillas-blancas-y-traje-se-puede-3-reglas-para-no-verte-ridiculo",
+    to: "/blog/estilo-y-presencia/como-combinar-zapatillas-con-ropa-formal-hombre",
+  },
   {
     from: "/blog/entrenamiento-y-energia-fisica/rutina-corta-de-ejercicios-para-hombres-sin-tiempo-20-minutos",
     to: "/blog/entrenamiento-y-energia-fisica/rutina-corta-ejercicios-hombres-sin-tiempo",
