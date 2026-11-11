@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import CookieConsent from "@/components/CookieConsent";
+import SectionBreadcrumbSchema from "@/components/seo/SectionBreadcrumbSchema";
 import { Inter, Noto_Sans } from "next/font/google";
 import { assertEnvironment } from "@/lib/config/validate-env";
 import type { Metadata, Viewport } from "next";
@@ -259,6 +260,7 @@ export default function RootLayout({
         />
       </head>
       <body className="relative flex size-full min-h-screen flex-col bg-[#141414] text-white font-sans">
+        <SectionBreadcrumbSchema />
         <Header />
         <main
           id="main-content"
