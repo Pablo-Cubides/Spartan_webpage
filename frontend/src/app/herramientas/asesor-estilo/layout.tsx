@@ -6,7 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.triarvon.com";
 export const metadata: Metadata = {
   title: "Asesor Personal de Estilo con IA | Triarvon Club",
   description:
-    "Recibe recomendaciones de estilo masculino y combinaciones de ropa según tu tipo de cuerpo y morfología con Inteligencia Artificial. Optimiza tu imagen personal.",
+    "Recibe recomendaciones de estilo masculino y combinaciones de ropa según tu cuerpo y morfología con Inteligencia Artificial. Optimiza tu imagen personal.",
   keywords: [
     "asesor de estilo",
     "asesor de imagen masculina",

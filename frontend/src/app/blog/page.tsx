@@ -26,7 +26,7 @@ const getIconComponent = (categorySlug: string) => {
 };
 
 export const metadata: Metadata = {
-  title: "Blog masculino: entrenamiento, estilo y mentalidad",
+  title: "Blog masculino: entrenamiento, estilo y hábitos",
   description:
     "Artículos expertos sobre entrenamiento físico, estilo masculino, mentalidad y productividad. Consejos prácticos para hombres que buscan la excelencia.",
   keywords: [

@@ -33,8 +33,7 @@ const CATEGORIES: Record<
     epicName: "Cuerpo Triarvon",
     description:
       "Artículos sobre entrenamiento físico, fuerza, resistencia and energía para hombres. Rutinas en casa, gimnasio, cardio inteligente y consejos para ganar músculo y salud sin vivir en el gym.",
-    metaTitle:
-      "Cuerpo Triarvon – Entrenamiento y Energía Física | Triarvon Club",
+    metaTitle: "Entrenamiento y energía física para hombres | Triarvon",
     metaDescription:
       "Artículos sobre entrenamiento físico, fuerza, resistencia y energía para hombres. Rutinas en casa, gimnasio, cardio y consejos para ganar músculo.",
     keywords: [
@@ -53,7 +52,7 @@ const CATEGORIES: Record<
     epicName: "Estilo Triarvon",
     description:
       "Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen sin perder tu esencia.",
-    metaTitle: "Estilo Triarvon – Estilo y Presencia Masculina | Triarvon Club",
+    metaTitle: "Estilo y presencia masculina | Triarvon",
     metaDescription:
       "Guías de estilo y presencia para hombres: ropa, combinaciones, cuidado personal, lenguaje corporal y detalles que mejoran tu imagen.",
     keywords: [
