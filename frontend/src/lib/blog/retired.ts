@@ -5,6 +5,17 @@
 // salen de las listas y del sitemap por estar aqui.
 
 export const ARTICLE_REDIRECTS: ReadonlyArray<{ from: string; to: string }> = [
+  // 2026-11-24: dos pares de articulos competian por la misma busqueda. La guia de moda (1.700 palabras) absorbe a la mas corta
+  // (sus secciones de oficina a vida social y plan de accion pasaron a la guia) y "barba segun forma de rostro" absorbe a
+  // "estilos de barba segun forma de cara", que ya estaba en "rastreada, sin indexar".
+  {
+    from: "/blog/estilo-y-presencia/moda-masculina-colombia-guia-clima-ciudad-ocasion",
+    to: "/blog/estilo-y-presencia/guia-moda-masculina-colombia-estilo-elegancia-clima",
+  },
+  {
+    from: "/blog/estilo-y-presencia/estilos-de-barba-para-cara-redonda-cuadrada",
+    to: "/blog/estilo-y-presencia/barba-segun-forma-de-rostro",
+  },
   // 2026-11-03: dos articulos competian por "traje con zapatillas blancas". Se unifican en el que ya posicionaba (las 3 reglas
   // y la pregunta de la boda pasaron a ese articulo) y el otro redirige con 301.
   {
