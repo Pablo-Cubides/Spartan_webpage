@@ -155,7 +155,7 @@ export const viewport: Viewport = {
 };
 
 const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-TRIARVON01";
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-W4EP5DLSPH";
 
 // Organization Schema
 const organizationSchema = {
