@@ -226,24 +226,34 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} ${notoSans.variable}`}>
       <head>
-        {/* Google Analytics - Raw HTML Crawler & Browser Detection */}
+        {/* Google Analytics: el snippet (id y config) sigue en el HTML crudo para que los detectores lo vean, pero el
+            archivo gtag/js (150 KB, la mitad sin usar, 3 tareas largas) se descarga cuando el navegador esta libre,
+            despues de cargar la pagina, para no competir con el primer pintado (PageSpeed movil, 24-nov-2026). */}
         {GA_MEASUREMENT_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
-                `,
-              }}
-            />
-          </>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
+                (function () {
+                  var cargar = function () {
+                    var s = document.createElement('script');
+                    s.async = true;
+                    s.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
+                    document.head.appendChild(s);
+                  };
+                  var esperar = function () {
+                    if ('requestIdleCallback' in window) { requestIdleCallback(cargar, { timeout: 3000 }); }
+                    else { setTimeout(cargar, 2000); }
+                  };
+                  if (document.readyState === 'complete') { esperar(); }
+                  else { window.addEventListener('load', esperar); }
+                })();
+              `,
+            }}
+          />
         )}
         {/* JSON-LD Schemas */}
         <script
